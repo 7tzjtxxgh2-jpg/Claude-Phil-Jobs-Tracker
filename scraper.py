@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-PhilJobs Weekly Scraper with Trend Dashboard
-Tracks week-over-week changes and generates visual trend reports
+PhilJobs Weekly Scraper with Clean Categorization
+Normalizes and consolidates specialization areas for better trend analysis
 """
 
 import requests
@@ -15,6 +15,84 @@ import time
 import re
 from collections import defaultdict
 
+# Canonical specialization categories
+SPECIALIZATION_MAP = {
+    # Ethics categories
+    'ethics': ['ethics', 'ethical', 'meta-ethics', 'metaethics', 'normative ethics'],
+    'applied ethics': ['applied ethics', 'bioethics', 'biomedical ethics', 'medical ethics', 
+                       'healthcare ethics', 'research ethics', 'business ethics', 'clinical ethics',
+                       'public health ethics', 'disability ethics', 'reproductive ethics',
+                       'neuroethics', 'data ethics'],
+    'environmental ethics': ['environmental ethics', 'environmental philosophy', 'climate ethics'],
+    'ai ethics': ['ai ethics', 'ethics of ai', 'ethics of artificial intelligence', 
+                  'artificial intelligence ethics', 'ethics & philosophy of technology'],
+    
+    # Political & Social
+    'social and political philosophy': ['social and political philosophy', 'political philosophy', 
+                                        'social philosophy', 'political theory'],
+    'philosophy of race': ['philosophy of race', 'racial justice'],
+    'philosophy of gender': ['philosophy of gender', 'feminist philosophy', 'feminist epistemology'],
+    'philosophy of law': ['philosophy of law', 'philosophy and law'],
+    
+    # History of Philosophy
+    'ancient philosophy': ['ancient philosophy', 'ancient greek and roman philosophy'],
+    'medieval philosophy': ['medieval philosophy', 'medieval and renaissance philosophy'],
+    'early modern philosophy': ['early modern philosophy', 'early modern', 'modern philosophy',
+                                'descartes to hegel', 'philosophy of enlightenment'],
+    'continental philosophy': ['continental philosophy', '20th century european philosophy',
+                              '21st century european philosophy', 'phenomenology',
+                              'french phenomenology', 'francophone phenomenology'],
+    'american philosophy': ['american philosophy', 'pragmatism'],
+    'history of philosophy': ['history of philosophy', 'history of philosophical ethics'],
+    
+    # Non-Western Philosophy
+    'asian philosophy': ['asian philosophy', 'east asian philosophy', 'chinese philosophy',
+                        'indian philosophy', 'buddhist philosophy'],
+    'african/africana philosophy': ['african philosophy', 'africana philosophy'],
+    'latin american philosophy': ['latin american philosophy'],
+    'islamic philosophy': ['islamic philosophy', 'arabic philosophy'],
+    'indigenous philosophy': ['indigenous philosophy', 'native american philosophy',
+                             'indigenous epistemologies'],
+    
+    # Metaphysics & Epistemology
+    'metaphysics': ['metaphysics', 'metaphysics and epistemology'],
+    'epistemology': ['epistemology', 'theory of knowledge', 'applied epistemology',
+                    'social epistemology'],
+    'philosophy of mind': ['philosophy of mind', 'philosophy of cognitive science',
+                          'moral psychology', 'cognitive science'],
+    'philosophy of language': ['philosophy of language'],
+    'philosophy of action': ['philosophy of action'],
+    'philosophy of religion': ['philosophy of religion'],
+    
+    # Science & Logic
+    'philosophy of science': ['philosophy of science', 'general philosophy of science',
+                             'history and philosophy of science', 'philosophy of biology',
+                             'philosophy of medicine'],
+    'philosophy of physics': ['philosophy of physics'],
+    'logic': ['logic', 'symbolic logic', 'philosophy of logic'],
+    'philosophy of mathematics': ['philosophy of mathematics'],
+    'philosophy of technology': ['philosophy of technology', 'philosophy of computing',
+                                'sts', 'science and technology studies'],
+    'philosophy of artificial intelligence': ['philosophy of artificial intelligence',
+                                             'philosophy of ai', 'ai'],
+    
+    # Value Theory
+    'aesthetics': ['aesthetics', 'philosophy of art'],
+    'value theory': ['value theory', 'normativity', 'value theory and normativity'],
+    
+    # Other
+    'ppe': ['ppe', 'politics philosophy and economics', 'philosophy and economics'],
+    'public philosophy': ['public philosophy'],
+    'critical thinking': ['critical thinking', 'informal logic'],
+}
+
+# Words to filter out
+FILTER_WORDS = {
+    'and', 'or', 'with', 'broadly', 'construed', 'open', 'preferred', 'including',
+    'etc', 'especially', 'but', 'not', 'limited', 'to', 'the', 'in', 'of', 'a',
+    'an', 'are', 'is', 'broadly construed', 'see advertisement', 'from any discipline'
+}
+
 class PhilJobsScraper:
     def __init__(self):
         self.base_url = "https://philjobs.org"
@@ -24,6 +102,49 @@ class PhilJobsScraper:
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         }
         
+    def normalize_specialization(self, raw_area):
+        """Normalize a specialization to canonical form"""
+        if not raw_area:
+            return None
+        
+        area_lower = raw_area.lower().strip()
+        
+        # Filter out noise words
+        if area_lower in FILTER_WORDS or len(area_lower) < 3:
+            return None
+        
+        # Check if it starts with common noise
+        if any(area_lower.startswith(word + ' ') for word in ['or', 'and', 'with']):
+            area_lower = ' '.join(area_lower.split()[1:])
+        
+        # Map to canonical category
+        for canonical, variants in SPECIALIZATION_MAP.items():
+            for variant in variants:
+                if variant in area_lower or area_lower in variant:
+                    return canonical
+        
+        # If no match and it's a substantial phrase, keep it as "other"
+        if len(area_lower) > 15:
+            return None  # Probably a full sentence, skip it
+        
+        return area_lower  # Keep unknown but reasonable specializations
+    
+    def extract_areas(self, area_string):
+        """Extract and normalize areas from a string"""
+        if not area_string or area_string.strip().lower() == 'open':
+            return []
+        
+        # Split on multiple delimiters
+        raw_areas = re.split(r'[,;/]|\s+and\s+|\s+or\s+', area_string)
+        
+        normalized = []
+        for raw in raw_areas:
+            norm = self.normalize_specialization(raw)
+            if norm and norm not in normalized:
+                normalized.append(norm)
+        
+        return normalized
+    
     def get_job_ids_from_listing(self):
         """Get all job IDs from the main listing page"""
         url = f"{self.base_url}/"
@@ -78,8 +199,10 @@ class PhilJobsScraper:
                         job['job_category'] = value
                     elif key == "AOS":
                         job['aos'] = value
+                        job['aos_normalized'] = self.extract_areas(value)
                     elif key == "AOC":
                         job['aoc'] = value
+                        job['aoc_normalized'] = self.extract_areas(value)
                     elif key == "Workload":
                         job['workload'] = value
                     elif key == "Vacancies":
@@ -140,41 +263,34 @@ class PhilJobsScraper:
         all_data_file = self.data_dir / "all_jobs.json"
         if all_data_file.exists():
             with open(all_data_file, 'r') as f:
-                return json.load(f)
+                data = json.load(f)
+                if 'weekly_trends' not in data:
+                    data['weekly_trends'] = []
+                return data
         return {'jobs': [], 'weekly_snapshots': [], 'weekly_trends': []}
     
-    def extract_areas(self, area_string):
-        """Extract individual areas from comma/semicolon separated string"""
-        if not area_string or area_string == 'Open':
-            return []
-        areas = re.split(r'[,;/]', area_string)
-        return [area.strip() for area in areas if area.strip() and area.strip() != 'Open']
-    
     def calculate_weekly_trends(self, jobs, historical_data, timestamp):
-        """Calculate trends for this week"""
+        """Calculate trends for this week using normalized categories"""
         aos_counts = defaultdict(int)
         aoc_counts = defaultdict(int)
         category_counts = defaultdict(int)
         location_counts = defaultdict(int)
         
-        # Count active jobs only for current snapshot
         active_jobs = [j for j in jobs if j.get('status') == 'active']
         
         for job in active_jobs:
-            # Count AOS
-            for area in self.extract_areas(job.get('aos', '')):
+            # Count normalized AOS
+            for area in job.get('aos_normalized', []):
                 aos_counts[area] += 1
             
-            # Count AOC
-            for area in self.extract_areas(job.get('aoc', '')):
+            # Count normalized AOC
+            for area in job.get('aoc_normalized', []):
                 aoc_counts[area] += 1
             
-            # Count categories
             category = job.get('job_category', '')
             if category:
                 category_counts[category] += 1
             
-            # Count locations
             location = job.get('location', '')
             if location:
                 location_counts[location] += 1
@@ -198,7 +314,6 @@ class PhilJobsScraper:
         new_jobs = [job for job in jobs if job['hash'] not in existing_hashes]
         historical_data['jobs'].extend(new_jobs)
         
-        # Calculate this week's trends
         weekly_trend = self.calculate_weekly_trends(jobs, historical_data, timestamp)
         historical_data['weekly_trends'].append(weekly_trend)
         
@@ -225,38 +340,470 @@ class PhilJobsScraper:
         
         return new_jobs, snapshot, weekly_trend
     
+    def get_category_hierarchy(self):
+        """Return category to subcategory mapping"""
+        hierarchy = {}
+        for canonical, variants in SPECIALIZATION_MAP.items():
+            # Determine parent category
+            parent = None
+            if any(x in canonical for x in ['ethics', 'bioethics', 'environmental ethics', 'ai ethics']):
+                parent = 'Ethics'
+            elif any(x in canonical for x in ['political', 'social', 'race', 'gender', 'law']):
+                parent = 'Social & Political'
+            elif any(x in canonical for x in ['ancient', 'medieval', 'modern', 'continental', 'american', 'history of']):
+                parent = 'History of Philosophy'
+            elif any(x in canonical for x in ['asian', 'african', 'latin american', 'islamic', 'indigenous']):
+                parent = 'Non-Western Philosophy'
+            elif any(x in canonical for x in ['metaphysics', 'epistemology', 'mind', 'language', 'action', 'religion']):
+                parent = 'Metaphysics & Epistemology'
+            elif any(x in canonical for x in ['science', 'physics', 'logic', 'mathematics', 'technology', 'artificial intelligence']):
+                parent = 'Science & Logic'
+            elif any(x in canonical for x in ['aesthetics', 'value theory']):
+                parent = 'Value Theory'
+            else:
+                parent = 'Other'
+            
+            if parent not in hierarchy:
+                hierarchy[parent] = []
+            hierarchy[parent].append(canonical)
+        
+        return hierarchy
+    
     def generate_trend_dashboard(self, historical_data):
-        """Generate interactive HTML dashboard with trend visualizations"""
+        """Generate modern interactive HTML dashboard with Tailwind CSS"""
         trends = historical_data.get('weekly_trends', [])
         
         if len(trends) < 2:
             print("Need at least 2 weeks of data for trend visualization")
             return
         
-        # Prepare data for charts
         dates = [t['date'] for t in trends]
         
-        # Get top 10 AOS fields across all time
-        all_aos = defaultdict(int)
+        # Build category hierarchy
+        hierarchy = self.get_category_hierarchy()
+        
+        # Aggregate data by parent categories and track subcategories
+        parent_categories = {}
+        subcategory_data = {}
+        
         for trend in trends:
-            for aos, count in trend.get('aos_counts', {}).items():
-                all_aos[aos] += count
+            aos_counts = trend.get('aos_counts', {})
+            
+            for parent, subcats in hierarchy.items():
+                if parent not in parent_categories:
+                    parent_categories[parent] = {'data': [], 'subcategories': subcats, 'color': self.get_color_for_category(parent)}
+                
+                # Sum up all subcategories for this parent
+                parent_total = sum(aos_counts.get(subcat, 0) for subcat in subcats)
+                parent_categories[parent]['data'].append(parent_total)
+                
+                # Track individual subcategory data
+                for subcat in subcats:
+                    if subcat not in subcategory_data:
+                        subcategory_data[subcat] = []
+                    subcategory_data[subcat].append(aos_counts.get(subcat, 0))
         
-        top_aos_fields = sorted(all_aos.items(), key=lambda x: x[1], reverse=True)[:10]
-        top_aos_names = [field[0] for field in top_aos_fields]
-        
-        # Build time series for each top AOS
-        aos_series = {}
-        for aos_name in top_aos_names:
-            aos_series[aos_name] = []
-            for trend in trends:
-                count = trend.get('aos_counts', {}).get(aos_name, 0)
-                aos_series[aos_name].append(count)
-        
-        # Total jobs over time
         total_jobs_series = [t['total_active_jobs'] for t in trends]
         
-        # Generate HTML with Chart.js
+        # Generate modern dashboard HTML
+        html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philosophy Job Market Analytics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {{ font-family: 'Inter', sans-serif; }}
+        .category-card:hover {{ transform: translateY(-2px); transition: all 0.3s; }}
+        .stat-card {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }}
+        .chart-container {{ min-height: 400px; }}
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <h1 class="text-4xl font-bold mb-2">Philosophy Job Market Analytics</h1>
+            <p class="text-indigo-100">Real-time trends and insights from PhilJobs</p>
+            <div class="mt-6 text-sm text-indigo-100">Last updated: {datetime.now().strftime("%B %d, %Y")}</div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="stat-card rounded-xl shadow-lg p-6 text-white">
+                <div class="text-3xl font-bold">{trends[-1]['total_active_jobs']}</div>
+                <div class="text-indigo-100">Active Jobs</div>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="text-3xl font-bold text-gray-800">{len(trends)}</div>
+                <div class="text-gray-600">Weeks Tracked</div>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="text-3xl font-bold text-gray-800">{len(historical_data['jobs'])}</div>
+                <div class="text-gray-600">Total Unique Jobs</div>
+            </div>
+        </div>
+
+        <!-- Main Chart -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Market Overview</h2>
+            <div class="chart-container">
+                <canvas id="mainChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Category Selection -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Browse by Category</h2>
+            <div id="categoryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Categories will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Detailed View Modal -->
+        <div id="detailModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
+                    <h3 id="modalTitle" class="text-2xl font-bold text-gray-800"></h3>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <!-- Subcategories -->
+                    <div id="subcategorySection" class="mb-6">
+                        <h4 class="text-lg font-semibold text-gray-700 mb-4">Subcategories</h4>
+                        <div id="subcategoryGrid" class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+                            <!-- Subcategories will be inserted here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Trend Chart -->
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold text-gray-700 mb-4">Trend Over Time</h4>
+                        <div class="chart-container">
+                            <canvas id="detailChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="text-2xl font-bold text-indigo-600" id="modalCurrentJobs">0</div>
+                            <div class="text-sm text-gray-600">Current Jobs</div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="text-2xl font-bold text-green-600" id="modalChange">+0</div>
+                            <div class="text-sm text-gray-600">vs Last Week</div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="text-2xl font-bold text-purple-600" id="modalAverage">0</div>
+                            <div class="text-sm text-gray-600">Weekly Average</div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="text-2xl font-bold text-blue-600" id="modalTotal">0</div>
+                            <div class="text-sm text-gray-600">Total All-Time</div>
+                        </div>
+                    </div>
+
+                    <!-- Key Insights -->
+                    <div id="insightsSection" class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
+                        <h4 class="text-lg font-semibold text-blue-900 mb-2">📊 Key Insights</h4>
+                        <div id="insights" class="text-sm text-blue-800"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const data = {{
+            dates: {json.dumps(dates)},
+            totalJobs: {json.dumps(total_jobs_series)},
+            categories: {json.dumps({k: {'name': k, 'data': v['data'], 'subcategories': v['subcategories'], 'color': v['color']} for k, v in parent_categories.items()})},
+            subcategoryData: {json.dumps(subcategory_data)}
+        }};
+
+        // Main chart
+        const mainCtx = document.getElementById('mainChart').getContext('2d');
+        const datasets = Object.entries(data.categories).map(([key, cat]) => ({{
+            label: cat.name,
+            data: cat.data,
+            borderColor: cat.color,
+            backgroundColor: cat.color + '20',
+            tension: 0.4,
+            fill: true
+        }}));
+
+        new Chart(mainCtx, {{
+            type: 'line',
+            data: {{
+                labels: data.dates,
+                datasets: datasets
+            }},
+            options: {{
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {{
+                    mode: 'index',
+                    intersect: false,
+                }},
+                plugins: {{
+                    legend: {{
+                        position: 'bottom',
+                        labels: {{
+                            usePointStyle: true,
+                            padding: 15,
+                            font: {{ size: 12 }}
+                        }}
+                    }},
+                    tooltip: {{
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        titleFont: {{ size: 14, weight: 'bold' }},
+                        bodyFont: {{ size: 13 }}
+                    }}
+                }},
+                scales: {{
+                    y: {{
+                        beginAtZero: true,
+                        ticks: {{ font: {{ size: 12 }} }},
+                        grid: {{ color: 'rgba(0, 0, 0, 0.05)' }}
+                    }},
+                    x: {{
+                        ticks: {{ font: {{ size: 12 }} }},
+                        grid: {{ display: false }}
+                    }}
+                }}
+            }}
+        }});
+
+        // Generate category cards
+        const categoryGrid = document.getElementById('categoryGrid');
+        Object.entries(data.categories).forEach(([key, cat]) => {{
+            const currentJobs = cat.data[cat.data.length - 1];
+            const previousJobs = cat.data[cat.data.length - 2] || 0;
+            const change = currentJobs - previousJobs;
+            const changePercent = previousJobs > 0 ? ((change / previousJobs) * 100).toFixed(1) : 0;
+            
+            const card = document.createElement('div');
+            card.className = 'category-card bg-white rounded-lg shadow hover:shadow-lg cursor-pointer p-5 border-l-4';
+            card.style.borderLeftColor = cat.color;
+            card.onclick = () => openModal(key, cat);
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-3">
+                    <h3 class="font-semibold text-gray-800 text-lg">${{cat.name}}</h3>
+                    <div class="w-3 h-3 rounded-full" style="background-color: ${{cat.color}}"></div>
+                </div>
+                <div class="flex items-end justify-between">
+                    <div>
+                        <div class="text-3xl font-bold text-gray-800">${{currentJobs}}</div>
+                        <div class="text-sm text-gray-500">jobs this week</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm font-semibold ${{change >= 0 ? 'text-green-600' : 'text-red-600'}}">
+                            ${{change >= 0 ? '↑' : '↓'}} ${{Math.abs(change)}}
+                        </div>
+                        <div class="text-xs text-gray-500">${{changePercent}}%</div>
+                    </div>
+                </div>
+                ${{cat.subcategories.length > 0 ? `
+                    <div class="mt-3 pt-3 border-t border-gray-100">
+                        <div class="text-xs text-gray-500">${{cat.subcategories.length}} subcategories</div>
+                    </div>
+                ` : ''}}
+            `;
+            
+            categoryGrid.appendChild(card);
+        }});
+
+        let detailChart = null;
+
+        function openModal(key, category) {{
+            const currentJobs = category.data[category.data.length - 1];
+            const previousJobs = category.data[category.data.length - 2] || 0;
+            const change = currentJobs - previousJobs;
+            const average = (category.data.reduce((a, b) => a + b, 0) / category.data.length).toFixed(1);
+            const total = category.data.reduce((a, b) => a + b, 0);
+            
+            document.getElementById('modalTitle').textContent = category.name;
+            document.getElementById('modalCurrentJobs').textContent = currentJobs;
+            document.getElementById('modalChange').textContent = (change >= 0 ? '+' : '') + change;
+            document.getElementById('modalChange').className = 'text-2xl font-bold ' + (change >= 0 ? 'text-green-600' : 'text-red-600');
+            document.getElementById('modalAverage').textContent = average;
+            document.getElementById('modalTotal').textContent = total;
+            
+            // Subcategories
+            const subcategoryGrid = document.getElementById('subcategoryGrid');
+            subcategoryGrid.innerHTML = '';
+            
+            category.subcategories.forEach(subcat => {{
+                const subcatData = data.subcategoryData[subcat] || [];
+                const subcatCurrent = subcatData[subcatData.length - 1] || 0;
+                const subcatPrevious = subcatData[subcatData.length - 2] || 0;
+                const subcatChange = subcatCurrent - subcatPrevious;
+                
+                const subcatCard = document.createElement('div');
+                subcatCard.className = 'bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-colors cursor-pointer';
+                subcatCard.innerHTML = `
+                    <div class="font-medium text-gray-700 text-sm mb-1 capitalize">${{subcat}}</div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xl font-bold text-gray-800">${{subcatCurrent}}</span>
+                        <span class="text-xs font-semibold ${{subcatChange >= 0 ? 'text-green-600' : 'text-red-600'}}">
+                            ${{subcatChange >= 0 ? '↑' : '↓'}} ${{Math.abs(subcatChange)}}
+                        </span>
+                    </div>
+                `;
+                subcategoryGrid.appendChild(subcatCard);
+            }});
+            
+            // Insights
+            const insights = document.getElementById('insights');
+            let insightText = `<ul class="space-y-1">`;
+            
+            if (change > 0) {{
+                insightText += `<li>• Growing field: up ${{change}} jobs from last week</li>`;
+            }} else if (change < 0) {{
+                insightText += `<li>• Declining: down ${{Math.abs(change)}} jobs from last week</li>`;
+            }} else {{
+                insightText += `<li>• Stable market with consistent demand</li>`;
+            }}
+            
+            const trend = category.data[category.data.length - 1] > category.data[0] ? 'upward' : 
+                         category.data[category.data.length - 1] < category.data[0] ? 'downward' : 'stable';
+            insightText += `<li>• Overall trend: ${{trend}}</li>`;
+            insightText += `<li>• Average ${{average}} jobs per week</li>`;
+            
+            if (category.subcategories.length > 0) {{
+                // Find hottest subcategory
+                let hottestSub = category.subcategories[0];
+                let hottestCount = 0;
+                category.subcategories.forEach(sub => {{
+                    const subData = data.subcategoryData[sub] || [];
+                    const subTotal = subData.reduce((a, b) => a + b, 0);
+                    if (subTotal > hottestCount) {{
+                        hottestCount = subTotal;
+                        hottestSub = sub;
+                    }}
+                }});
+                insightText += `<li>• Most active subcategory: ${{hottestSub}} (${{hottestCount}} total jobs)</li>`;
+            }}
+            
+            insightText += `</ul>`;
+            insights.innerHTML = insightText;
+            
+            // Detail chart
+            const detailCtx = document.getElementById('detailChart').getContext('2d');
+            
+            if (detailChart) {{
+                detailChart.destroy();
+            }}
+            
+            const detailDatasets = [{{
+                label: category.name + ' (Total)',
+                data: category.data,
+                borderColor: category.color,
+                backgroundColor: category.color + '40',
+                tension: 0.4,
+                fill: true,
+                borderWidth: 3
+            }}];
+            
+            // Add subcategory lines
+            const colors = ['#6366f1', '#ec4899', '#14b8a6', '#f59e0b', '#8b5cf6', '#f97316', '#06b6d4'];
+            category.subcategories.forEach((subcat, idx) => {{
+                const subcatData = data.subcategoryData[subcat] || [];
+                detailDatasets.push({{
+                    label: subcat,
+                    data: subcatData,
+                    borderColor: colors[idx % colors.length],
+                    backgroundColor: colors[idx % colors.length] + '20',
+                    tension: 0.4,
+                    borderWidth: 2,
+                    borderDash: [5, 5]
+                }});
+            }});
+            
+            detailChart = new Chart(detailCtx, {{
+                type: 'line',
+                data: {{
+                    labels: data.dates,
+                    datasets: detailDatasets
+                }},
+                options: {{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        legend: {{
+                            position: 'bottom',
+                            labels: {{
+                                usePointStyle: true,
+                                padding: 15,
+                                font: {{ size: 12 }}
+                            }}
+                        }},
+                        tooltip: {{
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12
+                        }}
+                    }},
+                    scales: {{
+                        y: {{
+                            beginAtZero: true,
+                            ticks: {{ font: {{ size: 12 }} }},
+                            grid: {{ color: 'rgba(0, 0, 0, 0.05)' }}
+                        }},
+                        x: {{
+                            ticks: {{ font: {{ size: 12 }} }},
+                            grid: {{ display: false }}
+                        }}
+                    }}
+                }}
+            }});
+            
+            document.getElementById('detailModal').classList.remove('hidden');
+        }}
+
+        function closeModal() {{
+            document.getElementById('detailModal').classList.add('hidden');
+        }}
+
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {{
+            if (e.key === 'Escape') closeModal();
+        }});
+    </script>
+</body>
+</html>"""
+        
+        dashboard_file = self.data_dir / "trends_dashboard.html"
+        with open(dashboard_file, 'w') as f:
+            f.write(html)
+        
+        print(f"✓ Modern trend dashboard generated: {dashboard_file}")
+    
+    def get_color_for_category(self, category):
+        """Assign colors to categories"""
+        colors = {
+            'Ethics': '#ef4444',
+            'Social & Political': '#3b82f6',
+            'History of Philosophy': '#8b5cf6',
+            'Non-Western Philosophy': '#ec4899',
+            'Metaphysics & Epistemology': '#10b981',
+            'Science & Logic': '#f59e0b',
+            'Value Theory': '#06b6d4',
+            'Other': '#6b7280'
+        }
+        return colors.get(category, '#6b7280')
+        
         html = f"""<!DOCTYPE html>
 <html>
 <head>
@@ -371,7 +918,6 @@ class PhilJobsScraper:
     </div>
 
     <script>
-        // Total jobs chart
         new Chart(document.getElementById('totalJobsChart'), {{
             type: 'line',
             data: {{
@@ -404,10 +950,10 @@ class PhilJobsScraper:
             }}
         }});
 
-        // Top AOS fields chart
         const colors = [
             '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
-            '#FF9F40', '#FF6384', '#C9CBCF', '#4BC0C0', '#FF6384'
+            '#FF9F40', '#FF6384', '#C9CBCF', '#4BC0C0', '#FF6384',
+            '#E7E9ED', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'
         ];
         
         const datasets = [];
@@ -450,7 +996,6 @@ class PhilJobsScraper:
             }}
         }});
 
-        // Generate insights
         const insightsDiv = document.getElementById('insights');
         const currentWeek = {json.dumps(trends[-1]['aos_counts'])};
         const previousWeek = {json.dumps(trends[-2]['aos_counts'] if len(trends) > 1 else {})};
@@ -473,11 +1018,10 @@ class PhilJobsScraper:
         insights += '</ul>';
         insightsDiv.innerHTML = insights;
 
-        // Ranking table
         const tableDiv = document.getElementById('rankingTable');
         let tableHTML = '<thead><tr><th>Rank</th><th>Specialization</th><th>Current Jobs</th><th>Change vs Last Week</th></tr></thead><tbody>';
         
-        Object.entries(currentWeek).sort((a, b) => b[1] - a[1]).forEach((entry, index) => {{
+        Object.entries(currentWeek).sort((a, b) => b[1] - a[1]).slice(0, 20).forEach((entry, index) => {{
             const [field, count] = entry;
             const previous = previousWeek[field] || 0;
             const change = count - previous;
@@ -520,14 +1064,14 @@ class PhilJobsScraper:
 
 The dashboard shows week-by-week changes in job postings by specialization with visual charts.
 
-## Top Specializations This Week
+## Top Specializations This Week (Normalized Categories)
 """
         
         aos_counts = weekly_trend.get('aos_counts', {})
         if aos_counts:
             report += "| Rank | Specialization | Jobs This Week |\n"
             report += "|------|----------------|----------------|\n"
-            for i, (area, count) in enumerate(sorted(aos_counts.items(), key=lambda x: x[1], reverse=True)[:15], 1):
+            for i, (area, count) in enumerate(sorted(aos_counts.items(), key=lambda x: x[1], reverse=True)[:20], 1):
                 report += f"| {i} | {area} | {count} |\n"
         
         report += f"\n## New Jobs This Week ({len(new_jobs)} total)\n"
@@ -542,9 +1086,8 @@ The dashboard shows week-by-week changes in job postings by specialization with 
                 
                 if job.get('aos') and job['aos'] != 'Open':
                     report += f"**AOS:** {job['aos']}\n"
-                
-                if job.get('aoc') and job['aoc'] != 'Open':
-                    report += f"**AOC:** {job['aoc']}\n"
+                    if job.get('aos_normalized'):
+                        report += f"**AOS (normalized):** {', '.join(job['aos_normalized'])}\n"
                 
                 if job.get('location'):
                     report += f"**Location:** {job['location']}\n"
@@ -570,7 +1113,7 @@ The dashboard shows week-by-week changes in job postings by specialization with 
 def main():
     scraper = PhilJobsScraper()
     
-    print("Starting PhilJobs scraper with trend tracking...")
+    print("Starting PhilJobs scraper with clean categorization...")
     print("="*70)
     
     jobs = scraper.scrape_jobs()
