@@ -1064,14 +1064,18 @@ class PhilJobsScraper:
     </script>
 </body>
 </html>'''
+        
+# Write dashboard to docs/ for GitHub Pages
+docs_dir = Path("docs")
+docs_dir.mkdir(exist_ok=True)
 
-        dashboard_file = self.data_dir / "trends_dashboard.html"
-        with open(dashboard_file, 'w') as f:
-            f.write(html)
+dashboard_file = docs_dir / "index.html"
+with open(dashboard_file, 'w') as f:
+    f.write(html)
 
-        print(f"✓ Comprehensive dashboard generated: {dashboard_file}")
+print(f"✓ Dashboard written to {dashboard_file} (GitHub Pages)")
 
-    def generate_report(self, new_jobs, snapshot, weekly_trend, historical_data):
+def generate_report(self, new_jobs, snapshot, weekly_trend, historical_data):
         """Generate markdown report"""
         report = f"""# PhilJobs Weekly Report
 **Date:** {snapshot['date']}
