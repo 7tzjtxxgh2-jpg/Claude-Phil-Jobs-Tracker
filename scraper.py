@@ -489,7 +489,9 @@ class PhilJobsScraper:
         """Determine if date is in hiring season (Sept-Jan)"""
         date = datetime.strptime(date_str, "%Y-%m-%d")
         month = date.month
-        return month >= 9 or month <= 1def generate_trend_dashboard(self, historical_data):
+return month >= 9 or month <= 1
+    
+    def generate_trend_dashboard(self, historical_data):
         """Generate comprehensive dashboard with maps and breakdowns"""
         trends = historical_data.get('weekly_trends', [])
         
