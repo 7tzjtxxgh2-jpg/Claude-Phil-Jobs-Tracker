@@ -7,7 +7,6 @@ Tracks new job postings, job types, locations, and institution types
 import requests
 from bs4 import BeautifulSoup
 import json
-import os
 from datetime import datetime
 from pathlib import Path
 import hashlib
@@ -19,67 +18,67 @@ from collections import defaultdict
 SPECIALIZATION_MAP = {
     # Ethics categories
     'ethics': ['ethics', 'ethical', 'meta-ethics', 'metaethics', 'normative ethics'],
-    'applied ethics': ['applied ethics', 'bioethics', 'biomedical ethics', 'medical ethics', 
+    'applied ethics': ['applied ethics', 'bioethics', 'biomedical ethics', 'medical ethics',
                        'healthcare ethics', 'research ethics', 'business ethics', 'clinical ethics',
                        'public health ethics', 'disability ethics', 'reproductive ethics',
                        'neuroethics', 'data ethics'],
     'environmental ethics': ['environmental ethics', 'environmental philosophy', 'climate ethics'],
-    'ai ethics': ['ai ethics', 'ethics of ai', 'ethics of artificial intelligence', 
+    'ai ethics': ['ai ethics', 'ethics of ai', 'ethics of artificial intelligence',
                   'artificial intelligence ethics', 'ethics & philosophy of technology'],
-    
+
     # Political & Social
-    'social and political philosophy': ['social and political philosophy', 'political philosophy', 
+    'social and political philosophy': ['social and political philosophy', 'political philosophy',
                                         'social philosophy', 'political theory'],
     'philosophy of race': ['philosophy of race', 'racial justice'],
     'philosophy of gender': ['philosophy of gender', 'feminist philosophy', 'feminist epistemology'],
     'philosophy of law': ['philosophy of law', 'philosophy and law'],
-    
+
     # History of Philosophy
     'ancient philosophy': ['ancient philosophy', 'ancient greek and roman philosophy'],
     'medieval philosophy': ['medieval philosophy', 'medieval and renaissance philosophy'],
     'early modern philosophy': ['early modern philosophy', 'early modern', 'modern philosophy',
                                 'descartes to hegel', 'philosophy of enlightenment'],
     'continental philosophy': ['continental philosophy', '20th century european philosophy',
-                              '21st century european philosophy', 'phenomenology',
-                              'french phenomenology', 'francophone phenomenology'],
+                               '21st century european philosophy', 'phenomenology',
+                               'french phenomenology', 'francophone phenomenology'],
     'american philosophy': ['american philosophy', 'pragmatism'],
     'history of philosophy': ['history of philosophy', 'history of philosophical ethics'],
-    
+
     # Non-Western Philosophy
     'asian philosophy': ['asian philosophy', 'east asian philosophy', 'chinese philosophy',
-                        'indian philosophy', 'buddhist philosophy'],
+                         'indian philosophy', 'buddhist philosophy'],
     'african/africana philosophy': ['african philosophy', 'africana philosophy'],
     'latin american philosophy': ['latin american philosophy'],
     'islamic philosophy': ['islamic philosophy', 'arabic philosophy'],
     'indigenous philosophy': ['indigenous philosophy', 'native american philosophy',
-                             'indigenous epistemologies'],
-    
+                              'indigenous epistemologies'],
+
     # Metaphysics & Epistemology
     'metaphysics': ['metaphysics', 'metaphysics and epistemology'],
     'epistemology': ['epistemology', 'theory of knowledge', 'applied epistemology',
-                    'social epistemology'],
+                     'social epistemology'],
     'philosophy of mind': ['philosophy of mind', 'philosophy of cognitive science',
-                          'moral psychology', 'cognitive science'],
+                           'moral psychology', 'cognitive science'],
     'philosophy of language': ['philosophy of language'],
     'philosophy of action': ['philosophy of action'],
     'philosophy of religion': ['philosophy of religion'],
-    
+
     # Science & Logic
     'philosophy of science': ['philosophy of science', 'general philosophy of science',
-                             'history and philosophy of science', 'philosophy of biology',
-                             'philosophy of medicine'],
+                              'history and philosophy of science', 'philosophy of biology',
+                              'philosophy of medicine'],
     'philosophy of physics': ['philosophy of physics'],
     'logic': ['logic', 'symbolic logic', 'philosophy of logic'],
     'philosophy of mathematics': ['philosophy of mathematics'],
     'philosophy of technology': ['philosophy of technology', 'philosophy of computing',
-                                'sts', 'science and technology studies'],
+                                 'sts', 'science and technology studies'],
     'philosophy of artificial intelligence': ['philosophy of artificial intelligence',
-                                             'philosophy of ai', 'ai'],
-    
+                                              'philosophy of ai', 'ai'],
+
     # Value Theory
     'aesthetics': ['aesthetics', 'philosophy of art'],
     'value theory': ['value theory', 'normativity', 'value theory and normativity'],
-    
+
     # Other
     'ppe': ['ppe', 'politics philosophy and economics', 'philosophy and economics'],
     'public philosophy': ['public philosophy'],
@@ -131,6 +130,7 @@ WEST_COAST_CITIES = {
     'Olympia': {'lat': 47.0379, 'lon': -122.9007, 'state': 'WA'},
 }
 
+
 class PhilJobsScraper:
     def __init__(self):
         self.base_url = "https://philjobs.org"
@@ -139,49 +139,50 @@ class PhilJobsScraper:
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         }
-        
+
     def normalize_specialization(self, raw_area):
         """Normalize a specialization to canonical form"""
         if not raw_area:
             return None
-        
+
         area_lower = raw_area.lower().strip()
-        
+
         if area_lower in FILTER_WORDS or len(area_lower) < 3:
             return None
-        
+
         if any(area_lower.startswith(word + ' ') for word in ['or', 'and', 'with']):
             area_lower = ' '.join(area_lower.split()[1:])
-        
+
         for canonical, variants in SPECIALIZATION_MAP.items():
             for variant in variants:
                 if variant in area_lower or area_lower in variant:
                     return canonical
-        
+
+        # Drop overly long / messy fragments that aren't good categories
         if len(area_lower) > 15:
             return None
-        
+
         return area_lower
-    
+
     def extract_areas(self, area_string):
         """Extract and normalize areas from a string"""
         if not area_string or area_string.strip().lower() == 'open':
             return []
-        
+
         raw_areas = re.split(r'[,;/]|\s+and\s+|\s+or\s+', area_string)
-        
+
         normalized = []
         for raw in raw_areas:
             norm = self.normalize_specialization(raw)
             if norm and norm not in normalized:
                 normalized.append(norm)
-        
+
         return normalized
-    
+
     def categorize_job_type(self, category_string, title_string):
         """Categorize job into tenure-track, postdoc, adjunct, tenured, or other"""
-        combined = (category_string + " " + title_string).lower()
-        
+        combined = (f"{category_string} {title_string}").lower()
+
         if any(word in combined for word in ['tenure-track', 'tenure track', 'assistant professor']):
             return 'Tenure-track'
         elif any(word in combined for word in ['postdoc', 'post-doc', 'postdoctoral', 'fellowship']):
@@ -192,92 +193,97 @@ class PhilJobsScraper:
             return 'Tenured'
         else:
             return 'Other'
-    
+
     def categorize_institution(self, institution_name):
         """Categorize institution type based on name patterns"""
+        if not institution_name:
+            return "Other"
         name_lower = institution_name.lower()
-        
+
         research_keywords = ['university', 'college', 'institute']
         teaching_keywords = ['community college', 'junior college', 'state college']
-        
+
         if any(word in name_lower for word in teaching_keywords):
             return 'Teaching College'
         elif any(word in name_lower for word in research_keywords):
             return 'Research University'
         else:
             return 'Other'
-    
+
     def extract_location_data(self, location_string):
         """Extract state, country, and city from location string"""
         if not location_string:
             return None, None, None
-        
+
+        # US detection (state name or abbreviation)
         for state_name, state_code in US_STATES.items():
             if state_name in location_string or state_code in location_string:
                 city = location_string.split(',')[0].strip() if ',' in location_string else None
                 return state_code, 'United States', city
-        
+
         latin_american_countries = [
             'Mexico', 'Brazil', 'Argentina', 'Chile', 'Colombia', 'Peru', 'Venezuela',
             'Ecuador', 'Guatemala', 'Cuba', 'Bolivia', 'Haiti', 'Dominican Republic',
             'Honduras', 'Paraguay', 'El Salvador', 'Nicaragua', 'Costa Rica', 'Panama',
             'Puerto Rico', 'Uruguay'
         ]
-        
+
         for country in latin_american_countries:
             if country in location_string:
                 return None, country, None
-        
-        return None, 'Other International', Nonedef get_job_ids_from_listing(self):
+
+        return None, 'Other International', None
+
+    def get_job_ids_from_listing(self):
         """Get all job IDs from the main listing page"""
         url = f"{self.base_url}/"
-        
+
         try:
             response = requests.get(url, headers=self.headers, timeout=30)
             response.raise_for_status()
             soup = BeautifulSoup(response.text, 'html.parser')
-            
+
             job_ids = []
             job_links = soup.find_all('a', href=lambda x: x and '/job/show/' in x)
-            
+
             for link in job_links:
                 job_id = link['href'].split('/')[-1]
                 if job_id.isdigit() and job_id not in job_ids:
                     job_ids.append(job_id)
-            
+
             print(f"Found {len(job_ids)} job listings")
             return job_ids
-            
+
         except Exception as e:
             print(f"Error fetching job listing: {e}")
             return []
-    
+
     def scrape_job_details(self, job_id):
         """Scrape detailed information from a single job posting"""
         url = f"{self.base_url}/job/show/{job_id}"
-        
+
         try:
             time.sleep(0.5)
-            
+
             response = requests.get(url, headers=self.headers, timeout=30)
             response.raise_for_status()
             soup = BeautifulSoup(response.text, 'html.parser')
-            
+
             job = {'id': job_id, 'url': url}
-            
+
             h2 = soup.find('h2')
             h1 = soup.find('h1')
             job['institution'] = h2.get_text(strip=True) if h2 else "Unknown"
             job['title'] = h1.get_text(strip=True) if h1 else "Unknown"
-            
+
             table_rows = soup.find_all('tr')
-            
+
             for row in table_rows:
                 cells = row.find_all('td')
                 if len(cells) == 2:
                     key = cells[0].get_text(strip=True)
                     value = cells[1].get_text(strip=True)
-                    
+
                     if key == "Job category":
                         job['job_category'] = value
                     elif key == "AOS":
@@ -310,47 +316,47 @@ class PhilJobsScraper:
                         job['contact_email'] = value
                     elif key == "Time created":
                         job['posted_date'] = value
-            
+
             job['job_type'] = self.categorize_job_type(
-                job.get('job_category', ''), 
+                job.get('job_category', ''),
                 job.get('title', '')
             )
             job['institution_type'] = self.categorize_institution(job.get('institution', ''))
-            
+
             if "(EXPIRED)" in job.get('title', ''):
                 job['status'] = 'expired'
                 job['title'] = job['title'].replace('(EXPIRED)', '').strip()
             else:
                 job['status'] = 'active'
-            
+
             unique_str = f"{job.get('institution', '')}_{job.get('title', '')}_{job_id}"
             job['hash'] = hashlib.md5(unique_str.encode()).hexdigest()
             job['scraped_date'] = datetime.now().isoformat()
-            
+
             return job
-            
+
         except Exception as e:
             print(f"Error scraping job {job_id}: {e}")
             return None
-    
+
     def scrape_jobs(self):
         """Scrape all jobs with full details"""
         print("Fetching job IDs from listing page...")
         job_ids = self.get_job_ids_from_listing()
-        
+
         jobs = []
         total = len(job_ids)
-        
+
         print(f"Scraping details for {total} jobs...")
         for i, job_id in enumerate(job_ids, 1):
             print(f"  [{i}/{total}] Scraping job {job_id}...")
             job = self.scrape_job_details(job_id)
             if job:
                 jobs.append(job)
-        
+
         print(f"Successfully scraped {len(jobs)} jobs")
         return jobs
-    
+
     def load_historical_data(self):
         """Load all historical job data"""
         all_data_file = self.data_dir / "all_jobs.json"
@@ -359,14 +365,17 @@ class PhilJobsScraper:
                 data = json.load(f)
                 if 'weekly_trends' not in data:
                     data['weekly_trends'] = []
+                if 'weekly_snapshots' not in data:
+                    data['weekly_snapshots'] = []
+                if 'jobs' not in data:
+                    data['jobs'] = []
                 return data
         return {'jobs': [], 'weekly_snapshots': [], 'weekly_trends': []}
-    
+
     def get_category_hierarchy(self):
         """Return category to subcategory mapping"""
         hierarchy = {}
-        for canonical, variants in SPECIALIZATION_MAP.items():
-            parent = None
+        for canonical, _variants in SPECIALIZATION_MAP.items():
             if any(x in canonical for x in ['ethics', 'bioethics', 'environmental ethics', 'ai ethics']):
                 parent = 'Ethics'
             elif any(x in canonical for x in ['political', 'social', 'race', 'gender', 'law']):
@@ -383,13 +392,11 @@ class PhilJobsScraper:
                 parent = 'Value Theory/Aesthetics'
             else:
                 parent = 'Other'
-            
-            if parent not in hierarchy:
-                hierarchy[parent] = []
-            hierarchy[parent].append(canonical)
-        
+
+            hierarchy.setdefault(parent, []).append(canonical)
+
         return hierarchy
-    
+
     def calculate_weekly_trends(self, new_jobs, timestamp):
         """Calculate trends based on NEW jobs this week only"""
         aos_counts = defaultdict(int)
@@ -398,33 +405,33 @@ class PhilJobsScraper:
         state_counts = defaultdict(int)
         country_counts = defaultdict(int)
         west_coast_city_counts = defaultdict(int)
-        
+
         for job in new_jobs:
             for area in job.get('aos_normalized', []):
                 aos_counts[area] += 1
-            
+
             job_type = job.get('job_type', 'Other')
             job_type_counts[job_type] += 1
-            
+
             inst_type = job.get('institution_type', 'Other')
             institution_type_counts[inst_type] += 1
-            
+
             state = job.get('state')
             country = job.get('country')
             city = job.get('city')
-            
+
             if state:
                 state_counts[state] += 1
-                
+
                 if state in ['CA', 'OR', 'WA'] and city:
                     for wc_city in WEST_COAST_CITIES:
                         if wc_city.lower() in city.lower():
                             west_coast_city_counts[wc_city] += 1
                             break
-            
+
             if country:
                 country_counts[country] += 1
-        
+
         weekly_trend = {
             'date': timestamp,
             'new_jobs_count': len(new_jobs),
@@ -435,20 +442,20 @@ class PhilJobsScraper:
             'country_counts': dict(country_counts),
             'west_coast_city_counts': dict(west_coast_city_counts)
         }
-        
+
         return weekly_trend
-    
+
     def save_data(self, jobs, historical_data):
         """Save job data and update historical records"""
         timestamp = datetime.now().strftime("%Y-%m-%d")
-        
+
         existing_hashes = {job['hash'] for job in historical_data['jobs']}
         new_jobs = [job for job in jobs if job['hash'] not in existing_hashes]
         historical_data['jobs'].extend(new_jobs)
-        
+
         weekly_trend = self.calculate_weekly_trends(new_jobs, timestamp)
         historical_data['weekly_trends'].append(weekly_trend)
-        
+
         snapshot = {
             'date': timestamp,
             'total_jobs': len(jobs),
@@ -456,21 +463,17 @@ class PhilJobsScraper:
             'new_job_ids': [job['id'] for job in new_jobs]
         }
         historical_data['weekly_snapshots'].append(snapshot)
-        
+
         all_data_file = self.data_dir / "all_jobs.json"
         with open(all_data_file, 'w') as f:
             json.dump(historical_data, f, indent=2)
-        
+
         weekly_file = self.data_dir / f"snapshot_{timestamp}.json"
         with open(weekly_file, 'w') as f:
-            json.dump({
-                'date': timestamp,
-                'jobs': jobs,
-                'new_jobs': new_jobs
-            }, f, indent=2)
-        
+            json.dump({'date': timestamp, 'jobs': jobs, 'new_jobs': new_jobs}, f, indent=2)
+
         return new_jobs, snapshot, weekly_trend
-    
+
     def get_color_for_category(self, category):
         """Assign colors to categories"""
         colors = {
@@ -484,31 +487,31 @@ class PhilJobsScraper:
             'Other': '#6b7280'
         }
         return colors.get(category, '#6b7280')
-    
+
     def is_hiring_season(self, date_str):
         """Determine if date is in hiring season (Sept-Jan)"""
         date = datetime.strptime(date_str, "%Y-%m-%d")
         month = date.month
-return month >= 9 or month <= 1
-    
+        return month >= 9 or month <= 1
+
     def generate_trend_dashboard(self, historical_data):
         """Generate comprehensive dashboard with maps and breakdowns"""
         trends = historical_data.get('weekly_trends', [])
-        
+
         if len(trends) < 2:
             print("Need at least 2 weeks of data for trend visualization")
             return
-        
+
         dates = [t['date'] for t in trends]
         hierarchy = self.get_category_hierarchy()
-        
+
         # Build parent category data from NEW jobs only
         parent_categories = {}
         subcategory_data = {}
-        
+
         for trend in trends:
             aos_counts = trend.get('aos_counts', {})
-            
+
             for parent, subcats in hierarchy.items():
                 if parent not in parent_categories:
                     parent_categories[parent] = {
@@ -516,44 +519,40 @@ return month >= 9 or month <= 1
                         'subcategories': subcats,
                         'color': self.get_color_for_category(parent)
                     }
-                
+
                 parent_total = sum(aos_counts.get(subcat, 0) for subcat in subcats)
                 parent_categories[parent]['data'].append(parent_total)
-                
+
                 for subcat in subcats:
-                    if subcat not in subcategory_data:
-                        subcategory_data[subcat] = []
-                    subcategory_data[subcat].append(aos_counts.get(subcat, 0))
-        
+                    subcategory_data.setdefault(subcat, []).append(aos_counts.get(subcat, 0))
+
         # Prepare job type data
         job_types = ['Tenure-track', 'Postdoc', 'Adjunct/Visiting', 'Tenured', 'Other']
         job_type_series = {jt: [] for jt in job_types}
         for trend in trends:
             for jt in job_types:
                 job_type_series[jt].append(trend.get('job_type_counts', {}).get(jt, 0))
-        
+
         # Prepare institution type data
         inst_types = ['Research University', 'Teaching College', 'Other']
         inst_type_series = {it: [] for it in inst_types}
         for trend in trends:
             for it in inst_types:
                 inst_type_series[it].append(trend.get('institution_type_counts', {}).get(it, 0))
-        
+
         # Prepare location data
         state_data = {state: [] for state in US_STATES.values()}
         for trend in trends:
             state_counts = trend.get('state_counts', {})
             for state_code in US_STATES.values():
                 state_data[state_code].append(state_counts.get(state_code, 0))
-        
+
         # West Coast city data
         west_coast_data = {}
         for trend in trends:
             for city, count in trend.get('west_coast_city_counts', {}).items():
-                if city not in west_coast_data:
-                    west_coast_data[city] = []
-                west_coast_data[city].append(count)
-        
+                west_coast_data.setdefault(city, []).append(count)
+
         # Latin America data
         latin_america_countries = [
             'Mexico', 'Brazil', 'Argentina', 'Chile', 'Colombia', 'Peru', 'Venezuela',
@@ -564,21 +563,19 @@ return month >= 9 or month <= 1
         latin_data = {}
         for trend in trends:
             for country in latin_america_countries:
-                if country not in latin_data:
-                    latin_data[country] = []
-                latin_data[country].append(trend.get('country_counts', {}).get(country, 0))
-        
+                latin_data.setdefault(country, []).append(trend.get('country_counts', {}).get(country, 0))
+
         # Calculate totals for current week
         current_week_new_jobs = trends[-1]['new_jobs_count']
         total_unique_jobs = len(historical_data['jobs'])
         weeks_tracked = len(trends)
-        
+
         # Seasonal markers
         seasonal_markers = []
         for i, date in enumerate(dates):
             if self.is_hiring_season(date):
                 seasonal_markers.append({'index': i, 'label': 'Hiring Season'})
-        
+
         # Generate HTML dashboard
         html = f'''<!DOCTYPE html>
 <html lang="en">
@@ -657,7 +654,7 @@ return month >= 9 or month <= 1
                         <div id="subcategoryGrid" class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
                         </div>
                     </div>
-                    
+
                     <div class="mb-6">
                         <h4 class="text-lg font-semibold text-gray-700 mb-4">Trend Over Time</h4>
                         <div class="chart-container">
@@ -738,7 +735,9 @@ return month >= 9 or month <= 1
             latinData: {json.dumps(latin_data)},
             westCoastCities: {json.dumps(WEST_COAST_CITIES)},
             seasonalMarkers: {json.dumps(seasonal_markers)}
-        }};// Main chart with seasonal markers
+        }};
+
+        // Main chart
         const mainCtx = document.getElementById('mainChart').getContext('2d');
         const datasets = Object.entries(data.categories).map(([key, cat]) => ({{
             label: cat.name,
@@ -806,12 +805,12 @@ return month >= 9 or month <= 1
             const previousJobs = cat.data[cat.data.length - 2] || 0;
             const change = currentJobs - previousJobs;
             const changePercent = previousJobs > 0 ? ((change / previousJobs) * 100).toFixed(1) : 0;
-            
+
             const card = document.createElement('div');
             card.className = 'category-card bg-white rounded-lg shadow hover:shadow-lg cursor-pointer p-5 border-l-4';
             card.style.borderLeftColor = cat.color;
             card.onclick = () => openModal(key, cat);
-            
+
             card.innerHTML = `
                 <div class="flex justify-between items-start mb-3">
                     <h3 class="font-semibold text-gray-800 text-lg">${{cat.name}}</h3>
@@ -835,7 +834,7 @@ return month >= 9 or month <= 1
                     </div>
                 ` : ''}}
             `;
-            
+
             categoryGrid.appendChild(card);
         }});
 
@@ -849,24 +848,24 @@ return month >= 9 or month <= 1
             const change = currentJobs - previousJobs;
             const average = (category.data.reduce((a, b) => a + b, 0) / category.data.length).toFixed(1);
             const total = category.data.reduce((a, b) => a + b, 0);
-            
+
             document.getElementById('modalTitle').textContent = category.name;
             document.getElementById('modalCurrentJobs').textContent = currentJobs;
             document.getElementById('modalChange').textContent = (change >= 0 ? '+' : '') + change;
             document.getElementById('modalChange').className = 'text-2xl font-bold ' + (change >= 0 ? 'text-green-600' : 'text-red-600');
             document.getElementById('modalAverage').textContent = average;
             document.getElementById('modalTotal').textContent = total;
-            
+
             // Subcategories
             const subcategoryGrid = document.getElementById('subcategoryGrid');
             subcategoryGrid.innerHTML = '';
-            
+
             category.subcategories.forEach(subcat => {{
                 const subcatData = data.subcategoryData[subcat] || [];
                 const subcatCurrent = subcatData[subcatData.length - 1] || 0;
                 const subcatPrevious = subcatData[subcatData.length - 2] || 0;
                 const subcatChange = subcatCurrent - subcatPrevious;
-                
+
                 const subcatCard = document.createElement('div');
                 subcatCard.className = 'bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-colors';
                 subcatCard.innerHTML = `
@@ -880,11 +879,11 @@ return month >= 9 or month <= 1
                 `;
                 subcategoryGrid.appendChild(subcatCard);
             }});
-            
+
             // Detail chart
             const detailCtx = document.getElementById('detailChart').getContext('2d');
             if (detailChart) detailChart.destroy();
-            
+
             const detailDatasets = [{{
                 label: category.name + ' (Total)',
                 data: category.data,
@@ -894,7 +893,7 @@ return month >= 9 or month <= 1
                 fill: true,
                 borderWidth: 3
             }}];
-            
+
             const colors = ['#6366f1', '#ec4899', '#14b8a6', '#f59e0b', '#8b5cf6', '#f97316', '#06b6d4'];
             category.subcategories.forEach((subcat, idx) => {{
                 const subcatData = data.subcategoryData[subcat] || [];
@@ -908,7 +907,7 @@ return month >= 9 or month <= 1
                     borderDash: [5, 5]
                 }});
             }});
-            
+
             detailChart = new Chart(detailCtx, {{
                 type: 'line',
                 data: {{
@@ -927,11 +926,11 @@ return month >= 9 or month <= 1
                     }}
                 }}
             }});
-            
+
             // Job type chart
             const jobTypeCtx = document.getElementById('jobTypeChart').getContext('2d');
             if (jobTypeChart) jobTypeChart.destroy();
-            
+
             const latestJobTypes = Object.entries(data.jobTypeData).map(([type, vals]) => vals[vals.length - 1] || 0);
             jobTypeChart = new Chart(jobTypeCtx, {{
                 type: 'doughnut',
@@ -941,11 +940,11 @@ return month >= 9 or month <= 1
                 }},
                 options: {{ responsive: true, plugins: {{ legend: {{ position: 'bottom' }} }} }}
             }});
-            
+
             // Institution type chart
             const instCtx = document.getElementById('institutionChart').getContext('2d');
             if (institutionChart) institutionChart.destroy();
-            
+
             const latestInstTypes = Object.entries(data.institutionTypeData).map(([type, vals]) => vals[vals.length - 1] || 0);
             institutionChart = new Chart(instCtx, {{
                 type: 'doughnut',
@@ -955,8 +954,8 @@ return month >= 9 or month <= 1
                 }},
                 options: {{ responsive: true, plugins: {{ legend: {{ position: 'bottom' }} }} }}
             }});
-            
-            // US States list
+
+            // US States list (top 10)
             const statesList = document.getElementById('usStatesList');
             statesList.innerHTML = '';
             const latestStateData = Object.entries(data.stateData)
@@ -964,7 +963,7 @@ return month >= 9 or month <= 1
                 .filter(([s, c]) => c > 0)
                 .sort((a, b) => b[1] - a[1])
                 .slice(0, 10);
-            
+
             if (latestStateData.length > 0) {{
                 latestStateData.forEach(([state, count]) => {{
                     const isWestCoast = ['CA', 'OR', 'WA'].includes(state);
@@ -975,7 +974,7 @@ return month >= 9 or month <= 1
                         </div>
                     `;
                 }});
-                
+
                 // West Coast detail
                 const westCoastDetail = document.getElementById('westCoastDetail');
                 const westCoastCities = document.getElementById('westCoastCities');
@@ -983,10 +982,10 @@ return month >= 9 or month <= 1
                     .map(([city, counts]) => [city, counts[counts.length - 1] || 0])
                     .filter(([c, cnt]) => cnt > 0)
                     .sort((a, b) => b[1] - a[1]);
-                
+
                 if (wcData.length > 0) {{
                     westCoastDetail.classList.remove('hidden');
-                    westCoastCities.innerHTML = wcData.map(([city, count]) => 
+                    westCoastCities.innerHTML = wcData.map(([city, count]) =>
                         `<div class="flex justify-between py-1"><span>${{city}}</span><span class="font-bold">${{count}}</span></div>`
                     ).join('');
                 }} else {{
@@ -995,7 +994,7 @@ return month >= 9 or month <= 1
             }} else {{
                 statesList.innerHTML = '<div class="text-gray-500 text-center py-8">No US jobs in this category</div>';
             }}
-            
+
             // Latin America list
             const latinList = document.getElementById('latinCountriesList');
             latinList.innerHTML = '';
@@ -1003,7 +1002,7 @@ return month >= 9 or month <= 1
                 .map(([country, counts]) => [country, counts[counts.length - 1] || 0])
                 .filter(([c, cnt]) => cnt > 0)
                 .sort((a, b) => b[1] - a[1]);
-            
+
             if (latinCounts.length > 0) {{
                 latinCounts.forEach(([country, count]) => {{
                     latinList.innerHTML += `
@@ -1016,24 +1015,25 @@ return month >= 9 or month <= 1
             }} else {{
                 latinList.innerHTML = '<div class="text-gray-500 text-center py-8">No Latin American jobs in this category</div>';
             }}
-            
+
             // Insights
             const insights = document.getElementById('insights');
             let insightText = '<ul class="space-y-1">';
-            
+
             if (change > 0) {{
-                insightText += `<li>• Growing field: up ${{change}} new jobs from last week (+${{((change/previousJobs)*100).toFixed(1)}}%)</li>`;
+                const pct = previousJobs > 0 ? ((change / previousJobs) * 100).toFixed(1) : '∞';
+                insightText += `<li>• Growing field: up ${{change}} new jobs from last week (+${{pct}}%)</li>`;
             }} else if (change < 0) {{
                 insightText += `<li>• Declining: down ${{Math.abs(change)}} new jobs from last week</li>`;
             }} else {{
                 insightText += `<li>• Stable: same number of new jobs as last week</li>`;
             }}
-            
-            const trend = category.data[category.data.length - 1] > category.data[0] ? 'upward' : 
-                         category.data[category.data.length - 1] < category.data[0] ? 'downward' : 'stable';
-            insightText += `<li>• Overall trend since tracking began: ${{trend}}</li>`;
+
+            const trendDir = category.data[category.data.length - 1] > category.data[0] ? 'upward' :
+                             category.data[category.data.length - 1] < category.data[0] ? 'downward' : 'stable';
+            insightText += `<li>• Overall trend since tracking began: ${{trendDir}}</li>`;
             insightText += `<li>• Average ${{average}} new jobs per week</li>`;
-            
+
             if (category.subcategories.length > 0) {{
                 let hottestSub = category.subcategories[0];
                 let hottestCount = 0;
@@ -1047,10 +1047,10 @@ return month >= 9 or month <= 1
                 }});
                 insightText += `<li>• Most active subcategory: ${{hottestSub}} (${{hottestCount}} total jobs)</li>`;
             }}
-            
+
             insightText += '</ul>';
             insights.innerHTML = insightText;
-            
+
             document.getElementById('detailModal').classList.remove('hidden');
         }}
 
@@ -1064,13 +1064,13 @@ return month >= 9 or month <= 1
     </script>
 </body>
 </html>'''
-        
+
         dashboard_file = self.data_dir / "trends_dashboard.html"
         with open(dashboard_file, 'w') as f:
             f.write(html)
-        
+
         print(f"✓ Comprehensive dashboard generated: {dashboard_file}")
-    
+
     def generate_report(self, new_jobs, snapshot, weekly_trend, historical_data):
         """Generate markdown report"""
         report = f"""# PhilJobs Weekly Report
@@ -1093,74 +1093,76 @@ The dashboard includes:
 
 ## Top Specializations This Week (New Jobs)
 """
-        
+
         aos_counts = weekly_trend.get('aos_counts', {})
         if aos_counts:
             report += "| Rank | Specialization | New Jobs |\n"
             report += "|------|----------------|----------|\n"
             for i, (area, count) in enumerate(sorted(aos_counts.items(), key=lambda x: x[1], reverse=True)[:20], 1):
                 report += f"| {i} | {area} | {count} |\n"
-        
+
         report += f"\n## New Jobs This Week ({len(new_jobs)} total)\n"
-        
+
         if new_jobs:
             for job in new_jobs[:15]:
                 report += f"\n### {job.get('institution', 'Unknown')}\n"
                 report += f"**Position:** {job.get('title', 'Unknown')}\n"
-                
+
                 if job.get('job_type'):
                     report += f"**Type:** {job['job_type']}\n"
-                
+
                 if job.get('aos') and job['aos'] != 'Open':
                     report += f"**AOS:** {job['aos']}\n"
-                
+
                 if job.get('location'):
                     report += f"**Location:** {job['location']}\n"
-                
+
                 if job.get('deadline'):
                     report += f"**Deadline:** {job['deadline']}\n"
-                
+
                 report += f"**URL:** {job['url']}\n"
-            
+
             if len(new_jobs) > 15:
                 report += f"\n*... and {len(new_jobs) - 15} more new jobs*\n"
         else:
             report += "\nNo new jobs this week.\n"
-        
+
         report_file = self.data_dir / f"report_{snapshot['date']}.md"
         with open(report_file, 'w') as f:
             f.write(report)
-        
-        print("\n" + "="*70)
+
+        print("\n" + "=" * 70)
         print(report)
-        print("="*70)
+        print("=" * 70)
+
 
 def main():
     scraper = PhilJobsScraper()
-    
+
     print("Starting PhilJobs comprehensive market analytics...")
-    print("="*70)
-    
+    print("=" * 70)
+
     jobs = scraper.scrape_jobs()
-    
+
     print("\nLoading historical data...")
     historical_data = scraper.load_historical_data()
-    
+
     print("Analyzing new jobs and calculating trends...")
     new_jobs, snapshot, weekly_trend = scraper.save_data(jobs, historical_data)
     print(f"Identified {len(new_jobs)} NEW jobs this week")
-    
+
     print("\nGenerating comprehensive dashboard...")
     scraper.generate_trend_dashboard(historical_data)
-    
+
     print("\nGenerating report...")
     scraper.generate_report(new_jobs, snapshot, weekly_trend, historical_data)
-    
+
     print(f"\n✓ Done! Data saved to {scraper.data_dir}/")
     print(f"  - all_jobs.json: {len(historical_data['jobs'])} unique jobs")
     print(f"  - snapshot_{snapshot['date']}.json: This week's data")
     print(f"  - report_{snapshot['date']}.md: Human-readable report")
     print(f"  - trends_dashboard.html: Interactive analytics dashboard")
+
 
 if __name__ == "__main__":
     main()
