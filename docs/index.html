@@ -97,6 +97,16 @@
             </div>
         </div>
 
+        <!-- Market Matrix -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">Market Matrix</h2>
+            <p class="text-sm text-gray-500 mb-6">All-time job counts by AOS category &times; official PhilJobs job category</p>
+            <div class="chart-container mb-6">
+                <canvas id="matrixChart"></canvas>
+            </div>
+            <div id="matrixTable" class="overflow-x-auto text-sm"></div>
+        </div>
+
         <!-- West Coast Spotlight -->
         <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-lg p-6 mb-8 border border-blue-100">
             <h2 class="text-2xl font-bold text-gray-800 mb-1">🌊 West Coast Spotlight</h2>
@@ -240,7 +250,9 @@
             seasonalMarkers: [],
             regionData: {"West": [6], "Northeast": [29], "South": [19], "Midwest": [10]},
             stateAlltime: {"AL": 1, "CA": 4, "CO": 2, "CT": 1, "FL": 1, "GA": 3, "IL": 3, "IN": 3, "IA": 1, "ME": 1, "MD": 2, "MA": 7, "MI": 1, "MS": 1, "MO": 1, "NE": 1, "NJ": 4, "NY": 11, "NC": 4, "OK": 1, "PA": 5, "SC": 1, "TX": 5},
-            stateCategoryData: {"MA": {"Ethics": 4, "Metaphysics & Epistemology": 4, "Social & Political": 1}, "NY": {"Metaphysics & Epistemology": 4, "Ethics": 2, "Other": 3, "Social & Political": 1, "Science & Logic": 1}, "ME": {"Ethics": 1, "History of Philosophy": 1}, "SC": {"Social & Political": 1}, "PA": {"Ethics": 2, "Science & Logic": 2, "History of Philosophy": 1}, "GA": {"Ethics": 1, "Metaphysics & Epistemology": 1}, "CA": {"Ethics": 1, "History of Philosophy": 1, "Other": 1}, "NC": {"Science & Logic": 2, "Ethics": 1}, "MD": {"Ethics": 1, "Social & Political": 1}, "CO": {"Science & Logic": 1, "Metaphysics & Epistemology": 1, "Ethics": 1}, "TX": {"History of Philosophy": 2}, "NE": {"History of Philosophy": 1}, "IN": {"Ethics": 2, "Other": 1}, "CT": {"Metaphysics & Epistemology": 3}, "FL": {"History of Philosophy": 2}, "MI": {"Science & Logic": 1}, "MS": {"Ethics": 1, "Science & Logic": 1}, "AL": {"Ethics": 1}}
+            stateCategoryData: {"MA": {"Ethics": 4, "Metaphysics & Epistemology": 4, "Social & Political": 1}, "NY": {"Metaphysics & Epistemology": 4, "Ethics": 2, "Other": 3, "Social & Political": 1, "Science & Logic": 1}, "ME": {"Ethics": 1, "History of Philosophy": 1}, "SC": {"Social & Political": 1}, "PA": {"Ethics": 2, "Science & Logic": 2, "History of Philosophy": 1}, "GA": {"Ethics": 1, "Metaphysics & Epistemology": 1}, "CA": {"Ethics": 1, "History of Philosophy": 1, "Other": 1}, "NC": {"Science & Logic": 2, "Ethics": 1}, "MD": {"Ethics": 1, "Social & Political": 1}, "CO": {"Science & Logic": 1, "Metaphysics & Epistemology": 1, "Ethics": 1}, "TX": {"History of Philosophy": 2}, "NE": {"History of Philosophy": 1}, "IN": {"Ethics": 2, "Other": 1}, "CT": {"Metaphysics & Epistemology": 3}, "FL": {"History of Philosophy": 2}, "MI": {"Science & Logic": 1}, "MS": {"Ethics": 1, "Science & Logic": 1}, "AL": {"Ethics": 1}},
+            jobCategoryData: {},
+            aosXJobCat: {"Ethics": {"Junior faculty / Fixed term": 2, "Postdoc or similar / Fixed term": 7, "Faculty (open rank) / Contract type open": 1, "Visiting fellowship / Professorship / Fixed term": 4, "Graduate fellowship / Fixed term": 4, "Junior faculty / Tenure-track or similar": 4, "Faculty (open rank) / Tenured, continuing or permanent": 1, "Faculty (open rank) / Tenure-track or similar": 3, "Administration (non-academic) / Tenured, continuing or permanent": 1, "Senior faculty / Tenured, continuing or permanent": 1}, "Social & Political": {"Postdoc or similar / Fixed term": 3, "Faculty (open rank) / Contract type open": 1, "Graduate fellowship / Fixed term": 1, "Junior faculty / Fixed term": 1, "Senior faculty / Tenure-track or similar": 1, "Senior faculty / Tenured, continuing or permanent": 1}, "Value Theory/Aesthetics": {"Postdoc or similar / Fixed term": 1, "Faculty (open rank) / Contract type open": 1}, "Metaphysics & Epistemology": {"Postdoc or similar / Fixed term": 9, "Visiting fellowship / Professorship / Fixed term": 6, "Faculty (open rank) / Contract type open": 1, "Other (non-academic) / Tenured, continuing or permanent": 1, "Graduate fellowship / Fixed term": 2, "Junior faculty / Tenure-track or similar": 1, "Junior faculty / Tenured, continuing or permanent": 1}, "History of Philosophy": {"Postdoc or similar / Fixed term": 2, "Visiting fellowship / Professorship / Fixed term": 3, "Senior faculty / Tenured, continuing or permanent": 1, "Graduate fellowship / Fixed term": 1, "Faculty (open rank) / Tenure-track or similar": 1, "Junior faculty / Fixed term": 3, "Junior faculty / Tenure-track or similar": 2}, "Non-Western Philosophy": {"Faculty (open rank) / Contract type open": 1}, "Science & Logic": {"Faculty (open rank) / Contract type open": 2, "Postdoc or similar / Fixed term": 8, "Faculty (open rank) / Tenured, continuing or permanent": 2, "Graduate fellowship / Fixed term": 3, "Junior faculty / Fixed term": 1, "Visiting fellowship / Professorship / Fixed term": 1, "Junior faculty / Tenure-track or similar": 2, "Senior faculty / Tenured, continuing or permanent": 1}, "Other": {"Postdoc or similar / Fixed term": 4, "Administration (non-academic) / Tenured, continuing or permanent": 1}}
         };
 
         // Plugin to shade hiring season bands on the main chart
@@ -610,6 +622,71 @@
                 scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } }
             }
         });
+
+        // ===== MARKET MATRIX =====
+        (function() {
+            const aosOrder = Object.keys(data.categories);
+            const jobCats = Object.keys(data.aosXJobCat).length > 0
+                ? [...new Set(Object.values(data.aosXJobCat).flatMap(v => Object.keys(v)))].sort()
+                : Object.keys(data.jobCategoryData).sort();
+
+            if (aosOrder.length === 0 || jobCats.length === 0) {
+                document.getElementById('matrixChart').parentElement.innerHTML =
+                    '<div class="text-gray-400 text-center py-8 text-sm">Market matrix will populate after more data is collected.</div>';
+                return;
+            }
+
+            const jobCatColors = [
+                '#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#06b6d4','#6b7280'
+            ];
+
+            const matrixDatasets = jobCats.map((jc, idx) => ({
+                label: jc,
+                data: aosOrder.map(aos => (data.aosXJobCat[aos] || {})[jc] || 0),
+                backgroundColor: jobCatColors[idx % jobCatColors.length] + 'cc',
+                borderColor: jobCatColors[idx % jobCatColors.length],
+                borderWidth: 1
+            }));
+
+            new Chart(document.getElementById('matrixChart').getContext('2d'), {
+                type: 'bar',
+                data: { labels: aosOrder, datasets: matrixDatasets },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { usePointStyle: true, padding: 12, font: { size: 11 } } },
+                        tooltip: { backgroundColor: 'rgba(0,0,0,0.8)', padding: 10 }
+                    },
+                    scales: {
+                        x: { stacked: true, ticks: { font: { size: 11 } }, grid: { display: false } },
+                        y: { stacked: true, beginAtZero: true, ticks: { precision: 0 } }
+                    }
+                }
+            });
+
+            // Build summary table
+            const table = document.getElementById('matrixTable');
+            let html = '<table class="w-full border-collapse"><thead><tr><th class="text-left py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200">AOS Category</th>';
+            jobCats.forEach(jc => {
+                const short = jc.replace(' / ', '/').replace('Tenured, continuing or permanent', 'Tenured').replace('Fixed term', 'Fixed');
+                html += `<th class="py-2 px-3 bg-gray-50 font-semibold text-gray-600 border border-gray-200 text-center text-xs">${short}</th>`;
+            });
+            html += '<th class="py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200 text-center">Total</th></tr></thead><tbody>';
+            aosOrder.forEach((aos, i) => {
+                const row = data.aosXJobCat[aos] || {};
+                const rowTotal = jobCats.reduce((s, jc) => s + (row[jc] || 0), 0);
+                html += `<tr class="${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">
+                    <td class="py-2 px-3 font-medium text-gray-700 border border-gray-200">${aos}</td>`;
+                jobCats.forEach(jc => {
+                    const v = row[jc] || 0;
+                    html += `<td class="py-2 px-3 text-center border border-gray-200 ${v > 0 ? 'font-semibold text-gray-800' : 'text-gray-300'}">${v || '—'}</td>`;
+                });
+                html += `<td class="py-2 px-3 text-center font-bold text-indigo-600 border border-gray-200">${rowTotal}</td></tr>`;
+            });
+            html += '</tbody></table>';
+            table.innerHTML = html;
+        })();
 
         // ===== WEST COAST SPOTLIGHT CHART =====
         const wcColors = ['#1d4ed8','#2563eb','#3b82f6','#60a5fa','#93c5fd','#1e40af','#0369a1','#0284c7','#0ea5e9','#38bdf8','#7dd3fc','#bae6fd','#047857','#065f46','#064e3b'];

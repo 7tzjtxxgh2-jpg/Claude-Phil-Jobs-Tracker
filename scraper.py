@@ -252,28 +252,70 @@ class PhilJobsScraper:
         return None, country_name, None
 
     def get_job_ids_from_listing(self):
-        """Get all job IDs from the main listing page"""
-        url = f"{self.base_url}/"
+        """Get all job IDs using the detailed query view (more complete than the landing page).
+        Falls back to the main listing page if the detailed URL fails."""
+        DETAILED_URL = (
+            "https://philjobs.org/jobQuery/execute"
+            "?view=On+screen+-+detailed"
+            "&typesToggler=Any+job+type"
+            "&tenureTypesToggler=Any+contract+type"
+            "&jobQuery.locationConstraint=NONE"
+            "&jobQuery.institution.deleted=false"
+            "&jobQuery.distance=50.0"
+            "&topicListToggler=Any+AOS"
+            "&aocListToggler=Any+AOC"
+            "&jobQuery.orderBy=Creation+time"
+            "&jobQuery.fromDate=date.struct"
+            "&jobQuery.toDate=date.struct"
+        )
+
+        def extract_ids_from_soup(soup):
+            ids = []
+            for link in soup.find_all('a', href=lambda x: x and '/job/show/' in x):
+                job_id = link['href'].rstrip('/').split('/')[-1]
+                if job_id.isdigit() and job_id not in ids:
+                    ids.append(job_id)
+            return ids
 
         try:
-            response = requests.get(url, headers=self.headers, timeout=30)
-            response.raise_for_status()
-            soup = BeautifulSoup(response.text, 'html.parser')
-
             job_ids = []
-            job_links = soup.find_all('a', href=lambda x: x and '/job/show/' in x)
+            page = 1
+            while True:
+                url = DETAILED_URL + f"&jobQuery.page={page}"
+                response = requests.get(url, headers=self.headers, timeout=30)
+                response.raise_for_status()
+                soup = BeautifulSoup(response.text, 'html.parser')
+                page_ids = extract_ids_from_soup(soup)
+                if not page_ids:
+                    break
+                new_ids = [i for i in page_ids if i not in job_ids]
+                if not new_ids:
+                    break
+                job_ids.extend(new_ids)
+                # Check for a "next page" link; stop if none
+                next_link = soup.find('a', string=lambda t: t and 'next' in t.lower())
+                if not next_link:
+                    break
+                page += 1
 
-            for link in job_links:
-                job_id = link['href'].split('/')[-1]
-                if job_id.isdigit() and job_id not in job_ids:
-                    job_ids.append(job_id)
+            if job_ids:
+                print(f"Found {len(job_ids)} job listings (detailed view)")
+                return job_ids
 
-            print(f"Found {len(job_ids)} job listings")
-            return job_ids
+            raise ValueError("No jobs found in detailed view — falling back")
 
         except Exception as e:
-            print(f"Error fetching job listing: {e}")
-            return []
+            print(f"Detailed URL fetch failed ({e}), falling back to main listing...")
+            try:
+                response = requests.get(f"{self.base_url}/", headers=self.headers, timeout=30)
+                response.raise_for_status()
+                soup = BeautifulSoup(response.text, 'html.parser')
+                job_ids = extract_ids_from_soup(soup)
+                print(f"Found {len(job_ids)} job listings (fallback)")
+                return job_ids
+            except Exception as e2:
+                print(f"Error fetching job listing: {e2}")
+                return []
 
     def scrape_job_details(self, job_id):
         """Scrape detailed information from a single job posting"""
@@ -418,6 +460,7 @@ class PhilJobsScraper:
         """Calculate trends based on NEW jobs this week only"""
         aos_counts = defaultdict(int)
         job_type_counts = defaultdict(int)
+        job_category_counts = defaultdict(int)
         institution_type_counts = defaultdict(int)
         state_counts = defaultdict(int)
         country_counts = defaultdict(int)
@@ -429,6 +472,9 @@ class PhilJobsScraper:
 
             job_type = job.get('job_type', 'Other')
             job_type_counts[job_type] += 1
+
+            job_category = job.get('job_category', 'Other')
+            job_category_counts[job_category] += 1
 
             inst_type = job.get('institution_type', 'Other')
             institution_type_counts[inst_type] += 1
@@ -454,6 +500,7 @@ class PhilJobsScraper:
             'new_jobs_count': len(new_jobs),
             'aos_counts': dict(aos_counts),
             'job_type_counts': dict(job_type_counts),
+            'job_category_counts': dict(job_category_counts),
             'institution_type_counts': dict(institution_type_counts),
             'state_counts': dict(state_counts),
             'country_counts': dict(country_counts),
@@ -597,6 +644,28 @@ class PhilJobsScraper:
         # State all-time totals (sum of all weekly new-job counts per state)
         state_alltime = {s: sum(v) for s, v in state_data.items() if sum(v) > 0}
 
+        # Job category time series (official PhilJobs categories)
+        all_job_categories = sorted({
+            cat
+            for t in trends
+            for cat in t.get('job_category_counts', {}).keys()
+        })
+        job_category_series = {jc: [] for jc in all_job_categories}
+        for trend in trends:
+            for jc in all_job_categories:
+                job_category_series[jc].append(trend.get('job_category_counts', {}).get(jc, 0))
+
+        # AOS parent × Job Category matrix (all-time counts from historical jobs)
+        aos_x_jobcat_map = defaultdict(lambda: defaultdict(int))
+        for job in historical_data.get('jobs', []):
+            jcat = job.get('job_category', 'Other') or 'Other'
+            for area in job.get('aos_normalized', []):
+                for parent, subcats in hierarchy.items():
+                    if area in subcats:
+                        aos_x_jobcat_map[parent][jcat] += 1
+                        break
+        aos_x_jobcat = {k: dict(v) for k, v in aos_x_jobcat_map.items()}
+
         # State-to-parent-category breakdown derived from all historical jobs
         state_cat_map = defaultdict(lambda: defaultdict(int))
         for job in historical_data.get('jobs', []):
@@ -718,6 +787,16 @@ class PhilJobsScraper:
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Market Matrix -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">Market Matrix</h2>
+            <p class="text-sm text-gray-500 mb-6">All-time job counts by AOS category &times; official PhilJobs job category</p>
+            <div class="chart-container mb-6">
+                <canvas id="matrixChart"></canvas>
+            </div>
+            <div id="matrixTable" class="overflow-x-auto text-sm"></div>
         </div>
 
         <!-- West Coast Spotlight -->
@@ -863,7 +942,9 @@ class PhilJobsScraper:
             seasonalMarkers: {json.dumps(seasonal_markers)},
             regionData: {json.dumps(region_data)},
             stateAlltime: {json.dumps(state_alltime)},
-            stateCategoryData: {json.dumps(state_category_data)}
+            stateCategoryData: {json.dumps(state_category_data)},
+            jobCategoryData: {json.dumps(job_category_series)},
+            aosXJobCat: {json.dumps(aos_x_jobcat)}
         }};
 
         // Plugin to shade hiring season bands on the main chart
@@ -1234,6 +1315,71 @@ class PhilJobsScraper:
             }}
         }});
 
+        // ===== MARKET MATRIX =====
+        (function() {{
+            const aosOrder = Object.keys(data.categories);
+            const jobCats = Object.keys(data.aosXJobCat).length > 0
+                ? [...new Set(Object.values(data.aosXJobCat).flatMap(v => Object.keys(v)))].sort()
+                : Object.keys(data.jobCategoryData).sort();
+
+            if (aosOrder.length === 0 || jobCats.length === 0) {{
+                document.getElementById('matrixChart').parentElement.innerHTML =
+                    '<div class="text-gray-400 text-center py-8 text-sm">Market matrix will populate after more data is collected.</div>';
+                return;
+            }}
+
+            const jobCatColors = [
+                '#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#06b6d4','#6b7280'
+            ];
+
+            const matrixDatasets = jobCats.map((jc, idx) => ({{
+                label: jc,
+                data: aosOrder.map(aos => (data.aosXJobCat[aos] || {{}})[jc] || 0),
+                backgroundColor: jobCatColors[idx % jobCatColors.length] + 'cc',
+                borderColor: jobCatColors[idx % jobCatColors.length],
+                borderWidth: 1
+            }}));
+
+            new Chart(document.getElementById('matrixChart').getContext('2d'), {{
+                type: 'bar',
+                data: {{ labels: aosOrder, datasets: matrixDatasets }},
+                options: {{
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: {{ mode: 'index', intersect: false }},
+                    plugins: {{
+                        legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 12, font: {{ size: 11 }} }} }},
+                        tooltip: {{ backgroundColor: 'rgba(0,0,0,0.8)', padding: 10 }}
+                    }},
+                    scales: {{
+                        x: {{ stacked: true, ticks: {{ font: {{ size: 11 }} }}, grid: {{ display: false }} }},
+                        y: {{ stacked: true, beginAtZero: true, ticks: {{ precision: 0 }} }}
+                    }}
+                }}
+            }});
+
+            // Build summary table
+            const table = document.getElementById('matrixTable');
+            let html = '<table class="w-full border-collapse"><thead><tr><th class="text-left py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200">AOS Category</th>';
+            jobCats.forEach(jc => {{
+                const short = jc.replace(' / ', '/').replace('Tenured, continuing or permanent', 'Tenured').replace('Fixed term', 'Fixed');
+                html += `<th class="py-2 px-3 bg-gray-50 font-semibold text-gray-600 border border-gray-200 text-center text-xs">${{short}}</th>`;
+            }});
+            html += '<th class="py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200 text-center">Total</th></tr></thead><tbody>';
+            aosOrder.forEach((aos, i) => {{
+                const row = data.aosXJobCat[aos] || {{}};
+                const rowTotal = jobCats.reduce((s, jc) => s + (row[jc] || 0), 0);
+                html += `<tr class="${{i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}}">
+                    <td class="py-2 px-3 font-medium text-gray-700 border border-gray-200">${{aos}}</td>`;
+                jobCats.forEach(jc => {{
+                    const v = row[jc] || 0;
+                    html += `<td class="py-2 px-3 text-center border border-gray-200 ${{v > 0 ? 'font-semibold text-gray-800' : 'text-gray-300'}}">${{v || '—'}}</td>`;
+                }});
+                html += `<td class="py-2 px-3 text-center font-bold text-indigo-600 border border-gray-200">${{rowTotal}}</td></tr>`;
+            }});
+            html += '</tbody></table>';
+            table.innerHTML = html;
+        }})();
+
         // ===== WEST COAST SPOTLIGHT CHART =====
         const wcColors = ['#1d4ed8','#2563eb','#3b82f6','#60a5fa','#93c5fd','#1e40af','#0369a1','#0284c7','#0ea5e9','#38bdf8','#7dd3fc','#bae6fd','#047857','#065f46','#064e3b'];
         const wcDatasets = Object.entries(data.westCoastData)
@@ -1538,6 +1684,64 @@ The dashboard includes:
         print("=" * 70)
 
 
+    def export_csv(self, historical_data):
+        """Export all jobs and weekly trends to CSV for archiving and future analysis."""
+        import csv
+
+        # --- jobs_all.csv ---
+        jobs_fields = [
+            'id', 'institution', 'title', 'job_category', 'job_type', 'institution_type',
+            'aos', 'aoc', 'location', 'state', 'country', 'city',
+            'workload', 'vacancies', 'deadline', 'start_date', 'posted_date',
+            'status', 'url', 'scraped_date'
+        ]
+        jobs_file = self.data_dir / "jobs_all.csv"
+        with open(jobs_file, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.DictWriter(f, fieldnames=jobs_fields, extrasaction='ignore')
+            writer.writeheader()
+            for job in historical_data.get('jobs', []):
+                writer.writerow({k: job.get(k, '') for k in jobs_fields})
+
+        # --- trends_weekly.csv ---
+        trends = historical_data.get('weekly_trends', [])
+        if trends:
+            # Collect all dynamic sub-keys for the count dicts
+            aos_keys = sorted({k for t in trends for k in t.get('aos_counts', {})})
+            jtype_keys = sorted({k for t in trends for k in t.get('job_type_counts', {})})
+            jcat_keys = sorted({k for t in trends for k in t.get('job_category_counts', {})})
+            itype_keys = sorted({k for t in trends for k in t.get('institution_type_counts', {})})
+            state_keys = sorted({k for t in trends for k in t.get('state_counts', {})})
+
+            base_fields = ['date', 'new_jobs_count']
+            trend_fields = (
+                base_fields
+                + [f'aos_{k}' for k in aos_keys]
+                + [f'jobtype_{k}' for k in jtype_keys]
+                + [f'jobcat_{k}' for k in jcat_keys]
+                + [f'insttype_{k}' for k in itype_keys]
+                + [f'state_{k}' for k in state_keys]
+            )
+            trends_file = self.data_dir / "trends_weekly.csv"
+            with open(trends_file, 'w', newline='', encoding='utf-8') as f:
+                writer = csv.DictWriter(f, fieldnames=trend_fields, extrasaction='ignore')
+                writer.writeheader()
+                for t in trends:
+                    row = {'date': t['date'], 'new_jobs_count': t['new_jobs_count']}
+                    for k in aos_keys:
+                        row[f'aos_{k}'] = t.get('aos_counts', {}).get(k, 0)
+                    for k in jtype_keys:
+                        row[f'jobtype_{k}'] = t.get('job_type_counts', {}).get(k, 0)
+                    for k in jcat_keys:
+                        row[f'jobcat_{k}'] = t.get('job_category_counts', {}).get(k, 0)
+                    for k in itype_keys:
+                        row[f'insttype_{k}'] = t.get('institution_type_counts', {}).get(k, 0)
+                    for k in state_keys:
+                        row[f'state_{k}'] = t.get('state_counts', {}).get(k, 0)
+                    writer.writerow(row)
+
+        print(f"✓ CSV exports: {jobs_file}, {self.data_dir}/trends_weekly.csv")
+
+
 def main():
     scraper = PhilJobsScraper()
 
@@ -1559,8 +1763,13 @@ def main():
     print("\nGenerating report...")
     scraper.generate_report(new_jobs, snapshot, weekly_trend, historical_data)
 
+    print("\nExporting CSV archives...")
+    scraper.export_csv(historical_data)
+
     print(f"\n✓ Done! Data saved to {scraper.data_dir}/")
     print(f"  - all_jobs.json: {len(historical_data['jobs'])} unique jobs")
+    print(f"  - jobs_all.csv: Full job archive (Excel-compatible)")
+    print(f"  - trends_weekly.csv: Weekly trend archive")
     print(f"  - snapshot_{snapshot['date']}.json: This week's data")
     print(f"  - report_{snapshot['date']}.md: Human-readable report")
     print(f"  - docs/index.html: Interactive analytics dashboard (GitHub Pages)")
