@@ -3297,6 +3297,12 @@
         "30205",
         "30201"
       ]
+    },
+    {
+      "date": "2026-03-10",
+      "total_jobs": 100,
+      "new_jobs": 0,
+      "new_job_ids": []
     }
   ],
   "weekly_trends": [
@@ -3421,6 +3427,16 @@
       "west_coast_city_counts": {
         "Claremont": 1
       }
+    },
+    {
+      "date": "2026-03-10",
+      "new_jobs_count": 0,
+      "aos_counts": {},
+      "job_type_counts": {},
+      "institution_type_counts": {},
+      "state_counts": {},
+      "country_counts": {},
+      "west_coast_city_counts": {}
     }
   ]
 }
