@@ -131,6 +131,14 @@ WEST_COAST_CITIES = {
 }
 
 
+US_REGIONS = {
+    'West': ['CA', 'OR', 'WA', 'AK', 'HI', 'NV', 'ID', 'MT', 'WY', 'UT', 'CO', 'AZ', 'NM'],
+    'Northeast': ['ME', 'NH', 'VT', 'MA', 'RI', 'CT', 'NY', 'NJ', 'PA'],
+    'South': ['DE', 'MD', 'VA', 'WV', 'NC', 'SC', 'GA', 'FL', 'KY', 'TN', 'AL', 'MS', 'AR', 'LA', 'OK', 'TX'],
+    'Midwest': ['OH', 'IN', 'IL', 'MI', 'WI', 'MN', 'IA', 'MO', 'ND', 'SD', 'NE', 'KS'],
+}
+
+
 class PhilJobsScraper:
     def __init__(self):
         self.base_url = "https://philjobs.org"
@@ -574,6 +582,33 @@ class PhilJobsScraper:
             for country in latin_america_countries:
                 latin_data.setdefault(country, []).append(trend.get('country_counts', {}).get(country, 0))
 
+        # Regional trends (aggregate state weekly counts into 4 US regions)
+        region_data = {}
+        for region, states in US_REGIONS.items():
+            series = []
+            for i in range(len(dates)):
+                total = sum(
+                    state_data.get(s, [])[i] if i < len(state_data.get(s, [])) else 0
+                    for s in states
+                )
+                series.append(total)
+            region_data[region] = series
+
+        # State all-time totals (sum of all weekly new-job counts per state)
+        state_alltime = {s: sum(v) for s, v in state_data.items() if sum(v) > 0}
+
+        # State-to-parent-category breakdown derived from all historical jobs
+        state_cat_map = defaultdict(lambda: defaultdict(int))
+        for job in historical_data.get('jobs', []):
+            s = job.get('state')
+            if s:
+                for area in job.get('aos_normalized', []):
+                    for parent, subcats in hierarchy.items():
+                        if area in subcats:
+                            state_cat_map[s][parent] += 1
+                            break
+        state_category_data = {k: dict(v) for k, v in state_cat_map.items()}
+
         # Calculate totals for current week
         current_week_new_jobs = trends[-1]['new_jobs_count']
         total_unique_jobs = len(historical_data['jobs'])
@@ -594,6 +629,8 @@ class PhilJobsScraper:
     <title>Philosophy Job Market Analytics</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body {{ font-family: 'Inter', sans-serif; }}
@@ -601,6 +638,8 @@ class PhilJobsScraper:
         .stat-card {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }}
         .chart-container {{ min-height: 400px; }}
         .season-marker {{ background: rgba(251, 191, 36, 0.1); }}
+        #mapTooltip {{ display:none; position:fixed; background:rgba(0,0,0,0.8); color:white; padding:6px 10px; border-radius:6px; font-size:13px; pointer-events:none; z-index:1000; line-height:1.5; }}
+        #stateDetailPanel {{ transition: transform 0.2s; }}
     </style>
 </head>
 <body class="bg-gray-50">
@@ -638,6 +677,55 @@ class PhilJobsScraper:
             </div>
             <div class="chart-container">
                 <canvas id="mainChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Regional Trends -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">Regional Trends</h2>
+            <p class="text-sm text-gray-500 mb-4">New jobs per week by US region — West highlighted in blue</p>
+            <div class="chart-container">
+                <canvas id="regionalChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Geographic Overview -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">Geographic Overview</h2>
+                    <p class="text-sm text-gray-500 mt-1">Click any state or country for a detailed breakdown</p>
+                </div>
+                <div class="flex gap-2">
+                    <button id="mapModeNew" onclick="setMapMode('current')" class="px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white">New This Week</button>
+                    <button id="mapModeAll" onclick="setMapMode('alltime')" class="px-4 py-2 text-sm font-medium rounded-lg bg-gray-200 text-gray-700">All-Time</button>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <h3 class="text-lg font-semibold text-gray-700">United States</h3>
+                        <span class="text-xs text-blue-600 font-medium bg-blue-50 px-2 py-0.5 rounded-full">West Coast highlighted</span>
+                    </div>
+                    <div id="usMapEl" class="bg-gray-50 rounded-lg overflow-hidden" style="height:300px;">
+                        <div class="flex items-center justify-center h-full text-gray-400 text-sm">Loading map...</div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Latin America</h3>
+                    <div id="latinMapEl" class="bg-gray-50 rounded-lg overflow-hidden" style="height:300px;">
+                        <div class="flex items-center justify-center h-full text-gray-400 text-sm">Loading map...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- West Coast Spotlight -->
+        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-lg p-6 mb-8 border border-blue-100">
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">🌊 West Coast Spotlight</h2>
+            <p class="text-sm text-gray-500 mb-4">City-level weekly new-job trends — CA, OR, WA</p>
+            <div class="chart-container">
+                <canvas id="westCoastChart"></canvas>
             </div>
         </div>
 
@@ -732,6 +820,35 @@ class PhilJobsScraper:
         </div>
     </div>
 
+    <!-- Map hover tooltip -->
+    <div id="mapTooltip"></div>
+
+    <!-- State Detail Panel (slides in from right) -->
+    <div id="stateDetailPanel" class="hidden fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50 overflow-y-auto border-l border-gray-200">
+        <div class="p-5">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="statePanelTitle" class="text-xl font-bold text-gray-800"></h3>
+                <button onclick="closeStatePanel()" class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+            </div>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="bg-indigo-50 rounded-lg p-3 text-center">
+                    <div class="text-2xl font-bold text-indigo-600" id="stateNewJobs">0</div>
+                    <div class="text-xs text-gray-500 mt-1">New This Week</div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-3 text-center">
+                    <div class="text-2xl font-bold text-gray-800" id="stateTotalJobs">0</div>
+                    <div class="text-xs text-gray-500 mt-1">All-Time Total</div>
+                </div>
+            </div>
+            <h4 class="text-sm font-semibold text-gray-700 mb-2">Weekly Trend</h4>
+            <div style="height:140px;" class="mb-4">
+                <canvas id="stateTrendChart"></canvas>
+            </div>
+            <h4 class="text-sm font-semibold text-gray-700 mb-2">By Category (All-Time)</h4>
+            <div id="stateCategoryBreakdown" class="space-y-1"></div>
+        </div>
+    </div>
+
     <script>
         const data = {{
             dates: {json.dumps(dates)},
@@ -743,7 +860,10 @@ class PhilJobsScraper:
             westCoastData: {json.dumps(west_coast_data)},
             latinData: {json.dumps(latin_data)},
             westCoastCities: {json.dumps(WEST_COAST_CITIES)},
-            seasonalMarkers: {json.dumps(seasonal_markers)}
+            seasonalMarkers: {json.dumps(seasonal_markers)},
+            regionData: {json.dumps(region_data)},
+            stateAlltime: {json.dumps(state_alltime)},
+            stateCategoryData: {json.dumps(state_category_data)}
         }};
 
         // Plugin to shade hiring season bands on the main chart
@@ -1088,8 +1208,257 @@ class PhilJobsScraper:
         }}
 
         document.addEventListener('keydown', (e) => {{
-            if (e.key === 'Escape') closeModal();
+            if (e.key === 'Escape') {{ closeModal(); closeStatePanel(); }}
         }});
+
+        // ===== REGIONAL TRENDS CHART =====
+        const regionColors = {{'West':'#3b82f6','Northeast':'#10b981','South':'#ef4444','Midwest':'#f59e0b'}};
+        const regionDatasets = Object.entries(data.regionData).map(([region, values]) => ({{
+            label: region,
+            data: values,
+            borderColor: regionColors[region] || '#6b7280',
+            backgroundColor: (regionColors[region] || '#6b7280') + '20',
+            tension: 0.4,
+            fill: false,
+            borderWidth: region === 'West' ? 3 : 2,
+            borderDash: region === 'West' ? [] : [5, 5]
+        }}));
+        new Chart(document.getElementById('regionalChart').getContext('2d'), {{
+            type: 'line',
+            data: {{ labels: data.dates, datasets: regionDatasets }},
+            options: {{
+                responsive: true, maintainAspectRatio: false,
+                interaction: {{ mode: 'index', intersect: false }},
+                plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15 }} }} }},
+                scales: {{ y: {{ beginAtZero: true, grid: {{ color: 'rgba(0,0,0,0.05)' }} }}, x: {{ grid: {{ display: false }} }} }}
+            }}
+        }});
+
+        // ===== WEST COAST SPOTLIGHT CHART =====
+        const wcColors = ['#1d4ed8','#2563eb','#3b82f6','#60a5fa','#93c5fd','#1e40af','#0369a1','#0284c7','#0ea5e9','#38bdf8','#7dd3fc','#bae6fd','#047857','#065f46','#064e3b'];
+        const wcDatasets = Object.entries(data.westCoastData)
+            .filter(([city, counts]) => counts.some(c => c > 0))
+            .map(([city, counts], idx) => ({{
+                label: city, data: counts,
+                borderColor: wcColors[idx % wcColors.length],
+                backgroundColor: wcColors[idx % wcColors.length] + '30',
+                tension: 0.4, fill: false, borderWidth: 2, pointRadius: 4
+            }}));
+        if (wcDatasets.length > 0) {{
+            new Chart(document.getElementById('westCoastChart').getContext('2d'), {{
+                type: 'line',
+                data: {{ labels: data.dates, datasets: wcDatasets }},
+                options: {{
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: {{ mode: 'index', intersect: false }},
+                    plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 10, font: {{ size: 11 }} }} }} }},
+                    scales: {{ y: {{ beginAtZero: true, ticks: {{ precision: 0 }} }}, x: {{ grid: {{ display: false }} }} }}
+                }}
+            }});
+        }} else {{
+            document.getElementById('westCoastChart').parentElement.innerHTML =
+                '<div class="text-gray-400 text-center py-8 text-sm">No West Coast city data yet — will populate on next scrape.</div>';
+        }}
+
+        // ===== D3 CHOROPLETH MAPS =====
+        let currentMapMode = 'current';
+        let usAtlasData = null, worldAtlasData = null;
+
+        const fipsToState = {{"01":"AL","02":"AK","04":"AZ","05":"AR","06":"CA","08":"CO","09":"CT","10":"DE","12":"FL","13":"GA","15":"HI","16":"ID","17":"IL","18":"IN","19":"IA","20":"KS","21":"KY","22":"LA","23":"ME","24":"MD","25":"MA","26":"MI","27":"MN","28":"MS","29":"MO","30":"MT","31":"NE","32":"NV","33":"NH","34":"NJ","35":"NM","36":"NY","37":"NC","38":"ND","39":"OH","40":"OK","41":"OR","42":"PA","44":"RI","45":"SC","46":"SD","47":"TN","48":"TX","49":"UT","50":"VT","51":"VA","53":"WA","54":"WV","55":"WI","56":"WY"}};
+        const latinNumeric = {{"484":"Mexico","076":"Brazil","032":"Argentina","152":"Chile","170":"Colombia","604":"Peru","862":"Venezuela","218":"Ecuador","320":"Guatemala","192":"Cuba","068":"Bolivia","332":"Haiti","214":"Dominican Republic","340":"Honduras","600":"Paraguay","222":"El Salvador","558":"Nicaragua","188":"Costa Rica","591":"Panama","858":"Uruguay"}};
+
+        function getStateValues(mode) {{
+            if (mode === 'alltime') return data.stateAlltime;
+            const r = {{}};
+            Object.entries(data.stateData).forEach(([s, c]) => {{ r[s] = c[c.length - 1] || 0; }});
+            return r;
+        }}
+
+        function setMapMode(mode) {{
+            currentMapMode = mode;
+            document.getElementById('mapModeNew').className = mode === 'current'
+                ? 'px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white'
+                : 'px-4 py-2 text-sm font-medium rounded-lg bg-gray-200 text-gray-700';
+            document.getElementById('mapModeAll').className = mode === 'alltime'
+                ? 'px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white'
+                : 'px-4 py-2 text-sm font-medium rounded-lg bg-gray-200 text-gray-700';
+            if (usAtlasData) drawUSChoropleth();
+            if (worldAtlasData) drawLatinChoropleth();
+        }}
+
+        function drawUSChoropleth() {{
+            const el = document.getElementById('usMapEl');
+            el.innerHTML = '';
+            const values = getStateValues(currentMapMode);
+            const maxVal = Math.max(...Object.values(values).filter(v => v > 0), 1);
+            const wc = new Set(['CA', 'OR', 'WA']);
+            const width = el.clientWidth || 500, height = 300;
+            const features = topojson.feature(usAtlasData, usAtlasData.objects.states);
+            const projection = d3.geoAlbersUsa().fitSize([width, height], features);
+            const path = d3.geoPath().projection(projection);
+            const svg = d3.select('#usMapEl').append('svg')
+                .attr('width', '100%').attr('height', height)
+                .attr('viewBox', `0 0 ${{width}} ${{height}}`);
+            const tip = d3.select('#mapTooltip');
+            svg.append('g').selectAll('path')
+                .data(features.features).join('path')
+                .attr('d', path)
+                .attr('fill', d => {{
+                    const sc = fipsToState[String(d.id).padStart(2, '0')];
+                    const v = values[sc] || 0;
+                    if (v === 0) return '#e5e7eb';
+                    return wc.has(sc)
+                        ? d3.interpolate('#bfdbfe', '#1d4ed8')(v / maxVal)
+                        : d3.interpolate('#d1fae5', '#065f46')(v / maxVal);
+                }})
+                .attr('stroke', d => wc.has(fipsToState[String(d.id).padStart(2, '0')]) ? '#1d4ed8' : '#9ca3af')
+                .attr('stroke-width', d => wc.has(fipsToState[String(d.id).padStart(2, '0')]) ? 1.5 : 0.5)
+                .style('cursor', 'pointer')
+                .on('mouseover', function(event, d) {{
+                    const sc = fipsToState[String(d.id).padStart(2, '0')] || '';
+                    const v = values[sc] || 0;
+                    tip.style('display', 'block').html(`<strong>${{sc}}</strong><br>${{v}} job${{v !== 1 ? 's' : ''}}`);
+                    d3.select(this).attr('stroke', '#111').attr('stroke-width', 2);
+                }})
+                .on('mousemove', event => tip.style('left', (event.pageX + 12) + 'px').style('top', (event.pageY - 28) + 'px'))
+                .on('mouseout', function(event, d) {{
+                    const sc = fipsToState[String(d.id).padStart(2, '0')];
+                    tip.style('display', 'none');
+                    d3.select(this).attr('stroke', wc.has(sc) ? '#1d4ed8' : '#9ca3af').attr('stroke-width', wc.has(sc) ? 1.5 : 0.5);
+                }})
+                .on('click', (event, d) => {{
+                    const sc = fipsToState[String(d.id).padStart(2, '0')];
+                    if (sc) showStateDetail(sc);
+                }});
+        }}
+
+        function drawLatinChoropleth() {{
+            const el = document.getElementById('latinMapEl');
+            el.innerHTML = '';
+            const values = {{}};
+            Object.entries(data.latinData).forEach(([country, counts]) => {{
+                values[country] = currentMapMode === 'alltime'
+                    ? counts.reduce((a, b) => a + b, 0)
+                    : (counts[counts.length - 1] || 0);
+            }});
+            const maxVal = Math.max(...Object.values(values).filter(v => v > 0), 1);
+            const numericVals = {{}};
+            Object.entries(latinNumeric).forEach(([code, country]) => {{ numericVals[code] = values[country] || 0; }});
+            const latinSet = new Set(Object.keys(latinNumeric));
+            const allFeatures = topojson.feature(worldAtlasData, worldAtlasData.objects.countries).features;
+            const latinFeatures = allFeatures.filter(d => latinSet.has(String(d.id).padStart(3, '0')));
+            if (latinFeatures.length === 0) {{
+                el.innerHTML = '<div class="text-gray-400 text-center p-4 text-sm">No Latin American jobs tracked yet</div>';
+                return;
+            }}
+            const width = el.clientWidth || 400, height = 300;
+            const projection = d3.geoMercator()
+                .fitSize([width, height], {{type: 'FeatureCollection', features: latinFeatures}});
+            const path = d3.geoPath().projection(projection);
+            const svg = d3.select('#latinMapEl').append('svg')
+                .attr('width', '100%').attr('height', height)
+                .attr('viewBox', `0 0 ${{width}} ${{height}}`);
+            const tip = d3.select('#mapTooltip');
+            svg.append('g').selectAll('path')
+                .data(latinFeatures).join('path')
+                .attr('d', path)
+                .attr('fill', d => {{
+                    const code = String(d.id).padStart(3, '0');
+                    const v = numericVals[code] || 0;
+                    if (v === 0) return '#e5e7eb';
+                    return d3.interpolate('#fce7f3', '#9d174d')(v / maxVal);
+                }})
+                .attr('stroke', '#9ca3af').attr('stroke-width', 0.5)
+                .style('cursor', 'default')
+                .on('mouseover', function(event, d) {{
+                    const code = String(d.id).padStart(3, '0');
+                    const country = latinNumeric[code] || '';
+                    const v = numericVals[code] || 0;
+                    if (!country) return;
+                    tip.style('display', 'block').html(`<strong>${{country}}</strong><br>${{v}} job${{v !== 1 ? 's' : ''}}`);
+                    d3.select(this).attr('stroke', '#111').attr('stroke-width', 1.5);
+                }})
+                .on('mousemove', event => tip.style('left', (event.pageX + 12) + 'px').style('top', (event.pageY - 28) + 'px'))
+                .on('mouseout', function() {{
+                    tip.style('display', 'none');
+                    d3.select(this).attr('stroke', '#9ca3af').attr('stroke-width', 0.5);
+                }});
+        }}
+
+        async function initMaps() {{
+            try {{
+                [usAtlasData, worldAtlasData] = await Promise.all([
+                    d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json'),
+                    d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+                ]);
+                drawUSChoropleth();
+                drawLatinChoropleth();
+            }} catch(e) {{
+                document.getElementById('usMapEl').innerHTML = '<div class="text-gray-400 text-center p-4 text-sm">Map unavailable — check connection</div>';
+                document.getElementById('latinMapEl').innerHTML = '<div class="text-gray-400 text-center p-4 text-sm">Map unavailable</div>';
+            }}
+        }}
+        initMaps();
+
+        // ===== STATE DETAIL PANEL =====
+        let stateTrendChart = null;
+        const catColors = {{"Ethics":"#ef4444","Social & Political":"#3b82f6","History of Philosophy":"#8b5cf6","Non-Western Philosophy":"#ec4899","Metaphysics & Epistemology":"#10b981","Science & Logic":"#f59e0b","Value Theory/Aesthetics":"#06b6d4","Other":"#6b7280"}};
+
+        function showStateDetail(stateCode) {{
+            const weekly = data.stateData[stateCode] || [];
+            const current = weekly[weekly.length - 1] || 0;
+            const alltime = data.stateAlltime[stateCode] || 0;
+            const categories = data.stateCategoryData[stateCode] || {{}};
+            const isWC = ['CA', 'OR', 'WA'].includes(stateCode);
+
+            document.getElementById('statePanelTitle').textContent = stateCode + (isWC ? ' 🌊' : '');
+            document.getElementById('stateNewJobs').textContent = current;
+            document.getElementById('stateTotalJobs').textContent = alltime;
+
+            const ctx = document.getElementById('stateTrendChart').getContext('2d');
+            if (stateTrendChart) stateTrendChart.destroy();
+            stateTrendChart = new Chart(ctx, {{
+                type: 'bar',
+                data: {{
+                    labels: data.dates,
+                    datasets: [{{ label: 'New Jobs', data: weekly, backgroundColor: isWC ? '#3b82f6' : '#10b981', borderRadius: 3 }}]
+                }},
+                options: {{
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {{ legend: {{ display: false }} }},
+                    scales: {{ y: {{ beginAtZero: true, ticks: {{ precision: 0 }} }}, x: {{ ticks: {{ maxTicksLimit: 6 }} }} }}
+                }}
+            }});
+
+            const breakdown = document.getElementById('stateCategoryBreakdown');
+            breakdown.innerHTML = '';
+            const sorted = Object.entries(categories).sort((a, b) => b[1] - a[1]);
+            const total = sorted.reduce((s, [, v]) => s + v, 0);
+            if (sorted.length === 0) {{
+                breakdown.innerHTML = '<div class="text-gray-400 text-sm">No category data yet</div>';
+            }} else {{
+                sorted.forEach(([cat, count]) => {{
+                    const pct = total > 0 ? Math.round(count / total * 100) : 0;
+                    const color = catColors[cat] || '#6b7280';
+                    breakdown.innerHTML += `
+                        <div class="flex items-center gap-2 py-1">
+                            <div class="w-2 h-2 rounded-full flex-shrink-0" style="background:${{color}}"></div>
+                            <div class="flex-1 text-sm text-gray-700">${{cat}}</div>
+                            <div class="text-sm font-bold">${{count}}</div>
+                            <div class="text-xs text-gray-400">${{pct}}%</div>
+                        </div>
+                        <div class="h-1.5 bg-gray-100 rounded mb-1">
+                            <div class="h-1.5 rounded" style="width:${{pct}}%;background:${{color}}"></div>
+                        </div>`;
+                }});
+            }}
+            document.getElementById('stateDetailPanel').classList.remove('hidden');
+        }}
+
+        function closeStatePanel() {{
+            document.getElementById('stateDetailPanel').classList.add('hidden');
+            if (stateTrendChart) {{ stateTrendChart.destroy(); stateTrendChart = null; }}
+        }}
     </script>
 </body>
 </html>'''
