@@ -219,9 +219,11 @@ class PhilJobsScraper:
         if not location_string:
             return None, None, None
 
-        # US detection (state name or abbreviation)
+        # US detection — match full state name with word boundaries only.
+        # Bare 2-letter codes (e.g. "IN", "OR") are not used because they produce
+        # false positives inside country/city names (e.g. "Berlin, Germany" -> IN).
         for state_name, state_code in US_STATES.items():
-            if state_name in location_string or state_code in location_string:
+            if re.search(r'\b' + re.escape(state_name) + r'\b', location_string):
                 city = location_string.split(',')[0].strip() if ',' in location_string else None
                 return state_code, 'United States', city
 
@@ -387,10 +389,10 @@ class PhilJobsScraper:
                 parent = 'Ethics'
             elif any(x in canonical for x in ['political', 'social', 'race', 'gender', 'law']):
                 parent = 'Social & Political'
-            elif any(x in canonical for x in ['ancient', 'medieval', 'modern', 'continental', 'american', 'history of']):
-                parent = 'History of Philosophy'
             elif any(x in canonical for x in ['asian', 'african', 'latin american', 'islamic', 'indigenous']):
                 parent = 'Non-Western Philosophy'
+            elif any(x in canonical for x in ['ancient', 'medieval', 'modern', 'continental', 'american', 'history of']):
+                parent = 'History of Philosophy'
             elif any(x in canonical for x in ['metaphysics', 'epistemology', 'mind', 'language', 'action', 'religion']):
                 parent = 'Metaphysics & Epistemology'
             elif any(x in canonical for x in ['science', 'physics', 'logic', 'mathematics', 'technology', 'artificial intelligence']):
