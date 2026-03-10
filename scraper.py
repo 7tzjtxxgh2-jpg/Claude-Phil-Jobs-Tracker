@@ -155,7 +155,7 @@ class PhilJobsScraper:
 
         for canonical, variants in SPECIALIZATION_MAP.items():
             for variant in variants:
-                if variant in area_lower or area_lower in variant:
+                if variant in area_lower:
                     return canonical
 
         # Drop overly long / messy fragments that aren't good categories
@@ -200,11 +200,15 @@ class PhilJobsScraper:
             return "Other"
         name_lower = institution_name.lower()
 
-        research_keywords = ['university', 'college', 'institute']
-        teaching_keywords = ['community college', 'junior college', 'state college']
+        teaching_keywords = ['community college', 'junior college', 'state college', 'technical college']
+        research_keywords = ['university', 'college', 'institute', 'school of', 'seminary']
+        known_research = ['mit', 'caltech', 'stanford', 'harvard', 'yale', 'princeton', 'columbia',
+                          'oxford', 'cambridge', 'sorbonne']
 
         if any(word in name_lower for word in teaching_keywords):
             return 'Teaching College'
+        elif any(name_lower == r or r in name_lower for r in known_research):
+            return 'Research University'
         elif any(word in name_lower for word in research_keywords):
             return 'Research University'
         else:
@@ -232,7 +236,10 @@ class PhilJobsScraper:
             if country in location_string:
                 return None, country, None
 
-        return None, 'Other International', None
+        # Try to extract a country name from the last segment of the location string
+        parts = [p.strip() for p in location_string.split(',')]
+        country_name = parts[-1] if parts and parts[-1] else 'Other International'
+        return None, country_name, None
 
     def get_job_ids_from_listing(self):
         """Get all job IDs from the main listing page"""
@@ -329,7 +336,7 @@ class PhilJobsScraper:
             else:
                 job['status'] = 'active'
 
-            unique_str = f"{job.get('institution', '')}_{job.get('title', '')}_{job_id}"
+            unique_str = f"{job.get('institution', '')}_{job.get('title', '')}"
             job['hash'] = hashlib.md5(unique_str.encode()).hexdigest()
             job['scraped_date'] = datetime.now().isoformat()
 
@@ -498,8 +505,8 @@ class PhilJobsScraper:
         """Generate comprehensive dashboard with maps and breakdowns"""
         trends = historical_data.get('weekly_trends', [])
 
-        if len(trends) < 2:
-            print("Need at least 2 weeks of data for trend visualization")
+        if len(trends) < 1:
+            print("No data available yet for dashboard visualization")
             return
 
         dates = [t['date'] for t in trends]
@@ -737,6 +744,23 @@ class PhilJobsScraper:
             seasonalMarkers: {json.dumps(seasonal_markers)}
         }};
 
+        // Plugin to shade hiring season bands on the main chart
+        const seasonPlugin = {{
+            id: 'seasonBackground',
+            beforeDraw(chart) {{
+                const {{ ctx, chartArea, scales }} = chart;
+                if (!chartArea || !scales.x) return;
+                ctx.save();
+                data.seasonalMarkers.forEach(m => {{
+                    const x0 = scales.x.getPixelForValue(m.index - 0.5);
+                    const x1 = scales.x.getPixelForValue(m.index + 0.5);
+                    ctx.fillStyle = 'rgba(251, 191, 36, 0.15)';
+                    ctx.fillRect(x0, chartArea.top, x1 - x0, chartArea.bottom - chartArea.top);
+                }});
+                ctx.restore();
+            }}
+        }};
+
         // Main chart
         const mainCtx = document.getElementById('mainChart').getContext('2d');
         const datasets = Object.entries(data.categories).map(([key, cat]) => ({{
@@ -754,6 +778,7 @@ class PhilJobsScraper:
                 labels: data.dates,
                 datasets: datasets
             }},
+            plugins: [seasonPlugin],
             options: {{
                 responsive: true,
                 maintainAspectRatio: false,
@@ -931,11 +956,12 @@ class PhilJobsScraper:
             const jobTypeCtx = document.getElementById('jobTypeChart').getContext('2d');
             if (jobTypeChart) jobTypeChart.destroy();
 
-            const latestJobTypes = Object.entries(data.jobTypeData).map(([type, vals]) => vals[vals.length - 1] || 0);
+            const jobTypeLabels = ['Tenure-track', 'Postdoc', 'Adjunct/Visiting', 'Tenured', 'Other'];
+            const latestJobTypes = jobTypeLabels.map(t => ((data.jobTypeData[t] || []).slice(-1)[0] || 0));
             jobTypeChart = new Chart(jobTypeCtx, {{
                 type: 'doughnut',
                 data: {{
-                    labels: ['Tenure-track', 'Postdoc', 'Adjunct/Visiting', 'Tenured', 'Other'],
+                    labels: jobTypeLabels,
                     datasets: [{{ data: latestJobTypes, backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#6b7280'] }}]
                 }},
                 options: {{ responsive: true, plugins: {{ legend: {{ position: 'bottom' }} }} }}
@@ -945,11 +971,12 @@ class PhilJobsScraper:
             const instCtx = document.getElementById('institutionChart').getContext('2d');
             if (institutionChart) institutionChart.destroy();
 
-            const latestInstTypes = Object.entries(data.institutionTypeData).map(([type, vals]) => vals[vals.length - 1] || 0);
+            const instTypeLabels = ['Research University', 'Teaching College', 'Other'];
+            const latestInstTypes = instTypeLabels.map(t => ((data.institutionTypeData[t] || []).slice(-1)[0] || 0));
             institutionChart = new Chart(instCtx, {{
                 type: 'doughnut',
                 data: {{
-                    labels: ['Research University', 'Teaching College', 'Other'],
+                    labels: instTypeLabels,
                     datasets: [{{ data: latestInstTypes, backgroundColor: ['#3b82f6', '#10b981', '#6b7280'] }}]
                 }},
                 options: {{ responsive: true, plugins: {{ legend: {{ position: 'bottom' }} }} }}
@@ -1064,18 +1091,18 @@ class PhilJobsScraper:
     </script>
 </body>
 </html>'''
-        
-# Write dashboard to docs/ for GitHub Pages
-docs_dir = Path("docs")
-docs_dir.mkdir(exist_ok=True)
 
-dashboard_file = docs_dir / "index.html"
-with open(dashboard_file, 'w') as f:
-    f.write(html)
+        # Write dashboard to docs/ for GitHub Pages
+        docs_dir = Path("docs")
+        docs_dir.mkdir(exist_ok=True)
 
-print(f"✓ Dashboard written to {dashboard_file} (GitHub Pages)")
+        dashboard_file = docs_dir / "index.html"
+        with open(dashboard_file, 'w') as f:
+            f.write(html)
 
-def generate_report(self, new_jobs, snapshot, weekly_trend, historical_data):
+        print(f"✓ Dashboard written to {dashboard_file} (GitHub Pages)")
+
+    def generate_report(self, new_jobs, snapshot, weekly_trend, historical_data):
         """Generate markdown report"""
         report = f"""# PhilJobs Weekly Report
 **Date:** {snapshot['date']}
@@ -1086,7 +1113,7 @@ def generate_report(self, new_jobs, snapshot, weekly_trend, historical_data):
 - **Total weekly snapshots:** {len(historical_data['weekly_snapshots'])}
 
 ## 📊 View Interactive Dashboard
-[**Click here to view the comprehensive analytics dashboard**](./trends_dashboard.html)
+[**Click here to view the comprehensive analytics dashboard**](../docs/index.html)
 
 The dashboard includes:
 - Category trends with seasonal markers
@@ -1165,7 +1192,7 @@ def main():
     print(f"  - all_jobs.json: {len(historical_data['jobs'])} unique jobs")
     print(f"  - snapshot_{snapshot['date']}.json: This week's data")
     print(f"  - report_{snapshot['date']}.md: Human-readable report")
-    print(f"  - trends_dashboard.html: Interactive analytics dashboard")
+    print(f"  - docs/index.html: Interactive analytics dashboard (GitHub Pages)")
 
 
 if __name__ == "__main__":
