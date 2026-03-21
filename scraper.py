@@ -551,7 +551,11 @@ class PhilJobsScraper:
         if migrated:
             print(f"  Migrated {migrated} jobs to new position_type labels")
 
-        unclassified = [j for j in jobs if not j.get('classification')]
+        unclassified = [
+            j for j in jobs
+            if not j.get('classification')
+            or j['classification'].get('reasoning') == 'classification_failed'
+        ]
         total = len(unclassified)
 
         if total == 0:
@@ -2028,10 +2032,13 @@ def main():
                 job['job_type'] = classification.get('position_type', 'Other')
                 job['institution_type'] = classification.get('institution_type', 'Other')
 
-    # 5. Migrate/reclassify any existing jobs without classification or with old labels
-    unclassified = [j for j in historical_data['jobs'] if not j.get('classification')]
+    # 5. Migrate/reclassify any existing jobs without classification, with old labels, or that previously failed
+    unclassified = [j for j in historical_data['jobs']
+                    if not j.get('classification')
+                    or j['classification'].get('reasoning') == 'classification_failed']
     needs_migration = [j for j in historical_data['jobs']
-                       if j.get('classification') and not j['classification'].get('position_type')]
+                       if j.get('classification') and not j['classification'].get('position_type')
+                       and j['classification'].get('reasoning') != 'classification_failed']
     if unclassified or needs_migration:
         print(f"\nMigrating/reclassifying jobs (unclassified: {len(unclassified)}, needs label migration: {len(needs_migration)})...")
         scraper.reclassify_all_jobs(historical_data)
