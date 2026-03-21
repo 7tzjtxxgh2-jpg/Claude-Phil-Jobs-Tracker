@@ -1,0 +1,84 @@
+{
+  "main_aos_matrix": {},
+  "detail_aos_by_context": {},
+  "main_aos_solo_vs_joint": {
+    "Open": {
+      "solo": 125,
+      "joint": 0
+    }
+  },
+  "cross_cutting_areas": {
+    "Feminist Philosophy": {
+      "total": 0,
+      "by_main_aos": {},
+      "trend": [
+        {
+          "week": "2026-03-10",
+          "count": 0
+        },
+        {
+          "week": "2026-03-16",
+          "count": 0
+        },
+        {
+          "week": "2026-03-21",
+          "count": 0
+        }
+      ]
+    },
+    "Philosophy of Race": {
+      "total": 0,
+      "by_main_aos": {},
+      "trend": [
+        {
+          "week": "2026-03-10",
+          "count": 0
+        },
+        {
+          "week": "2026-03-16",
+          "count": 0
+        },
+        {
+          "week": "2026-03-21",
+          "count": 0
+        }
+      ]
+    },
+    "Philosophy of Gender": {
+      "total": 0,
+      "by_main_aos": {},
+      "trend": [
+        {
+          "week": "2026-03-10",
+          "count": 0
+        },
+        {
+          "week": "2026-03-16",
+          "count": 0
+        },
+        {
+          "week": "2026-03-21",
+          "count": 0
+        }
+      ]
+    },
+    "Philosophy of Law": {
+      "total": 0,
+      "by_main_aos": {},
+      "trend": [
+        {
+          "week": "2026-03-10",
+          "count": 0
+        },
+        {
+          "week": "2026-03-16",
+          "count": 0
+        },
+        {
+          "week": "2026-03-21",
+          "count": 0
+        }
+      ]
+    }
+  }
+}

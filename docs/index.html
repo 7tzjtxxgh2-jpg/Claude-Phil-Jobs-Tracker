@@ -14,7 +14,6 @@
         .category-card:hover { transform: translateY(-2px); transition: all 0.3s; }
         .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         .chart-container { min-height: 400px; }
-        .season-marker { background: rgba(251, 191, 36, 0.1); }
         #mapTooltip { display:none; position:fixed; background:rgba(0,0,0,0.8); color:white; padding:6px 10px; border-radius:6px; font-size:13px; pointer-events:none; z-index:1000; line-height:1.5; }
         #stateDetailPanel { transition: transform 0.2s; }
     </style>
@@ -29,29 +28,31 @@
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="stat-card rounded-xl shadow-lg p-6 text-white">
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+            <div class="stat-card rounded-xl shadow-lg p-6 text-white col-span-2 md:col-span-1">
                 <div class="text-3xl font-bold">18</div>
                 <div class="text-indigo-100">New Jobs This Week</div>
-            </div>
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <div class="text-3xl font-bold text-gray-800">3</div>
-                <div class="text-gray-600">Weeks Tracked</div>
             </div>
             <div class="bg-white rounded-xl shadow-lg p-6">
                 <div class="text-3xl font-bold text-gray-800">125</div>
                 <div class="text-gray-600">Total Unique Jobs</div>
             </div>
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="text-2xl font-bold text-gray-800 truncate">Open</div>
+                <div class="text-gray-600">Most Active This Week</div>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="text-3xl font-bold text-gray-800">3</div>
+                <div class="text-gray-600">Weeks Tracked</div>
+            </div>
         </div>
 
+        <!-- Market Overview -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">Market Overview</h2>
-            <div class="text-sm text-gray-600 mb-4">
-                <span class="inline-flex items-center">
-                    <span class="w-3 h-3 bg-yellow-100 border-2 border-yellow-400 rounded-full mr-2"></span>
-                    Shaded areas indicate hiring season (Sept-Jan)
-                </span>
-            </div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Market Overview</h2>
+            <p class="text-sm text-gray-500 mb-4">New jobs per week by main AOS category — shaded areas = hiring season (Sept–Jan)</p>
             <div class="chart-container">
                 <canvas id="mainChart"></canvas>
             </div>
@@ -66,12 +67,37 @@
             </div>
         </div>
 
+        <!-- Co-Occurrence Matrix -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">AOS Co-Occurrence Matrix</h2>
+            <p class="text-sm text-gray-500 mb-4">How often main AOS categories appear together in the same job posting (all-time counts). Darker = more frequent co-occurrence.</p>
+            <div id="coocMatrixTable" class="overflow-x-auto text-sm"></div>
+        </div>
+
+        <!-- Solo vs. Joint -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">Solo vs. Joint Hiring</h2>
+            <p class="text-sm text-gray-500 mb-4">For each main AOS, jobs listing it as the <em>only</em> area (solo) versus alongside other areas (joint) — after Lassiter (2023)</p>
+            <div style="min-height:300px;">
+                <canvas id="soloJointChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Cross-Cutting Areas -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">Cross-Cutting Areas</h2>
+            <p class="text-sm text-gray-500 mb-4">Weekly trend for areas that span multiple AOS categories: Feminist Philosophy, Philosophy of Race, Philosophy of Gender, Philosophy of Law</p>
+            <div class="chart-container">
+                <canvas id="crossCuttingChart"></canvas>
+            </div>
+        </div>
+
         <!-- Geographic Overview -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
             <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800">Geographic Overview</h2>
-                    <p class="text-sm text-gray-500 mt-1">Click any state or country for a detailed breakdown</p>
+                    <p class="text-sm text-gray-500 mt-1">Click any state for a detailed breakdown</p>
                 </div>
                 <div class="flex gap-2">
                     <button id="mapModeNew" onclick="setMapMode('current')" class="px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white">New This Week</button>
@@ -97,14 +123,23 @@
             </div>
         </div>
 
-        <!-- Market Matrix -->
+        <!-- Position Type Trends -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-1">Market Matrix</h2>
-            <p class="text-sm text-gray-500 mb-6">All-time job counts by AOS category &times; official PhilJobs job category</p>
-            <div class="chart-container mb-6">
-                <canvas id="matrixChart"></canvas>
+            <div class="flex flex-wrap justify-between items-center mb-2 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">Position Type Trends</h2>
+                    <p class="text-sm text-gray-500 mt-1">New jobs per week by position type — filter by AOS to see hiring patterns within each area</p>
+                </div>
+                <div>
+                    <select id="posTypeAosFilter" onchange="updatePositionTypeChart()" class="text-sm border border-gray-300 rounded-lg px-3 py-2 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                        <option value="__all__">All AOS</option>
+                    </select>
+                </div>
             </div>
-            <div id="matrixTable" class="overflow-x-auto text-sm"></div>
+            <div class="chart-container mb-6">
+                <canvas id="posTypeChart"></canvas>
+            </div>
+            <div id="posTypeTable" class="overflow-x-auto text-sm mt-4"></div>
         </div>
 
         <!-- West Coast Spotlight -->
@@ -116,12 +151,13 @@
             </div>
         </div>
 
+        <!-- Category Cards -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-6">Browse by Category</h2>
-            <div id="categoryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            </div>
+            <div id="categoryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
         </div>
 
+        <!-- Category Detail Modal -->
         <div id="detailModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
             <div class="bg-white rounded-xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
                 <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center z-10">
@@ -135,17 +171,12 @@
                 <div class="p-6">
                     <div id="subcategorySection" class="mb-6">
                         <h4 class="text-lg font-semibold text-gray-700 mb-4">Subcategories</h4>
-                        <div id="subcategoryGrid" class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
-                        </div>
+                        <div id="subcategoryGrid" class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6"></div>
                     </div>
-
                     <div class="mb-6">
                         <h4 class="text-lg font-semibold text-gray-700 mb-4">Trend Over Time</h4>
-                        <div class="chart-container">
-                            <canvas id="detailChart"></canvas>
-                        </div>
+                        <div class="chart-container"><canvas id="detailChart"></canvas></div>
                     </div>
-
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                         <div class="bg-gray-50 rounded-lg p-4">
                             <div class="text-2xl font-bold text-indigo-600" id="modalCurrentJobs">0</div>
@@ -164,7 +195,10 @@
                             <div class="text-sm text-gray-600">Total All-Time</div>
                         </div>
                     </div>
-
+                    <div id="lassiterSection" class="mb-6">
+                        <h4 class="text-lg font-semibold text-gray-700 mb-3">Solo vs. Joint by Subcategory</h4>
+                        <div id="lassiterChart" class="overflow-x-auto text-sm"></div>
+                    </div>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                         <div>
                             <h4 class="text-lg font-semibold text-gray-700 mb-4">Job Types</h4>
@@ -175,7 +209,6 @@
                             <canvas id="institutionChart"></canvas>
                         </div>
                     </div>
-
                     <div class="mb-6">
                         <h4 class="text-lg font-semibold text-gray-700 mb-4">Geographic Distribution</h4>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -197,7 +230,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
                         <h4 class="text-lg font-semibold text-blue-900 mb-2">📊 Key Insights</h4>
                         <div id="insights" class="text-sm text-blue-800"></div>
@@ -207,10 +239,9 @@
         </div>
     </div>
 
-    <!-- Map hover tooltip -->
     <div id="mapTooltip"></div>
 
-    <!-- State Detail Panel (slides in from right) -->
+    <!-- State Detail Panel -->
     <div id="stateDetailPanel" class="hidden fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50 overflow-y-auto border-l border-gray-200">
         <div class="p-5">
             <div class="flex justify-between items-center mb-4">
@@ -228,9 +259,7 @@
                 </div>
             </div>
             <h4 class="text-sm font-semibold text-gray-700 mb-2">Weekly Trend</h4>
-            <div style="height:140px;" class="mb-4">
-                <canvas id="stateTrendChart"></canvas>
-            </div>
+            <div style="height:140px;" class="mb-4"><canvas id="stateTrendChart"></canvas></div>
             <h4 class="text-sm font-semibold text-gray-700 mb-2">By Category (All-Time)</h4>
             <div id="stateCategoryBreakdown" class="space-y-1"></div>
         </div>
@@ -239,10 +268,10 @@
     <script>
         const data = {
             dates: ["2026-03-10", "2026-03-16", "2026-03-21"],
-            categories: {"Ethics": {"name": "Ethics", "data": [28, 1, 3], "subcategories": ["ethics", "applied ethics", "environmental ethics", "ai ethics"], "color": "#ef4444"}, "Social & Political": {"name": "Social & Political", "data": [8, 1, 2], "subcategories": ["social and political philosophy", "philosophy of race", "philosophy of gender", "philosophy of law"], "color": "#3b82f6"}, "History of Philosophy": {"name": "History of Philosophy", "data": [13, 1, 2], "subcategories": ["ancient philosophy", "medieval philosophy", "early modern philosophy", "continental philosophy", "american philosophy", "history of philosophy"], "color": "#8b5cf6"}, "Non-Western Philosophy": {"name": "Non-Western Philosophy", "data": [1, 0, 0], "subcategories": ["asian philosophy", "african/africana philosophy", "latin american philosophy", "islamic philosophy", "indigenous philosophy"], "color": "#ec4899"}, "Metaphysics & Epistemology": {"name": "Metaphysics & Epistemology", "data": [21, 0, 8], "subcategories": ["metaphysics", "epistemology", "philosophy of mind", "philosophy of language", "philosophy of action", "philosophy of religion"], "color": "#10b981"}, "Science & Logic": {"name": "Science & Logic", "data": [20, 1, 6], "subcategories": ["philosophy of science", "philosophy of physics", "logic", "philosophy of mathematics", "philosophy of technology", "philosophy of artificial intelligence"], "color": "#f59e0b"}, "Value Theory/Aesthetics": {"name": "Value Theory/Aesthetics", "data": [2, 0, 1], "subcategories": ["aesthetics", "value theory"], "color": "#06b6d4"}, "Other": {"name": "Other", "data": [5, 0, 0], "subcategories": ["ppe", "public philosophy", "critical thinking"], "color": "#6b7280"}},
-            subcategoryData: {"ethics": [27, 1, 3], "applied ethics": [0, 0, 0], "environmental ethics": [1, 0, 0], "ai ethics": [0, 0, 0], "social and political philosophy": [7, 1, 2], "philosophy of race": [0, 0, 0], "philosophy of gender": [0, 0, 0], "philosophy of law": [1, 0, 0], "ancient philosophy": [3, 0, 0], "medieval philosophy": [0, 0, 0], "early modern philosophy": [6, 0, 0], "continental philosophy": [2, 0, 0], "american philosophy": [0, 0, 0], "history of philosophy": [2, 1, 2], "asian philosophy": [1, 0, 0], "african/africana philosophy": [0, 0, 0], "latin american philosophy": [0, 0, 0], "islamic philosophy": [0, 0, 0], "indigenous philosophy": [0, 0, 0], "metaphysics": [2, 0, 0], "epistemology": [6, 0, 4], "philosophy of mind": [8, 0, 2], "philosophy of language": [2, 0, 2], "philosophy of action": [0, 0, 0], "philosophy of religion": [3, 0, 0], "philosophy of science": [8, 1, 4], "philosophy of physics": [4, 0, 0], "logic": [4, 0, 0], "philosophy of mathematics": [0, 0, 1], "philosophy of technology": [3, 0, 0], "philosophy of artificial intelligence": [1, 0, 1], "aesthetics": [2, 0, 0], "value theory": [0, 0, 1], "ppe": [4, 0, 0], "public philosophy": [1, 0, 0], "critical thinking": [0, 0, 0]},
-            jobTypeData: {"Tenure-track": [33, 2, 1], "Postdoc": [43, 3, 8], "Adjunct/Visiting": [9, 1, 5], "Tenured": [13, 1, 1], "Other": [2, 0, 3]},
-            institutionTypeData: {"Research University": [90, 7, 17], "Teaching College": [0, 0, 0], "Other": [10, 0, 1]},
+            categories: {"Ethics": {"name": "Ethics", "data": [0, 0, 0], "subcategories": ["Meta-Ethics", "Normative Ethics", "Biomedical Ethics / Bioethics", "Neuroethics", "AI, Technology, and Information Ethics", "Environmental Ethics", "Animal Ethics", "Food and Agricultural Ethics", "Business Ethics", "Ethics of Population, Future Generations, and Global Justice", "Ethics (General / Applied Ethics, Broadly Construed)"], "color": "#ef4444"}, "Social & Political Philosophy": {"name": "Social & Political Philosophy", "data": [0, 0, 0], "subcategories": ["Social and Political Philosophy (General / Political Theory)", "Philosophy of Law", "Philosophy of Race", "Philosophy of Gender", "Feminist Philosophy", "Philosophy of Sexuality and Queer Theory", "PPE (Politics, Philosophy, and Economics)", "Philosophy of Education", "Social & Political Philosophy (General)"], "color": "#3b82f6"}, "Value Theory / Aesthetics": {"name": "Value Theory / Aesthetics", "data": [0, 0, 0], "subcategories": ["Aesthetics (General)", "Philosophy of Art", "Philosophy of Music", "Philosophy of Film and Media", "Philosophy of Literature", "Value Theory / Axiology", "Value Theory / Aesthetics (General)"], "color": "#06b6d4"}, "History of Philosophy": {"name": "History of Philosophy", "data": [0, 0, 0], "subcategories": ["Ancient Greek and Roman Philosophy", "Medieval and Renaissance Philosophy", "Early Modern Philosophy (17th/18th Century)", "19th/20th Century Philosophy", "American Philosophy", "Continental Philosophy", "History of Philosophy (General)"], "color": "#8b5cf6"}, "Non-Western & Cross-Cultural Philosophy": {"name": "Non-Western & Cross-Cultural Philosophy", "data": [0, 0, 0], "subcategories": ["Asian Philosophy", "African/Africana Philosophy", "Arabic and Islamic Philosophy", "Latin American Philosophy", "Native American / Indigenous Philosophy", "Comparative Philosophy / Cross-Cultural", "Non-Western Philosophy (General)"], "color": "#ec4899"}, "Metaphysics & Epistemology": {"name": "Metaphysics & Epistemology", "data": [0, 0, 0], "subcategories": ["Metaphysics", "Epistemology", "Philosophy of Mind", "Philosophy of Language", "Philosophy of Action", "Philosophy of Religion", "Metaphysics & Epistemology (General)"], "color": "#10b981"}, "Science, Logic, & Mathematics": {"name": "Science, Logic, & Mathematics", "data": [0, 0, 0], "subcategories": ["Philosophy of Science (General)", "Philosophy of Biology", "Philosophy of Physics", "Philosophy of Cognitive Science", "Philosophy of Computing / Philosophy of AI", "Logic", "Philosophy of Mathematics", "Philosophy of Social Science", "Decision Theory", "Science, Logic, & Mathematics (General)"], "color": "#f59e0b"}, "Open": {"name": "Open", "data": [100, 7, 18], "subcategories": [], "color": "#6b7280"}},
+            subcategoryData: {"Meta-Ethics": [0, 0, 0], "Normative Ethics": [0, 0, 0], "Biomedical Ethics / Bioethics": [0, 0, 0], "Neuroethics": [0, 0, 0], "AI, Technology, and Information Ethics": [0, 0, 0], "Environmental Ethics": [0, 0, 0], "Animal Ethics": [0, 0, 0], "Food and Agricultural Ethics": [0, 0, 0], "Business Ethics": [0, 0, 0], "Ethics of Population, Future Generations, and Global Justice": [0, 0, 0], "Ethics (General / Applied Ethics, Broadly Construed)": [0, 0, 0], "Social and Political Philosophy (General / Political Theory)": [0, 0, 0], "Philosophy of Law": [0, 0, 0], "Philosophy of Race": [0, 0, 0], "Philosophy of Gender": [0, 0, 0], "Feminist Philosophy": [0, 0, 0], "Philosophy of Sexuality and Queer Theory": [0, 0, 0], "PPE (Politics, Philosophy, and Economics)": [0, 0, 0], "Philosophy of Education": [0, 0, 0], "Social & Political Philosophy (General)": [0, 0, 0], "Aesthetics (General)": [0, 0, 0], "Philosophy of Art": [0, 0, 0], "Philosophy of Music": [0, 0, 0], "Philosophy of Film and Media": [0, 0, 0], "Philosophy of Literature": [0, 0, 0], "Value Theory / Axiology": [0, 0, 0], "Value Theory / Aesthetics (General)": [0, 0, 0], "Ancient Greek and Roman Philosophy": [0, 0, 0], "Medieval and Renaissance Philosophy": [0, 0, 0], "Early Modern Philosophy (17th/18th Century)": [0, 0, 0], "19th/20th Century Philosophy": [0, 0, 0], "American Philosophy": [0, 0, 0], "Continental Philosophy": [0, 0, 0], "History of Philosophy (General)": [0, 0, 0], "Asian Philosophy": [0, 0, 0], "African/Africana Philosophy": [0, 0, 0], "Arabic and Islamic Philosophy": [0, 0, 0], "Latin American Philosophy": [0, 0, 0], "Native American / Indigenous Philosophy": [0, 0, 0], "Comparative Philosophy / Cross-Cultural": [0, 0, 0], "Non-Western Philosophy (General)": [0, 0, 0], "Metaphysics": [0, 0, 0], "Epistemology": [0, 0, 0], "Philosophy of Mind": [0, 0, 0], "Philosophy of Language": [0, 0, 0], "Philosophy of Action": [0, 0, 0], "Philosophy of Religion": [0, 0, 0], "Metaphysics & Epistemology (General)": [0, 0, 0], "Philosophy of Science (General)": [0, 0, 0], "Philosophy of Biology": [0, 0, 0], "Philosophy of Physics": [0, 0, 0], "Philosophy of Cognitive Science": [0, 0, 0], "Philosophy of Computing / Philosophy of AI": [0, 0, 0], "Logic": [0, 0, 0], "Philosophy of Mathematics": [0, 0, 0], "Philosophy of Social Science": [0, 0, 0], "Decision Theory": [0, 0, 0], "Science, Logic, & Mathematics (General)": [0, 0, 0]},
+            jobTypeData: {"Tenure-Track": [0, 0, 0], "Postdoc / Fellowship": [0, 0, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [0, 0, 0], "Tenured / Continuing / Permanent": [0, 0, 0], "Other": [100, 7, 18]},
+            institutionTypeData: {"Research University": [0, 0, 0], "Teaching College": [0, 0, 0], "Other": [100, 7, 18]},
             stateData: {"AL": [1, 0, 0], "AK": [0, 0, 0], "AZ": [0, 0, 0], "AR": [0, 0, 0], "CA": [4, 1, 0], "CO": [2, 0, 0], "CT": [1, 0, 0], "DE": [0, 0, 1], "FL": [1, 1, 0], "GA": [3, 0, 1], "HI": [0, 0, 0], "ID": [0, 0, 0], "IL": [3, 0, 2], "IN": [3, 0, 0], "IA": [1, 0, 0], "KS": [0, 0, 0], "KY": [0, 0, 0], "LA": [0, 0, 0], "ME": [1, 0, 0], "MD": [2, 0, 0], "MA": [7, 0, 0], "MI": [1, 0, 0], "MN": [0, 0, 0], "MS": [1, 0, 0], "MO": [1, 0, 0], "MT": [0, 0, 0], "NE": [1, 0, 0], "NV": [0, 0, 0], "NH": [0, 0, 0], "NJ": [4, 0, 0], "NM": [0, 0, 0], "NY": [11, 1, 1], "NC": [4, 0, 0], "ND": [0, 0, 0], "OH": [0, 0, 0], "OK": [1, 0, 0], "OR": [0, 0, 0], "PA": [5, 1, 0], "RI": [0, 1, 1], "SC": [1, 0, 1], "SD": [0, 0, 0], "TN": [0, 0, 0], "TX": [5, 0, 1], "UT": [0, 0, 0], "VT": [0, 0, 0], "VA": [0, 0, 0], "WA": [0, 0, 0], "WV": [0, 0, 0], "WI": [0, 0, 0], "WY": [0, 0, 0]},
             westCoastData: {"Claremont": [1]},
             latinData: {"Mexico": [0, 0, 0], "Brazil": [0, 0, 0], "Argentina": [0, 0, 0], "Chile": [0, 0, 0], "Colombia": [0, 0, 0], "Peru": [0, 0, 0], "Venezuela": [0, 0, 0], "Ecuador": [0, 0, 0], "Guatemala": [0, 0, 0], "Cuba": [0, 0, 0], "Bolivia": [0, 0, 0], "Haiti": [0, 0, 0], "Dominican Republic": [0, 0, 0], "Honduras": [0, 0, 0], "Paraguay": [0, 0, 0], "El Salvador": [0, 0, 0], "Nicaragua": [0, 0, 0], "Costa Rica": [0, 0, 0], "Panama": [0, 0, 0], "Puerto Rico": [0, 0, 0], "Uruguay": [0, 0, 0]},
@@ -250,12 +279,20 @@
             seasonalMarkers: [],
             regionData: {"West": [6, 1, 0], "Northeast": [29, 3, 2], "South": [19, 1, 4], "Midwest": [10, 0, 2]},
             stateAlltime: {"AL": 1, "CA": 5, "CO": 2, "CT": 1, "DE": 1, "FL": 2, "GA": 4, "IL": 5, "IN": 3, "IA": 1, "ME": 1, "MD": 2, "MA": 7, "MI": 1, "MS": 1, "MO": 1, "NE": 1, "NJ": 4, "NY": 13, "NC": 4, "OK": 1, "PA": 6, "RI": 2, "SC": 2, "TX": 6},
-            stateCategoryData: {"MA": {"Ethics": 4, "Metaphysics & Epistemology": 4, "Social & Political": 1}, "NY": {"Metaphysics & Epistemology": 4, "Ethics": 2, "Other": 3, "Social & Political": 2, "Science & Logic": 1, "History of Philosophy": 1}, "ME": {"Ethics": 1, "History of Philosophy": 1}, "SC": {"Social & Political": 1}, "PA": {"Ethics": 2, "Science & Logic": 3, "History of Philosophy": 2}, "GA": {"Ethics": 2, "Metaphysics & Epistemology": 1}, "CA": {"Ethics": 1, "History of Philosophy": 1, "Other": 1}, "NC": {"Science & Logic": 2, "Ethics": 1}, "MD": {"Ethics": 1, "Social & Political": 1}, "CO": {"Science & Logic": 1, "Metaphysics & Epistemology": 1, "Ethics": 1}, "TX": {"History of Philosophy": 2}, "NE": {"History of Philosophy": 1}, "IN": {"Ethics": 2, "Other": 1}, "CT": {"Metaphysics & Epistemology": 3}, "FL": {"History of Philosophy": 2, "Ethics": 1}, "MI": {"Science & Logic": 1}, "MS": {"Ethics": 1, "Science & Logic": 1}, "AL": {"Ethics": 1}, "IL": {"Metaphysics & Epistemology": 2, "Science & Logic": 1, "Ethics": 1, "Social & Political": 1, "History of Philosophy": 1}, "RI": {"Metaphysics & Epistemology": 1}},
-            jobCategoryData: {"Administration (non-academic) / Fixed term": [0, 0, 1], "Faculty (open rank) / Fixed term": [0, 1, 0], "Faculty (open rank) / Tenure-track or similar": [0, 2, 0], "Junior faculty / Fixed term": [0, 1, 5], "Junior faculty / Tenure-track or similar": [0, 0, 1], "Other (non-academic) / Fixed term": [0, 0, 1], "Postdoc or similar / Fixed term": [0, 2, 7], "Research assistant / Fixed term": [0, 0, 1], "Senior faculty / Tenured, continuing or permanent": [0, 0, 1], "Visiting fellowship / Professorship / Fixed term": [0, 1, 1]},
-            aosXJobCat: {"Ethics": {"Junior faculty / Fixed term": 4, "Postdoc or similar / Fixed term": 8, "Faculty (open rank) / Contract type open": 1, "Visiting fellowship / Professorship / Fixed term": 4, "Graduate fellowship / Fixed term": 4, "Junior faculty / Tenure-track or similar": 4, "Faculty (open rank) / Tenured, continuing or permanent": 1, "Faculty (open rank) / Tenure-track or similar": 4, "Administration (non-academic) / Tenured, continuing or permanent": 1, "Senior faculty / Tenured, continuing or permanent": 1}, "Social & Political": {"Postdoc or similar / Fixed term": 5, "Faculty (open rank) / Contract type open": 1, "Graduate fellowship / Fixed term": 1, "Junior faculty / Fixed term": 2, "Senior faculty / Tenure-track or similar": 1, "Senior faculty / Tenured, continuing or permanent": 1}, "Value Theory/Aesthetics": {"Postdoc or similar / Fixed term": 2, "Faculty (open rank) / Contract type open": 1}, "Metaphysics & Epistemology": {"Postdoc or similar / Fixed term": 13, "Visiting fellowship / Professorship / Fixed term": 6, "Faculty (open rank) / Contract type open": 1, "Other (non-academic) / Tenured, continuing or permanent": 1, "Graduate fellowship / Fixed term": 2, "Junior faculty / Tenure-track or similar": 1, "Junior faculty / Tenured, continuing or permanent": 1, "Junior faculty / Fixed term": 2, "Research assistant / Fixed term": 2}, "History of Philosophy": {"Postdoc or similar / Fixed term": 2, "Visiting fellowship / Professorship / Fixed term": 5, "Senior faculty / Tenured, continuing or permanent": 1, "Graduate fellowship / Fixed term": 1, "Faculty (open rank) / Tenure-track or similar": 1, "Junior faculty / Fixed term": 4, "Junior faculty / Tenure-track or similar": 2}, "Non-Western Philosophy": {"Faculty (open rank) / Contract type open": 1}, "Science & Logic": {"Faculty (open rank) / Contract type open": 2, "Postdoc or similar / Fixed term": 12, "Faculty (open rank) / Tenured, continuing or permanent": 2, "Graduate fellowship / Fixed term": 3, "Junior faculty / Fixed term": 2, "Visiting fellowship / Professorship / Fixed term": 2, "Junior faculty / Tenure-track or similar": 2, "Senior faculty / Tenured, continuing or permanent": 1, "Research assistant / Fixed term": 1}, "Other": {"Postdoc or similar / Fixed term": 4, "Administration (non-academic) / Tenured, continuing or permanent": 1}}
+            stateCategoryData: {"TX": {"Open": 6}, "MA": {"Open": 7}, "PA": {"Open": 6}, "NY": {"Open": 13}, "IL": {"Open": 5}, "MO": {"Open": 1}, "NJ": {"Open": 4}, "ME": {"Open": 1}, "SC": {"Open": 2}, "GA": {"Open": 4}, "CA": {"Open": 5}, "NC": {"Open": 4}, "MD": {"Open": 2}, "IA": {"Open": 1}, "CO": {"Open": 2}, "NE": {"Open": 1}, "IN": {"Open": 3}, "CT": {"Open": 1}, "FL": {"Open": 2}, "MI": {"Open": 1}, "MS": {"Open": 1}, "OK": {"Open": 1}, "AL": {"Open": 1}, "RI": {"Open": 2}, "DE": {"Open": 1}},
+            positionTypeByAosWeekly: {"Ethics": {"Tenure-Track": [0, 0, 0], "Postdoc / Fellowship": [0, 0, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [0, 0, 0], "Tenured / Continuing / Permanent": [0, 0, 0], "Other": [0, 0, 0]}, "Social & Political Philosophy": {"Tenure-Track": [0, 0, 0], "Postdoc / Fellowship": [0, 0, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [0, 0, 0], "Tenured / Continuing / Permanent": [0, 0, 0], "Other": [0, 0, 0]}, "Value Theory / Aesthetics": {"Tenure-Track": [0, 0, 0], "Postdoc / Fellowship": [0, 0, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [0, 0, 0], "Tenured / Continuing / Permanent": [0, 0, 0], "Other": [0, 0, 0]}, "History of Philosophy": {"Tenure-Track": [0, 0, 0], "Postdoc / Fellowship": [0, 0, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [0, 0, 0], "Tenured / Continuing / Permanent": [0, 0, 0], "Other": [0, 0, 0]}, "Non-Western & Cross-Cultural Philosophy": {"Tenure-Track": [0, 0, 0], "Postdoc / Fellowship": [0, 0, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [0, 0, 0], "Tenured / Continuing / Permanent": [0, 0, 0], "Other": [0, 0, 0]}, "Metaphysics & Epistemology": {"Tenure-Track": [0, 0, 0], "Postdoc / Fellowship": [0, 0, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [0, 0, 0], "Tenured / Continuing / Permanent": [0, 0, 0], "Other": [0, 0, 0]}, "Science, Logic, & Mathematics": {"Tenure-Track": [0, 0, 0], "Postdoc / Fellowship": [0, 0, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [0, 0, 0], "Tenured / Continuing / Permanent": [0, 0, 0], "Other": [0, 0, 0]}, "Open": {"Tenure-Track": [0, 0, 0], "Postdoc / Fellowship": [0, 0, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [0, 0, 0], "Tenured / Continuing / Permanent": [0, 0, 0], "Other": [100, 7, 18]}},
+            positionTypeXAos: {"Open": {"Other": 125}},
+            positionTypes: ["Tenure-Track", "Postdoc / Fellowship", "Visiting / Adjunct / Lecturer (Fixed-Term)", "Tenured / Continuing / Permanent", "Other"],
+            positionTypeColors: {"Tenure-Track": "#10b981", "Postdoc / Fellowship": "#3b82f6", "Visiting / Adjunct / Lecturer (Fixed-Term)": "#f59e0b", "Tenured / Continuing / Permanent": "#8b5cf6", "Other": "#6b7280"},
+            mainAosColors: {"Ethics": "#ef4444", "Social & Political Philosophy": "#3b82f6", "Value Theory / Aesthetics": "#06b6d4", "History of Philosophy": "#8b5cf6", "Non-Western & Cross-Cultural Philosophy": "#ec4899", "Metaphysics & Epistemology": "#10b981", "Science, Logic, & Mathematics": "#f59e0b", "Open": "#6b7280"},
+            mainAosCategories: ["Ethics", "Social & Political Philosophy", "Value Theory / Aesthetics", "History of Philosophy", "Non-Western & Cross-Cultural Philosophy", "Metaphysics & Epistemology", "Science, Logic, & Mathematics", "Open"],
+            coocMatrix: {},
+            soloVsJoint: {"Open": {"solo": 125, "joint": 0}},
+            crossCutting: {"Feminist Philosophy": {"total": 0, "by_main_aos": {}, "trend": [{"week": "2026-03-10", "count": 0}, {"week": "2026-03-16", "count": 0}, {"week": "2026-03-21", "count": 0}]}, "Philosophy of Race": {"total": 0, "by_main_aos": {}, "trend": [{"week": "2026-03-10", "count": 0}, {"week": "2026-03-16", "count": 0}, {"week": "2026-03-21", "count": 0}]}, "Philosophy of Gender": {"total": 0, "by_main_aos": {}, "trend": [{"week": "2026-03-10", "count": 0}, {"week": "2026-03-16", "count": 0}, {"week": "2026-03-21", "count": 0}]}, "Philosophy of Law": {"total": 0, "by_main_aos": {}, "trend": [{"week": "2026-03-10", "count": 0}, {"week": "2026-03-16", "count": 0}, {"week": "2026-03-21", "count": 0}]}},
+            detailAosByContext: {}
         };
 
-        // Plugin to shade hiring season bands on the main chart
+        // ===== SEASON PLUGIN =====
         const seasonPlugin = {
             id: 'seasonBackground',
             beforeDraw(chart) {
@@ -272,7 +309,7 @@
             }
         };
 
-        // Main chart
+        // ===== MAIN CHART =====
         const mainCtx = document.getElementById('mainChart').getContext('2d');
         const datasets = Object.entries(data.categories).map(([key, cat]) => ({
             label: cat.name,
@@ -282,75 +319,46 @@
             tension: 0.4,
             fill: true
         }));
-
         new Chart(mainCtx, {
             type: 'line',
-            data: {
-                labels: data.dates,
-                datasets: datasets
-            },
+            data: { labels: data.dates, datasets: datasets },
             plugins: [seasonPlugin],
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: {
-                    mode: 'index',
-                    intersect: false,
-                },
+                responsive: true, maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
                 plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            usePointStyle: true,
-                            padding: 15,
-                            font: { size: 12 }
-                        }
-                    },
+                    legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15, font: { size: 12 } } },
                     tooltip: {
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                        padding: 12,
+                        backgroundColor: 'rgba(0,0,0,0.8)', padding: 12,
                         callbacks: {
                             afterLabel: function(context) {
-                                const idx = context.dataIndex;
-                                if (data.seasonalMarkers.some(m => m.index === idx)) {
-                                    return '🌟 Hiring Season';
-                                }
-                                return '';
+                                return data.seasonalMarkers.some(m => m.index === context.dataIndex) ? '🌟 Hiring Season' : '';
                             }
                         }
                     }
                 },
                 scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: { font: { size: 12 } },
-                        grid: { color: 'rgba(0, 0, 0, 0.05)' }
-                    },
-                    x: {
-                        ticks: { font: { size: 12 } },
-                        grid: { display: false }
-                    }
+                    y: { beginAtZero: true, ticks: { font: { size: 12 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
+                    x: { ticks: { font: { size: 12 } }, grid: { display: false } }
                 }
             }
         });
 
-        // Generate category cards
+        // ===== CATEGORY CARDS =====
         const categoryGrid = document.getElementById('categoryGrid');
         Object.entries(data.categories).forEach(([key, cat]) => {
             const currentJobs = cat.data[cat.data.length - 1];
             const previousJobs = cat.data[cat.data.length - 2] || 0;
             const change = currentJobs - previousJobs;
             const changePercent = previousJobs > 0 ? ((change / previousJobs) * 100).toFixed(1) : 0;
-
             const card = document.createElement('div');
             card.className = 'category-card bg-white rounded-lg shadow hover:shadow-lg cursor-pointer p-5 border-l-4';
             card.style.borderLeftColor = cat.color;
             card.onclick = () => openModal(key, cat);
-
             card.innerHTML = `
                 <div class="flex justify-between items-start mb-3">
                     <h3 class="font-semibold text-gray-800 text-lg">${cat.name}</h3>
-                    <div class="w-3 h-3 rounded-full" style="background-color: ${cat.color}"></div>
+                    <div class="w-3 h-3 rounded-full" style="background-color:${cat.color}"></div>
                 </div>
                 <div class="flex items-end justify-between">
                     <div>
@@ -358,25 +366,17 @@
                         <div class="text-sm text-gray-500">new this week</div>
                     </div>
                     <div class="text-right">
-                        <div class="text-sm font-semibold ${change >= 0 ? 'text-green-600' : 'text-red-600'}">
-                            ${change >= 0 ? '↑' : '↓'} ${Math.abs(change)}
-                        </div>
+                        <div class="text-sm font-semibold ${change >= 0 ? 'text-green-600' : 'text-red-600'}">${change >= 0 ? '↑' : '↓'} ${Math.abs(change)}</div>
                         <div class="text-xs text-gray-500">${changePercent}%</div>
                     </div>
                 </div>
-                ${cat.subcategories.length > 0 ? `
-                    <div class="mt-3 pt-3 border-t border-gray-100">
-                        <div class="text-xs text-gray-500">${cat.subcategories.length} subcategories</div>
-                    </div>
-                ` : ''}
+                ${cat.subcategories.length > 0 ? `<div class="mt-3 pt-3 border-t border-gray-100"><div class="text-xs text-gray-500">${cat.subcategories.length} subcategories</div></div>` : ''}
             `;
-
             categoryGrid.appendChild(card);
         });
 
-        let detailChart = null;
-        let jobTypeChart = null;
-        let institutionChart = null;
+        // ===== MODAL =====
+        let detailChart = null, jobTypeChart = null, institutionChart = null;
 
         function openModal(key, category) {
             const currentJobs = category.data[category.data.length - 1];
@@ -395,226 +395,172 @@
             // Subcategories
             const subcategoryGrid = document.getElementById('subcategoryGrid');
             subcategoryGrid.innerHTML = '';
-
             category.subcategories.forEach(subcat => {
                 const subcatData = data.subcategoryData[subcat] || [];
                 const subcatCurrent = subcatData[subcatData.length - 1] || 0;
                 const subcatPrevious = subcatData[subcatData.length - 2] || 0;
                 const subcatChange = subcatCurrent - subcatPrevious;
-
-                const subcatCard = document.createElement('div');
-                subcatCard.className = 'bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-colors';
-                subcatCard.innerHTML = `
-                    <div class="font-medium text-gray-700 text-sm mb-1 capitalize">${subcat}</div>
+                const el = document.createElement('div');
+                el.className = 'bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-colors';
+                el.innerHTML = `
+                    <div class="font-medium text-gray-700 text-sm mb-1">${subcat}</div>
                     <div class="flex items-center justify-between">
                         <span class="text-xl font-bold text-gray-800">${subcatCurrent}</span>
-                        <span class="text-xs font-semibold ${subcatChange >= 0 ? 'text-green-600' : 'text-red-600'}">
-                            ${subcatChange >= 0 ? '↑' : '↓'} ${Math.abs(subcatChange)}
-                        </span>
+                        <span class="text-xs font-semibold ${subcatChange >= 0 ? 'text-green-600' : 'text-red-600'}">${subcatChange >= 0 ? '↑' : '↓'} ${Math.abs(subcatChange)}</span>
                     </div>
                 `;
-                subcategoryGrid.appendChild(subcatCard);
+                subcategoryGrid.appendChild(el);
             });
 
             // Detail chart
             const detailCtx = document.getElementById('detailChart').getContext('2d');
             if (detailChart) detailChart.destroy();
-
             const detailDatasets = [{
                 label: category.name + ' (Total)',
-                data: category.data,
-                borderColor: category.color,
-                backgroundColor: category.color + '40',
-                tension: 0.4,
-                fill: true,
-                borderWidth: 3
+                data: category.data, borderColor: category.color, backgroundColor: category.color + '40',
+                tension: 0.4, fill: true, borderWidth: 3
             }];
-
-            const colors = ['#6366f1', '#ec4899', '#14b8a6', '#f59e0b', '#8b5cf6', '#f97316', '#06b6d4'];
+            const dColors = ['#6366f1','#ec4899','#14b8a6','#f59e0b','#8b5cf6','#f97316','#06b6d4'];
             category.subcategories.forEach((subcat, idx) => {
-                const subcatData = data.subcategoryData[subcat] || [];
                 detailDatasets.push({
-                    label: subcat,
-                    data: subcatData,
-                    borderColor: colors[idx % colors.length],
-                    backgroundColor: colors[idx % colors.length] + '20',
-                    tension: 0.4,
-                    borderWidth: 2,
-                    borderDash: [5, 5]
+                    label: subcat, data: data.subcategoryData[subcat] || [],
+                    borderColor: dColors[idx % dColors.length], backgroundColor: dColors[idx % dColors.length] + '20',
+                    tension: 0.4, borderWidth: 2, borderDash: [5, 5]
                 });
             });
-
             detailChart = new Chart(detailCtx, {
                 type: 'line',
-                data: {
-                    labels: data.dates,
-                    datasets: detailDatasets
-                },
+                data: { labels: data.dates, datasets: detailDatasets },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15, font: { size: 11 } } }
-                    },
-                    scales: {
-                        y: { beginAtZero: true, ticks: { font: { size: 11 } } },
-                        x: { ticks: { font: { size: 11 } } }
-                    }
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15, font: { size: 11 } } } },
+                    scales: { y: { beginAtZero: true }, x: {} }
                 }
             });
 
-            // Job type chart
+            // Lassiter solo/joint by subcategory
+            const lassiterDiv = document.getElementById('lassiterChart');
+            lassiterDiv.innerHTML = '';
+            const byCtx = data.detailAosByContext;
+            if (category.subcategories.length > 0 && Object.keys(byCtx).length > 0) {
+                let html = '<table class="w-full border-collapse"><thead><tr>';
+                html += '<th class="text-left py-2 px-3 bg-gray-50 border border-gray-200 text-xs font-semibold text-gray-600">Subcategory</th>';
+                html += '<th class="py-2 px-3 bg-gray-50 border border-gray-200 text-xs font-semibold text-gray-600 text-center">Total</th>';
+                html += '<th class="py-2 px-3 bg-gray-50 border border-gray-200 text-xs font-semibold text-indigo-600 text-center">Solo</th>';
+                html += '<th class="py-2 px-3 bg-gray-50 border border-gray-200 text-xs font-semibold text-amber-600 text-center">Joint</th>';
+                html += '<th class="py-2 px-3 bg-gray-50 border border-gray-200 text-xs font-semibold text-gray-600">Top Co-occurring AOS</th>';
+                html += '</tr></thead><tbody>';
+                category.subcategories.forEach((subcat, i) => {
+                    const ctx = byCtx[subcat] || {};
+                    const soloCount = Object.values(ctx.solo || {}).reduce((a, b) => a + b, 0);
+                    const total = ctx.total || 0;
+                    const jointCount = total - soloCount;
+                    const topCooc = Object.entries(ctx.with_others || {}).sort((a, b) => b[1] - a[1]).slice(0, 2).map(([k, v]) => `${k} (${v})`).join(', ');
+                    html += `<tr class="${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">
+                        <td class="py-2 px-3 border border-gray-200 text-sm text-gray-700">${subcat}</td>
+                        <td class="py-2 px-3 border border-gray-200 text-center font-semibold">${total || '—'}</td>
+                        <td class="py-2 px-3 border border-gray-200 text-center text-indigo-600 font-semibold">${soloCount || '—'}</td>
+                        <td class="py-2 px-3 border border-gray-200 text-center text-amber-600 font-semibold">${jointCount > 0 ? jointCount : '—'}</td>
+                        <td class="py-2 px-3 border border-gray-200 text-xs text-gray-500">${topCooc || '—'}</td>
+                    </tr>`;
+                });
+                html += '</tbody></table>';
+                lassiterDiv.innerHTML = html;
+                document.getElementById('lassiterSection').classList.remove('hidden');
+            } else {
+                document.getElementById('lassiterSection').classList.add('hidden');
+            }
+
+            // Position type chart (modal)
             const jobTypeCtx = document.getElementById('jobTypeChart').getContext('2d');
             if (jobTypeChart) jobTypeChart.destroy();
-
-            const jobTypeLabels = ['Tenure-track', 'Postdoc', 'Adjunct/Visiting', 'Tenured', 'Other'];
-            const latestJobTypes = jobTypeLabels.map(t => ((data.jobTypeData[t] || []).slice(-1)[0] || 0));
             jobTypeChart = new Chart(jobTypeCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: jobTypeLabels,
-                    datasets: [{ data: latestJobTypes, backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#6b7280'] }]
+                    labels: data.positionTypes,
+                    datasets: [{ data: data.positionTypes.map(pt => (data.jobTypeData[pt] || []).slice(-1)[0] || 0), backgroundColor: data.positionTypes.map(pt => data.positionTypeColors[pt] || '#6b7280') }]
                 },
-                options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+                options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } } }
             });
 
             // Institution type chart
             const instCtx = document.getElementById('institutionChart').getContext('2d');
             if (institutionChart) institutionChart.destroy();
-
             const instTypeLabels = ['Research University', 'Teaching College', 'Other'];
-            const latestInstTypes = instTypeLabels.map(t => ((data.institutionTypeData[t] || []).slice(-1)[0] || 0));
             institutionChart = new Chart(instCtx, {
                 type: 'doughnut',
                 data: {
                     labels: instTypeLabels,
-                    datasets: [{ data: latestInstTypes, backgroundColor: ['#3b82f6', '#10b981', '#6b7280'] }]
+                    datasets: [{ data: instTypeLabels.map(t => (data.institutionTypeData[t] || []).slice(-1)[0] || 0), backgroundColor: ['#3b82f6','#10b981','#6b7280'] }]
                 },
                 options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
             });
 
-            // US States list (top 10)
+            // US States list
             const statesList = document.getElementById('usStatesList');
             statesList.innerHTML = '';
             const latestStateData = Object.entries(data.stateData)
                 .map(([state, counts]) => [state, counts[counts.length - 1] || 0])
-                .filter(([s, c]) => c > 0)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 10);
-
+                .filter(([s, c]) => c > 0).sort((a, b) => b[1] - a[1]).slice(0, 10);
             if (latestStateData.length > 0) {
                 latestStateData.forEach(([state, count]) => {
-                    const isWestCoast = ['CA', 'OR', 'WA'].includes(state);
-                    statesList.innerHTML += `
-                        <div class="flex justify-between items-center py-2 px-3 ${isWestCoast ? 'bg-blue-100 rounded' : ''}">
-                            <span class="font-medium ${isWestCoast ? 'text-blue-900' : 'text-gray-700'}">${state}</span>
-                            <span class="font-bold ${isWestCoast ? 'text-blue-900' : 'text-gray-800'}">${count}</span>
-                        </div>
-                    `;
+                    const isWC = ['CA', 'OR', 'WA'].includes(state);
+                    statesList.innerHTML += `<div class="flex justify-between items-center py-2 px-3 ${isWC ? 'bg-blue-100 rounded' : ''}"><span class="font-medium ${isWC ? 'text-blue-900' : 'text-gray-700'}">${state}</span><span class="font-bold ${isWC ? 'text-blue-900' : 'text-gray-800'}">${count}</span></div>`;
                 });
-
-                // West Coast detail
-                const westCoastDetail = document.getElementById('westCoastDetail');
-                const westCoastCities = document.getElementById('westCoastCities');
-                const wcData = Object.entries(data.westCoastData)
-                    .map(([city, counts]) => [city, counts[counts.length - 1] || 0])
-                    .filter(([c, cnt]) => cnt > 0)
-                    .sort((a, b) => b[1] - a[1]);
-
+                const wcData = Object.entries(data.westCoastData).map(([city, counts]) => [city, counts[counts.length - 1] || 0]).filter(([c, cnt]) => cnt > 0).sort((a, b) => b[1] - a[1]);
                 if (wcData.length > 0) {
-                    westCoastDetail.classList.remove('hidden');
-                    westCoastCities.innerHTML = wcData.map(([city, count]) =>
-                        `<div class="flex justify-between py-1"><span>${city}</span><span class="font-bold">${count}</span></div>`
-                    ).join('');
-                } else {
-                    westCoastDetail.classList.add('hidden');
-                }
-            } else {
-                statesList.innerHTML = '<div class="text-gray-500 text-center py-8">No US jobs in this category</div>';
-            }
+                    document.getElementById('westCoastDetail').classList.remove('hidden');
+                    document.getElementById('westCoastCities').innerHTML = wcData.map(([city, count]) => `<div class="flex justify-between py-1"><span>${city}</span><span class="font-bold">${count}</span></div>`).join('');
+                } else { document.getElementById('westCoastDetail').classList.add('hidden'); }
+            } else { statesList.innerHTML = '<div class="text-gray-500 text-center py-8">No US jobs in this category</div>'; }
 
             // Latin America list
             const latinList = document.getElementById('latinCountriesList');
-            latinList.innerHTML = '';
-            const latinCounts = Object.entries(data.latinData)
-                .map(([country, counts]) => [country, counts[counts.length - 1] || 0])
-                .filter(([c, cnt]) => cnt > 0)
-                .sort((a, b) => b[1] - a[1]);
-
+            const latinCounts = Object.entries(data.latinData).map(([country, counts]) => [country, counts[counts.length - 1] || 0]).filter(([c, cnt]) => cnt > 0).sort((a, b) => b[1] - a[1]);
             if (latinCounts.length > 0) {
-                latinCounts.forEach(([country, count]) => {
-                    latinList.innerHTML += `
-                        <div class="flex justify-between items-center py-2 px-3">
-                            <span class="font-medium text-gray-700">${country}</span>
-                            <span class="font-bold text-gray-800">${count}</span>
-                        </div>
-                    `;
-                });
-            } else {
-                latinList.innerHTML = '<div class="text-gray-500 text-center py-8">No Latin American jobs in this category</div>';
-            }
+                latinList.innerHTML = latinCounts.map(([country, count]) => `<div class="flex justify-between items-center py-2 px-3"><span class="font-medium text-gray-700">${country}</span><span class="font-bold text-gray-800">${count}</span></div>`).join('');
+            } else { latinList.innerHTML = '<div class="text-gray-500 text-center py-8">No Latin American jobs in this category</div>'; }
 
             // Insights
             const insights = document.getElementById('insights');
+            const trendDir = category.data[category.data.length - 1] > category.data[0] ? 'upward' : category.data[category.data.length - 1] < category.data[0] ? 'downward' : 'stable';
             let insightText = '<ul class="space-y-1">';
-
-            if (change > 0) {
-                const pct = previousJobs > 0 ? ((change / previousJobs) * 100).toFixed(1) : '∞';
-                insightText += `<li>• Growing field: up ${change} new jobs from last week (+${pct}%)</li>`;
-            } else if (change < 0) {
-                insightText += `<li>• Declining: down ${Math.abs(change)} new jobs from last week</li>`;
-            } else {
-                insightText += `<li>• Stable: same number of new jobs as last week</li>`;
-            }
-
-            const trendDir = category.data[category.data.length - 1] > category.data[0] ? 'upward' :
-                             category.data[category.data.length - 1] < category.data[0] ? 'downward' : 'stable';
+            if (change > 0) { insightText += `<li>• Growing: up ${change} new jobs from last week (+${previousJobs > 0 ? ((change/previousJobs)*100).toFixed(1) : '∞'}%)</li>`; }
+            else if (change < 0) { insightText += `<li>• Declining: down ${Math.abs(change)} new jobs from last week</li>`; }
+            else { insightText += `<li>• Stable: same number of new jobs as last week</li>`; }
             insightText += `<li>• Overall trend since tracking began: ${trendDir}</li>`;
             insightText += `<li>• Average ${average} new jobs per week</li>`;
-
             if (category.subcategories.length > 0) {
-                let hottestSub = category.subcategories[0];
-                let hottestCount = 0;
+                let hottestSub = category.subcategories[0]; let hottestCount = 0;
                 category.subcategories.forEach(sub => {
-                    const subData = data.subcategoryData[sub] || [];
-                    const subTotal = subData.reduce((a, b) => a + b, 0);
-                    if (subTotal > hottestCount) {
-                        hottestCount = subTotal;
-                        hottestSub = sub;
-                    }
+                    const subTotal = (data.subcategoryData[sub] || []).reduce((a, b) => a + b, 0);
+                    if (subTotal > hottestCount) { hottestCount = subTotal; hottestSub = sub; }
                 });
                 insightText += `<li>• Most active subcategory: ${hottestSub} (${hottestCount} total jobs)</li>`;
             }
-
             insightText += '</ul>';
             insights.innerHTML = insightText;
 
             document.getElementById('detailModal').classList.remove('hidden');
         }
 
-        function closeModal() {
-            document.getElementById('detailModal').classList.add('hidden');
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') { closeModal(); closeStatePanel(); }
-        });
+        function closeModal() { document.getElementById('detailModal').classList.add('hidden'); }
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeModal(); closeStatePanel(); } });
 
         // ===== REGIONAL TRENDS CHART =====
         const regionColors = {'West':'#3b82f6','Northeast':'#10b981','South':'#ef4444','Midwest':'#f59e0b'};
-        const regionDatasets = Object.entries(data.regionData).map(([region, values]) => ({
-            label: region,
-            data: values,
-            borderColor: regionColors[region] || '#6b7280',
-            backgroundColor: (regionColors[region] || '#6b7280') + '20',
-            tension: 0.4,
-            fill: false,
-            borderWidth: region === 'West' ? 3 : 2,
-            borderDash: region === 'West' ? [] : [5, 5]
-        }));
         new Chart(document.getElementById('regionalChart').getContext('2d'), {
             type: 'line',
-            data: { labels: data.dates, datasets: regionDatasets },
+            data: {
+                labels: data.dates,
+                datasets: Object.entries(data.regionData).map(([region, values]) => ({
+                    label: region, data: values,
+                    borderColor: regionColors[region] || '#6b7280',
+                    backgroundColor: (regionColors[region] || '#6b7280') + '20',
+                    tension: 0.4, fill: false,
+                    borderWidth: region === 'West' ? 3 : 2, borderDash: region === 'West' ? [] : [5, 5]
+                }))
+            },
             options: {
                 responsive: true, maintainAspectRatio: false,
                 interaction: { mode: 'index', intersect: false },
@@ -623,85 +569,204 @@
             }
         });
 
-        // ===== MARKET MATRIX =====
+        // ===== CO-OCCURRENCE MATRIX =====
         (function() {
-            const aosOrder = Object.keys(data.categories);
-            const jobCats = Object.keys(data.aosXJobCat).length > 0
-                ? [...new Set(Object.values(data.aosXJobCat).flatMap(v => Object.keys(v)))].sort()
-                : Object.keys(data.jobCategoryData).sort();
-
-            if (aosOrder.length === 0 || jobCats.length === 0) {
-                document.getElementById('matrixChart').parentElement.innerHTML =
-                    '<div class="text-gray-400 text-center py-8 text-sm">Market matrix will populate after more data is collected.</div>';
+            const matrix = data.coocMatrix;
+            const cats = Object.keys(data.mainAosColors).filter(c => c !== 'Open');
+            const matrixDiv = document.getElementById('coocMatrixTable');
+            if (!matrix || Object.keys(matrix).length === 0) {
+                matrixDiv.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">Co-occurrence data will populate after jobs are classified.</div>';
                 return;
             }
+            let maxVal = 0;
+            cats.forEach(r => cats.forEach(c => { if (r !== c) maxVal = Math.max(maxVal, (matrix[r] || {})[c] || 0); }));
+            let html = '<table class="w-full border-collapse text-xs"><thead><tr><th class="py-2 px-3 bg-gray-50 border border-gray-200 text-left text-gray-500">AOS</th>';
+            cats.forEach(c => {
+                const short = c.replace('Non-Western & Cross-Cultural Philosophy', 'Non-Western').replace('Science, Logic, & Mathematics', 'Sci/Logic/Math').replace('Social & Political Philosophy', 'Social/Pol').replace('Value Theory / Aesthetics', 'Value/Aes').replace('Metaphysics & Epistemology', 'M&E').replace('History of Philosophy', 'History');
+                html += `<th class="py-2 px-2 bg-gray-50 font-semibold text-gray-600 border border-gray-200 text-center" style="min-width:70px" title="${c}">${short}</th>`;
+            });
+            html += '</tr></thead><tbody>';
+            cats.forEach((row, i) => {
+                const shortRow = row.replace('Non-Western & Cross-Cultural Philosophy', 'Non-Western').replace('Science, Logic, & Mathematics', 'Sci/Logic/Math').replace('Social & Political Philosophy', 'Social/Political').replace('Value Theory / Aesthetics', 'Value/Aesthetics').replace('Metaphysics & Epistemology', 'M&E').replace('History of Philosophy', 'History');
+                html += `<tr class="${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}"><td class="py-2 px-3 font-semibold text-gray-700 border border-gray-200 whitespace-nowrap text-xs">${shortRow}</td>`;
+                cats.forEach(col => {
+                    if (row === col) {
+                        html += `<td class="py-2 px-2 text-center border border-gray-200 bg-gray-100 text-gray-400 text-xs">—</td>`;
+                    } else {
+                        const v = (matrix[row] || {})[col] || 0;
+                        const intensity = maxVal > 0 ? v / maxVal : 0;
+                        const alpha = Math.round(intensity * 180);
+                        html += `<td class="py-2 px-2 text-center border border-gray-200 text-xs ${v > 0 ? 'font-semibold text-gray-800' : 'text-gray-300'}" style="background-color:rgba(99,102,241,${alpha/255})">${v || '—'}</td>`;
+                    }
+                });
+                html += '</tr>';
+            });
+            html += '</tbody></table>';
+            matrixDiv.innerHTML = html;
+        })();
 
-            const jobCatColors = [
-                '#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#06b6d4','#6b7280'
-            ];
-
-            const matrixDatasets = jobCats.map((jc, idx) => ({
-                label: jc,
-                data: aosOrder.map(aos => (data.aosXJobCat[aos] || {})[jc] || 0),
-                backgroundColor: jobCatColors[idx % jobCatColors.length] + 'cc',
-                borderColor: jobCatColors[idx % jobCatColors.length],
-                borderWidth: 1
-            }));
-
-            new Chart(document.getElementById('matrixChart').getContext('2d'), {
+        // ===== SOLO VS. JOINT =====
+        (function() {
+            const svj = data.soloVsJoint;
+            const cats = Object.keys(data.mainAosColors).filter(c => c !== 'Open');
+            const solos = cats.map(c => (svj[c] || {}).solo || 0);
+            const joints = cats.map(c => (svj[c] || {}).joint || 0);
+            if (!solos.some(v => v > 0) && !joints.some(v => v > 0)) {
+                document.getElementById('soloJointChart').parentElement.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">Solo/joint data will populate after jobs are classified.</div>';
+                return;
+            }
+            new Chart(document.getElementById('soloJointChart').getContext('2d'), {
                 type: 'bar',
-                data: { labels: aosOrder, datasets: matrixDatasets },
+                data: {
+                    labels: cats,
+                    datasets: [
+                        { label: 'Solo (only AOS)', data: solos, backgroundColor: '#6366f1cc', borderColor: '#6366f1', borderWidth: 1 },
+                        { label: 'Joint (with other AOS)', data: joints, backgroundColor: '#f59e0bcc', borderColor: '#f59e0b', borderWidth: 1 }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15 } } },
+                    scales: {
+                        x: { stacked: true, beginAtZero: true, ticks: { precision: 0 } },
+                        y: { stacked: true, grid: { display: false } }
+                    }
+                }
+            });
+        })();
+
+        // ===== CROSS-CUTTING AREAS =====
+        (function() {
+            const cc = data.crossCutting;
+            const areas = Object.keys(cc || {});
+            if (areas.length === 0 || !areas.some(a => (cc[a].total || 0) > 0)) {
+                document.getElementById('crossCuttingChart').parentElement.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">Cross-cutting data will populate after jobs are classified.</div>';
+                return;
+            }
+            const ccColors = ['#ec4899','#3b82f6','#10b981','#8b5cf6'];
+            const allWeeks = data.dates;
+            const ccDatasets = areas.map((area, idx) => {
+                const trendMap = {};
+                (cc[area].trend || []).forEach(pt => { trendMap[pt.week] = pt.count; });
+                return {
+                    label: area, data: allWeeks.map(w => trendMap[w] || 0),
+                    borderColor: ccColors[idx % ccColors.length],
+                    backgroundColor: ccColors[idx % ccColors.length] + '30',
+                    tension: 0.4, fill: true, borderWidth: 2
+                };
+            });
+            new Chart(document.getElementById('crossCuttingChart').getContext('2d'), {
+                type: 'line',
+                data: { labels: allWeeks, datasets: ccDatasets },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15 } } },
+                    scales: { y: { beginAtZero: true, ticks: { precision: 0 } }, x: { grid: { display: false } } }
+                }
+            });
+        })();
+
+        // ===== POSITION TYPE TRENDS =====
+        (function() {
+            // Populate AOS filter dropdown
+            const filterSel = document.getElementById('posTypeAosFilter');
+            data.mainAosCategories.forEach(aos => {
+                const opt = document.createElement('option');
+                opt.value = aos;
+                opt.textContent = aos;
+                filterSel.appendChild(opt);
+            });
+
+            // Check if there's any data at all
+            const hasData = data.positionTypes.some(pt =>
+                (data.positionTypeByAosWeekly[data.mainAosCategories[0]] || {})[pt]?.some(v => v > 0)
+                || (data.jobTypeData[pt] || []).some(v => v > 0)
+            );
+            if (!hasData) {
+                document.getElementById('posTypeChart').parentElement.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">Position type data will populate after jobs are classified.</div>';
+                return;
+            }
+        })();
+
+        let posTypeChart = null;
+        function updatePositionTypeChart() {
+            const filter = document.getElementById('posTypeAosFilter').value;
+            const ctx = document.getElementById('posTypeChart').getContext('2d');
+            if (posTypeChart) posTypeChart.destroy();
+
+            const datasets = data.positionTypes.map(pt => {
+                let series;
+                if (filter === '__all__') {
+                    series = data.jobTypeData[pt] || data.dates.map(() => 0);
+                } else {
+                    series = ((data.positionTypeByAosWeekly[filter] || {})[pt]) || data.dates.map(() => 0);
+                }
+                return {
+                    label: pt,
+                    data: series,
+                    borderColor: data.positionTypeColors[pt] || '#6b7280',
+                    backgroundColor: (data.positionTypeColors[pt] || '#6b7280') + '25',
+                    tension: 0.4, fill: true, borderWidth: 2, pointRadius: 3
+                };
+            });
+
+            posTypeChart = new Chart(ctx, {
+                type: 'line',
+                data: { labels: data.dates, datasets: datasets },
+                plugins: [seasonPlugin],
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     interaction: { mode: 'index', intersect: false },
                     plugins: {
-                        legend: { position: 'bottom', labels: { usePointStyle: true, padding: 12, font: { size: 11 } } },
-                        tooltip: { backgroundColor: 'rgba(0,0,0,0.8)', padding: 10 }
+                        legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15, font: { size: 12 } } },
+                        tooltip: { backgroundColor: 'rgba(0,0,0,0.8)', padding: 12 }
                     },
                     scales: {
-                        x: { stacked: true, ticks: { font: { size: 11 } }, grid: { display: false } },
-                        y: { stacked: true, beginAtZero: true, ticks: { precision: 0 } }
+                        y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: 'rgba(0,0,0,0.05)' } },
+                        x: { grid: { display: false } }
                     }
                 }
             });
 
-            // Build summary table
-            const table = document.getElementById('matrixTable');
-            let html = '<table class="w-full border-collapse"><thead><tr><th class="text-left py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200">AOS Category</th>';
-            jobCats.forEach(jc => {
-                const short = jc.replace(' / ', '/').replace('Tenured, continuing or permanent', 'Tenured').replace('Fixed term', 'Fixed');
-                html += `<th class="py-2 px-3 bg-gray-50 font-semibold text-gray-600 border border-gray-200 text-center text-xs">${short}</th>`;
+            // Summary table: AOS rows × position type columns
+            const tableDiv = document.getElementById('posTypeTable');
+            const aosRows = data.mainAosCategories;
+            let html = '<table class="w-full border-collapse"><thead><tr>';
+            html += '<th class="text-left py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200 text-sm">AOS Category</th>';
+            data.positionTypes.forEach(pt => {
+                const short = pt.replace('Visiting / Adjunct / Lecturer (Fixed-Term)', 'Visiting/Adj/Lect').replace('Tenured / Continuing / Permanent', 'Tenured/Perm').replace('Postdoc / Fellowship', 'Postdoc/Fellow');
+                html += `<th class="py-2 px-2 bg-gray-50 font-semibold border border-gray-200 text-center text-xs" style="color:${data.positionTypeColors[pt] || '#6b7280'}" title="${pt}">${short}</th>`;
             });
-            html += '<th class="py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200 text-center">Total</th></tr></thead><tbody>';
-            aosOrder.forEach((aos, i) => {
-                const row = data.aosXJobCat[aos] || {};
-                const rowTotal = jobCats.reduce((s, jc) => s + (row[jc] || 0), 0);
-                html += `<tr class="${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">
-                    <td class="py-2 px-3 font-medium text-gray-700 border border-gray-200">${aos}</td>`;
-                jobCats.forEach(jc => {
-                    const v = row[jc] || 0;
-                    html += `<td class="py-2 px-3 text-center border border-gray-200 ${v > 0 ? 'font-semibold text-gray-800' : 'text-gray-300'}">${v || '—'}</td>`;
+            html += '<th class="py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200 text-center text-sm">Total</th></tr></thead><tbody>';
+            aosRows.forEach((aos, i) => {
+                const row = data.positionTypeXAos[aos] || {};
+                const rowTotal = data.positionTypes.reduce((s, pt) => s + (row[pt] || 0), 0);
+                if (rowTotal === 0) return;
+                html += `<tr class="${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">`;
+                html += `<td class="py-2 px-3 font-medium text-gray-700 border border-gray-200 text-sm">${aos}</td>`;
+                data.positionTypes.forEach(pt => {
+                    const v = row[pt] || 0;
+                    const pct = rowTotal > 0 ? Math.round(v / rowTotal * 100) : 0;
+                    html += `<td class="py-2 px-2 text-center border border-gray-200 text-xs ${v > 0 ? 'font-semibold text-gray-800' : 'text-gray-300'}">${v > 0 ? `${v}<div class="text-gray-400 font-normal">${pct}%</div>` : '—'}</td>`;
                 });
-                html += `<td class="py-2 px-3 text-center font-bold text-indigo-600 border border-gray-200">${rowTotal}</td></tr>`;
+                html += `<td class="py-2 px-3 text-center font-bold text-indigo-600 border border-gray-200 text-sm">${rowTotal}</td></tr>`;
             });
             html += '</tbody></table>';
-            table.innerHTML = html;
-        })();
+            tableDiv.innerHTML = html;
+        }
+        updatePositionTypeChart();
 
-        // ===== WEST COAST SPOTLIGHT CHART =====
+        // ===== WEST COAST CHART =====
         const wcColors = ['#1d4ed8','#2563eb','#3b82f6','#60a5fa','#93c5fd','#1e40af','#0369a1','#0284c7','#0ea5e9','#38bdf8','#7dd3fc','#bae6fd','#047857','#065f46','#064e3b'];
-        const wcDatasets = Object.entries(data.westCoastData)
-            .filter(([city, counts]) => counts.some(c => c > 0))
-            .map(([city, counts], idx) => ({
-                label: city, data: counts,
-                borderColor: wcColors[idx % wcColors.length],
-                backgroundColor: wcColors[idx % wcColors.length] + '30',
-                tension: 0.4, fill: false, borderWidth: 2, pointRadius: 4
-            }));
+        const wcDatasets = Object.entries(data.westCoastData).filter(([city, counts]) => counts.some(c => c > 0)).map(([city, counts], idx) => ({
+            label: city, data: counts, borderColor: wcColors[idx % wcColors.length], backgroundColor: wcColors[idx % wcColors.length] + '30',
+            tension: 0.4, fill: false, borderWidth: 2, pointRadius: 4
+        }));
         if (wcDatasets.length > 0) {
             new Chart(document.getElementById('westCoastChart').getContext('2d'), {
-                type: 'line',
-                data: { labels: data.dates, datasets: wcDatasets },
+                type: 'line', data: { labels: data.dates, datasets: wcDatasets },
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     interaction: { mode: 'index', intersect: false },
@@ -710,14 +775,11 @@
                 }
             });
         } else {
-            document.getElementById('westCoastChart').parentElement.innerHTML =
-                '<div class="text-gray-400 text-center py-8 text-sm">No West Coast city data yet — will populate on next scrape.</div>';
+            document.getElementById('westCoastChart').parentElement.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">No West Coast city data yet.</div>';
         }
 
         // ===== D3 CHOROPLETH MAPS =====
-        let currentMapMode = 'current';
-        let usAtlasData = null, worldAtlasData = null;
-
+        let currentMapMode = 'current', usAtlasData = null, worldAtlasData = null;
         const fipsToState = {"01":"AL","02":"AK","04":"AZ","05":"AR","06":"CA","08":"CO","09":"CT","10":"DE","12":"FL","13":"GA","15":"HI","16":"ID","17":"IL","18":"IN","19":"IA","20":"KS","21":"KY","22":"LA","23":"ME","24":"MD","25":"MA","26":"MI","27":"MN","28":"MS","29":"MO","30":"MT","31":"NE","32":"NV","33":"NH","34":"NJ","35":"NM","36":"NY","37":"NC","38":"ND","39":"OH","40":"OK","41":"OR","42":"PA","44":"RI","45":"SC","46":"SD","47":"TN","48":"TX","49":"UT","50":"VT","51":"VA","53":"WA","54":"WV","55":"WI","56":"WY"};
         const latinNumeric = {"484":"Mexico","076":"Brazil","032":"Argentina","152":"Chile","170":"Colombia","604":"Peru","862":"Venezuela","218":"Ecuador","320":"Guatemala","192":"Cuba","068":"Bolivia","332":"Haiti","214":"Dominican Republic","340":"Honduras","600":"Paraguay","222":"El Salvador","558":"Nicaragua","188":"Costa Rica","591":"Panama","858":"Uruguay"};
 
@@ -730,12 +792,8 @@
 
         function setMapMode(mode) {
             currentMapMode = mode;
-            document.getElementById('mapModeNew').className = mode === 'current'
-                ? 'px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white'
-                : 'px-4 py-2 text-sm font-medium rounded-lg bg-gray-200 text-gray-700';
-            document.getElementById('mapModeAll').className = mode === 'alltime'
-                ? 'px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white'
-                : 'px-4 py-2 text-sm font-medium rounded-lg bg-gray-200 text-gray-700';
+            document.getElementById('mapModeNew').className = mode === 'current' ? 'px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white' : 'px-4 py-2 text-sm font-medium rounded-lg bg-gray-200 text-gray-700';
+            document.getElementById('mapModeAll').className = mode === 'alltime' ? 'px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white' : 'px-4 py-2 text-sm font-medium rounded-lg bg-gray-200 text-gray-700';
             if (usAtlasData) drawUSChoropleth();
             if (worldAtlasData) drawLatinChoropleth();
         }
@@ -750,20 +808,15 @@
             const features = topojson.feature(usAtlasData, usAtlasData.objects.states);
             const projection = d3.geoAlbersUsa().fitSize([width, height], features);
             const path = d3.geoPath().projection(projection);
-            const svg = d3.select('#usMapEl').append('svg')
-                .attr('width', '100%').attr('height', height)
-                .attr('viewBox', `0 0 ${width} ${height}`);
+            const svg = d3.select('#usMapEl').append('svg').attr('width', '100%').attr('height', height).attr('viewBox', `0 0 ${width} ${height}`);
             const tip = d3.select('#mapTooltip');
-            svg.append('g').selectAll('path')
-                .data(features.features).join('path')
+            svg.append('g').selectAll('path').data(features.features).join('path')
                 .attr('d', path)
                 .attr('fill', d => {
                     const sc = fipsToState[String(d.id).padStart(2, '0')];
                     const v = values[sc] || 0;
                     if (v === 0) return '#e5e7eb';
-                    return wc.has(sc)
-                        ? d3.interpolate('#bfdbfe', '#1d4ed8')(v / maxVal)
-                        : d3.interpolate('#d1fae5', '#065f46')(v / maxVal);
+                    return wc.has(sc) ? d3.interpolate('#bfdbfe', '#1d4ed8')(v / maxVal) : d3.interpolate('#d1fae5', '#065f46')(v / maxVal);
                 })
                 .attr('stroke', d => wc.has(fipsToState[String(d.id).padStart(2, '0')]) ? '#1d4ed8' : '#9ca3af')
                 .attr('stroke-width', d => wc.has(fipsToState[String(d.id).padStart(2, '0')]) ? 1.5 : 0.5)
@@ -791,9 +844,7 @@
             el.innerHTML = '';
             const values = {};
             Object.entries(data.latinData).forEach(([country, counts]) => {
-                values[country] = currentMapMode === 'alltime'
-                    ? counts.reduce((a, b) => a + b, 0)
-                    : (counts[counts.length - 1] || 0);
+                values[country] = currentMapMode === 'alltime' ? counts.reduce((a, b) => a + b, 0) : (counts[counts.length - 1] || 0);
             });
             const maxVal = Math.max(...Object.values(values).filter(v => v > 0), 1);
             const numericVals = {};
@@ -801,20 +852,13 @@
             const latinSet = new Set(Object.keys(latinNumeric));
             const allFeatures = topojson.feature(worldAtlasData, worldAtlasData.objects.countries).features;
             const latinFeatures = allFeatures.filter(d => latinSet.has(String(d.id).padStart(3, '0')));
-            if (latinFeatures.length === 0) {
-                el.innerHTML = '<div class="text-gray-400 text-center p-4 text-sm">No Latin American jobs tracked yet</div>';
-                return;
-            }
+            if (latinFeatures.length === 0) { el.innerHTML = '<div class="text-gray-400 text-center p-4 text-sm">No Latin American jobs tracked yet</div>'; return; }
             const width = el.clientWidth || 400, height = 300;
-            const projection = d3.geoMercator()
-                .fitSize([width, height], {type: 'FeatureCollection', features: latinFeatures});
+            const projection = d3.geoMercator().fitSize([width, height], {type: 'FeatureCollection', features: latinFeatures});
             const path = d3.geoPath().projection(projection);
-            const svg = d3.select('#latinMapEl').append('svg')
-                .attr('width', '100%').attr('height', height)
-                .attr('viewBox', `0 0 ${width} ${height}`);
+            const svg = d3.select('#latinMapEl').append('svg').attr('width', '100%').attr('height', height).attr('viewBox', `0 0 ${width} ${height}`);
             const tip = d3.select('#mapTooltip');
-            svg.append('g').selectAll('path')
-                .data(latinFeatures).join('path')
+            svg.append('g').selectAll('path').data(latinFeatures).join('path')
                 .attr('d', path)
                 .attr('fill', d => {
                     const code = String(d.id).padStart(3, '0');
@@ -822,8 +866,7 @@
                     if (v === 0) return '#e5e7eb';
                     return d3.interpolate('#fce7f3', '#9d174d')(v / maxVal);
                 })
-                .attr('stroke', '#9ca3af').attr('stroke-width', 0.5)
-                .style('cursor', 'default')
+                .attr('stroke', '#9ca3af').attr('stroke-width', 0.5).style('cursor', 'default')
                 .on('mouseover', function(event, d) {
                     const code = String(d.id).padStart(3, '0');
                     const country = latinNumeric[code] || '';
@@ -856,7 +899,7 @@
 
         // ===== STATE DETAIL PANEL =====
         let stateTrendChart = null;
-        const catColors = {"Ethics":"#ef4444","Social & Political":"#3b82f6","History of Philosophy":"#8b5cf6","Non-Western Philosophy":"#ec4899","Metaphysics & Epistemology":"#10b981","Science & Logic":"#f59e0b","Value Theory/Aesthetics":"#06b6d4","Other":"#6b7280"};
+        const catColors = {"Ethics": "#ef4444", "Social & Political Philosophy": "#3b82f6", "Value Theory / Aesthetics": "#06b6d4", "History of Philosophy": "#8b5cf6", "Non-Western & Cross-Cultural Philosophy": "#ec4899", "Metaphysics & Epistemology": "#10b981", "Science, Logic, & Mathematics": "#f59e0b", "Open": "#6b7280"};
 
         function showStateDetail(stateCode) {
             const weekly = data.stateData[stateCode] || [];
@@ -873,10 +916,7 @@
             if (stateTrendChart) stateTrendChart.destroy();
             stateTrendChart = new Chart(ctx, {
                 type: 'bar',
-                data: {
-                    labels: data.dates,
-                    datasets: [{ label: 'New Jobs', data: weekly, backgroundColor: isWC ? '#3b82f6' : '#10b981', borderRadius: 3 }]
-                },
+                data: { labels: data.dates, datasets: [{ label: 'New Jobs', data: weekly, backgroundColor: isWC ? '#3b82f6' : '#10b981', borderRadius: 3 }] },
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     plugins: { legend: { display: false } },

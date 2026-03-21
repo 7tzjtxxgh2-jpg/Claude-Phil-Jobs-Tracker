@@ -22,11 +22,22 @@
       "application_url": "https://apptrkr.com/6976382",
       "deadline": "May 30, 2026, 11:59pm MST",
       "posted_date": "Yesterday, 8:56pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "5038019a140e3147022e891515055239",
-      "scraped_date": "2026-03-10T02:47:34.819073"
+      "scraped_date": "2026-03-10T02:47:34.819073",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31045",
@@ -54,11 +65,22 @@
       "application_url": "https://apptrkr.com/6977509",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "Yesterday, 8:53pm UTC",
-      "job_type": "Adjunct/Visiting",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "220fae3cf35ead7052a3e528c9bf0189",
-      "scraped_date": "2026-03-10T02:47:35.661051"
+      "scraped_date": "2026-03-10T02:47:35.661051",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31049",
@@ -89,11 +111,22 @@
       "deadline": "March 28, 2026, 12:00am EST",
       "contact_email": "",
       "posted_date": "Yesterday, 2:46pm UTC",
-      "job_type": "Adjunct/Visiting",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "05936f8f337e97d2c89aadb0836317a6",
-      "scraped_date": "2026-03-10T02:47:36.454435"
+      "scraped_date": "2026-03-10T02:47:36.454435",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31041",
@@ -116,11 +149,22 @@
       "application_url": "https://careers-lsac.icims.com/jobs/intro?hashed=-...",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "Yesterday, 2:45pm UTC",
-      "job_type": "Tenured",
+      "job_type": "Other",
       "institution_type": "Other",
       "status": "active",
       "hash": "a7dd84cc87984ed8d3b47fe2de3ab433",
-      "scraped_date": "2026-03-10T02:47:37.173589"
+      "scraped_date": "2026-03-10T02:47:37.173589",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31033",
@@ -143,11 +187,22 @@
       "application_url": "https://cuny.jobs/new-york-ny/associate-professor-...",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "Yesterday, 2:42pm UTC",
-      "job_type": "Tenured",
+      "job_type": "Other",
       "institution_type": "Other",
       "status": "active",
       "hash": "f6ab6ffbfdf30d523859f76a4c514fa1",
-      "scraped_date": "2026-03-10T02:47:37.979644"
+      "scraped_date": "2026-03-10T02:47:37.979644",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31009",
@@ -174,11 +229,22 @@
       "deadline": "January 11, 2027, 12:00am CST",
       "contact_email": "",
       "posted_date": "March 6, 2026, 4:33pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "6b0c9ef10c4416fa2355c0202b8ef6e3",
-      "scraped_date": "2026-03-10T02:47:38.696093"
+      "scraped_date": "2026-03-10T02:47:38.696093",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31025",
@@ -211,11 +277,22 @@
       "deadline": "April 2, 2026, 5:00pm BST",
       "contact_email": "",
       "posted_date": "March 6, 2026, 4:31pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "b3e270461dda336a3c3ce88e393a94e3",
-      "scraped_date": "2026-03-10T02:47:39.409412"
+      "scraped_date": "2026-03-10T02:47:39.409412",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31029",
@@ -240,11 +317,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "March 6, 2026, 4:26pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "1e5e17b5ce52a306c4bd2e335bc08cd1",
-      "scraped_date": "2026-03-10T02:47:40.127658"
+      "scraped_date": "2026-03-10T02:47:40.127658",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31017",
@@ -271,11 +359,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "March 4, 2026, 5:15pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "edf8f886e9b3d7d0768399dc3362a1a8",
-      "scraped_date": "2026-03-10T02:47:40.832898"
+      "scraped_date": "2026-03-10T02:47:40.832898",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31021",
@@ -316,11 +415,22 @@
       "deadline": "September 20, 2026, 11:59pm +08:30",
       "contact_email": "",
       "posted_date": "March 4, 2026, 5:15pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "d3ba6496c7b0f04debdf048e8e609567",
-      "scraped_date": "2026-03-10T02:47:41.542979"
+      "scraped_date": "2026-03-10T02:47:41.542979",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30993",
@@ -355,11 +465,22 @@
       "deadline": "April 19, 2026, 11:55pm BST",
       "contact_email": "",
       "posted_date": "March 3, 2026, 10:16pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "04cf56e9b4d630c57b180bf1c5f986f9",
-      "scraped_date": "2026-03-10T02:47:42.254189"
+      "scraped_date": "2026-03-10T02:47:42.254189",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30997",
@@ -387,11 +508,22 @@
       "deadline": "April 3, 2026, 11:59pm BST",
       "contact_email": "",
       "posted_date": "March 3, 2026, 10:15pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "368fbf473fc825f097c1414b885db871",
-      "scraped_date": "2026-03-10T02:47:43.085909"
+      "scraped_date": "2026-03-10T02:47:43.085909",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31001",
@@ -419,7 +551,18 @@
       "institution_type": "Other",
       "status": "active",
       "hash": "19229682290f755deb3bfe882e9f694b",
-      "scraped_date": "2026-03-10T02:47:43.796351"
+      "scraped_date": "2026-03-10T02:47:43.796351",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31005",
@@ -453,11 +596,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "March 3, 2026, 10:12pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "ffe06e614fb9bd596ee8d3f263b32c34",
-      "scraped_date": "2026-03-10T02:47:44.585681"
+      "scraped_date": "2026-03-10T02:47:44.585681",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31013",
@@ -485,11 +639,22 @@
       "deadline": "April 12, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "March 3, 2026, 10:12pm UTC",
-      "job_type": "Adjunct/Visiting",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "214a4269b413bb33559acdc966a5b145",
-      "scraped_date": "2026-03-10T02:47:45.302398"
+      "scraped_date": "2026-03-10T02:47:45.302398",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30989",
@@ -516,11 +681,22 @@
       "deadline": "March 23, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "February 27, 2026, 10:16pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "5eb2bd7469445fe1e0c655deda6cfcf9",
-      "scraped_date": "2026-03-10T02:47:46.097413"
+      "scraped_date": "2026-03-10T02:47:46.097413",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30985",
@@ -548,11 +724,22 @@
       "deadline": "March 18, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 27, 2026, 10:15pm UTC",
-      "job_type": "Tenured",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "553660b89acb7c5a1adbc4629e9ca044",
-      "scraped_date": "2026-03-10T02:47:46.814911"
+      "scraped_date": "2026-03-10T02:47:46.814911",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30957",
@@ -577,11 +764,22 @@
       "application_url": "https://apptrkr.com/6945453",
       "deadline": "April 23, 2026, 11:59pm EST",
       "posted_date": "February 26, 2026, 10:24pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "f5c8c5d945a40e96d78ca8f9bb7ea153",
-      "scraped_date": "2026-03-10T02:47:47.541678"
+      "scraped_date": "2026-03-10T02:47:47.541678",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30973",
@@ -611,11 +809,22 @@
       "deadline": "May 15, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 26, 2026, 10:19pm UTC",
-      "job_type": "Postdoc",
+      "job_type": "Other",
       "institution_type": "Other",
       "status": "active",
       "hash": "90ffc8cc6b01d1009e808628fb354bb4",
-      "scraped_date": "2026-03-10T02:47:48.247816"
+      "scraped_date": "2026-03-10T02:47:48.247816",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30977",
@@ -643,11 +852,22 @@
       "deadline": "March 15, 2026, 11:59pm BST",
       "contact_email": "",
       "posted_date": "February 26, 2026, 10:18pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "507d69e4a01ac83785e0d39b06d323f2",
-      "scraped_date": "2026-03-10T02:47:49.025880"
+      "scraped_date": "2026-03-10T02:47:49.025880",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30981",
@@ -675,11 +895,22 @@
       "deadline": "March 15, 2026, 11:59pm BST",
       "contact_email": "",
       "posted_date": "February 26, 2026, 10:13pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "732e6d6eecd3cc8a2eaaf2ffb291586a",
-      "scraped_date": "2026-03-10T02:47:49.813637"
+      "scraped_date": "2026-03-10T02:47:49.813637",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30949",
@@ -706,11 +937,22 @@
       "deadline": "April 15, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 25, 2026, 10:28pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "361f4f37972a8fe7b2ec0df2b40aeb53",
-      "scraped_date": "2026-03-10T02:47:50.618337"
+      "scraped_date": "2026-03-10T02:47:50.618337",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30969",
@@ -744,11 +986,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "February 25, 2026, 10:27pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "93e9a909e727b4624b56538e0b8fa355",
-      "scraped_date": "2026-03-10T02:47:51.336658"
+      "scraped_date": "2026-03-10T02:47:51.336658",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30965",
@@ -774,11 +1027,22 @@
       "deadline": "April 10, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 24, 2026, 10:33pm UTC",
-      "job_type": "Tenured",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "104818f4dfb78c9d61e02907e82851c4",
-      "scraped_date": "2026-03-10T02:47:52.040305"
+      "scraped_date": "2026-03-10T02:47:52.040305",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30961",
@@ -806,11 +1070,22 @@
       "deadline": "April 8, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 24, 2026, 10:32pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "16a72c318f979a82c01b0528b78561e4",
-      "scraped_date": "2026-03-10T02:47:52.750730"
+      "scraped_date": "2026-03-10T02:47:52.750730",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30945",
@@ -834,11 +1109,22 @@
       "deadline": "March 16, 2026, 11:59pm BST",
       "contact_email": "",
       "posted_date": "February 24, 2026, 10:27pm UTC",
-      "job_type": "Adjunct/Visiting",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "cd9c22880659b98f00dfd1970485fa8b",
-      "scraped_date": "2026-03-10T02:47:53.454149"
+      "scraped_date": "2026-03-10T02:47:53.454149",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30941",
@@ -862,11 +1148,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "February 24, 2026, 10:23pm UTC",
-      "job_type": "Tenured",
+      "job_type": "Other",
       "institution_type": "Other",
       "status": "active",
       "hash": "7866aa6346ab05204fa5281634921ae8",
-      "scraped_date": "2026-03-10T02:47:54.160737"
+      "scraped_date": "2026-03-10T02:47:54.160737",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30937",
@@ -893,11 +1190,22 @@
       "application_type": "Email",
       "deadline": "April 21, 2026, 11:59pm EST",
       "posted_date": "February 24, 2026, 10:20pm UTC",
-      "job_type": "Tenured",
+      "job_type": "Other",
       "institution_type": "Other",
       "status": "active",
       "hash": "bad99f2b77a55e83fe3622fd5f6107ee",
-      "scraped_date": "2026-03-10T02:47:54.863951"
+      "scraped_date": "2026-03-10T02:47:54.863951",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30861",
@@ -922,10 +1230,21 @@
       "contact_email": "",
       "posted_date": "February 24, 2026, 10:19pm UTC",
       "job_type": "Other",
-      "institution_type": "Research University",
+      "institution_type": "Other",
       "status": "active",
       "hash": "767505203d5428545be7d5f1a674bde4",
-      "scraped_date": "2026-03-10T02:47:55.691964"
+      "scraped_date": "2026-03-10T02:47:55.691964",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30901",
@@ -954,11 +1273,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "February 20, 2026, 7:30pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "219cd8359a42ffad1a12d2306b70a168",
-      "scraped_date": "2026-03-10T02:47:56.406401"
+      "scraped_date": "2026-03-10T02:47:56.406401",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30929",
@@ -986,11 +1316,22 @@
       "application_url": "https://www.hss.caltech.edu/about/job-opportunitie...",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "February 20, 2026, 7:22pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "0c1940e0e39a0e71b65acb09e14e9cf5",
-      "scraped_date": "2026-03-10T02:47:57.111752"
+      "scraped_date": "2026-03-10T02:47:57.111752",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30933",
@@ -1018,11 +1359,22 @@
       "deadline": "March 16, 2026, 11:59pm BST",
       "contact_email": "",
       "posted_date": "February 20, 2026, 7:20pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "e854ecd09f3cb10a7689f09a3ed08cfe",
-      "scraped_date": "2026-03-10T02:47:57.825389"
+      "scraped_date": "2026-03-10T02:47:57.825389",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30925",
@@ -1054,11 +1406,22 @@
       "deadline": "March 20, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "February 18, 2026, 6:15pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "aac14449b50b438dbbe9e07b90411747",
-      "scraped_date": "2026-03-10T02:47:58.669911"
+      "scraped_date": "2026-03-10T02:47:58.669911",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30921",
@@ -1083,11 +1446,22 @@
       "deadline": "March 16, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 18, 2026, 6:13pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "7a1aa391b15165daec53e2edb98a919d",
-      "scraped_date": "2026-03-10T02:47:59.393767"
+      "scraped_date": "2026-03-10T02:47:59.393767",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30917",
@@ -1116,11 +1490,22 @@
       "deadline": "May 1, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 18, 2026, 6:11pm UTC",
-      "job_type": "Postdoc",
+      "job_type": "Other",
       "institution_type": "Other",
       "status": "active",
       "hash": "b058b871cf4f755fa071d0a7eede89d9",
-      "scraped_date": "2026-03-10T02:48:00.112962"
+      "scraped_date": "2026-03-10T02:48:00.112962",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30913",
@@ -1150,11 +1535,22 @@
       "deadline": "April 1, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 18, 2026, 6:10pm UTC",
-      "job_type": "Postdoc",
+      "job_type": "Other",
       "institution_type": "Other",
       "status": "active",
       "hash": "565e7c1ed0d612a2da868d0c91a844e7",
-      "scraped_date": "2026-03-10T02:48:00.909783"
+      "scraped_date": "2026-03-10T02:48:00.909783",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30905",
@@ -1192,11 +1588,22 @@
       "deadline": "May 31, 2026, 11:59pm IST",
       "contact_email": "",
       "posted_date": "February 18, 2026, 6:07pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "2aea5005fac00e57eaf97c2319bb8678",
-      "scraped_date": "2026-03-10T02:48:01.623191"
+      "scraped_date": "2026-03-10T02:48:01.623191",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30897",
@@ -1224,11 +1631,22 @@
       "deadline": "May 17, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 13, 2026, 9:52pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "cf4f7cc9a12a80e20581d02e2c7f65ce",
-      "scraped_date": "2026-03-10T02:48:02.333803"
+      "scraped_date": "2026-03-10T02:48:02.333803",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30893",
@@ -1256,11 +1674,22 @@
       "deadline": "May 17, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 13, 2026, 9:50pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "78d3db1627bf5948cc1c23163f8ffec5",
-      "scraped_date": "2026-03-10T02:48:03.046743"
+      "scraped_date": "2026-03-10T02:48:03.046743",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30889",
@@ -1286,11 +1715,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "February 13, 2026, 9:48pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "674c28889d4f3c2ac7aa3b5684ab619c",
-      "scraped_date": "2026-03-10T02:48:03.753673"
+      "scraped_date": "2026-03-10T02:48:03.753673",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30885",
@@ -1321,11 +1761,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "February 11, 2026, 10:23pm UTC",
-      "job_type": "Postdoc",
+      "job_type": "Other",
       "institution_type": "Other",
       "status": "active",
       "hash": "e6a7d5a538b177b068c044f046b51566",
-      "scraped_date": "2026-03-10T02:48:04.470531"
+      "scraped_date": "2026-03-10T02:48:04.470531",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30877",
@@ -1352,11 +1803,22 @@
       "deadline": "March 13, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "February 11, 2026, 10:12pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "6c337d24a9b762edb696ed4f02e9344a",
-      "scraped_date": "2026-03-10T02:48:05.175985"
+      "scraped_date": "2026-03-10T02:48:05.175985",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30845",
@@ -1391,11 +1853,22 @@
       "deadline": "March 15, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "February 10, 2026, 10:25pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "8cedc02b1e53cb3ea96d1e4509c87891",
-      "scraped_date": "2026-03-10T02:48:05.885657"
+      "scraped_date": "2026-03-10T02:48:05.885657",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30857",
@@ -1425,11 +1898,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "February 10, 2026, 10:24pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "4fd0292a9693381d6655885717371106",
-      "scraped_date": "2026-03-10T02:48:06.611119"
+      "scraped_date": "2026-03-10T02:48:06.611119",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30834",
@@ -1452,11 +1936,22 @@
       "application_url": "https://apptrkr.com/6863190",
       "deadline": "March 15, 2026, 11:59pm EST",
       "posted_date": "February 9, 2026, 10:26pm UTC",
-      "job_type": "Adjunct/Visiting",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "b14e9ce208624c55f73640310f4e29ba",
-      "scraped_date": "2026-03-10T02:48:07.310000"
+      "scraped_date": "2026-03-10T02:48:07.310000",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30838",
@@ -1483,11 +1978,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "February 6, 2026, 10:00pm UTC",
-      "job_type": "Tenured",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "dac46cb14cfed62ca3fbc8e0d25e9b9c",
-      "scraped_date": "2026-03-10T02:48:08.045332"
+      "scraped_date": "2026-03-10T02:48:08.045332",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30822",
@@ -1513,11 +2019,22 @@
       "deadline": "March 16, 2026, 11:00am PST",
       "contact_email": "",
       "posted_date": "February 5, 2026, 7:54pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "24264be7e76a4df6d0870932d5c42688",
-      "scraped_date": "2026-03-10T02:48:08.750248"
+      "scraped_date": "2026-03-10T02:48:08.750248",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30794",
@@ -1543,11 +2060,22 @@
       "application_url": "https://www.uni-hamburg.de/en/stellenangebote/form...",
       "deadline": "March 31, 2026, 11:59pm CET",
       "posted_date": "February 2, 2026, 6:40pm UTC",
-      "job_type": "Postdoc",
+      "job_type": "Other",
       "institution_type": "Other",
       "status": "active",
       "hash": "7b3a8fd21375ecd7297d15de15b40772",
-      "scraped_date": "2026-03-10T02:48:09.493358"
+      "scraped_date": "2026-03-10T02:48:09.493358",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30798",
@@ -1578,11 +2106,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 29, 2026, 8:55pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "9d2739a74d759bd2488d243dc388a36e",
-      "scraped_date": "2026-03-10T02:48:10.215127"
+      "scraped_date": "2026-03-10T02:48:10.215127",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30802",
@@ -1612,11 +2151,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 29, 2026, 8:54pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "9d2739a74d759bd2488d243dc388a36e",
-      "scraped_date": "2026-03-10T02:48:11.019307"
+      "scraped_date": "2026-03-10T02:48:11.019307",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30718",
@@ -1646,11 +2196,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 27, 2026, 4:51pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "8ae4d1101867e0f01fde37a6f919ffc3",
-      "scraped_date": "2026-03-10T02:48:11.724145"
+      "scraped_date": "2026-03-10T02:48:11.724145",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30786",
@@ -1681,11 +2242,22 @@
       "deadline": "April 15, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "January 27, 2026, 4:51pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "76f2c1f67959806686d91fddbb47cb53",
-      "scraped_date": "2026-03-10T02:48:12.437690"
+      "scraped_date": "2026-03-10T02:48:12.437690",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30782",
@@ -1715,11 +2287,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 23, 2026, 10:25pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "1476e481cd31d063630dc72fa5c409c0",
-      "scraped_date": "2026-03-10T02:48:13.255049"
+      "scraped_date": "2026-03-10T02:48:13.255049",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30778",
@@ -1755,11 +2338,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 23, 2026, 10:23pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "4688a6546587046af1e3b62403700a14",
-      "scraped_date": "2026-03-10T02:48:14.087162"
+      "scraped_date": "2026-03-10T02:48:14.087162",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30774",
@@ -1792,11 +2386,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 23, 2026, 10:22pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "1f8c04180eb50e89b58d1b80d2d2fe39",
-      "scraped_date": "2026-03-10T02:48:14.792294"
+      "scraped_date": "2026-03-10T02:48:14.792294",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30766",
@@ -1821,11 +2426,22 @@
       "deadline": "March 15, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "January 23, 2026, 10:17pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "e7eb7d2b05aebcf0e241535a25141069",
-      "scraped_date": "2026-03-10T02:48:15.525121"
+      "scraped_date": "2026-03-10T02:48:15.525121",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30758",
@@ -1850,11 +2466,22 @@
       "deadline": "March 20, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "January 22, 2026, 10:21pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "c4b3f2acc23b78aba761d07f48b22737",
-      "scraped_date": "2026-03-10T02:48:16.236082"
+      "scraped_date": "2026-03-10T02:48:16.236082",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30762",
@@ -1881,11 +2508,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 22, 2026, 10:21pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "b1f329bcf425f741864b0ab8a02f7f2a",
-      "scraped_date": "2026-03-10T02:48:16.958814"
+      "scraped_date": "2026-03-10T02:48:16.958814",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30754",
@@ -1909,11 +2547,22 @@
       "application_url": "https://apply.interfolio.com/180233",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "January 21, 2026, 10:04pm UTC",
-      "job_type": "Adjunct/Visiting",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "82b9a85503ab1a59c56c2d6b4c3b55d0",
-      "scraped_date": "2026-03-10T02:48:17.674436"
+      "scraped_date": "2026-03-10T02:48:17.674436",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30746",
@@ -1937,11 +2586,22 @@
       "deadline": "March 15, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "January 21, 2026, 10:02pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "93ffdfa9bccfe3e29cd35ef115ff53ca",
-      "scraped_date": "2026-03-10T02:48:18.412433"
+      "scraped_date": "2026-03-10T02:48:18.412433",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30726",
@@ -1969,11 +2629,22 @@
       "deadline": "March 20, 2026, 11:59pm SGT",
       "contact_email": "",
       "posted_date": "January 20, 2026, 3:30pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "50489a9e7840c9077b70d260d95b0917",
-      "scraped_date": "2026-03-10T02:48:19.134434"
+      "scraped_date": "2026-03-10T02:48:19.134434",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30710",
@@ -1997,11 +2668,22 @@
       "application_url": "https://employment.davidson.edu",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "January 20, 2026, 2:59pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "4a6f5ae748e438ed7fac903603b5fe3b",
-      "scraped_date": "2026-03-10T02:48:19.984730"
+      "scraped_date": "2026-03-10T02:48:19.984730",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30678",
@@ -2024,11 +2706,22 @@
       "application_url": "https://apptrkr.com/6847561",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "January 14, 2026, 8:45pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "37e7999f989d9b644d110effc830d9a9",
-      "scraped_date": "2026-03-10T02:48:20.707188"
+      "scraped_date": "2026-03-10T02:48:20.707188",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30698",
@@ -2056,11 +2749,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 14, 2026, 8:24pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "245b2ff3c2edb0138d9b6227b0156799",
-      "scraped_date": "2026-03-10T02:48:21.413070"
+      "scraped_date": "2026-03-10T02:48:21.413070",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30674",
@@ -2085,11 +2789,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 14, 2026, 7:46pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "1395145bbeafbfac83207c7f2170318f",
-      "scraped_date": "2026-03-10T02:48:22.142221"
+      "scraped_date": "2026-03-10T02:48:22.142221",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30670",
@@ -2114,11 +2829,22 @@
       "deadline": "March 31, 2026, 11:59pm HKT",
       "contact_email": "",
       "posted_date": "January 13, 2026, 4:55pm UTC",
-      "job_type": "Adjunct/Visiting",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "5ad7afe193a32adc5ca4523d5c1f9944",
-      "scraped_date": "2026-03-10T02:48:22.851397"
+      "scraped_date": "2026-03-10T02:48:22.851397",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30654",
@@ -2146,11 +2872,22 @@
       "deadline": "April 13, 2026, 11:59pm AST",
       "contact_email": "",
       "posted_date": "January 9, 2026, 3:22pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "71bb9324f0d6f0b5f74890136947ac05",
-      "scraped_date": "2026-03-10T02:48:23.555127"
+      "scraped_date": "2026-03-10T02:48:23.555127",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30609",
@@ -2173,11 +2910,22 @@
       "application_url": "https://apptrkr.com/6799547",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "January 8, 2026, 7:34pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "bd91269a459bcab7d6be63054d77c934",
-      "scraped_date": "2026-03-10T02:48:24.310067"
+      "scraped_date": "2026-03-10T02:48:24.310067",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30610",
@@ -2208,11 +2956,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 5, 2026, 10:31pm UTC",
-      "job_type": "Adjunct/Visiting",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "4e73680cb5efa72e497620a618cb3e5c",
-      "scraped_date": "2026-03-10T02:48:25.015267"
+      "scraped_date": "2026-03-10T02:48:25.015267",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30585",
@@ -2237,11 +2996,22 @@
       "application_url": "https://marian.rec.pro.ukg.net/MAR1500MNUI/JobBoar...",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "December 17, 2025, 10:31pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "b602cf97ade6226ecdf083d719e1f93f",
-      "scraped_date": "2026-03-10T02:48:25.733124"
+      "scraped_date": "2026-03-10T02:48:25.733124",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30581",
@@ -2271,11 +3041,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "December 17, 2025, 10:30pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "45f5e0349cab131990d308b19bcea1b7",
-      "scraped_date": "2026-03-10T02:48:26.432273"
+      "scraped_date": "2026-03-10T02:48:26.432273",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30573",
@@ -2303,11 +3084,22 @@
       "deadline": "March 23, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "December 17, 2025, 10:20pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "b323f76df27e3c76ee98532a42a50cd4",
-      "scraped_date": "2026-03-10T02:48:27.138786"
+      "scraped_date": "2026-03-10T02:48:27.138786",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30561",
@@ -2336,11 +3128,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "December 17, 2025, 10:00pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "1375f80d3f5b8728a2941b565d27ff1e",
-      "scraped_date": "2026-03-10T02:48:27.858215"
+      "scraped_date": "2026-03-10T02:48:27.858215",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30566",
@@ -2365,11 +3168,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "December 16, 2025, 10:27pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "663822a341dda008585bb23411e7cdb8",
-      "scraped_date": "2026-03-10T02:48:28.560970"
+      "scraped_date": "2026-03-10T02:48:28.560970",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30538",
@@ -2397,11 +3211,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "December 12, 2025, 9:07pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "2612b048ed2dc467b7411c88613eaf05",
-      "scraped_date": "2026-03-10T02:48:29.270365"
+      "scraped_date": "2026-03-10T02:48:29.270365",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30546",
@@ -2436,11 +3261,22 @@
       "application_url": "https://careers.msu.edu/jobs/prof-wk-kellogg-chair...",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "December 12, 2025, 9:05pm UTC",
-      "job_type": "Tenured",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "7ca8b14c2ef472467df0be7ba9c38845",
-      "scraped_date": "2026-03-10T02:48:29.974069"
+      "scraped_date": "2026-03-10T02:48:29.974069",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30513",
@@ -2469,11 +3305,22 @@
       "application_url": "https://www.click2apply.net/ARpX1jtNOxzGEUomOHoAK7",
       "deadline": "August 1, 2027, 11:59pm EST",
       "posted_date": "December 10, 2025, 10:07pm UTC",
-      "job_type": "Tenured",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "491da1ff80c4e1f58d761ff0d0dc1268",
-      "scraped_date": "2026-03-10T02:48:30.684665"
+      "scraped_date": "2026-03-10T02:48:30.684665",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30519",
@@ -2501,11 +3348,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "December 10, 2025, 10:06pm UTC",
-      "job_type": "Tenured",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "d5907467fdf070b5975daa7da27ae583",
-      "scraped_date": "2026-03-10T02:48:31.405711"
+      "scraped_date": "2026-03-10T02:48:31.405711",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30526",
@@ -2533,11 +3391,22 @@
       "deadline": "Yesterday, 11:59pm CST",
       "contact_email": "",
       "posted_date": "December 10, 2025, 10:00pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "1baf5581fd722c8350ac824c18315af2",
-      "scraped_date": "2026-03-10T02:48:32.112367"
+      "scraped_date": "2026-03-10T02:48:32.112367",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30477",
@@ -2569,11 +3438,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "December 2, 2025, 10:32pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "512eafde3d41c5f45c8f5533fc1480d4",
-      "scraped_date": "2026-03-10T02:48:32.836534"
+      "scraped_date": "2026-03-10T02:48:32.836534",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30469",
@@ -2605,11 +3485,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "December 2, 2025, 10:31pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "647f8b72193ff0f8ffb7256fa753cdd9",
-      "scraped_date": "2026-03-10T02:48:33.542049"
+      "scraped_date": "2026-03-10T02:48:33.542049",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30461",
@@ -2632,11 +3523,22 @@
       "application_url": "https://jobs.hku.hk",
       "deadline": "April 30, 2026, 11:59pm HKT",
       "posted_date": "December 2, 2025, 10:28pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "e1a5651c8488c7b560309662082f98bd",
-      "scraped_date": "2026-03-10T02:48:34.256472"
+      "scraped_date": "2026-03-10T02:48:34.256472",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30457",
@@ -2662,11 +3564,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "December 1, 2025, 10:26pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "876d339170acf030f9fbd00d5b10d7ee",
-      "scraped_date": "2026-03-10T02:48:34.971179"
+      "scraped_date": "2026-03-10T02:48:34.971179",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30430",
@@ -2689,11 +3602,22 @@
       "application_url": "http://apply.interfolio.com/177567",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "December 1, 2025, 10:19pm UTC",
-      "job_type": "Tenured",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "7e276aa115198afbf375766795044f53",
-      "scraped_date": "2026-03-10T02:48:35.670254"
+      "scraped_date": "2026-03-10T02:48:35.670254",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30410",
@@ -2718,11 +3642,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "November 25, 2025, 10:04pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "82dd24a7fcbfcd2f119152e3ab484a27",
-      "scraped_date": "2026-03-10T02:48:36.379603"
+      "scraped_date": "2026-03-10T02:48:36.379603",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30414",
@@ -2753,11 +3688,22 @@
       "deadline": "March 31, 2026, 11:59pm PST",
       "contact_email": "",
       "posted_date": "November 25, 2025, 10:04pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "e434bbfef5633e643c46aabe584c8e7b",
-      "scraped_date": "2026-03-10T02:48:37.091592"
+      "scraped_date": "2026-03-10T02:48:37.091592",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30309",
@@ -2782,11 +3728,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "November 24, 2025, 8:31pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "f84b4a02cbdafc6e33a8b18ff09847c5",
-      "scraped_date": "2026-03-10T02:48:37.810418"
+      "scraped_date": "2026-03-10T02:48:37.810418",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30386",
@@ -2812,11 +3769,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "November 20, 2025, 8:47pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "5f8bc27d4fe2ba1ddd14bd569146f193",
-      "scraped_date": "2026-03-10T02:48:38.630703"
+      "scraped_date": "2026-03-10T02:48:38.630703",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30374",
@@ -2843,11 +3811,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "November 20, 2025, 7:14pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "b7b5fd37140d0d94dc52dc85d288ada4",
-      "scraped_date": "2026-03-10T02:48:39.327031"
+      "scraped_date": "2026-03-10T02:48:39.327031",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30329",
@@ -2874,11 +3853,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "November 11, 2025, 8:03pm UTC",
-      "job_type": "Adjunct/Visiting",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "68c3adece2e2b7ce0021293449f8c5d1",
-      "scraped_date": "2026-03-10T02:48:40.028235"
+      "scraped_date": "2026-03-10T02:48:40.028235",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30221",
@@ -2903,11 +3893,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "November 10, 2025, 5:25pm UTC",
-      "job_type": "Tenured",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "ed44fde55b547d48dda1833005e790af",
-      "scraped_date": "2026-03-10T02:48:40.754583"
+      "scraped_date": "2026-03-10T02:48:40.754583",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30305",
@@ -2936,11 +3937,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "November 6, 2025, 7:15pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "31b4832d95372d320a9bff934ed947bd",
-      "scraped_date": "2026-03-10T02:48:41.460901"
+      "scraped_date": "2026-03-10T02:48:41.460901",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30289",
@@ -2965,11 +3977,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "November 4, 2025, 4:47pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "e5b40dbd044bcd99ba187b6d857079a0",
-      "scraped_date": "2026-03-10T02:48:42.256433"
+      "scraped_date": "2026-03-10T02:48:42.256433",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30290",
@@ -2994,11 +4017,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "November 3, 2025, 9:13pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "ab62c10182e062b30f9bd78b068731ad",
-      "scraped_date": "2026-03-10T02:48:42.952619"
+      "scraped_date": "2026-03-10T02:48:42.952619",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30277",
@@ -3030,11 +4064,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "October 30, 2025, 7:46pm UTC",
-      "job_type": "Tenured",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "c4ffda6a0aa3a06f61b39cfc83e8a5f6",
-      "scraped_date": "2026-03-10T02:48:43.653089"
+      "scraped_date": "2026-03-10T02:48:43.653089",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30281",
@@ -3061,11 +4106,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "October 30, 2025, 7:26pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "3cb38ff01e3480fc517987351a1fcebd",
-      "scraped_date": "2026-03-10T02:48:44.356069"
+      "scraped_date": "2026-03-10T02:48:44.356069",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30245",
@@ -3090,11 +4146,22 @@
       "application_url": "https://uab.peopleadmin.com/postings/26500",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "October 28, 2025, 4:06pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "b81a3b0f38b38b64d9f7b31f6d481b72",
-      "scraped_date": "2026-03-10T02:48:45.156342"
+      "scraped_date": "2026-03-10T02:48:45.156342",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30217",
@@ -3122,11 +4189,22 @@
       "application_url": "https://apptrkr.com/6668124",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "October 27, 2025, 8:48pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "763a9e612d83ce3ee913b32361ba839a",
-      "scraped_date": "2026-03-10T02:48:45.860009"
+      "scraped_date": "2026-03-10T02:48:45.860009",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30205",
@@ -3154,11 +4232,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "October 22, 2025, 9:05pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "1892ed4be85c8ad5ed288e2ca947ddbc",
-      "scraped_date": "2026-03-10T02:48:46.573531"
+      "scraped_date": "2026-03-10T02:48:46.573531",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "30201",
@@ -3183,11 +4272,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "October 22, 2025, 9:02pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "1261267a016a392b5c25656eb4e155e8",
-      "scraped_date": "2026-03-10T02:48:47.276171"
+      "scraped_date": "2026-03-10T02:48:47.276171",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31073",
@@ -3216,11 +4316,22 @@
       "deadline": "May 12, 2026, 11:59pm IST",
       "contact_email": "",
       "posted_date": "March 13, 2026, 9:22pm UTC",
-      "job_type": "Tenured",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "26a7279a0b1535e9897a9ab8cb7ad39e",
-      "scraped_date": "2026-03-16T09:54:51.345840"
+      "scraped_date": "2026-03-16T09:54:51.345840",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31081",
@@ -3247,11 +4358,22 @@
       "deadline": "May 1, 2026, 11:59pm PST",
       "contact_email": "",
       "posted_date": "March 13, 2026, 9:21pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "11e1008dbfbc0b87d7bd8b250cb779da",
-      "scraped_date": "2026-03-16T09:54:52.033234"
+      "scraped_date": "2026-03-16T09:54:52.033234",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31061",
@@ -3283,11 +4405,22 @@
       "deadline": "May 10, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "March 11, 2026, 9:14pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "6647c703667b96d63560ab53a741282f",
-      "scraped_date": "2026-03-16T09:54:52.861112"
+      "scraped_date": "2026-03-16T09:54:52.861112",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31065",
@@ -3316,11 +4449,22 @@
       "deadline": "March 24, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "March 11, 2026, 9:13pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "6b30f9b346c938454e370dae36aa1ae4",
-      "scraped_date": "2026-03-16T09:54:53.668854"
+      "scraped_date": "2026-03-16T09:54:53.668854",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31069",
@@ -3351,11 +4495,22 @@
       "deadline": "May 1, 2026, 5:00pm EST",
       "contact_email": "",
       "posted_date": "March 11, 2026, 9:12pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "623b720143e63c3b7b953bd49778511f",
-      "scraped_date": "2026-03-16T09:54:54.473721"
+      "scraped_date": "2026-03-16T09:54:54.473721",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31053",
@@ -3380,11 +4535,22 @@
       "deadline": "April 2, 2026, 11:59pm BST",
       "contact_email": "",
       "posted_date": "March 10, 2026, 5:44pm UTC",
-      "job_type": "Adjunct/Visiting",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "37e8e8625f223feeb0359d5ab1856aea",
-      "scraped_date": "2026-03-16T09:54:55.168234"
+      "scraped_date": "2026-03-16T09:54:55.168234",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31057",
@@ -3412,11 +4578,22 @@
       "deadline": "April 10, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "March 10, 2026, 5:44pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "c49b120ced5108d13618adf3dc371f58",
-      "scraped_date": "2026-03-16T09:54:55.859380"
+      "scraped_date": "2026-03-16T09:54:55.859380",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31145",
@@ -3443,11 +4620,22 @@
       "application_url": "https://careers.hprod.onehcm.usg.edu/psp/careers/C...",
       "deadline": "April 20, 2026, 11:59pm EST",
       "posted_date": "Yesterday, 3:36pm UTC",
-      "job_type": "Adjunct/Visiting",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "d03b657804593cda8707fd6e63d4884d",
-      "scraped_date": "2026-03-21T16:36:26.332841"
+      "scraped_date": "2026-03-21T16:36:26.332841",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31149",
@@ -3475,11 +4663,22 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "Yesterday, 3:29pm UTC",
-      "job_type": "Tenure-track",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "4bac4ae9677a0ceaad516d74181b52a9",
-      "scraped_date": "2026-03-21T16:36:27.121407"
+      "scraped_date": "2026-03-21T16:36:27.121407",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31153",
@@ -3512,11 +4711,22 @@
       "deadline": "April 6, 2026, 6:00pm CST",
       "contact_email": "",
       "posted_date": "Yesterday, 3:10pm UTC",
-      "job_type": "Adjunct/Visiting",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "fae83183ff0c8d60813b75161b7218ac",
-      "scraped_date": "2026-03-21T16:36:27.795816"
+      "scraped_date": "2026-03-21T16:36:27.795816",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31157",
@@ -3551,11 +4761,22 @@
       "deadline": "April 6, 2026, 6:00pm CST",
       "contact_email": "",
       "posted_date": "Yesterday, 3:10pm UTC",
-      "job_type": "Adjunct/Visiting",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "fae83183ff0c8d60813b75161b7218ac",
-      "scraped_date": "2026-03-21T16:36:28.495892"
+      "scraped_date": "2026-03-21T16:36:28.495892",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31141",
@@ -3585,11 +4806,22 @@
       "application_url": "https://apptrkr.com/7011274",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "March 19, 2026, 7:26pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "02da642409eabbad1e9aca0a05f4c8cc",
-      "scraped_date": "2026-03-21T16:36:29.295697"
+      "scraped_date": "2026-03-21T16:36:29.295697",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31129",
@@ -3617,10 +4849,21 @@
       "contact_email": "",
       "posted_date": "March 18, 2026, 9:02pm UTC",
       "job_type": "Other",
-      "institution_type": "Research University",
+      "institution_type": "Other",
       "status": "active",
       "hash": "e6ca85b4efbfeafbd8c967e5d6ead78e",
-      "scraped_date": "2026-03-21T16:36:30.092842"
+      "scraped_date": "2026-03-21T16:36:30.092842",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31133",
@@ -3646,11 +4889,22 @@
       "deadline": "May 6, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "March 18, 2026, 9:02pm UTC",
-      "job_type": "Tenured",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "d26665ca8a89d7503a76971b36be7726",
-      "scraped_date": "2026-03-21T16:36:30.725658"
+      "scraped_date": "2026-03-21T16:36:30.725658",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31125",
@@ -3675,11 +4929,22 @@
       "deadline": "March 30, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "March 17, 2026, 9:20pm UTC",
-      "job_type": "Adjunct/Visiting",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "30a9cff0db56242ba019c37b4e8be61c",
-      "scraped_date": "2026-03-21T16:36:31.432738"
+      "scraped_date": "2026-03-21T16:36:31.432738",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31121",
@@ -3707,7 +4972,18 @@
       "institution_type": "Other",
       "status": "active",
       "hash": "82578333bd17e3bda9c148bb73162412",
-      "scraped_date": "2026-03-21T16:36:32.046826"
+      "scraped_date": "2026-03-21T16:36:32.046826",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31117",
@@ -3734,11 +5010,22 @@
       "deadline": "April 1, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "March 16, 2026, 3:55pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "a5316cf673383f1e6cf5326202695455",
-      "scraped_date": "2026-03-21T16:36:32.749964"
+      "scraped_date": "2026-03-21T16:36:32.749964",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31113",
@@ -3765,11 +5052,22 @@
       "application_type": "Email",
       "deadline": "April 8, 2026, 11:59pm CET",
       "posted_date": "March 16, 2026, 3:53pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "105e2370d260cb9a87a9cbc89bc97a2d",
-      "scraped_date": "2026-03-21T16:36:33.556274"
+      "scraped_date": "2026-03-21T16:36:33.556274",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31105",
@@ -3797,11 +5095,22 @@
       "application_url": "https://www.bristol.ac.uk/jobs/find/details/?jobId...",
       "deadline": "April 9, 2026, 11:59pm BST",
       "posted_date": "March 16, 2026, 3:51pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "5d96955300e84f33418f03781c378881",
-      "scraped_date": "2026-03-21T16:36:34.223445"
+      "scraped_date": "2026-03-21T16:36:34.223445",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31101",
@@ -3830,11 +5139,22 @@
       "application_url": "https://www.bristol.ac.uk/jobs/find/details/?jobId...",
       "deadline": "April 9, 2026, 11:59pm BST",
       "posted_date": "March 16, 2026, 3:51pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "875053637cf7e67e4b5d51cc50ed158f",
-      "scraped_date": "2026-03-21T16:36:34.850108"
+      "scraped_date": "2026-03-21T16:36:34.850108",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31097",
@@ -3863,11 +5183,22 @@
       "deadline": "April 30, 2026, 11:59pm BST",
       "contact_email": "",
       "posted_date": "March 16, 2026, 3:40pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "5c932a85ee5168b6b08cf9d90e6df2cf",
-      "scraped_date": "2026-03-21T16:36:35.549224"
+      "scraped_date": "2026-03-21T16:36:35.549224",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31093",
@@ -3895,11 +5226,22 @@
       "deadline": "April 20, 2026, 11:59pm BST",
       "contact_email": "",
       "posted_date": "March 16, 2026, 3:39pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "0340f3270a0648ba241275a359bdd00a",
-      "scraped_date": "2026-03-21T16:36:36.250611"
+      "scraped_date": "2026-03-21T16:36:36.250611",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31089",
@@ -3927,11 +5269,22 @@
       "deadline": "April 20, 2026, 11:59pm BST",
       "contact_email": "",
       "posted_date": "March 16, 2026, 3:38pm UTC",
-      "job_type": "Postdoc",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "928521fd6890e75cdca2506ec4436d75",
-      "scraped_date": "2026-03-21T16:36:36.977820"
+      "scraped_date": "2026-03-21T16:36:36.977820",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31085",
@@ -3961,10 +5314,21 @@
       "deadline": "April 15, 2026, 11:59pm BST",
       "posted_date": "March 16, 2026, 3:36pm UTC",
       "job_type": "Other",
-      "institution_type": "Research University",
+      "institution_type": "Other",
       "status": "active",
       "hash": "5a9098c05847ab6daa06a26526b37619",
-      "scraped_date": "2026-03-21T16:36:37.768983"
+      "scraped_date": "2026-03-21T16:36:37.768983",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     },
     {
       "id": "31073",
@@ -3993,11 +5357,22 @@
       "deadline": "May 12, 2026, 11:59pm IST",
       "contact_email": "",
       "posted_date": "March 13, 2026, 9:22pm UTC",
-      "job_type": "Adjunct/Visiting",
-      "institution_type": "Research University",
+      "job_type": "Other",
+      "institution_type": "Other",
       "status": "active",
       "hash": "1454710360511732b1b5271bda1ee439",
-      "scraped_date": "2026-03-21T16:36:38.424857"
+      "scraped_date": "2026-03-21T16:36:38.424857",
+      "classification": {
+        "main_aos": [
+          "Open"
+        ],
+        "detail_aos": {
+          "Open": []
+        },
+        "position_type": "Other",
+        "institution_type": "Other",
+        "reasoning": "classification_failed"
+      }
     }
   ],
   "weekly_snapshots": [
@@ -4146,84 +5521,50 @@
         "31085",
         "31073"
       ]
+    },
+    {
+      "date": "2026-03-21",
+      "total_jobs": 100,
+      "new_jobs": 0,
+      "new_job_ids": []
     }
   ],
   "weekly_trends": [
     {
       "date": "2026-03-10",
       "new_jobs_count": 100,
-      "aos_counts": {
-        "environmental ethics": 1,
-        "aos: open": 1,
-        "work": 1,
-        "ethics": 27,
-        "social and political philosophy": 7,
-        "jurisprudence": 1,
-        "aesthetics": 2,
-        "philosophy of mind": 8,
-        "history of philosophy": 2,
-        "continental philosophy": 2,
-        "asian philosophy": 1,
-        "logic": 4,
-        "philosophy of science": 8,
-        "technology": 1,
-        "philosophy of religion": 3,
-        "mathematics": 1,
-        "computing": 2,
-        "philosophy": 6,
-        "social": 5,
-        "early modern philosophy": 6,
-        "core philosophy": 1,
-        "philosophy of law": 1,
-        "philosophy of physics": 4,
-        "neuroscience": 1,
-        "humanities": 1,
-        "pharmacy": 1,
-        "medicine)": 1,
-        "perception": 1,
-        "epistemology": 6,
-        "decision theory": 2,
-        "metaphysics": 2,
-        "philosophy of language": 2,
-        "rationality": 1,
-        "action": 1,
-        "civic education": 1,
-        "citizenship": 1,
-        "ancient philosophy": 3,
-        "statistics": 1,
-        "elsi genetics": 1,
-        "ppe": 4,
-        "related areas": 1,
-        "formal": 1,
-        "empirical": 1,
-        "early": 1,
-        "ancient": 1,
-        "agriculture": 1,
-        "food systems": 1,
-        "philosophy of artificial intelligence": 1,
-        "resilience": 1,
-        "community": 1,
-        "public philosophy": 1,
-        "philosophy of technology": 3,
-        "history": 1,
-        "science": 1,
-        "a related field": 1,
-        "law": 1,
-        "cog sci": 1,
-        "research": 1,
-        "etc.": 1,
-        "french and": 1
+      "main_aos_counts": {
+        "Open": 100
       },
-      "job_type_counts": {
-        "Tenure-track": 33,
-        "Adjunct/Visiting": 9,
-        "Tenured": 13,
-        "Postdoc": 43,
-        "Other": 2
+      "detail_aos_counts": {},
+      "position_type_counts": {
+        "Other": 100
+      },
+      "position_type_by_aos": {
+        "Open": {
+          "Other": 100
+        }
+      },
+      "job_category_counts": {
+        "Junior faculty / Fixed term": 13,
+        "Other (non-academic) / Tenured, continuing or permanent": 3,
+        "Senior faculty / Tenured, continuing or permanent": 7,
+        "Visiting fellowship / Professorship / Fixed term": 12,
+        "Postdoc or similar / Fixed term": 28,
+        "Junior faculty / Tenured, continuing or permanent": 3,
+        "Faculty (open rank) / Contract type open": 3,
+        "Graduate fellowship / Fixed term": 10,
+        "Other (non-academic) / Fixed term": 1,
+        "Faculty (open rank) / Tenured, continuing or permanent": 3,
+        "Junior faculty / Tenure-track or similar": 7,
+        "Faculty (open rank) / Tenure-track or similar": 4,
+        "Faculty (open rank) / Fixed term": 1,
+        "Senior faculty / Tenure-track or similar": 3,
+        "Administration (non-academic) / Tenure-track or similar": 1,
+        "Administration (non-academic) / Tenured, continuing or permanent": 1
       },
       "institution_type_counts": {
-        "Research University": 90,
-        "Other": 10
+        "Other": 100
       },
       "state_counts": {
         "TX": 5,
@@ -4274,20 +5615,17 @@
     {
       "date": "2026-03-16",
       "new_jobs_count": 7,
-      "aos_counts": {
-        "philosophy": 1,
-        "history": 1,
-        "ethics": 1,
-        "history of philosophy": 1,
-        "philosophy of science": 1,
-        "moral": 1,
-        "social and political philosophy": 1
+      "main_aos_counts": {
+        "Open": 7
       },
-      "job_type_counts": {
-        "Tenured": 1,
-        "Postdoc": 3,
-        "Tenure-track": 2,
-        "Adjunct/Visiting": 1
+      "detail_aos_counts": {},
+      "position_type_counts": {
+        "Other": 7
+      },
+      "position_type_by_aos": {
+        "Open": {
+          "Other": 7
+        }
       },
       "job_category_counts": {
         "Faculty (open rank) / Fixed term": 1,
@@ -4297,7 +5635,7 @@
         "Junior faculty / Fixed term": 1
       },
       "institution_type_counts": {
-        "Research University": 7
+        "Other": 7
       },
       "state_counts": {
         "CA": 1,
@@ -4316,31 +5654,17 @@
     {
       "date": "2026-03-21",
       "new_jobs_count": 18,
-      "aos_counts": {
-        "ethics": 3,
-        "technology": 1,
-        "philosophy": 3,
-        "literature": 1,
-        "epistemology": 4,
-        "philosophy of mind": 2,
-        "philosophy of mathematics": 1,
-        "social": 2,
-        "social and political philosophy": 2,
-        "history of philosophy": 2,
-        "philosophy of language": 2,
-        "philosophy of science": 4,
-        "value theory": 1,
-        "linguistics": 1,
-        "philosophy of artificial intelligence": 1,
-        "politics": 1,
-        "law": 1
+      "main_aos_counts": {
+        "Open": 18
       },
-      "job_type_counts": {
-        "Adjunct/Visiting": 5,
-        "Tenure-track": 1,
-        "Postdoc": 8,
-        "Other": 3,
-        "Tenured": 1
+      "detail_aos_counts": {},
+      "position_type_counts": {
+        "Other": 18
+      },
+      "position_type_by_aos": {
+        "Open": {
+          "Other": 18
+        }
       },
       "job_category_counts": {
         "Junior faculty / Fixed term": 5,
@@ -4353,8 +5677,7 @@
         "Other (non-academic) / Fixed term": 1
       },
       "institution_type_counts": {
-        "Research University": 17,
-        "Other": 1
+        "Other": 18
       },
       "state_counts": {
         "GA": 1,
