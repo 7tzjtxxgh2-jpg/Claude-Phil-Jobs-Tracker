@@ -182,6 +182,7 @@ Return ONLY a JSON object with these fields:
 - detail_aos: object mapping each main_aos entry to array of applicable detail subcategories (use [] if none clearly apply)
 - position_type: exactly one of the five values below — read the title, job category, and description carefully
 - institution_type: one of "Research University", "Teaching College", "Other"
+- state_us: 2-letter US state code if the institution is in the United States (e.g. "NY", "CA"), or "INTERNATIONAL" if outside the US
 - reasoning: 1-2 sentence explanation
 
 POSITION TYPE — pick exactly one:
@@ -524,6 +525,13 @@ class PhilJobsScraper:
                     result['position_type'] = 'Other'
                 result.pop('job_type', None)  # remove old field
 
+                # Validate state_us
+                raw_state = (result.get('state_us') or '').strip().upper()
+                if len(raw_state) == 2 and raw_state.isalpha():
+                    result['state_us'] = raw_state
+                else:
+                    result['state_us'] = 'INTERNATIONAL'
+
                 time.sleep(0.5)
                 return result
 
@@ -577,6 +585,11 @@ class PhilJobsScraper:
             # Sync top-level fields for backward compatibility
             job['job_type'] = classification.get('position_type', 'Other')
             job['institution_type'] = classification.get('institution_type', 'Other')
+            # Populate state from Claude if scraper couldn't parse it
+            if not job.get('state'):
+                state_us = classification.get('state_us', '')
+                if state_us and state_us != 'INTERNATIONAL':
+                    job['state'] = state_us
             classified_count += 1
 
             # Checkpoint save every 10 jobs
@@ -593,6 +606,59 @@ class PhilJobsScraper:
 
         print(f"✓ Classified {classified_count} jobs")
         return classified_count
+
+    def resolve_missing_states(self, historical_data) -> int:
+        """Use Claude to resolve the US state for jobs where state is missing."""
+        api_key = os.environ.get('ANTHROPIC_API_KEY')
+        if not api_key:
+            return 0
+        try:
+            import anthropic
+            client = anthropic.Anthropic(api_key=api_key)
+        except ImportError:
+            return 0
+
+        jobs_needing_state = [j for j in historical_data.get('jobs', []) if not j.get('state')]
+        if not jobs_needing_state:
+            return 0
+
+        print(f"Resolving state for {len(jobs_needing_state)} jobs via Claude...")
+        resolved = 0
+        for job in jobs_needing_state:
+            prompt = (
+                f"What US state is this institution located in?\n"
+                f"Reply with ONLY the 2-letter state code (e.g. \"NY\") "
+                f"or \"INTERNATIONAL\" if not in the United States.\n\n"
+                f"Institution: {job.get('institution', '')}\n"
+                f"Location: {job.get('location', '')}"
+            )
+            for attempt in range(3):
+                try:
+                    response = client.messages.create(
+                        model="claude-haiku-4-5-20251001",
+                        max_tokens=10,
+                        temperature=0,
+                        messages=[{"role": "user", "content": prompt}]
+                    )
+                    answer = response.content[0].text.strip().upper().strip('"\'')
+                    if answer == 'INTERNATIONAL':
+                        job['state'] = None  # already None, mark as confirmed international
+                        break
+                    elif len(answer) == 2 and answer.isalpha():
+                        job['state'] = answer
+                        resolved += 1
+                        break
+                except Exception:
+                    if attempt < 2:
+                        time.sleep(1)
+            time.sleep(0.3)
+
+        if resolved:
+            all_data_file = self.data_dir / "all_jobs.json"
+            with open(all_data_file, 'w') as f:
+                json.dump(historical_data, f, indent=2)
+            print(f"✓ Resolved state for {resolved} jobs")
+        return resolved
 
     def rebuild_weekly_trends(self, historical_data):
         """Rebuild weekly_trends from classified jobs grouped by scraped_date."""
@@ -2048,6 +2114,10 @@ def main():
                 job['classification'] = classification
                 job['job_type'] = classification.get('position_type', 'Other')
                 job['institution_type'] = classification.get('institution_type', 'Other')
+                if not job.get('state'):
+                    state_us = classification.get('state_us', '')
+                    if state_us and state_us != 'INTERNATIONAL':
+                        job['state'] = state_us
 
     # 5. Migrate/reclassify any existing jobs without classification, with old labels, or that previously failed
     unclassified = [j for j in historical_data['jobs']
@@ -2069,15 +2139,17 @@ def main():
             with open(all_data_file, 'w') as f:
                 json.dump(historical_data, f, indent=2)
 
-    # 6. Compute co-occurrence
-    print("\nComputing co-occurrence data...")
-    scraper.compute_cooccurrence(historical_data)
+    # 6. Resolve missing states via Claude
+    state_resolved = scraper.resolve_missing_states(historical_data)
+    if state_resolved:
+        print("Rebuilding weekly trends after state resolution...")
+        scraper.rebuild_weekly_trends(historical_data)
 
-    # 7. Generate dashboard
+    # 8. Generate dashboard
     print("\nGenerating comprehensive dashboard...")
     scraper.generate_trend_dashboard(historical_data)
 
-    # 8. Generate report + CSV
+    # 9. Generate report + CSV
     print("\nGenerating report...")
     scraper.generate_report(new_jobs, snapshot, weekly_trend, historical_data)
 
