@@ -61,6 +61,60 @@ US_REGIONS = {
     'Midwest': ['OH', 'IN', 'IL', 'MI', 'WI', 'MN', 'IA', 'MO', 'ND', 'SD', 'NE', 'KS'],
 }
 
+INTL_REGIONS = {
+    'Europe': [
+        'United Kingdom', 'Germany', 'France', 'Netherlands', 'Belgium', 'Switzerland',
+        'Austria', 'Sweden', 'Norway', 'Denmark', 'Finland', 'Italy', 'Spain', 'Portugal',
+        'Ireland', 'Czech Republic', 'Poland', 'Hungary', 'Greece', 'Romania', 'Russia',
+        'Ukraine', 'Slovakia', 'Slovenia', 'Croatia', 'Serbia', 'Estonia', 'Latvia',
+        'Lithuania', 'Luxembourg', 'Malta', 'Iceland',
+    ],
+    'Canada': ['Canada'],
+    'Asia-Pacific': [
+        'Australia', 'New Zealand', 'Japan', 'Singapore', 'South Korea', 'China',
+        'Hong Kong', 'Taiwan', 'India', 'Thailand', 'Malaysia', 'Philippines',
+        'Indonesia', 'Vietnam', 'Pakistan',
+    ],
+    'Latin America': [
+        'Mexico', 'Brazil', 'Argentina', 'Chile', 'Colombia', 'Peru', 'Venezuela',
+        'Ecuador', 'Guatemala', 'Cuba', 'Bolivia', 'Haiti', 'Dominican Republic',
+        'Honduras', 'Paraguay', 'El Salvador', 'Nicaragua', 'Costa Rica', 'Panama',
+        'Puerto Rico', 'Uruguay',
+    ],
+    'Middle East & Africa': [
+        'Israel', 'United Arab Emirates', 'UAE', 'Saudi Arabia', 'Qatar', 'Turkey',
+        'Jordan', 'Lebanon', 'Kuwait', 'Bahrain', 'Oman', 'South Africa', 'Egypt',
+        'Nigeria', 'Kenya', 'Ghana', 'Ethiopia', 'Morocco', 'Tunisia',
+    ],
+}
+
+COUNTRY_NUMERIC = {
+    'United Kingdom': '826', 'Germany': '276', 'France': '250', 'Netherlands': '528',
+    'Belgium': '056', 'Switzerland': '756', 'Austria': '040', 'Sweden': '752',
+    'Norway': '578', 'Denmark': '208', 'Finland': '246', 'Italy': '380', 'Spain': '724',
+    'Portugal': '620', 'Ireland': '372', 'Czech Republic': '203', 'Poland': '616',
+    'Hungary': '348', 'Greece': '300', 'Romania': '642', 'Russia': '643',
+    'Ukraine': '804', 'Slovakia': '703', 'Slovenia': '705', 'Croatia': '191',
+    'Serbia': '688', 'Estonia': '233', 'Latvia': '428', 'Lithuania': '440',
+    'Luxembourg': '442', 'Malta': '470', 'Iceland': '352',
+    'Canada': '124',
+    'Mexico': '484', 'Brazil': '076', 'Argentina': '032', 'Chile': '152',
+    'Colombia': '170', 'Peru': '604', 'Venezuela': '862', 'Ecuador': '218',
+    'Guatemala': '320', 'Cuba': '192', 'Bolivia': '068', 'Haiti': '332',
+    'Dominican Republic': '214', 'Honduras': '340', 'Paraguay': '600',
+    'El Salvador': '222', 'Nicaragua': '558', 'Costa Rica': '188',
+    'Panama': '591', 'Uruguay': '858',
+    'Australia': '036', 'New Zealand': '554', 'Japan': '392', 'Singapore': '702',
+    'South Korea': '410', 'China': '156', 'Hong Kong': '344', 'Taiwan': '158',
+    'India': '356', 'Thailand': '764', 'Malaysia': '458', 'Philippines': '608',
+    'Indonesia': '360', 'Vietnam': '704', 'Pakistan': '586',
+    'Israel': '376', 'Turkey': '792', 'Jordan': '400', 'Lebanon': '422',
+    'Kuwait': '414', 'Bahrain': '048', 'Oman': '512',
+    'United Arab Emirates': '784', 'UAE': '784', 'Saudi Arabia': '682', 'Qatar': '634',
+    'South Africa': '710', 'Egypt': '818', 'Nigeria': '566', 'Kenya': '404',
+    'Ghana': '288', 'Ethiopia': '231', 'Morocco': '504', 'Tunisia': '788',
+}
+
 # ── New Taxonomy ────────────────────────────────────────────────────────────
 
 MAIN_AOS_CATEGORIES = [
@@ -841,6 +895,146 @@ class PhilJobsScraper:
         print(f"✓ Co-occurrence data saved to {cooc_file}")
         return result
 
+    # ── Dashboard helpers ──────────────────────────────────────────────────
+
+    def _compute_cooc_from_jobs(self, jobs):
+        """Compute co-occurrence data from a filtered list of jobs (no file I/O)."""
+        main_aos_matrix = defaultdict(lambda: defaultdict(int))
+        main_aos_solo_vs_joint = defaultdict(lambda: {'solo': 0, 'joint': 0})
+        detail_aos_by_context = defaultdict(
+            lambda: {'solo': defaultdict(int), 'with_others': defaultdict(int), 'total': 0}
+        )
+        cc_totals = {area: 0 for area in CROSS_CUTTING_AREAS}
+        cc_by_main = {area: defaultdict(int) for area in CROSS_CUTTING_AREAS}
+        cc_weekly = {area: defaultdict(int) for area in CROSS_CUTTING_AREAS}
+
+        for job in jobs:
+            classification = job.get('classification')
+            if not classification:
+                continue
+            main_list = classification.get('main_aos', [])
+            detail_dict = classification.get('detail_aos', {})
+            week = job.get('scraped_date', '')[:10]
+
+            for m1 in main_list:
+                for m2 in main_list:
+                    if m1 != m2:
+                        main_aos_matrix[m1][m2] += 1
+
+            if len(main_list) == 1:
+                main_aos_solo_vs_joint[main_list[0]]['solo'] += 1
+            elif len(main_list) > 1:
+                for m in main_list:
+                    main_aos_solo_vs_joint[m]['joint'] += 1
+
+            for main, details in detail_dict.items():
+                for detail in details:
+                    ctx = detail_aos_by_context[detail]
+                    ctx['total'] += 1
+                    if len(main_list) == 1:
+                        ctx['solo'][main] += 1
+                    else:
+                        for other_main in main_list:
+                            if other_main != main:
+                                ctx['with_others'][other_main] += 1
+
+            for main, details in detail_dict.items():
+                for detail in details:
+                    if detail in CROSS_CUTTING_AREAS:
+                        cc_totals[detail] += 1
+                        cc_weekly[detail][week] += 1
+                        for other_main in main_list:
+                            cc_by_main[detail][other_main] += 1
+
+        all_weeks = sorted({w for area in CROSS_CUTTING_AREAS for w in cc_weekly[area]})
+        cross_cutting_final = {}
+        for area in CROSS_CUTTING_AREAS:
+            cross_cutting_final[area] = {
+                'total': cc_totals[area],
+                'by_main': dict(cc_by_main[area]),
+                'weekly': {w: cc_weekly[area].get(w, 0) for w in all_weeks},
+            }
+
+        return {
+            'main_aos_matrix': {k: dict(v) for k, v in main_aos_matrix.items()},
+            'main_aos_solo_vs_joint': {k: dict(v) for k, v in main_aos_solo_vs_joint.items()},
+            'detail_aos_by_context': {
+                k: {'solo': dict(v['solo']), 'with_others': dict(v['with_others']), 'total': v['total']}
+                for k, v in detail_aos_by_context.items()
+            },
+            'cross_cutting_areas': cross_cutting_final,
+        }
+
+    def _compute_weekly_series(self, jobs_by_date, dates):
+        """Compute per-week chart series from jobs grouped by date key (YYYY-MM-DD)."""
+        parent_categories = {
+            cat: {'data': [], 'subcategories': DETAIL_AOS.get(cat, []), 'color': MAIN_AOS_COLORS.get(cat, '#6b7280')}
+            for cat in MAIN_AOS_CATEGORIES
+        }
+        subcategory_data = {
+            detail: []
+            for cat in MAIN_AOS_CATEGORIES
+            for detail in DETAIL_AOS.get(cat, [])
+        }
+        job_type_series = {pt: [] for pt in POSITION_TYPES}
+        position_type_by_aos_weekly = {
+            aos: {pt: [] for pt in POSITION_TYPES}
+            for aos in MAIN_AOS_CATEGORIES
+        }
+        inst_type_series = {'Research University': [], 'Teaching College': [], 'Other': []}
+        total_new_jobs_weekly = []
+
+        for date in dates:
+            date_key = date[:10]
+            week_jobs = jobs_by_date.get(date_key, [])
+            total_new_jobs_weekly.append(len(week_jobs))
+
+            main_counts = defaultdict(int)
+            detail_counts = defaultdict(int)
+            pt_counts = defaultdict(int)
+            pt_by_aos = defaultdict(lambda: defaultdict(int))
+            it_counts = defaultdict(int)
+
+            for job in week_jobs:
+                cls = job.get('classification') or {}
+                main_list = cls.get('main_aos', ['Open'])
+                for main in main_list:
+                    main_counts[main] += 1
+                for main, details in cls.get('detail_aos', {}).items():
+                    for detail in details:
+                        detail_counts[f"{main}::{detail}"] += 1
+                raw_pt = (cls.get('position_type')
+                          or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
+                          or job.get('job_type', 'Other'))
+                pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
+                pt_counts[pos_type] += 1
+                for main in main_list:
+                    pt_by_aos[main][pos_type] += 1
+                it = cls.get('institution_type') or job.get('institution_type', 'Other')
+                it_counts[it] += 1
+
+            for cat in MAIN_AOS_CATEGORIES:
+                parent_categories[cat]['data'].append(main_counts.get(cat, 0))
+            for cat in MAIN_AOS_CATEGORIES:
+                for detail in DETAIL_AOS.get(cat, []):
+                    subcategory_data[detail].append(detail_counts.get(f"{cat}::{detail}", 0))
+            for pt in POSITION_TYPES:
+                job_type_series[pt].append(pt_counts.get(pt, 0))
+            for aos in MAIN_AOS_CATEGORIES:
+                for pt in POSITION_TYPES:
+                    position_type_by_aos_weekly[aos][pt].append(pt_by_aos.get(aos, {}).get(pt, 0))
+            for it in ['Research University', 'Teaching College', 'Other']:
+                inst_type_series[it].append(it_counts.get(it, 0))
+
+        return {
+            'parent_categories': parent_categories,
+            'subcategory_data': subcategory_data,
+            'job_type_series': job_type_series,
+            'position_type_by_aos_weekly': position_type_by_aos_weekly,
+            'inst_type_series': inst_type_series,
+            'total_new_jobs_weekly': total_new_jobs_weekly,
+        }
+
     # ── Dashboard ─────────────────────────────────────────────────────────
 
     def is_hiring_season(self, date_str):
@@ -848,148 +1042,105 @@ class PhilJobsScraper:
         return date.month >= 9 or date.month <= 1
 
     def generate_trend_dashboard(self, historical_data):
-        """Generate comprehensive HTML dashboard."""
+        """Generate US-only HTML dashboard (docs/index.html)."""
         trends = historical_data.get('weekly_trends', [])
         if not trends:
             print("No data available yet for dashboard visualization")
             return
 
+        all_jobs = historical_data.get('jobs', [])
         dates = [t['date'] for t in trends]
 
-        # ── Main AOS series (replaces old parent_categories) ────────────
-        parent_categories = {}
-        for cat in MAIN_AOS_CATEGORIES:
-            parent_categories[cat] = {
-                'data': [],
-                'subcategories': DETAIL_AOS.get(cat, []),
-                'color': MAIN_AOS_COLORS.get(cat, '#6b7280'),
-            }
-        total_new_jobs_weekly = []
-        for trend in trends:
-            main_counts = trend.get('main_aos_counts', {})
-            for cat in MAIN_AOS_CATEGORIES:
-                parent_categories[cat]['data'].append(main_counts.get(cat, 0))
-            total_new_jobs_weekly.append(trend.get('new_jobs_count', 0))
+        # ── Filter to US jobs only ───────────────────────────────────────
+        us_jobs = [j for j in all_jobs if j.get('state')]
 
-        # ── Detail AOS series (keyed by detail name) ────────────────────
-        subcategory_data = {}
-        for cat in MAIN_AOS_CATEGORIES:
-            for detail in DETAIL_AOS.get(cat, []):
-                subcategory_data[detail] = []
-        for trend in trends:
-            detail_counts = trend.get('detail_aos_counts', {})
-            for cat in MAIN_AOS_CATEGORIES:
-                for detail in DETAIL_AOS.get(cat, []):
-                    key = f"{cat}::{detail}"
-                    subcategory_data[detail].append(detail_counts.get(key, 0))
+        # Group US jobs by date key (YYYY-MM-DD)
+        jobs_by_date = defaultdict(list)
+        for job in us_jobs:
+            date_key = job.get('scraped_date', '')[:10]
+            jobs_by_date[date_key].append(job)
 
-        # ── Position type series (all AOS combined) ──────────────────────
-        job_type_series = {pt: [] for pt in POSITION_TYPES}
-        for trend in trends:
-            pt_counts = trend.get('position_type_counts', {})
-            for pt in POSITION_TYPES:
-                job_type_series[pt].append(pt_counts.get(pt, 0))
+        # ── Weekly series ────────────────────────────────────────────────
+        series = self._compute_weekly_series(jobs_by_date, dates)
+        parent_categories    = series['parent_categories']
+        subcategory_data     = series['subcategory_data']
+        job_type_series      = series['job_type_series']
+        position_type_by_aos_weekly = series['position_type_by_aos_weekly']
+        inst_type_series     = series['inst_type_series']
+        total_new_jobs_weekly = series['total_new_jobs_weekly']
 
-        # ── Position type broken down by AOS (for trend chart with filter) ─
-        position_type_by_aos_weekly = {}
-        for aos in MAIN_AOS_CATEGORIES:
-            position_type_by_aos_weekly[aos] = {pt: [] for pt in POSITION_TYPES}
-            for trend in trends:
-                by_aos = trend.get('position_type_by_aos', {})
-                aos_pt = by_aos.get(aos, {})
-                for pt in POSITION_TYPES:
-                    position_type_by_aos_weekly[aos][pt].append(aos_pt.get(pt, 0))
-
-        inst_types = ['Research University', 'Teaching College', 'Other']
-        inst_type_series = {it: [] for it in inst_types}
-        for trend in trends:
-            for it in inst_types:
-                inst_type_series[it].append(trend.get('institution_type_counts', {}).get(it, 0))
-
-        # ── Geographic data ──────────────────────────────────────────────
+        # ── Geographic data (US-specific) ────────────────────────────────
         state_data = {state: [] for state in US_STATES.values()}
-        for trend in trends:
-            sc = trend.get('state_counts', {})
+        west_coast_data = {city: [] for city in WEST_COAST_CITIES}
+        for date in dates:
+            date_key = date[:10]
+            week_jobs = jobs_by_date.get(date_key, [])
+            sc = defaultdict(int)
+            wc = defaultdict(int)
+            for job in week_jobs:
+                s = job.get('state')
+                if s:
+                    sc[s] += 1
+                    city = job.get('city', '')
+                    if s in ['CA', 'OR', 'WA'] and city:
+                        for wc_city in WEST_COAST_CITIES:
+                            if wc_city.lower() in city.lower():
+                                wc[wc_city] += 1
+                                break
             for state_code in US_STATES.values():
                 state_data[state_code].append(sc.get(state_code, 0))
-
-        west_coast_data = {}
-        for trend in trends:
-            for city, count in trend.get('west_coast_city_counts', {}).items():
-                west_coast_data.setdefault(city, []).append(count)
-
-        latin_america_countries = [
-            'Mexico', 'Brazil', 'Argentina', 'Chile', 'Colombia', 'Peru', 'Venezuela',
-            'Ecuador', 'Guatemala', 'Cuba', 'Bolivia', 'Haiti', 'Dominican Republic',
-            'Honduras', 'Paraguay', 'El Salvador', 'Nicaragua', 'Costa Rica', 'Panama',
-            'Puerto Rico', 'Uruguay'
-        ]
-        latin_data = {}
-        for trend in trends:
-            for country in latin_america_countries:
-                latin_data.setdefault(country, []).append(trend.get('country_counts', {}).get(country, 0))
+            for city in WEST_COAST_CITIES:
+                west_coast_data[city].append(wc.get(city, 0))
 
         region_data = {}
         for region, states in US_REGIONS.items():
-            series = []
+            series_r = []
             for i in range(len(dates)):
-                total = sum(
-                    state_data.get(s, [])[i] if i < len(state_data.get(s, [])) else 0
-                    for s in states
-                )
-                series.append(total)
-            region_data[region] = series
+                total = sum(state_data.get(s, [0] * len(dates))[i] for s in states)
+                series_r.append(total)
+            region_data[region] = series_r
 
         state_alltime = {s: sum(v) for s, v in state_data.items() if sum(v) > 0}
 
-        # ── Job category time series ─────────────────────────────────────
-        all_job_categories = sorted({
-            cat for t in trends for cat in t.get('job_category_counts', {}).keys()
-        })
-        job_category_series = {jc: [] for jc in all_job_categories}
-        for trend in trends:
-            for jc in all_job_categories:
-                job_category_series[jc].append(trend.get('job_category_counts', {}).get(jc, 0))
-
-        # ── Position type × AOS all-time totals (replaces Market Matrix) ──
-        pos_type_x_aos_map = defaultdict(lambda: defaultdict(int))
-        for job in historical_data.get('jobs', []):
-            classification = job.get('classification')
-            if classification:
-                raw_pt = (classification.get('position_type')
-                          or JOB_TYPE_MIGRATION.get(classification.get('job_type', ''), None)
-                          or job.get('job_type', 'Other'))
-                pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
-                for main in classification.get('main_aos', []):
-                    pos_type_x_aos_map[main][pos_type] += 1
-        pos_type_x_aos = {k: dict(v) for k, v in pos_type_x_aos_map.items()}
-
-        # ── State → main AOS breakdown ───────────────────────────────────
+        # ── State → AOS breakdown ────────────────────────────────────────
         state_cat_map = defaultdict(lambda: defaultdict(int))
-        for job in historical_data.get('jobs', []):
+        for job in us_jobs:
             s = job.get('state')
             if s:
-                classification = job.get('classification')
-                if classification:
-                    for main in classification.get('main_aos', []):
+                cls = job.get('classification')
+                if cls:
+                    for main in cls.get('main_aos', []):
                         state_cat_map[s][main] += 1
         state_category_data = {k: dict(v) for k, v in state_cat_map.items()}
 
-        # ── Co-occurrence data ───────────────────────────────────────────
-        cooc_file = self.data_dir / 'co_occurrence.json'
-        if cooc_file.exists():
-            with open(cooc_file) as f:
-                cooc = json.load(f)
-        else:
-            cooc = self.compute_cooccurrence(historical_data)
+        # ── Position type × AOS all-time ─────────────────────────────────
+        pos_type_x_aos_map = defaultdict(lambda: defaultdict(int))
+        for job in us_jobs:
+            cls = job.get('classification')
+            if cls:
+                raw_pt = (cls.get('position_type')
+                          or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
+                          or job.get('job_type', 'Other'))
+                pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
+                for main in cls.get('main_aos', []):
+                    pos_type_x_aos_map[main][pos_type] += 1
+        pos_type_x_aos = {k: dict(v) for k, v in pos_type_x_aos_map.items()}
 
-        # ── Summary stats ────────────────────────────────────────────────
-        current_week_new_jobs = trends[-1]['new_jobs_count']
-        total_unique_jobs = len(historical_data['jobs'])
-        weeks_tracked = len(trends)
+        # ── Co-occurrence ─────────────────────────────────────────────────
+        cooc = self._compute_cooc_from_jobs(us_jobs)
 
-        # Most active main AOS this week
-        last_main = trends[-1].get('main_aos_counts', {})
+        # ── Summary stats ─────────────────────────────────────────────────
+        last_date_key = dates[-1][:10] if dates else ''
+        last_week_jobs = jobs_by_date.get(last_date_key, [])
+        current_week_new_jobs = len(last_week_jobs)
+        total_unique_jobs = len(us_jobs)
+        weeks_tracked = len(dates)
+
+        last_main = defaultdict(int)
+        for job in last_week_jobs:
+            cls = job.get('classification') or {}
+            for main in cls.get('main_aos', ['Open']):
+                last_main[main] += 1
         most_active = max(last_main, key=last_main.get) if last_main else "—"
 
         seasonal_markers = []
@@ -997,19 +1148,19 @@ class PhilJobsScraper:
             if self.is_hiring_season(date):
                 seasonal_markers.append({'index': i, 'label': 'Hiring Season'})
 
-        # ── Pre-serialise complex JS objects (avoids {{}} double-brace issue inside f-strings) ──
+        # ── Pre-serialise complex JS objects ─────────────────────────────
         categories_js = json.dumps({
             k: {'name': k, 'data': v['data'], 'subcategories': v['subcategories'], 'color': v['color']}
             for k, v in parent_categories.items()
         })
 
-        # ── Build HTML ───────────────────────────────────────────────────
+        # ── Build HTML ────────────────────────────────────────────────────
         html = f'''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Philosophy Job Market Analytics</title>
+    <title>US Philosophy Job Market Analytics</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
@@ -1025,10 +1176,19 @@ class PhilJobsScraper:
     </style>
 </head>
 <body class="bg-gray-50">
+    <!-- Tab Navigation -->
+    <div class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex gap-1 py-2">
+                <a href="index.html" class="px-5 py-2 text-sm font-semibold rounded-lg bg-indigo-600 text-white">🇺🇸 US Market</a>
+                <a href="international.html" class="px-5 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 transition-colors">🌍 International</a>
+            </div>
+        </div>
+    </div>
     <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <h1 class="text-4xl font-bold mb-2">Philosophy Job Market Analytics</h1>
-            <p class="text-indigo-100">Real-time trends and insights from PhilJobs</p>
+            <h1 class="text-4xl font-bold mb-2">US Philosophy Job Market Analytics</h1>
+            <p class="text-indigo-100">Real-time trends from PhilJobs — U.S. institutions only</p>
             <div class="mt-6 text-sm text-indigo-100">Last updated: {datetime.now().strftime("%B %d, %Y")}</div>
         </div>
     </div>
@@ -1039,11 +1199,11 @@ class PhilJobsScraper:
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
             <div class="stat-card rounded-xl shadow-lg p-6 text-white col-span-2 md:col-span-1">
                 <div class="text-3xl font-bold">{current_week_new_jobs}</div>
-                <div class="text-indigo-100">New Jobs This Week</div>
+                <div class="text-indigo-100">New US Jobs This Week</div>
             </div>
             <div class="bg-white rounded-xl shadow-lg p-6">
                 <div class="text-3xl font-bold text-gray-800">{total_unique_jobs}</div>
-                <div class="text-gray-600">Total Unique Jobs</div>
+                <div class="text-gray-600">Total US Jobs Tracked</div>
             </div>
             <div class="bg-white rounded-xl shadow-lg p-6">
                 <div class="text-2xl font-bold text-gray-800 truncate">{most_active}</div>
@@ -1058,7 +1218,7 @@ class PhilJobsScraper:
         <!-- Market Overview -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-2">Market Overview</h2>
-            <p class="text-sm text-gray-500 mb-4">New jobs per week by main AOS category — shaded areas = hiring season (Sept–Jan)</p>
+            <p class="text-sm text-gray-500 mb-4">New US jobs per week by main AOS category — shaded areas = hiring season (Sept–Jan)</p>
             <div class="chart-container">
                 <canvas id="mainChart"></canvas>
             </div>
@@ -1103,29 +1263,15 @@ class PhilJobsScraper:
             <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800">Geographic Overview</h2>
-                    <p class="text-sm text-gray-500 mt-1">Click any state for a detailed breakdown</p>
+                    <p class="text-sm text-gray-500 mt-1">Click any state for a detailed breakdown — West Coast highlighted in blue</p>
                 </div>
                 <div class="flex gap-2">
                     <button id="mapModeNew" onclick="setMapMode('current')" class="px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white">New This Week</button>
                     <button id="mapModeAll" onclick="setMapMode('alltime')" class="px-4 py-2 text-sm font-medium rounded-lg bg-gray-200 text-gray-700">All-Time</button>
                 </div>
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div>
-                    <div class="flex items-center gap-2 mb-2">
-                        <h3 class="text-lg font-semibold text-gray-700">United States</h3>
-                        <span class="text-xs text-blue-600 font-medium bg-blue-50 px-2 py-0.5 rounded-full">West Coast highlighted</span>
-                    </div>
-                    <div id="usMapEl" class="bg-gray-50 rounded-lg overflow-hidden" style="height:300px;">
-                        <div class="flex items-center justify-center h-full text-gray-400 text-sm">Loading map...</div>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Latin America</h3>
-                    <div id="latinMapEl" class="bg-gray-50 rounded-lg overflow-hidden" style="height:300px;">
-                        <div class="flex items-center justify-center h-full text-gray-400 text-sm">Loading map...</div>
-                    </div>
-                </div>
+            <div id="usMapEl" class="bg-gray-50 rounded-lg overflow-hidden" style="height:400px;">
+                <div class="flex items-center justify-center h-full text-gray-400 text-sm">Loading map...</div>
             </div>
         </div>
 
@@ -1216,24 +1362,13 @@ class PhilJobsScraper:
                         </div>
                     </div>
                     <div class="mb-6">
-                        <h4 class="text-lg font-semibold text-gray-700 mb-4">Geographic Distribution</h4>
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <div>
-                                <h5 class="text-sm font-medium text-gray-600 mb-2">United States</h5>
-                                <div id="usMapContainer" class="bg-gray-50 rounded-lg p-4 h-64 flex items-center justify-center">
-                                    <div id="usStatesList" class="w-full"></div>
-                                </div>
-                                <div id="westCoastDetail" class="hidden mt-4 bg-blue-50 rounded-lg p-4">
-                                    <h5 class="text-sm font-medium text-blue-900 mb-2">West Coast Detail</h5>
-                                    <div id="westCoastCities" class="text-sm"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <h5 class="text-sm font-medium text-gray-600 mb-2">Latin America</h5>
-                                <div id="latinMapContainer" class="bg-gray-50 rounded-lg p-4 h-64 overflow-y-auto">
-                                    <div id="latinCountriesList"></div>
-                                </div>
-                            </div>
+                        <h4 class="text-lg font-semibold text-gray-700 mb-4">Geographic Distribution (US States)</h4>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div id="usStatesList" class="w-full"></div>
+                        </div>
+                        <div id="westCoastDetail" class="hidden mt-4 bg-blue-50 rounded-lg p-4">
+                            <h5 class="text-sm font-medium text-blue-900 mb-2">West Coast Detail</h5>
+                            <div id="westCoastCities" class="text-sm"></div>
                         </div>
                     </div>
                     <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
@@ -1281,7 +1416,6 @@ class PhilJobsScraper:
             institutionTypeData: {json.dumps(inst_type_series)},
             stateData: {json.dumps(state_data)},
             westCoastData: {json.dumps(west_coast_data)},
-            latinData: {json.dumps(latin_data)},
             westCoastCities: {json.dumps(WEST_COAST_CITIES)},
             seasonalMarkers: {json.dumps(seasonal_markers)},
             regionData: {json.dumps(region_data)},
@@ -1319,7 +1453,7 @@ class PhilJobsScraper:
         // ===== MAIN CHART =====
         const mainCtx = document.getElementById('mainChart').getContext('2d');
         const totalDataset = {{
-            label: 'Total (All)',
+            label: 'Total (All US)',
             data: data.totalNewJobsWeekly,
             borderColor: '#111827',
             backgroundColor: 'transparent',
@@ -1414,344 +1548,261 @@ class PhilJobsScraper:
             document.getElementById('modalTotal').textContent = total;
 
             // Subcategories
-            const subcategoryGrid = document.getElementById('subcategoryGrid');
-            subcategoryGrid.innerHTML = '';
-            category.subcategories.forEach(subcat => {{
-                const subcatData = data.subcategoryData[subcat] || [];
-                const subcatCurrent = subcatData[subcatData.length - 1] || 0;
-                const subcatPrevious = subcatData[subcatData.length - 2] || 0;
-                const subcatChange = subcatCurrent - subcatPrevious;
-                const el = document.createElement('div');
-                el.className = 'bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-colors';
-                el.innerHTML = `
-                    <div class="font-medium text-gray-700 text-sm mb-1">${{subcat}}</div>
-                    <div class="flex items-center justify-between">
-                        <span class="text-xl font-bold text-gray-800">${{subcatCurrent}}</span>
-                        <span class="text-xs font-semibold ${{subcatChange >= 0 ? 'text-green-600' : 'text-red-600'}}">${{subcatChange >= 0 ? '↑' : '↓'}} ${{Math.abs(subcatChange)}}</span>
-                    </div>
-                `;
-                subcategoryGrid.appendChild(el);
+            const subcatGrid = document.getElementById('subcategoryGrid');
+            subcatGrid.innerHTML = '';
+            document.getElementById('subcategorySection').style.display = category.subcategories.length > 0 ? 'block' : 'none';
+            category.subcategories.forEach(sub => {{
+                const subData = data.subcategoryData[sub] || [];
+                const subTotal = subData.reduce((a, b) => a + b, 0);
+                const subCurrent = subData[subData.length - 1] || 0;
+                const soloJointData = data.detailAosByContext[sub] || {{}};
+                const solo = Object.values(soloJointData.solo || {{}}).reduce((a, b) => a + b, 0);
+                const joint = Object.values(soloJointData.with_others || {{}}).reduce((a, b) => a + b, 0);
+                subcatGrid.innerHTML += `
+                    <div class="bg-gray-50 rounded-lg p-3">
+                        <div class="font-medium text-gray-800 text-sm mb-1">${{sub}}</div>
+                        <div class="text-xs text-gray-500">${{subTotal}} total · ${{subCurrent}} this week</div>
+                        ${{(solo + joint) > 0 ? `<div class="text-xs text-indigo-600 mt-1">Solo: ${{solo}} · Joint: ${{joint}}</div>` : ''}}
+                    </div>`;
             }});
 
-            // Detail chart
-            const detailCtx = document.getElementById('detailChart').getContext('2d');
+            // Trend chart
+            const ctx = document.getElementById('detailChart').getContext('2d');
             if (detailChart) detailChart.destroy();
-            const detailDatasets = [{{
-                label: category.name + ' (Total)',
-                data: category.data, borderColor: category.color, backgroundColor: category.color + '40',
-                tension: 0.4, fill: true, borderWidth: 3
-            }}];
-            const dColors = ['#6366f1','#ec4899','#14b8a6','#f59e0b','#8b5cf6','#f97316','#06b6d4'];
-            category.subcategories.forEach((subcat, idx) => {{
-                detailDatasets.push({{
-                    label: subcat, data: data.subcategoryData[subcat] || [],
-                    borderColor: dColors[idx % dColors.length], backgroundColor: dColors[idx % dColors.length] + '20',
-                    tension: 0.4, borderWidth: 2, borderDash: [5, 5]
-                }});
-            }});
-            detailChart = new Chart(detailCtx, {{
+            detailChart = new Chart(ctx, {{
                 type: 'line',
-                data: {{ labels: data.dates, datasets: detailDatasets }},
+                data: {{
+                    labels: data.dates,
+                    datasets: [{{ label: category.name, data: category.data, borderColor: category.color, backgroundColor: category.color + '30', tension: 0.4, fill: true }}]
+                }},
+                plugins: [seasonPlugin],
                 options: {{
                     responsive: true, maintainAspectRatio: false,
-                    plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15, font: {{ size: 11 }} }} }} }},
-                    scales: {{ y: {{ beginAtZero: true }}, x: {{}} }}
+                    plugins: {{ legend: {{ display: false }}, tooltip: {{ backgroundColor: 'rgba(0,0,0,0.8)' }} }},
+                    scales: {{ y: {{ beginAtZero: true }}, x: {{ grid: {{ display: false }} }} }}
                 }}
             }});
 
-            // Lassiter solo/joint by subcategory
+            // Lassiter: solo vs. joint by detail subcategory
             const lassiterDiv = document.getElementById('lassiterChart');
-            lassiterDiv.innerHTML = '';
-            const byCtx = data.detailAosByContext;
-            if (category.subcategories.length > 0 && Object.keys(byCtx).length > 0) {{
-                let html = '<table class="w-full border-collapse"><thead><tr>';
-                html += '<th class="text-left py-2 px-3 bg-gray-50 border border-gray-200 text-xs font-semibold text-gray-600">Subcategory</th>';
-                html += '<th class="py-2 px-3 bg-gray-50 border border-gray-200 text-xs font-semibold text-gray-600 text-center">Total</th>';
-                html += '<th class="py-2 px-3 bg-gray-50 border border-gray-200 text-xs font-semibold text-indigo-600 text-center">Solo</th>';
-                html += '<th class="py-2 px-3 bg-gray-50 border border-gray-200 text-xs font-semibold text-amber-600 text-center">Joint</th>';
-                html += '<th class="py-2 px-3 bg-gray-50 border border-gray-200 text-xs font-semibold text-gray-600">Top Co-occurring AOS</th>';
-                html += '</tr></thead><tbody>';
-                category.subcategories.forEach((subcat, i) => {{
-                    const ctx = byCtx[subcat] || {{}};
-                    const soloCount = Object.values(ctx.solo || {{}}).reduce((a, b) => a + b, 0);
-                    const total = ctx.total || 0;
-                    const jointCount = total - soloCount;
-                    const topCooc = Object.entries(ctx.with_others || {{}}).sort((a, b) => b[1] - a[1]).slice(0, 2).map(([k, v]) => `${{k}} (${{v}})`).join(', ');
-                    html += `<tr class="${{i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}}">
-                        <td class="py-2 px-3 border border-gray-200 text-sm text-gray-700">${{subcat}}</td>
-                        <td class="py-2 px-3 border border-gray-200 text-center font-semibold">${{total || '—'}}</td>
-                        <td class="py-2 px-3 border border-gray-200 text-center text-indigo-600 font-semibold">${{soloCount || '—'}}</td>
-                        <td class="py-2 px-3 border border-gray-200 text-center text-amber-600 font-semibold">${{jointCount > 0 ? jointCount : '—'}}</td>
-                        <td class="py-2 px-3 border border-gray-200 text-xs text-gray-500">${{topCooc || '—'}}</td>
-                    </tr>`;
-                }});
-                html += '</tbody></table>';
-                lassiterDiv.innerHTML = html;
-                document.getElementById('lassiterSection').classList.remove('hidden');
+            const lassiterSection = document.getElementById('lassiterSection');
+            if (category.subcategories.length > 0) {{
+                lassiterSection.style.display = 'block';
+                const rows = category.subcategories.map(sub => {{
+                    const ctx2 = data.detailAosByContext[sub] || {{}};
+                    const solo = Object.values(ctx2.solo || {{}}).reduce((a, b) => a + b, 0);
+                    const joint = Object.values(ctx2.with_others || {{}}).reduce((a, b) => a + b, 0);
+                    const total = ctx2.total || 0;
+                    return {{ sub, solo, joint, total }};
+                }}).filter(r => r.total > 0).sort((a, b) => b.total - a.total);
+                if (rows.length > 0) {{
+                    let tableHtml = '<table class="w-full border-collapse text-xs"><thead><tr><th class="text-left py-2 px-3 bg-gray-50 border border-gray-200">Subcategory</th><th class="py-2 px-2 bg-gray-50 border border-gray-200 text-center">Total</th><th class="py-2 px-2 bg-gray-50 border border-gray-200 text-center text-indigo-700">Solo</th><th class="py-2 px-2 bg-gray-50 border border-gray-200 text-center text-purple-700">Joint</th></tr></thead><tbody>';
+                    rows.forEach((r, i) => {{
+                        tableHtml += `<tr class="${{i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}}"><td class="py-2 px-3 border border-gray-200 font-medium">${{r.sub}}</td><td class="py-2 px-2 border border-gray-200 text-center font-bold">${{r.total}}</td><td class="py-2 px-2 border border-gray-200 text-center text-indigo-700">${{r.solo}}</td><td class="py-2 px-2 border border-gray-200 text-center text-purple-700">${{r.joint}}</td></tr>`;
+                    }});
+                    lassiterDiv.innerHTML = tableHtml + '</tbody></table>';
+                }} else {{
+                    lassiterDiv.innerHTML = '<div class="text-gray-400 text-sm">No co-occurrence data yet.</div>';
+                }}
             }} else {{
-                document.getElementById('lassiterSection').classList.add('hidden');
+                lassiterSection.style.display = 'none';
             }}
 
-            // Position type chart (modal)
+            // Job Types
             const jobTypeCtx = document.getElementById('jobTypeChart').getContext('2d');
             if (jobTypeChart) jobTypeChart.destroy();
+            const ptByAos = data.positionTypeByAosWeekly[key] || {{}};
+            const ptCurrent = data.positionTypes.map(pt => {{
+                const arr = ptByAos[pt] || [];
+                return arr[arr.length - 1] || 0;
+            }});
             jobTypeChart = new Chart(jobTypeCtx, {{
                 type: 'doughnut',
                 data: {{
                     labels: data.positionTypes,
-                    datasets: [{{ data: data.positionTypes.map(pt => (data.jobTypeData[pt] || []).slice(-1)[0] || 0), backgroundColor: data.positionTypes.map(pt => data.positionTypeColors[pt] || '#6b7280') }}]
+                    datasets: [{{ data: ptCurrent, backgroundColor: data.positionTypes.map(pt => data.positionTypeColors[pt] || '#6b7280') }}]
                 }},
-                options: {{ responsive: true, plugins: {{ legend: {{ position: 'bottom', labels: {{ font: {{ size: 11 }} }} }} }} }}
+                options: {{ responsive: true, plugins: {{ legend: {{ position: 'right', labels: {{ font: {{ size: 11 }}, boxWidth: 12 }} }} }} }}
             }});
 
-            // Institution type chart
+            // Institution Types
             const instCtx = document.getElementById('institutionChart').getContext('2d');
             if (institutionChart) institutionChart.destroy();
-            const instTypeLabels = ['Research University', 'Teaching College', 'Other'];
+            const instCurrent = ['Research University', 'Teaching College', 'Other'].map(it => {{
+                const arr = data.institutionTypeData[it] || [];
+                return arr[arr.length - 1] || 0;
+            }});
             institutionChart = new Chart(instCtx, {{
                 type: 'doughnut',
                 data: {{
-                    labels: instTypeLabels,
-                    datasets: [{{ data: instTypeLabels.map(t => (data.institutionTypeData[t] || []).slice(-1)[0] || 0), backgroundColor: ['#3b82f6','#10b981','#6b7280'] }}]
+                    labels: ['Research University', 'Teaching College', 'Other'],
+                    datasets: [{{ data: instCurrent, backgroundColor: ['#6366f1', '#10b981', '#6b7280'] }}]
                 }},
-                options: {{ responsive: true, plugins: {{ legend: {{ position: 'bottom' }} }} }}
+                options: {{ responsive: true, plugins: {{ legend: {{ position: 'right', labels: {{ font: {{ size: 11 }}, boxWidth: 12 }} }} }} }}
             }});
 
-            // US States list
-            const statesList = document.getElementById('usStatesList');
-            statesList.innerHTML = '';
-            const latestStateData = Object.entries(data.stateData)
-                .map(([state, counts]) => [state, counts[counts.length - 1] || 0])
-                .filter(([s, c]) => c > 0).sort((a, b) => b[1] - a[1]).slice(0, 10);
-            if (latestStateData.length > 0) {{
-                latestStateData.forEach(([state, count]) => {{
-                    const isWC = ['CA', 'OR', 'WA'].includes(state);
-                    statesList.innerHTML += `<div class="flex justify-between items-center py-2 px-3 ${{isWC ? 'bg-blue-100 rounded' : ''}}"><span class="font-medium ${{isWC ? 'text-blue-900' : 'text-gray-700'}}">${{state}}</span><span class="font-bold ${{isWC ? 'text-blue-900' : 'text-gray-800'}}">${{count}}</span></div>`;
-                }});
-                const wcData = Object.entries(data.westCoastData).map(([city, counts]) => [city, counts[counts.length - 1] || 0]).filter(([c, cnt]) => cnt > 0).sort((a, b) => b[1] - a[1]);
-                if (wcData.length > 0) {{
-                    document.getElementById('westCoastDetail').classList.remove('hidden');
-                    document.getElementById('westCoastCities').innerHTML = wcData.map(([city, count]) => `<div class="flex justify-between py-1"><span>${{city}}</span><span class="font-bold">${{count}}</span></div>`).join('');
-                }} else {{ document.getElementById('westCoastDetail').classList.add('hidden'); }}
-            }} else {{ statesList.innerHTML = '<div class="text-gray-500 text-center py-8">No US jobs in this category</div>'; }}
-
-            // Latin America list
-            const latinList = document.getElementById('latinCountriesList');
-            const latinCounts = Object.entries(data.latinData).map(([country, counts]) => [country, counts[counts.length - 1] || 0]).filter(([c, cnt]) => cnt > 0).sort((a, b) => b[1] - a[1]);
-            if (latinCounts.length > 0) {{
-                latinList.innerHTML = latinCounts.map(([country, count]) => `<div class="flex justify-between items-center py-2 px-3"><span class="font-medium text-gray-700">${{country}}</span><span class="font-bold text-gray-800">${{count}}</span></div>`).join('');
-            }} else {{ latinList.innerHTML = '<div class="text-gray-500 text-center py-8">No Latin American jobs in this category</div>'; }}
+            // US States list for this category
+            const statesDiv = document.getElementById('usStatesList');
+            const stateCatData = {{}};
+            Object.entries(data.stateCategoryData).forEach(([state, cats]) => {{
+                if (cats[key]) stateCatData[state] = cats[key];
+            }});
+            const sortedStates = Object.entries(stateCatData).sort((a, b) => b[1] - a[1]).slice(0, 10);
+            if (sortedStates.length > 0) {{
+                statesDiv.innerHTML = sortedStates.map(([s, c]) => `<div class="flex justify-between py-1 text-sm"><span class="text-gray-700">${{s}}</span><span class="font-bold">${{c}}</span></div>`).join('');
+            }} else {{
+                statesDiv.innerHTML = '<div class="text-gray-400 text-sm">No state data yet</div>';
+            }}
 
             // Insights
-            const insights = document.getElementById('insights');
-            const trendDir = category.data[category.data.length - 1] > category.data[0] ? 'upward' : category.data[category.data.length - 1] < category.data[0] ? 'downward' : 'stable';
-            let insightText = '<ul class="space-y-1">';
-            if (change > 0) {{ insightText += `<li>• Growing: up ${{change}} new jobs from last week (+${{previousJobs > 0 ? ((change/previousJobs)*100).toFixed(1) : '∞'}}%)</li>`; }}
-            else if (change < 0) {{ insightText += `<li>• Declining: down ${{Math.abs(change)}} new jobs from last week</li>`; }}
-            else {{ insightText += `<li>• Stable: same number of new jobs as last week</li>`; }}
-            insightText += `<li>• Overall trend since tracking began: ${{trendDir}}</li>`;
-            insightText += `<li>• Average ${{average}} new jobs per week</li>`;
-            if (category.subcategories.length > 0) {{
-                let hottestSub = category.subcategories[0]; let hottestCount = 0;
-                category.subcategories.forEach(sub => {{
-                    const subTotal = (data.subcategoryData[sub] || []).reduce((a, b) => a + b, 0);
-                    if (subTotal > hottestCount) {{ hottestCount = subTotal; hottestSub = sub; }}
-                }});
-                insightText += `<li>• Most active subcategory: ${{hottestSub}} (${{hottestCount}} total jobs)</li>`;
-            }}
-            insightText += '</ul>';
-            insights.innerHTML = insightText;
+            const insightsEl = document.getElementById('insights');
+            const insights = [];
+            if (total > 0) insights.push(`${{total}} total US jobs in this category since tracking began.`);
+            if (change > 0) insights.push(`Up ${{change}} from last week.`);
+            else if (change < 0) insights.push(`Down ${{Math.abs(change)}} from last week.`);
+            insightsEl.innerHTML = insights.map(i => `<div class="mb-1">• ${{i}}</div>`).join('');
 
             document.getElementById('detailModal').classList.remove('hidden');
         }}
 
-        function closeModal() {{ document.getElementById('detailModal').classList.add('hidden'); }}
-        document.addEventListener('keydown', (e) => {{ if (e.key === 'Escape') {{ closeModal(); closeStatePanel(); }} }});
+        function closeModal() {{
+            document.getElementById('detailModal').classList.add('hidden');
+            if (detailChart) {{ detailChart.destroy(); detailChart = null; }}
+            if (jobTypeChart) {{ jobTypeChart.destroy(); jobTypeChart = null; }}
+            if (institutionChart) {{ institutionChart.destroy(); institutionChart = null; }}
+        }}
+        document.getElementById('detailModal').addEventListener('click', function(e) {{
+            if (e.target === this) closeModal();
+        }});
 
-        // ===== REGIONAL TRENDS CHART =====
-        const regionColors = {{'West':'#3b82f6','Northeast':'#10b981','South':'#ef4444','Midwest':'#f59e0b'}};
+        // ===== REGIONAL CHART =====
+        const regionColors = {{ 'West': '#2563eb', 'Northeast': '#7c3aed', 'South': '#dc2626', 'Midwest': '#d97706' }};
         new Chart(document.getElementById('regionalChart').getContext('2d'), {{
             type: 'line',
             data: {{
                 labels: data.dates,
-                datasets: Object.entries(data.regionData).map(([region, values]) => ({{
-                    label: region, data: values,
+                datasets: Object.entries(data.regionData).map(([region, counts]) => ({{
+                    label: region,
+                    data: counts,
                     borderColor: regionColors[region] || '#6b7280',
                     backgroundColor: (regionColors[region] || '#6b7280') + '20',
-                    tension: 0.4, fill: false,
-                    borderWidth: region === 'West' ? 3 : 2, borderDash: region === 'West' ? [] : [5, 5]
+                    tension: 0.4, fill: true, borderWidth: region === 'West' ? 3 : 1.5,
+                    pointRadius: 4
+                }}))
+            }},
+            options: {{
+                responsive: true, maintainAspectRatio: false,
+                interaction: {{ mode: 'index', intersect: false }},
+                plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15, font: {{ size: 12 }} }} }} }},
+                scales: {{ y: {{ beginAtZero: true }}, x: {{ grid: {{ display: false }} }} }}
+            }}
+        }});
+
+        // ===== CO-OCCURRENCE MATRIX =====
+        const matrixDiv = document.getElementById('coocMatrixTable');
+        const matrixCats = data.mainAosCategories;
+        let matrixHtml = '<table class="border-collapse text-xs"><thead><tr><th class="p-2 bg-gray-50 border border-gray-200"></th>';
+        const shortNames = {{ 'Ethics': 'Ethics', 'Social & Political Philosophy': 'Soc/Pol', 'Value Theory / Aesthetics': 'Value/Aes', 'History of Philosophy': 'History', 'Non-Western & Cross-Cultural Philosophy': 'Non-West', 'Metaphysics & Epistemology': 'M&E', 'Science, Logic, & Mathematics': 'Sci/Log', 'Open': 'Open' }};
+        matrixCats.forEach(c => {{ matrixHtml += `<th class="p-2 bg-gray-50 border border-gray-200 font-semibold text-gray-700" title="${{c}}">${{shortNames[c] || c}}</th>`; }});
+        matrixHtml += '</tr></thead><tbody>';
+        const allVals = matrixCats.flatMap(r => matrixCats.map(c => r !== c ? (data.coocMatrix[r]?.[c] || 0) : 0));
+        const maxVal = Math.max(...allVals, 1);
+        matrixCats.forEach((row, ri) => {{
+            matrixHtml += `<tr><td class="p-2 bg-gray-50 border border-gray-200 font-semibold text-gray-700 whitespace-nowrap">${{shortNames[row] || row}}</td>`;
+            matrixCats.forEach((col, ci) => {{
+                if (row === col) {{
+                    matrixHtml += '<td class="p-2 border border-gray-200 bg-gray-100 text-center text-gray-300">—</td>';
+                }} else {{
+                    const v = data.coocMatrix[row]?.[col] || 0;
+                    const intensity = v > 0 ? Math.max(0.1, v / maxVal) : 0;
+                    const bg = v > 0 ? `rgba(99,102,241,${{intensity.toFixed(2)}})` : '#f9fafb';
+                    const color = intensity > 0.5 ? 'white' : '#374151';
+                    matrixHtml += `<td class="p-2 border border-gray-200 text-center font-medium" style="background:${{bg}};color:${{color}}" title="${{row}} ↔ ${{col}}: ${{v}}">${{v > 0 ? v : ''}}</td>`;
+                }}
+            }});
+            matrixHtml += '</tr>';
+        }});
+        matrixDiv.innerHTML = matrixHtml + '</tbody></table>';
+
+        // ===== SOLO VS JOINT CHART =====
+        const svjCats = Object.keys(data.soloVsJoint).filter(k => data.soloVsJoint[k].solo > 0 || data.soloVsJoint[k].joint > 0);
+        new Chart(document.getElementById('soloJointChart').getContext('2d'), {{
+            type: 'bar',
+            data: {{
+                labels: svjCats,
+                datasets: [
+                    {{ label: 'Solo', data: svjCats.map(k => data.soloVsJoint[k].solo || 0), backgroundColor: '#6366f1', borderRadius: 3 }},
+                    {{ label: 'Joint', data: svjCats.map(k => data.soloVsJoint[k].joint || 0), backgroundColor: '#a78bfa', borderRadius: 3 }}
+                ]
+            }},
+            options: {{
+                responsive: true, maintainAspectRatio: false,
+                plugins: {{ legend: {{ position: 'bottom' }} }},
+                scales: {{ x: {{ stacked: false }}, y: {{ beginAtZero: true, stacked: false }} }}
+            }}
+        }});
+
+        // ===== CROSS-CUTTING CHART =====
+        const ccColors = {{ 'Feminist Philosophy': '#ec4899', 'Philosophy of Race': '#f97316', 'Philosophy of Gender': '#8b5cf6', 'Philosophy of Law': '#0ea5e9' }};
+        const ccAreas = Object.keys(data.crossCutting);
+        const ccWeeks = ccAreas.length > 0 ? Object.keys(data.crossCutting[ccAreas[0]]?.weekly || {{}}) : [];
+        new Chart(document.getElementById('crossCuttingChart').getContext('2d'), {{
+            type: 'line',
+            data: {{
+                labels: ccWeeks,
+                datasets: ccAreas.map(area => ({{
+                    label: area, data: ccWeeks.map(w => data.crossCutting[area]?.weekly[w] || 0),
+                    borderColor: ccColors[area] || '#6b7280', backgroundColor: (ccColors[area] || '#6b7280') + '30',
+                    tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
                 }}))
             }},
             options: {{
                 responsive: true, maintainAspectRatio: false,
                 interaction: {{ mode: 'index', intersect: false }},
                 plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15 }} }} }},
-                scales: {{ y: {{ beginAtZero: true, grid: {{ color: 'rgba(0,0,0,0.05)' }} }}, x: {{ grid: {{ display: false }} }} }}
+                scales: {{ y: {{ beginAtZero: true }}, x: {{ grid: {{ display: false }} }} }}
             }}
         }});
 
-        // ===== CO-OCCURRENCE MATRIX =====
-        (function() {{
-            const matrix = data.coocMatrix;
-            const cats = Object.keys(data.mainAosColors).filter(c => c !== 'Open');
-            const matrixDiv = document.getElementById('coocMatrixTable');
-            if (!matrix || Object.keys(matrix).length === 0) {{
-                matrixDiv.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">Co-occurrence data will populate after jobs are classified.</div>';
-                return;
-            }}
-            let maxVal = 0;
-            cats.forEach(r => cats.forEach(c => {{ if (r !== c) maxVal = Math.max(maxVal, (matrix[r] || {{}})[c] || 0); }}));
-            let html = '<table class="w-full border-collapse text-xs"><thead><tr><th class="py-2 px-3 bg-gray-50 border border-gray-200 text-left text-gray-500">AOS</th>';
-            cats.forEach(c => {{
-                const short = c.replace('Non-Western & Cross-Cultural Philosophy', 'Non-Western').replace('Science, Logic, & Mathematics', 'Sci/Logic/Math').replace('Social & Political Philosophy', 'Social/Pol').replace('Value Theory / Aesthetics', 'Value/Aes').replace('Metaphysics & Epistemology', 'M&E').replace('History of Philosophy', 'History');
-                html += `<th class="py-2 px-2 bg-gray-50 font-semibold text-gray-600 border border-gray-200 text-center" style="min-width:70px" title="${{c}}">${{short}}</th>`;
-            }});
-            html += '</tr></thead><tbody>';
-            cats.forEach((row, i) => {{
-                const shortRow = row.replace('Non-Western & Cross-Cultural Philosophy', 'Non-Western').replace('Science, Logic, & Mathematics', 'Sci/Logic/Math').replace('Social & Political Philosophy', 'Social/Political').replace('Value Theory / Aesthetics', 'Value/Aesthetics').replace('Metaphysics & Epistemology', 'M&E').replace('History of Philosophy', 'History');
-                html += `<tr class="${{i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}}"><td class="py-2 px-3 font-semibold text-gray-700 border border-gray-200 whitespace-nowrap text-xs">${{shortRow}}</td>`;
-                cats.forEach(col => {{
-                    if (row === col) {{
-                        html += `<td class="py-2 px-2 text-center border border-gray-200 bg-gray-100 text-gray-400 text-xs">—</td>`;
-                    }} else {{
-                        const v = (matrix[row] || {{}})[col] || 0;
-                        const intensity = maxVal > 0 ? v / maxVal : 0;
-                        const alpha = Math.round(intensity * 180);
-                        html += `<td class="py-2 px-2 text-center border border-gray-200 text-xs ${{v > 0 ? 'font-semibold text-gray-800' : 'text-gray-300'}}" style="background-color:rgba(99,102,241,${{alpha/255}})">${{v || '—'}}</td>`;
-                    }}
-                }});
-                html += '</tr>';
-            }});
-            html += '</tbody></table>';
-            matrixDiv.innerHTML = html;
-        }})();
-
-        // ===== SOLO VS. JOINT =====
-        (function() {{
-            const svj = data.soloVsJoint;
-            const cats = Object.keys(data.mainAosColors).filter(c => c !== 'Open');
-            const solos = cats.map(c => (svj[c] || {{}}).solo || 0);
-            const joints = cats.map(c => (svj[c] || {{}}).joint || 0);
-            if (!solos.some(v => v > 0) && !joints.some(v => v > 0)) {{
-                document.getElementById('soloJointChart').parentElement.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">Solo/joint data will populate after jobs are classified.</div>';
-                return;
-            }}
-            new Chart(document.getElementById('soloJointChart').getContext('2d'), {{
-                type: 'bar',
-                data: {{
-                    labels: cats,
-                    datasets: [
-                        {{ label: 'Solo (only AOS)', data: solos, backgroundColor: '#6366f1cc', borderColor: '#6366f1', borderWidth: 1 }},
-                        {{ label: 'Joint (with other AOS)', data: joints, backgroundColor: '#f59e0bcc', borderColor: '#f59e0b', borderWidth: 1 }}
-                    ]
-                }},
-                options: {{
-                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-                    interaction: {{ mode: 'index', intersect: false }},
-                    plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15 }} }} }},
-                    scales: {{
-                        x: {{ stacked: true, beginAtZero: true, ticks: {{ precision: 0 }} }},
-                        y: {{ stacked: true, grid: {{ display: false }} }}
-                    }}
-                }}
-            }});
-        }})();
-
-        // ===== CROSS-CUTTING AREAS =====
-        (function() {{
-            const cc = data.crossCutting;
-            const areas = Object.keys(cc || {{}});
-            if (areas.length === 0 || !areas.some(a => (cc[a].total || 0) > 0)) {{
-                document.getElementById('crossCuttingChart').parentElement.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">Cross-cutting data will populate after jobs are classified.</div>';
-                return;
-            }}
-            const ccColors = ['#ec4899','#3b82f6','#10b981','#8b5cf6'];
-            const allWeeks = data.dates;
-            const ccDatasets = areas.map((area, idx) => {{
-                const trendMap = {{}};
-                (cc[area].trend || []).forEach(pt => {{ trendMap[pt.week] = pt.count; }});
-                return {{
-                    label: area, data: allWeeks.map(w => trendMap[w] || 0),
-                    borderColor: ccColors[idx % ccColors.length],
-                    backgroundColor: ccColors[idx % ccColors.length] + '30',
-                    tension: 0.4, fill: true, borderWidth: 2
-                }};
-            }});
-            new Chart(document.getElementById('crossCuttingChart').getContext('2d'), {{
-                type: 'line',
-                data: {{ labels: allWeeks, datasets: ccDatasets }},
-                options: {{
-                    responsive: true, maintainAspectRatio: false,
-                    interaction: {{ mode: 'index', intersect: false }},
-                    plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15 }} }} }},
-                    scales: {{ y: {{ beginAtZero: true, ticks: {{ precision: 0 }} }}, x: {{ grid: {{ display: false }} }} }}
-                }}
-            }});
-        }})();
-
-        // ===== POSITION TYPE TRENDS =====
-        (function() {{
-            // Populate AOS filter dropdown
-            const filterSel = document.getElementById('posTypeAosFilter');
-            data.mainAosCategories.forEach(aos => {{
-                const opt = document.createElement('option');
-                opt.value = aos;
-                opt.textContent = aos;
-                filterSel.appendChild(opt);
-            }});
-
-            // Check if there's any data at all
-            const hasData = data.positionTypes.some(pt =>
-                (data.positionTypeByAosWeekly[data.mainAosCategories[0]] || {{}})[pt]?.some(v => v > 0)
-                || (data.jobTypeData[pt] || []).some(v => v > 0)
-            );
-            if (!hasData) {{
-                document.getElementById('posTypeChart').parentElement.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">Position type data will populate after jobs are classified.</div>';
-                return;
-            }}
-        }})();
-
+        // ===== POSITION TYPE CHART =====
         let posTypeChart = null;
+        const posTypeSelect = document.getElementById('posTypeAosFilter');
+        data.mainAosCategories.forEach(aos => {{
+            const opt = document.createElement('option');
+            opt.value = aos;
+            opt.textContent = aos;
+            posTypeSelect.appendChild(opt);
+        }});
+
         function updatePositionTypeChart() {{
-            const filter = document.getElementById('posTypeAosFilter').value;
-            const ctx = document.getElementById('posTypeChart').getContext('2d');
+            const selected = posTypeSelect.value;
+            let ptData;
+            if (selected === '__all__') {{
+                ptData = data.jobTypeData;
+            }} else {{
+                ptData = data.positionTypeByAosWeekly[selected] || {{}};
+            }}
+            const ptDatasets = data.positionTypes.map(pt => ({{
+                label: pt,
+                data: ptData[pt] || Array(data.dates.length).fill(0),
+                borderColor: data.positionTypeColors[pt] || '#6b7280',
+                backgroundColor: (data.positionTypeColors[pt] || '#6b7280') + '30',
+                tension: 0.4, fill: true, borderWidth: 2, pointRadius: 3
+            }}));
             if (posTypeChart) posTypeChart.destroy();
-
-            const datasets = data.positionTypes.map(pt => {{
-                let series;
-                if (filter === '__all__') {{
-                    series = data.jobTypeData[pt] || data.dates.map(() => 0);
-                }} else {{
-                    series = ((data.positionTypeByAosWeekly[filter] || {{}})[pt]) || data.dates.map(() => 0);
-                }}
-                return {{
-                    label: pt,
-                    data: series,
-                    borderColor: data.positionTypeColors[pt] || '#6b7280',
-                    backgroundColor: (data.positionTypeColors[pt] || '#6b7280') + '25',
-                    tension: 0.4, fill: true, borderWidth: 2, pointRadius: 3
-                }};
-            }});
-
-            posTypeChart = new Chart(ctx, {{
+            posTypeChart = new Chart(document.getElementById('posTypeChart').getContext('2d'), {{
                 type: 'line',
-                data: {{ labels: data.dates, datasets: datasets }},
+                data: {{ labels: data.dates, datasets: ptDatasets }},
                 plugins: [seasonPlugin],
                 options: {{
                     responsive: true, maintainAspectRatio: false,
                     interaction: {{ mode: 'index', intersect: false }},
-                    plugins: {{
-                        legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15, font: {{ size: 12 }} }} }},
-                        tooltip: {{ backgroundColor: 'rgba(0,0,0,0.8)', padding: 12 }}
-                    }},
-                    scales: {{
-                        y: {{ beginAtZero: true, ticks: {{ precision: 0 }}, grid: {{ color: 'rgba(0,0,0,0.05)' }} }},
-                        x: {{ grid: {{ display: false }} }}
-                    }}
+                    plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 12, font: {{ size: 11 }} }} }} }},
+                    scales: {{ y: {{ beginAtZero: true }}, x: {{ grid: {{ display: false }} }} }}
                 }}
             }});
 
-            // Summary table: AOS rows × position type columns
+            // Summary table
             const tableDiv = document.getElementById('posTypeTable');
             const aosRows = data.mainAosCategories;
             let html = '<table class="w-full border-collapse"><thead><tr>';
@@ -1799,10 +1850,9 @@ class PhilJobsScraper:
             document.getElementById('westCoastChart').parentElement.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">No West Coast city data yet.</div>';
         }}
 
-        // ===== D3 CHOROPLETH MAPS =====
-        let currentMapMode = 'current', usAtlasData = null, worldAtlasData = null;
+        // ===== D3 US CHOROPLETH =====
+        let currentMapMode = 'current', usAtlasData = null;
         const fipsToState = {{"01":"AL","02":"AK","04":"AZ","05":"AR","06":"CA","08":"CO","09":"CT","10":"DE","12":"FL","13":"GA","15":"HI","16":"ID","17":"IL","18":"IN","19":"IA","20":"KS","21":"KY","22":"LA","23":"ME","24":"MD","25":"MA","26":"MI","27":"MN","28":"MS","29":"MO","30":"MT","31":"NE","32":"NV","33":"NH","34":"NJ","35":"NM","36":"NY","37":"NC","38":"ND","39":"OH","40":"OK","41":"OR","42":"PA","44":"RI","45":"SC","46":"SD","47":"TN","48":"TX","49":"UT","50":"VT","51":"VA","53":"WA","54":"WV","55":"WI","56":"WY"}};
-        const latinNumeric = {{"484":"Mexico","076":"Brazil","032":"Argentina","152":"Chile","170":"Colombia","604":"Peru","862":"Venezuela","218":"Ecuador","320":"Guatemala","192":"Cuba","068":"Bolivia","332":"Haiti","214":"Dominican Republic","340":"Honduras","600":"Paraguay","222":"El Salvador","558":"Nicaragua","188":"Costa Rica","591":"Panama","858":"Uruguay"}};
 
         function getStateValues(mode) {{
             if (mode === 'alltime') return data.stateAlltime;
@@ -1816,7 +1866,6 @@ class PhilJobsScraper:
             document.getElementById('mapModeNew').className = mode === 'current' ? 'px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white' : 'px-4 py-2 text-sm font-medium rounded-lg bg-gray-200 text-gray-700';
             document.getElementById('mapModeAll').className = mode === 'alltime' ? 'px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white' : 'px-4 py-2 text-sm font-medium rounded-lg bg-gray-200 text-gray-700';
             if (usAtlasData) drawUSChoropleth();
-            if (worldAtlasData) drawLatinChoropleth();
         }}
 
         function drawUSChoropleth() {{
@@ -1825,7 +1874,7 @@ class PhilJobsScraper:
             const values = getStateValues(currentMapMode);
             const maxVal = Math.max(...Object.values(values).filter(v => v > 0), 1);
             const wc = new Set(['CA', 'OR', 'WA']);
-            const width = el.clientWidth || 500, height = 300;
+            const width = el.clientWidth || 800, height = 400;
             const features = topojson.feature(usAtlasData, usAtlasData.objects.states);
             const projection = d3.geoAlbersUsa().fitSize([width, height], features);
             const path = d3.geoPath().projection(projection);
@@ -1860,60 +1909,12 @@ class PhilJobsScraper:
                 }});
         }}
 
-        function drawLatinChoropleth() {{
-            const el = document.getElementById('latinMapEl');
-            el.innerHTML = '';
-            const values = {{}};
-            Object.entries(data.latinData).forEach(([country, counts]) => {{
-                values[country] = currentMapMode === 'alltime' ? counts.reduce((a, b) => a + b, 0) : (counts[counts.length - 1] || 0);
-            }});
-            const maxVal = Math.max(...Object.values(values).filter(v => v > 0), 1);
-            const numericVals = {{}};
-            Object.entries(latinNumeric).forEach(([code, country]) => {{ numericVals[code] = values[country] || 0; }});
-            const latinSet = new Set(Object.keys(latinNumeric));
-            const allFeatures = topojson.feature(worldAtlasData, worldAtlasData.objects.countries).features;
-            const latinFeatures = allFeatures.filter(d => latinSet.has(String(d.id).padStart(3, '0')));
-            if (latinFeatures.length === 0) {{ el.innerHTML = '<div class="text-gray-400 text-center p-4 text-sm">No Latin American jobs tracked yet</div>'; return; }}
-            const width = el.clientWidth || 400, height = 300;
-            const projection = d3.geoMercator().fitSize([width, height], {{type: 'FeatureCollection', features: latinFeatures}});
-            const path = d3.geoPath().projection(projection);
-            const svg = d3.select('#latinMapEl').append('svg').attr('width', '100%').attr('height', height).attr('viewBox', `0 0 ${{width}} ${{height}}`);
-            const tip = d3.select('#mapTooltip');
-            svg.append('g').selectAll('path').data(latinFeatures).join('path')
-                .attr('d', path)
-                .attr('fill', d => {{
-                    const code = String(d.id).padStart(3, '0');
-                    const v = numericVals[code] || 0;
-                    if (v === 0) return '#e5e7eb';
-                    return d3.interpolate('#fce7f3', '#9d174d')(v / maxVal);
-                }})
-                .attr('stroke', '#9ca3af').attr('stroke-width', 0.5).style('cursor', 'default')
-                .on('mouseover', function(event, d) {{
-                    const code = String(d.id).padStart(3, '0');
-                    const country = latinNumeric[code] || '';
-                    const v = numericVals[code] || 0;
-                    if (!country) return;
-                    tip.style('display', 'block').html(`<strong>${{country}}</strong><br>${{v}} job${{v !== 1 ? 's' : ''}}`);
-                    d3.select(this).attr('stroke', '#111').attr('stroke-width', 1.5);
-                }})
-                .on('mousemove', event => tip.style('left', (event.pageX + 12) + 'px').style('top', (event.pageY - 28) + 'px'))
-                .on('mouseout', function() {{
-                    tip.style('display', 'none');
-                    d3.select(this).attr('stroke', '#9ca3af').attr('stroke-width', 0.5);
-                }});
-        }}
-
         async function initMaps() {{
             try {{
-                [usAtlasData, worldAtlasData] = await Promise.all([
-                    d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json'),
-                    d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
-                ]);
+                usAtlasData = await d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json');
                 drawUSChoropleth();
-                drawLatinChoropleth();
             }} catch(e) {{
                 document.getElementById('usMapEl').innerHTML = '<div class="text-gray-400 text-center p-4 text-sm">Map unavailable — check connection</div>';
-                document.getElementById('latinMapEl').innerHTML = '<div class="text-gray-400 text-center p-4 text-sm">Map unavailable</div>';
             }}
         }}
         initMaps();
@@ -1983,7 +1984,819 @@ class PhilJobsScraper:
         dashboard_file = docs_dir / "index.html"
         with open(dashboard_file, 'w') as f:
             f.write(html)
-        print(f"✓ Dashboard written to {dashboard_file} (GitHub Pages)")
+        print(f"✓ US dashboard written to {dashboard_file}")
+
+
+    def generate_intl_dashboard(self, historical_data):
+        """Generate international HTML dashboard (docs/international.html)."""
+        trends = historical_data.get('weekly_trends', [])
+        if not trends:
+            print("No data available for international dashboard")
+            return
+
+        all_jobs = historical_data.get('jobs', [])
+        dates = [t['date'] for t in trends]
+
+        # ── Filter to international jobs only ────────────────────────────
+        intl_jobs = [j for j in all_jobs if j.get('country') and not j.get('state')]
+
+        # Group international jobs by date key (YYYY-MM-DD)
+        jobs_by_date = defaultdict(list)
+        for job in intl_jobs:
+            date_key = job.get('scraped_date', '')[:10]
+            jobs_by_date[date_key].append(job)
+
+        # ── Weekly series ────────────────────────────────────────────────
+        series = self._compute_weekly_series(jobs_by_date, dates)
+        parent_categories         = series['parent_categories']
+        subcategory_data          = series['subcategory_data']
+        job_type_series           = series['job_type_series']
+        position_type_by_aos_weekly = series['position_type_by_aos_weekly']
+        inst_type_series          = series['inst_type_series']
+        total_new_jobs_weekly     = series['total_new_jobs_weekly']
+
+        # ── International region trend lines ─────────────────────────────
+        intl_region_data = {}
+        for region, countries in INTL_REGIONS.items():
+            country_set = set(countries)
+            series_r = []
+            for date in dates:
+                date_key = date[:10]
+                week_jobs = jobs_by_date.get(date_key, [])
+                count = sum(1 for j in week_jobs if j.get('country') in country_set)
+                series_r.append(count)
+            intl_region_data[region] = series_r
+
+        # ── Country-level all-time counts for world choropleth ───────────
+        country_alltime = defaultdict(int)
+        country_current = defaultdict(int)
+        last_date_key = dates[-1][:10] if dates else ''
+        for job in intl_jobs:
+            c = job.get('country')
+            if c:
+                country_alltime[c] += 1
+                if job.get('scraped_date', '')[:10] == last_date_key:
+                    country_current[c] += 1
+
+        # Build numeric → country mapping for choropleth (reverse of COUNTRY_NUMERIC)
+        numeric_to_country = {v: k for k, v in COUNTRY_NUMERIC.items()
+                               if k not in ('UAE',)}  # avoid dup for UAE alias
+
+        # ── Position type × AOS all-time ─────────────────────────────────
+        pos_type_x_aos_map = defaultdict(lambda: defaultdict(int))
+        for job in intl_jobs:
+            cls = job.get('classification')
+            if cls:
+                raw_pt = (cls.get('position_type')
+                          or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
+                          or job.get('job_type', 'Other'))
+                pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
+                for main in cls.get('main_aos', []):
+                    pos_type_x_aos_map[main][pos_type] += 1
+        pos_type_x_aos = {k: dict(v) for k, v in pos_type_x_aos_map.items()}
+
+        # ── Country → AOS breakdown ──────────────────────────────────────
+        country_cat_map = defaultdict(lambda: defaultdict(int))
+        for job in intl_jobs:
+            c = job.get('country')
+            if c:
+                cls = job.get('classification')
+                if cls:
+                    for main in cls.get('main_aos', []):
+                        country_cat_map[c][main] += 1
+        country_category_data = {k: dict(v) for k, v in country_cat_map.items()}
+
+        # ── Co-occurrence ─────────────────────────────────────────────────
+        cooc = self._compute_cooc_from_jobs(intl_jobs)
+
+        # ── Summary stats ─────────────────────────────────────────────────
+        last_week_jobs = jobs_by_date.get(last_date_key, [])
+        current_week_new_jobs = len(last_week_jobs)
+        total_unique_jobs = len(intl_jobs)
+        weeks_tracked = len(dates)
+
+        last_main = defaultdict(int)
+        for job in last_week_jobs:
+            cls = job.get('classification') or {}
+            for main in cls.get('main_aos', ['Open']):
+                last_main[main] += 1
+        most_active = max(last_main, key=last_main.get) if last_main else "—"
+
+        seasonal_markers = []
+        for i, date in enumerate(dates):
+            if self.is_hiring_season(date):
+                seasonal_markers.append({'index': i, 'label': 'Hiring Season'})
+
+        # ── Pre-serialise JS objects ──────────────────────────────────────
+        categories_js = json.dumps({
+            k: {'name': k, 'data': v['data'], 'subcategories': v['subcategories'], 'color': v['color']}
+            for k, v in parent_categories.items()
+        })
+
+        # ── Build HTML ────────────────────────────────────────────────────
+        html = f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>International Philosophy Job Market Analytics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {{ font-family: 'Inter', sans-serif; }}
+        .category-card:hover {{ transform: translateY(-2px); transition: all 0.3s; }}
+        .stat-card {{ background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%); }}
+        .chart-container {{ min-height: 400px; }}
+        #mapTooltip {{ display:none; position:fixed; background:rgba(0,0,0,0.8); color:white; padding:6px 10px; border-radius:6px; font-size:13px; pointer-events:none; z-index:1000; line-height:1.5; }}
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Tab Navigation -->
+    <div class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex gap-1 py-2">
+                <a href="index.html" class="px-5 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 transition-colors">🇺🇸 US Market</a>
+                <a href="international.html" class="px-5 py-2 text-sm font-semibold rounded-lg bg-cyan-600 text-white">🌍 International</a>
+            </div>
+        </div>
+    </div>
+    <div class="bg-gradient-to-r from-cyan-600 to-teal-600 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <h1 class="text-4xl font-bold mb-2">International Philosophy Job Market</h1>
+            <p class="text-cyan-100">Real-time trends from PhilJobs — non-U.S. institutions</p>
+            <div class="mt-6 text-sm text-cyan-100">Last updated: {datetime.now().strftime("%B %d, %Y")}</div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+            <div class="stat-card rounded-xl shadow-lg p-6 text-white col-span-2 md:col-span-1">
+                <div class="text-3xl font-bold">{current_week_new_jobs}</div>
+                <div class="text-cyan-100">New Intl Jobs This Week</div>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="text-3xl font-bold text-gray-800">{total_unique_jobs}</div>
+                <div class="text-gray-600">Total Intl Jobs Tracked</div>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="text-2xl font-bold text-gray-800 truncate">{most_active}</div>
+                <div class="text-gray-600">Most Active This Week</div>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="text-3xl font-bold text-gray-800">{weeks_tracked}</div>
+                <div class="text-gray-600">Weeks Tracked</div>
+            </div>
+        </div>
+
+        <!-- Market Overview -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Market Overview</h2>
+            <p class="text-sm text-gray-500 mb-4">New international jobs per week by main AOS category — shaded areas = hiring season (Sept–Jan)</p>
+            <div class="chart-container">
+                <canvas id="mainChart"></canvas>
+            </div>
+        </div>
+
+        <!-- International Regional Trends -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">Regional Trends</h2>
+            <p class="text-sm text-gray-500 mb-4">New jobs per week by world region</p>
+            <div class="chart-container">
+                <canvas id="regionalChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Co-Occurrence Matrix -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">AOS Co-Occurrence Matrix</h2>
+            <p class="text-sm text-gray-500 mb-4">How often main AOS categories appear together in the same posting (all-time, international jobs). Darker = more frequent co-occurrence.</p>
+            <div id="coocMatrixTable" class="overflow-x-auto text-sm"></div>
+        </div>
+
+        <!-- Solo vs. Joint -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">Solo vs. Joint Hiring</h2>
+            <p class="text-sm text-gray-500 mb-4">For each main AOS, jobs listing it as the <em>only</em> area (solo) versus alongside other areas (joint)</p>
+            <div style="min-height:300px;">
+                <canvas id="soloJointChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Cross-Cutting Areas -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">Cross-Cutting Areas</h2>
+            <p class="text-sm text-gray-500 mb-4">Weekly trend for areas that span multiple AOS categories: Feminist Philosophy, Philosophy of Race, Philosophy of Gender, Philosophy of Law</p>
+            <div class="chart-container">
+                <canvas id="crossCuttingChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Geographic Overview -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">Geographic Overview</h2>
+                    <p class="text-sm text-gray-500 mt-1">Hover over countries to see job counts</p>
+                </div>
+                <div class="flex gap-2">
+                    <button id="mapModeNew" onclick="setMapMode('current')" class="px-4 py-2 text-sm font-medium rounded-lg bg-cyan-600 text-white">New This Week</button>
+                    <button id="mapModeAll" onclick="setMapMode('alltime')" class="px-4 py-2 text-sm font-medium rounded-lg bg-gray-200 text-gray-700">All-Time</button>
+                </div>
+            </div>
+            <div id="worldMapEl" class="bg-gray-50 rounded-lg overflow-hidden" style="height:500px;">
+                <div class="flex items-center justify-center h-full text-gray-400 text-sm">Loading map...</div>
+            </div>
+            <!-- Top countries list -->
+            <div class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-3" id="topCountriesList"></div>
+        </div>
+
+        <!-- Position Type Trends -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <div class="flex flex-wrap justify-between items-center mb-2 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">Position Type Trends</h2>
+                    <p class="text-sm text-gray-500 mt-1">New jobs per week by position type — filter by AOS to see hiring patterns within each area</p>
+                </div>
+                <div>
+                    <select id="posTypeAosFilter" onchange="updatePositionTypeChart()" class="text-sm border border-gray-300 rounded-lg px-3 py-2 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                        <option value="__all__">All AOS</option>
+                    </select>
+                </div>
+            </div>
+            <div class="chart-container mb-6">
+                <canvas id="posTypeChart"></canvas>
+            </div>
+            <div id="posTypeTable" class="overflow-x-auto text-sm mt-4"></div>
+        </div>
+
+        <!-- Category Cards -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Browse by Category</h2>
+            <div id="categoryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+
+        <!-- Category Detail Modal -->
+        <div id="detailModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center z-10">
+                    <h3 id="modalTitle" class="text-2xl font-bold text-gray-800"></h3>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div id="subcategorySection" class="mb-6">
+                        <h4 class="text-lg font-semibold text-gray-700 mb-4">Subcategories</h4>
+                        <div id="subcategoryGrid" class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6"></div>
+                    </div>
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold text-gray-700 mb-4">Trend Over Time</h4>
+                        <div class="chart-container"><canvas id="detailChart"></canvas></div>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="text-2xl font-bold text-cyan-600" id="modalCurrentJobs">0</div>
+                            <div class="text-sm text-gray-600">New Jobs This Week</div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="text-2xl font-bold text-green-600" id="modalChange">+0</div>
+                            <div class="text-sm text-gray-600">vs Last Week</div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="text-2xl font-bold text-purple-600" id="modalAverage">0</div>
+                            <div class="text-sm text-gray-600">Weekly Average</div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="text-2xl font-bold text-blue-600" id="modalTotal">0</div>
+                            <div class="text-sm text-gray-600">Total All-Time</div>
+                        </div>
+                    </div>
+                    <div id="lassiterSection" class="mb-6">
+                        <h4 class="text-lg font-semibold text-gray-700 mb-3">Solo vs. Joint by Subcategory</h4>
+                        <div id="lassiterChart" class="overflow-x-auto text-sm"></div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-700 mb-4">Job Types</h4>
+                            <canvas id="jobTypeChart"></canvas>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-700 mb-4">Institution Types</h4>
+                            <canvas id="institutionChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold text-gray-700 mb-4">Top Countries</h4>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div id="topCountriesModal" class="w-full"></div>
+                        </div>
+                    </div>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
+                        <h4 class="text-lg font-semibold text-blue-900 mb-2">📊 Key Insights</h4>
+                        <div id="insights" class="text-sm text-blue-800"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mapTooltip"></div>
+
+    <script>
+        const data = {{
+            dates: {json.dumps(dates)},
+            totalNewJobsWeekly: {json.dumps(total_new_jobs_weekly)},
+            categories: {categories_js},
+            subcategoryData: {json.dumps(subcategory_data)},
+            jobTypeData: {json.dumps(job_type_series)},
+            institutionTypeData: {json.dumps(inst_type_series)},
+            intlRegionData: {json.dumps(intl_region_data)},
+            countryAlltime: {json.dumps(dict(country_alltime))},
+            countryCurrentWeek: {json.dumps(dict(country_current))},
+            countryNumeric: {json.dumps(COUNTRY_NUMERIC)},
+            numericToCountry: {json.dumps(numeric_to_country)},
+            countryCategoryData: {json.dumps(country_category_data)},
+            seasonalMarkers: {json.dumps(seasonal_markers)},
+            positionTypeByAosWeekly: {json.dumps(position_type_by_aos_weekly)},
+            positionTypeXAos: {json.dumps(pos_type_x_aos)},
+            positionTypes: {json.dumps(POSITION_TYPES)},
+            positionTypeColors: {json.dumps(POSITION_TYPE_COLORS)},
+            mainAosColors: {json.dumps(MAIN_AOS_COLORS)},
+            mainAosCategories: {json.dumps(MAIN_AOS_CATEGORIES)},
+            coocMatrix: {json.dumps(cooc.get('main_aos_matrix', {}))},
+            soloVsJoint: {json.dumps(cooc.get('main_aos_solo_vs_joint', {}))},
+            crossCutting: {json.dumps(cooc.get('cross_cutting_areas', {}))},
+            detailAosByContext: {json.dumps(cooc.get('detail_aos_by_context', {}))}
+        }};
+
+        // ===== SEASON PLUGIN =====
+        const seasonPlugin = {{
+            id: 'seasonBackground',
+            beforeDraw(chart) {{
+                const {{ ctx, chartArea, scales }} = chart;
+                if (!chartArea || !scales.x) return;
+                ctx.save();
+                data.seasonalMarkers.forEach(m => {{
+                    const x0 = scales.x.getPixelForValue(m.index - 0.5);
+                    const x1 = scales.x.getPixelForValue(m.index + 0.5);
+                    ctx.fillStyle = 'rgba(251, 191, 36, 0.15)';
+                    ctx.fillRect(x0, chartArea.top, x1 - x0, chartArea.bottom - chartArea.top);
+                }});
+                ctx.restore();
+            }}
+        }};
+
+        // ===== MAIN CHART =====
+        const totalDataset = {{
+            label: 'Total (All Intl)',
+            data: data.totalNewJobsWeekly,
+            borderColor: '#111827',
+            backgroundColor: 'transparent',
+            borderWidth: 2.5,
+            borderDash: [6, 3],
+            tension: 0.4,
+            fill: false,
+            pointRadius: 4,
+            pointBackgroundColor: '#111827',
+            order: 0
+        }};
+        const datasets = [totalDataset, ...Object.entries(data.categories).map(([key, cat]) => ({{
+            label: cat.name, data: cat.data, borderColor: cat.color,
+            backgroundColor: cat.color + '20', tension: 0.4, fill: true, order: 1
+        }}))];
+        new Chart(document.getElementById('mainChart').getContext('2d'), {{
+            type: 'line',
+            data: {{ labels: data.dates, datasets }},
+            plugins: [seasonPlugin],
+            options: {{
+                responsive: true, maintainAspectRatio: false,
+                interaction: {{ mode: 'index', intersect: false }},
+                plugins: {{
+                    legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15, font: {{ size: 12 }} }} }},
+                    tooltip: {{ backgroundColor: 'rgba(0,0,0,0.8)', padding: 12 }}
+                }},
+                scales: {{
+                    y: {{ beginAtZero: true, ticks: {{ font: {{ size: 12 }} }}, grid: {{ color: 'rgba(0,0,0,0.05)' }} }},
+                    x: {{ ticks: {{ font: {{ size: 12 }} }}, grid: {{ display: false }} }}
+                }}
+            }}
+        }});
+
+        // ===== CATEGORY CARDS =====
+        const categoryGrid = document.getElementById('categoryGrid');
+        Object.entries(data.categories).forEach(([key, cat]) => {{
+            const currentJobs = cat.data[cat.data.length - 1];
+            const previousJobs = cat.data[cat.data.length - 2] || 0;
+            const change = currentJobs - previousJobs;
+            const changePercent = previousJobs > 0 ? ((change / previousJobs) * 100).toFixed(1) : 0;
+            const card = document.createElement('div');
+            card.className = 'category-card bg-white rounded-lg shadow hover:shadow-lg cursor-pointer p-5 border-l-4';
+            card.style.borderLeftColor = cat.color;
+            card.onclick = () => openModal(key, cat);
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-3">
+                    <h3 class="font-semibold text-gray-800 text-lg">${{cat.name}}</h3>
+                    <div class="w-3 h-3 rounded-full" style="background-color:${{cat.color}}"></div>
+                </div>
+                <div class="flex items-end justify-between">
+                    <div>
+                        <div class="text-3xl font-bold text-gray-800">${{currentJobs}}</div>
+                        <div class="text-sm text-gray-500">new this week</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm font-semibold ${{change >= 0 ? 'text-green-600' : 'text-red-600'}}">${{change >= 0 ? '↑' : '↓'}} ${{Math.abs(change)}}</div>
+                        <div class="text-xs text-gray-500">${{changePercent}}%</div>
+                    </div>
+                </div>
+                ${{cat.subcategories.length > 0 ? `<div class="mt-3 pt-3 border-t border-gray-100"><div class="text-xs text-gray-500">${{cat.subcategories.length}} subcategories</div></div>` : ''}}
+            `;
+            categoryGrid.appendChild(card);
+        }});
+
+        // ===== MODAL =====
+        let detailChart = null, jobTypeChart = null, institutionChart = null;
+
+        function openModal(key, category) {{
+            const currentJobs = category.data[category.data.length - 1];
+            const previousJobs = category.data[category.data.length - 2] || 0;
+            const change = currentJobs - previousJobs;
+            const average = (category.data.reduce((a, b) => a + b, 0) / category.data.length).toFixed(1);
+            const total = category.data.reduce((a, b) => a + b, 0);
+
+            document.getElementById('modalTitle').textContent = category.name;
+            document.getElementById('modalCurrentJobs').textContent = currentJobs;
+            document.getElementById('modalChange').textContent = (change >= 0 ? '+' : '') + change;
+            document.getElementById('modalChange').className = 'text-2xl font-bold ' + (change >= 0 ? 'text-green-600' : 'text-red-600');
+            document.getElementById('modalAverage').textContent = average;
+            document.getElementById('modalTotal').textContent = total;
+
+            // Subcategories
+            const subcatGrid = document.getElementById('subcategoryGrid');
+            subcatGrid.innerHTML = '';
+            document.getElementById('subcategorySection').style.display = category.subcategories.length > 0 ? 'block' : 'none';
+            category.subcategories.forEach(sub => {{
+                const subData = data.subcategoryData[sub] || [];
+                const subTotal = subData.reduce((a, b) => a + b, 0);
+                const subCurrent = subData[subData.length - 1] || 0;
+                const soloJointData = data.detailAosByContext[sub] || {{}};
+                const solo = Object.values(soloJointData.solo || {{}}).reduce((a, b) => a + b, 0);
+                const joint = Object.values(soloJointData.with_others || {{}}).reduce((a, b) => a + b, 0);
+                subcatGrid.innerHTML += `
+                    <div class="bg-gray-50 rounded-lg p-3">
+                        <div class="font-medium text-gray-800 text-sm mb-1">${{sub}}</div>
+                        <div class="text-xs text-gray-500">${{subTotal}} total · ${{subCurrent}} this week</div>
+                        ${{(solo + joint) > 0 ? `<div class="text-xs text-indigo-600 mt-1">Solo: ${{solo}} · Joint: ${{joint}}</div>` : ''}}
+                    </div>`;
+            }});
+
+            // Trend chart
+            const ctx = document.getElementById('detailChart').getContext('2d');
+            if (detailChart) detailChart.destroy();
+            detailChart = new Chart(ctx, {{
+                type: 'line',
+                data: {{ labels: data.dates, datasets: [{{ label: category.name, data: category.data, borderColor: category.color, backgroundColor: category.color + '30', tension: 0.4, fill: true }}] }},
+                plugins: [seasonPlugin],
+                options: {{
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {{ legend: {{ display: false }} }},
+                    scales: {{ y: {{ beginAtZero: true }}, x: {{ grid: {{ display: false }} }} }}
+                }}
+            }});
+
+            // Lassiter
+            const lassiterDiv = document.getElementById('lassiterChart');
+            const lassiterSection = document.getElementById('lassiterSection');
+            if (category.subcategories.length > 0) {{
+                lassiterSection.style.display = 'block';
+                const rows = category.subcategories.map(sub => {{
+                    const ctx2 = data.detailAosByContext[sub] || {{}};
+                    const solo = Object.values(ctx2.solo || {{}}).reduce((a, b) => a + b, 0);
+                    const joint = Object.values(ctx2.with_others || {{}}).reduce((a, b) => a + b, 0);
+                    const total2 = ctx2.total || 0;
+                    return {{ sub, solo, joint, total: total2 }};
+                }}).filter(r => r.total > 0).sort((a, b) => b.total - a.total);
+                if (rows.length > 0) {{
+                    let tableHtml = '<table class="w-full border-collapse text-xs"><thead><tr><th class="text-left py-2 px-3 bg-gray-50 border border-gray-200">Subcategory</th><th class="py-2 px-2 bg-gray-50 border border-gray-200 text-center">Total</th><th class="py-2 px-2 bg-gray-50 border border-gray-200 text-center text-indigo-700">Solo</th><th class="py-2 px-2 bg-gray-50 border border-gray-200 text-center text-purple-700">Joint</th></tr></thead><tbody>';
+                    rows.forEach((r, i) => {{
+                        tableHtml += `<tr class="${{i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}}"><td class="py-2 px-3 border border-gray-200 font-medium">${{r.sub}}</td><td class="py-2 px-2 border border-gray-200 text-center font-bold">${{r.total}}</td><td class="py-2 px-2 border border-gray-200 text-center text-indigo-700">${{r.solo}}</td><td class="py-2 px-2 border border-gray-200 text-center text-purple-700">${{r.joint}}</td></tr>`;
+                    }});
+                    lassiterDiv.innerHTML = tableHtml + '</tbody></table>';
+                }} else {{
+                    lassiterDiv.innerHTML = '<div class="text-gray-400 text-sm">No co-occurrence data yet.</div>';
+                }}
+            }} else {{
+                lassiterSection.style.display = 'none';
+            }}
+
+            // Job Types
+            const jobTypeCtx = document.getElementById('jobTypeChart').getContext('2d');
+            if (jobTypeChart) jobTypeChart.destroy();
+            const ptByAos = data.positionTypeByAosWeekly[key] || {{}};
+            const ptCurrent = data.positionTypes.map(pt => {{
+                const arr = ptByAos[pt] || [];
+                return arr[arr.length - 1] || 0;
+            }});
+            jobTypeChart = new Chart(jobTypeCtx, {{
+                type: 'doughnut',
+                data: {{ labels: data.positionTypes, datasets: [{{ data: ptCurrent, backgroundColor: data.positionTypes.map(pt => data.positionTypeColors[pt] || '#6b7280') }}] }},
+                options: {{ responsive: true, plugins: {{ legend: {{ position: 'right', labels: {{ font: {{ size: 11 }}, boxWidth: 12 }} }} }} }}
+            }});
+
+            // Institution Types
+            const instCtx = document.getElementById('institutionChart').getContext('2d');
+            if (institutionChart) institutionChart.destroy();
+            const instCurrent = ['Research University', 'Teaching College', 'Other'].map(it => {{
+                const arr = data.institutionTypeData[it] || [];
+                return arr[arr.length - 1] || 0;
+            }});
+            institutionChart = new Chart(instCtx, {{
+                type: 'doughnut',
+                data: {{ labels: ['Research University', 'Teaching College', 'Other'], datasets: [{{ data: instCurrent, backgroundColor: ['#6366f1', '#10b981', '#6b7280'] }}] }},
+                options: {{ responsive: true, plugins: {{ legend: {{ position: 'right', labels: {{ font: {{ size: 11 }}, boxWidth: 12 }} }} }} }}
+            }});
+
+            // Top countries for this category
+            const countryDiv = document.getElementById('topCountriesModal');
+            const catCountries = {{}};
+            Object.entries(data.countryCategoryData).forEach(([country, cats]) => {{
+                if (cats[key]) catCountries[country] = cats[key];
+            }});
+            const sortedCountries = Object.entries(catCountries).sort((a, b) => b[1] - a[1]).slice(0, 10);
+            if (sortedCountries.length > 0) {{
+                countryDiv.innerHTML = sortedCountries.map(([c, n]) => `<div class="flex justify-between py-1 text-sm"><span class="text-gray-700">${{c}}</span><span class="font-bold">${{n}}</span></div>`).join('');
+            }} else {{
+                countryDiv.innerHTML = '<div class="text-gray-400 text-sm">No country data yet</div>';
+            }}
+
+            // Insights
+            const insightsEl = document.getElementById('insights');
+            const insights = [];
+            if (total > 0) insights.push(`${{total}} total international jobs in this category since tracking began.`);
+            if (change > 0) insights.push(`Up ${{change}} from last week.`);
+            else if (change < 0) insights.push(`Down ${{Math.abs(change)}} from last week.`);
+            insightsEl.innerHTML = insights.map(i => `<div class="mb-1">• ${{i}}</div>`).join('');
+
+            document.getElementById('detailModal').classList.remove('hidden');
+        }}
+
+        function closeModal() {{
+            document.getElementById('detailModal').classList.add('hidden');
+            if (detailChart) {{ detailChart.destroy(); detailChart = null; }}
+            if (jobTypeChart) {{ jobTypeChart.destroy(); jobTypeChart = null; }}
+            if (institutionChart) {{ institutionChart.destroy(); institutionChart = null; }}
+        }}
+        document.getElementById('detailModal').addEventListener('click', function(e) {{
+            if (e.target === this) closeModal();
+        }});
+
+        // ===== REGIONAL CHART =====
+        const regionColors = {{
+            'Europe': '#2563eb', 'Canada': '#dc2626', 'Asia-Pacific': '#16a34a',
+            'Latin America': '#d97706', 'Middle East & Africa': '#9333ea'
+        }};
+        new Chart(document.getElementById('regionalChart').getContext('2d'), {{
+            type: 'line',
+            data: {{
+                labels: data.dates,
+                datasets: Object.entries(data.intlRegionData).map(([region, counts]) => ({{
+                    label: region,
+                    data: counts,
+                    borderColor: regionColors[region] || '#6b7280',
+                    backgroundColor: (regionColors[region] || '#6b7280') + '20',
+                    tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
+                }}))
+            }},
+            options: {{
+                responsive: true, maintainAspectRatio: false,
+                interaction: {{ mode: 'index', intersect: false }},
+                plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15, font: {{ size: 12 }} }} }} }},
+                scales: {{ y: {{ beginAtZero: true }}, x: {{ grid: {{ display: false }} }} }}
+            }}
+        }});
+
+        // ===== CO-OCCURRENCE MATRIX =====
+        const matrixDiv = document.getElementById('coocMatrixTable');
+        const matrixCats = data.mainAosCategories;
+        let matrixHtml = '<table class="border-collapse text-xs"><thead><tr><th class="p-2 bg-gray-50 border border-gray-200"></th>';
+        const shortNames = {{ 'Ethics': 'Ethics', 'Social & Political Philosophy': 'Soc/Pol', 'Value Theory / Aesthetics': 'Value/Aes', 'History of Philosophy': 'History', 'Non-Western & Cross-Cultural Philosophy': 'Non-West', 'Metaphysics & Epistemology': 'M&E', 'Science, Logic, & Mathematics': 'Sci/Log', 'Open': 'Open' }};
+        matrixCats.forEach(c => {{ matrixHtml += `<th class="p-2 bg-gray-50 border border-gray-200 font-semibold text-gray-700" title="${{c}}">${{shortNames[c] || c}}</th>`; }});
+        matrixHtml += '</tr></thead><tbody>';
+        const allVals = matrixCats.flatMap(r => matrixCats.map(c => r !== c ? (data.coocMatrix[r]?.[c] || 0) : 0));
+        const maxCoocVal = Math.max(...allVals, 1);
+        matrixCats.forEach((row, ri) => {{
+            matrixHtml += `<tr><td class="p-2 bg-gray-50 border border-gray-200 font-semibold text-gray-700 whitespace-nowrap">${{shortNames[row] || row}}</td>`;
+            matrixCats.forEach((col, ci) => {{
+                if (row === col) {{
+                    matrixHtml += '<td class="p-2 border border-gray-200 bg-gray-100 text-center text-gray-300">—</td>';
+                }} else {{
+                    const v = data.coocMatrix[row]?.[col] || 0;
+                    const intensity = v > 0 ? Math.max(0.1, v / maxCoocVal) : 0;
+                    const bg = v > 0 ? `rgba(8,145,178,${{intensity.toFixed(2)}})` : '#f9fafb';
+                    const color = intensity > 0.5 ? 'white' : '#374151';
+                    matrixHtml += `<td class="p-2 border border-gray-200 text-center font-medium" style="background:${{bg}};color:${{color}}" title="${{row}} ↔ ${{col}}: ${{v}}">${{v > 0 ? v : ''}}</td>`;
+                }}
+            }});
+            matrixHtml += '</tr>';
+        }});
+        matrixDiv.innerHTML = matrixHtml + '</tbody></table>';
+
+        // ===== SOLO VS JOINT CHART =====
+        const svjCats = Object.keys(data.soloVsJoint).filter(k => data.soloVsJoint[k].solo > 0 || data.soloVsJoint[k].joint > 0);
+        new Chart(document.getElementById('soloJointChart').getContext('2d'), {{
+            type: 'bar',
+            data: {{
+                labels: svjCats,
+                datasets: [
+                    {{ label: 'Solo', data: svjCats.map(k => data.soloVsJoint[k].solo || 0), backgroundColor: '#0891b2', borderRadius: 3 }},
+                    {{ label: 'Joint', data: svjCats.map(k => data.soloVsJoint[k].joint || 0), backgroundColor: '#67e8f9', borderRadius: 3 }}
+                ]
+            }},
+            options: {{
+                responsive: true, maintainAspectRatio: false,
+                plugins: {{ legend: {{ position: 'bottom' }} }},
+                scales: {{ x: {{ stacked: false }}, y: {{ beginAtZero: true, stacked: false }} }}
+            }}
+        }});
+
+        // ===== CROSS-CUTTING CHART =====
+        const ccColors = {{ 'Feminist Philosophy': '#ec4899', 'Philosophy of Race': '#f97316', 'Philosophy of Gender': '#8b5cf6', 'Philosophy of Law': '#0ea5e9' }};
+        const ccAreas = Object.keys(data.crossCutting);
+        const ccWeeks = ccAreas.length > 0 ? Object.keys(data.crossCutting[ccAreas[0]]?.weekly || {{}}) : [];
+        new Chart(document.getElementById('crossCuttingChart').getContext('2d'), {{
+            type: 'line',
+            data: {{
+                labels: ccWeeks,
+                datasets: ccAreas.map(area => ({{
+                    label: area, data: ccWeeks.map(w => data.crossCutting[area]?.weekly[w] || 0),
+                    borderColor: ccColors[area] || '#6b7280', backgroundColor: (ccColors[area] || '#6b7280') + '30',
+                    tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
+                }}))
+            }},
+            options: {{
+                responsive: true, maintainAspectRatio: false,
+                interaction: {{ mode: 'index', intersect: false }},
+                plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15 }} }} }},
+                scales: {{ y: {{ beginAtZero: true }}, x: {{ grid: {{ display: false }} }} }}
+            }}
+        }});
+
+        // ===== POSITION TYPE CHART =====
+        let posTypeChart = null;
+        const posTypeSelect = document.getElementById('posTypeAosFilter');
+        data.mainAosCategories.forEach(aos => {{
+            const opt = document.createElement('option');
+            opt.value = aos;
+            opt.textContent = aos;
+            posTypeSelect.appendChild(opt);
+        }});
+
+        function updatePositionTypeChart() {{
+            const selected = posTypeSelect.value;
+            let ptData = selected === '__all__' ? data.jobTypeData : (data.positionTypeByAosWeekly[selected] || {{}});
+            const ptDatasets = data.positionTypes.map(pt => ({{
+                label: pt,
+                data: ptData[pt] || Array(data.dates.length).fill(0),
+                borderColor: data.positionTypeColors[pt] || '#6b7280',
+                backgroundColor: (data.positionTypeColors[pt] || '#6b7280') + '30',
+                tension: 0.4, fill: true, borderWidth: 2, pointRadius: 3
+            }}));
+            if (posTypeChart) posTypeChart.destroy();
+            posTypeChart = new Chart(document.getElementById('posTypeChart').getContext('2d'), {{
+                type: 'line',
+                data: {{ labels: data.dates, datasets: ptDatasets }},
+                plugins: [seasonPlugin],
+                options: {{
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: {{ mode: 'index', intersect: false }},
+                    plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 12, font: {{ size: 11 }} }} }} }},
+                    scales: {{ y: {{ beginAtZero: true }}, x: {{ grid: {{ display: false }} }} }}
+                }}
+            }});
+
+            // Summary table
+            const tableDiv = document.getElementById('posTypeTable');
+            const aosRows = data.mainAosCategories;
+            let html = '<table class="w-full border-collapse"><thead><tr>';
+            html += '<th class="text-left py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200 text-sm">AOS Category</th>';
+            data.positionTypes.forEach(pt => {{
+                const short = pt.replace('Visiting / Adjunct / Lecturer (Fixed-Term)', 'Visiting/Adj/Lect').replace('Tenured / Continuing / Permanent', 'Tenured/Perm').replace('Postdoc / Fellowship', 'Postdoc/Fellow');
+                html += `<th class="py-2 px-2 bg-gray-50 font-semibold border border-gray-200 text-center text-xs" style="color:${{data.positionTypeColors[pt] || '#6b7280'}}" title="${{pt}}">${{short}}</th>`;
+            }});
+            html += '<th class="py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200 text-center text-sm">Total</th></tr></thead><tbody>';
+            aosRows.forEach((aos, i) => {{
+                const row = data.positionTypeXAos[aos] || {{}};
+                const rowTotal = data.positionTypes.reduce((s, pt) => s + (row[pt] || 0), 0);
+                if (rowTotal === 0) return;
+                html += `<tr class="${{i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}}">`;
+                html += `<td class="py-2 px-3 font-medium text-gray-700 border border-gray-200 text-sm">${{aos}}</td>`;
+                data.positionTypes.forEach(pt => {{
+                    const v = row[pt] || 0;
+                    const pct = rowTotal > 0 ? Math.round(v / rowTotal * 100) : 0;
+                    html += `<td class="py-2 px-2 text-center border border-gray-200 text-xs ${{v > 0 ? 'font-semibold text-gray-800' : 'text-gray-300'}}">${{v > 0 ? `${{v}}<div class="text-gray-400 font-normal">${{pct}}%</div>` : '—'}}</td>`;
+                }});
+                html += `<td class="py-2 px-3 text-center font-bold text-cyan-600 border border-gray-200 text-sm">${{rowTotal}}</td></tr>`;
+            }});
+            html += '</tbody></table>';
+            tableDiv.innerHTML = html;
+        }}
+        updatePositionTypeChart();
+
+        // ===== WORLD CHOROPLETH =====
+        let currentMapMode = 'current', worldAtlasData = null;
+
+        function getCountryValues(mode) {{
+            return mode === 'alltime' ? data.countryAlltime : data.countryCurrentWeek;
+        }}
+
+        function setMapMode(mode) {{
+            currentMapMode = mode;
+            document.getElementById('mapModeNew').className = mode === 'current' ? 'px-4 py-2 text-sm font-medium rounded-lg bg-cyan-600 text-white' : 'px-4 py-2 text-sm font-medium rounded-lg bg-gray-200 text-gray-700';
+            document.getElementById('mapModeAll').className = mode === 'alltime' ? 'px-4 py-2 text-sm font-medium rounded-lg bg-cyan-600 text-white' : 'px-4 py-2 text-sm font-medium rounded-lg bg-gray-200 text-gray-700';
+            if (worldAtlasData) drawWorldChoropleth();
+            updateTopCountries();
+        }}
+
+        function drawWorldChoropleth() {{
+            const el = document.getElementById('worldMapEl');
+            el.innerHTML = '';
+            const countryValues = getCountryValues(currentMapMode);
+            const numericVals = {{}};
+            Object.entries(data.countryNumeric).forEach(([country, code]) => {{
+                numericVals[code] = Math.max(numericVals[code] || 0, countryValues[country] || 0);
+            }});
+            const maxVal = Math.max(...Object.values(numericVals).filter(v => v > 0), 1);
+            const width = el.clientWidth || 900, height = 500;
+            const features = topojson.feature(worldAtlasData, worldAtlasData.objects.countries).features;
+            const projection = d3.geoNaturalEarth1().fitSize([width, height], {{type: 'FeatureCollection', features}});
+            const path = d3.geoPath().projection(projection);
+            const svg = d3.select('#worldMapEl').append('svg').attr('width', '100%').attr('height', height).attr('viewBox', `0 0 ${{width}} ${{height}}`);
+            const tip = d3.select('#mapTooltip');
+            svg.append('g').selectAll('path').data(features).join('path')
+                .attr('d', path)
+                .attr('fill', d => {{
+                    const code = String(d.id).padStart(3, '0');
+                    const v = numericVals[code] || 0;
+                    if (v === 0) return '#e5e7eb';
+                    return d3.interpolate('#a5f3fc', '#0e7490')(v / maxVal);
+                }})
+                .attr('stroke', '#9ca3af').attr('stroke-width', 0.3)
+                .on('mouseover', function(event, d) {{
+                    const code = String(d.id).padStart(3, '0');
+                    const country = data.numericToCountry[code] || '';
+                    const v = numericVals[code] || 0;
+                    if (v === 0 && !country) return;
+                    tip.style('display', 'block').html(`<strong>${{country || 'Unknown'}}</strong><br>${{v}} job${{v !== 1 ? 's' : ''}}`);
+                    d3.select(this).attr('stroke', '#111').attr('stroke-width', 1.5);
+                }})
+                .on('mousemove', event => tip.style('left', (event.pageX + 12) + 'px').style('top', (event.pageY - 28) + 'px'))
+                .on('mouseout', function() {{
+                    tip.style('display', 'none');
+                    d3.select(this).attr('stroke', '#9ca3af').attr('stroke-width', 0.3);
+                }});
+        }}
+
+        function updateTopCountries() {{
+            const countryValues = getCountryValues(currentMapMode);
+            const sorted = Object.entries(countryValues).sort((a, b) => b[1] - a[1]).slice(0, 12);
+            const listEl = document.getElementById('topCountriesList');
+            if (sorted.length === 0) {{
+                listEl.innerHTML = '<div class="text-gray-400 text-sm col-span-3">No international data yet</div>';
+                return;
+            }}
+            listEl.innerHTML = sorted.map(([c, n]) => `
+                <div class="bg-gray-50 rounded-lg px-3 py-2 flex justify-between items-center">
+                    <span class="text-sm text-gray-700 font-medium">${{c}}</span>
+                    <span class="text-sm font-bold text-cyan-700">${{n}}</span>
+                </div>`).join('');
+        }}
+
+        async function initMaps() {{
+            try {{
+                worldAtlasData = await d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
+                drawWorldChoropleth();
+                updateTopCountries();
+            }} catch(e) {{
+                document.getElementById('worldMapEl').innerHTML = '<div class="text-gray-400 text-center p-4 text-sm">Map unavailable — check connection</div>';
+            }}
+        }}
+        initMaps();
+    </script>
+</body>
+</html>'''
+
+        docs_dir = Path("docs")
+        docs_dir.mkdir(exist_ok=True)
+        intl_file = docs_dir / "international.html"
+        with open(intl_file, 'w') as f:
+            f.write(html)
+        print(f"✓ International dashboard written to {intl_file}")
 
     # ── Reports & CSV ─────────────────────────────────────────────────────
 
@@ -2146,9 +2959,11 @@ def main():
         print("Rebuilding weekly trends after state resolution...")
         scraper.rebuild_weekly_trends(historical_data)
 
-    # 8. Generate dashboard
-    print("\nGenerating comprehensive dashboard...")
+    # 8. Generate dashboards
+    print("\nGenerating US dashboard...")
     scraper.generate_trend_dashboard(historical_data)
+    print("Generating international dashboard...")
+    scraper.generate_intl_dashboard(historical_data)
 
     # 9. Generate report + CSV
     print("\nGenerating report...")

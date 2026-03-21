@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Philosophy Job Market Analytics</title>
+    <title>US Philosophy Job Market Analytics</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
@@ -19,10 +19,19 @@
     </style>
 </head>
 <body class="bg-gray-50">
+    <!-- Tab Navigation -->
+    <div class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex gap-1 py-2">
+                <a href="index.html" class="px-5 py-2 text-sm font-semibold rounded-lg bg-indigo-600 text-white">🇺🇸 US Market</a>
+                <a href="international.html" class="px-5 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 transition-colors">🌍 International</a>
+            </div>
+        </div>
+    </div>
     <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <h1 class="text-4xl font-bold mb-2">Philosophy Job Market Analytics</h1>
-            <p class="text-indigo-100">Real-time trends and insights from PhilJobs</p>
+            <h1 class="text-4xl font-bold mb-2">US Philosophy Job Market Analytics</h1>
+            <p class="text-indigo-100">Real-time trends from PhilJobs — U.S. institutions only</p>
             <div class="mt-6 text-sm text-indigo-100">Last updated: March 21, 2026</div>
         </div>
     </div>
@@ -32,15 +41,15 @@
         <!-- Stats Cards -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
             <div class="stat-card rounded-xl shadow-lg p-6 text-white col-span-2 md:col-span-1">
-                <div class="text-3xl font-bold">18</div>
-                <div class="text-indigo-100">New Jobs This Week</div>
+                <div class="text-3xl font-bold">8</div>
+                <div class="text-indigo-100">New US Jobs This Week</div>
             </div>
             <div class="bg-white rounded-xl shadow-lg p-6">
-                <div class="text-3xl font-bold text-gray-800">125</div>
-                <div class="text-gray-600">Total Unique Jobs</div>
+                <div class="text-3xl font-bold text-gray-800">78</div>
+                <div class="text-gray-600">Total US Jobs Tracked</div>
             </div>
             <div class="bg-white rounded-xl shadow-lg p-6">
-                <div class="text-2xl font-bold text-gray-800 truncate">Metaphysics & Epistemology</div>
+                <div class="text-2xl font-bold text-gray-800 truncate">Ethics</div>
                 <div class="text-gray-600">Most Active This Week</div>
             </div>
             <div class="bg-white rounded-xl shadow-lg p-6">
@@ -52,7 +61,7 @@
         <!-- Market Overview -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-2">Market Overview</h2>
-            <p class="text-sm text-gray-500 mb-4">New jobs per week by main AOS category — shaded areas = hiring season (Sept–Jan)</p>
+            <p class="text-sm text-gray-500 mb-4">New US jobs per week by main AOS category — shaded areas = hiring season (Sept–Jan)</p>
             <div class="chart-container">
                 <canvas id="mainChart"></canvas>
             </div>
@@ -97,29 +106,15 @@
             <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800">Geographic Overview</h2>
-                    <p class="text-sm text-gray-500 mt-1">Click any state for a detailed breakdown</p>
+                    <p class="text-sm text-gray-500 mt-1">Click any state for a detailed breakdown — West Coast highlighted in blue</p>
                 </div>
                 <div class="flex gap-2">
                     <button id="mapModeNew" onclick="setMapMode('current')" class="px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white">New This Week</button>
                     <button id="mapModeAll" onclick="setMapMode('alltime')" class="px-4 py-2 text-sm font-medium rounded-lg bg-gray-200 text-gray-700">All-Time</button>
                 </div>
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div>
-                    <div class="flex items-center gap-2 mb-2">
-                        <h3 class="text-lg font-semibold text-gray-700">United States</h3>
-                        <span class="text-xs text-blue-600 font-medium bg-blue-50 px-2 py-0.5 rounded-full">West Coast highlighted</span>
-                    </div>
-                    <div id="usMapEl" class="bg-gray-50 rounded-lg overflow-hidden" style="height:300px;">
-                        <div class="flex items-center justify-center h-full text-gray-400 text-sm">Loading map...</div>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Latin America</h3>
-                    <div id="latinMapEl" class="bg-gray-50 rounded-lg overflow-hidden" style="height:300px;">
-                        <div class="flex items-center justify-center h-full text-gray-400 text-sm">Loading map...</div>
-                    </div>
-                </div>
+            <div id="usMapEl" class="bg-gray-50 rounded-lg overflow-hidden" style="height:400px;">
+                <div class="flex items-center justify-center h-full text-gray-400 text-sm">Loading map...</div>
             </div>
         </div>
 
@@ -210,24 +205,13 @@
                         </div>
                     </div>
                     <div class="mb-6">
-                        <h4 class="text-lg font-semibold text-gray-700 mb-4">Geographic Distribution</h4>
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <div>
-                                <h5 class="text-sm font-medium text-gray-600 mb-2">United States</h5>
-                                <div id="usMapContainer" class="bg-gray-50 rounded-lg p-4 h-64 flex items-center justify-center">
-                                    <div id="usStatesList" class="w-full"></div>
-                                </div>
-                                <div id="westCoastDetail" class="hidden mt-4 bg-blue-50 rounded-lg p-4">
-                                    <h5 class="text-sm font-medium text-blue-900 mb-2">West Coast Detail</h5>
-                                    <div id="westCoastCities" class="text-sm"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <h5 class="text-sm font-medium text-gray-600 mb-2">Latin America</h5>
-                                <div id="latinMapContainer" class="bg-gray-50 rounded-lg p-4 h-64 overflow-y-auto">
-                                    <div id="latinCountriesList"></div>
-                                </div>
-                            </div>
+                        <h4 class="text-lg font-semibold text-gray-700 mb-4">Geographic Distribution (US States)</h4>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div id="usStatesList" class="w-full"></div>
+                        </div>
+                        <div id="westCoastDetail" class="hidden mt-4 bg-blue-50 rounded-lg p-4">
+                            <h5 class="text-sm font-medium text-blue-900 mb-2">West Coast Detail</h5>
+                            <div id="westCoastCities" class="text-sm"></div>
                         </div>
                     </div>
                     <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
@@ -268,29 +252,28 @@
     <script>
         const data = {
             dates: ["2026-03-10", "2026-03-16", "2026-03-21"],
-            totalNewJobsWeekly: [100, 7, 18],
-            categories: {"Ethics": {"name": "Ethics", "data": [40, 3, 6], "subcategories": ["Meta-Ethics", "Normative Ethics", "Biomedical Ethics / Bioethics", "Neuroethics", "AI, Technology, and Information Ethics", "Environmental Ethics", "Animal Ethics", "Food and Agricultural Ethics", "Business Ethics", "Ethics of Population, Future Generations, and Global Justice", "Ethics (General / Applied Ethics, Broadly Construed)"], "color": "#ef4444"}, "Social & Political Philosophy": {"name": "Social & Political Philosophy", "data": [25, 2, 6], "subcategories": ["Social and Political Philosophy (General / Political Theory)", "Philosophy of Law", "Philosophy of Race", "Philosophy of Gender", "Feminist Philosophy", "Philosophy of Sexuality and Queer Theory", "PPE (Politics, Philosophy, and Economics)", "Philosophy of Education", "Social & Political Philosophy (General)"], "color": "#3b82f6"}, "Value Theory / Aesthetics": {"name": "Value Theory / Aesthetics", "data": [4, 0, 3], "subcategories": ["Aesthetics (General)", "Philosophy of Art", "Philosophy of Music", "Philosophy of Film and Media", "Philosophy of Literature", "Value Theory / Axiology", "Value Theory / Aesthetics (General)"], "color": "#06b6d4"}, "History of Philosophy": {"name": "History of Philosophy", "data": [19, 2, 3], "subcategories": ["Ancient Greek and Roman Philosophy", "Medieval and Renaissance Philosophy", "Early Modern Philosophy (17th/18th Century)", "19th/20th Century Philosophy", "American Philosophy", "Continental Philosophy", "History of Philosophy (General)"], "color": "#8b5cf6"}, "Non-Western & Cross-Cultural Philosophy": {"name": "Non-Western & Cross-Cultural Philosophy", "data": [4, 0, 1], "subcategories": ["Asian Philosophy", "African/Africana Philosophy", "Arabic and Islamic Philosophy", "Latin American Philosophy", "Native American / Indigenous Philosophy", "Comparative Philosophy / Cross-Cultural", "Non-Western Philosophy (General)"], "color": "#ec4899"}, "Metaphysics & Epistemology": {"name": "Metaphysics & Epistemology", "data": [30, 1, 9], "subcategories": ["Metaphysics", "Epistemology", "Philosophy of Mind", "Philosophy of Language", "Philosophy of Action", "Philosophy of Religion", "Metaphysics & Epistemology (General)"], "color": "#10b981"}, "Science, Logic, & Mathematics": {"name": "Science, Logic, & Mathematics", "data": [36, 3, 8], "subcategories": ["Philosophy of Science (General)", "Philosophy of Biology", "Philosophy of Physics", "Philosophy of Cognitive Science", "Philosophy of Computing / Philosophy of AI", "Logic", "Philosophy of Mathematics", "Philosophy of Social Science", "Decision Theory", "Science, Logic, & Mathematics (General)"], "color": "#f59e0b"}, "Open": {"name": "Open", "data": [29, 2, 4], "subcategories": [], "color": "#6b7280"}},
-            subcategoryData: {"Meta-Ethics": [2, 0, 1], "Normative Ethics": [5, 1, 2], "Biomedical Ethics / Bioethics": [9, 0, 0], "Neuroethics": [3, 0, 0], "AI, Technology, and Information Ethics": [13, 1, 3], "Environmental Ethics": [6, 0, 0], "Animal Ethics": [0, 0, 0], "Food and Agricultural Ethics": [1, 0, 0], "Business Ethics": [2, 0, 3], "Ethics of Population, Future Generations, and Global Justice": [2, 0, 1], "Ethics (General / Applied Ethics, Broadly Construed)": [22, 1, 3], "Social and Political Philosophy (General / Political Theory)": [18, 1, 6], "Philosophy of Law": [7, 0, 2], "Philosophy of Race": [1, 0, 1], "Philosophy of Gender": [0, 0, 0], "Feminist Philosophy": [1, 0, 1], "Philosophy of Sexuality and Queer Theory": [0, 0, 0], "PPE (Politics, Philosophy, and Economics)": [5, 0, 0], "Philosophy of Education": [3, 0, 1], "Social & Political Philosophy (General)": [0, 0, 0], "Aesthetics (General)": [2, 0, 0], "Philosophy of Art": [0, 0, 0], "Philosophy of Music": [0, 0, 0], "Philosophy of Film and Media": [0, 0, 0], "Philosophy of Literature": [0, 0, 1], "Value Theory / Axiology": [2, 0, 2], "Value Theory / Aesthetics (General)": [2, 0, 1], "Ancient Greek and Roman Philosophy": [4, 0, 1], "Medieval and Renaissance Philosophy": [1, 0, 1], "Early Modern Philosophy (17th/18th Century)": [6, 0, 0], "19th/20th Century Philosophy": [6, 1, 0], "American Philosophy": [2, 0, 0], "Continental Philosophy": [1, 0, 0], "History of Philosophy (General)": [6, 1, 3], "Asian Philosophy": [1, 0, 0], "African/Africana Philosophy": [0, 0, 0], "Arabic and Islamic Philosophy": [0, 0, 0], "Latin American Philosophy": [0, 0, 0], "Native American / Indigenous Philosophy": [0, 0, 0], "Comparative Philosophy / Cross-Cultural": [4, 0, 1], "Non-Western Philosophy (General)": [1, 0, 0], "Metaphysics": [3, 0, 0], "Epistemology": [12, 1, 4], "Philosophy of Mind": [11, 1, 2], "Philosophy of Language": [4, 1, 4], "Philosophy of Action": [5, 0, 0], "Philosophy of Religion": [5, 0, 2], "Metaphysics & Epistemology (General)": [3, 0, 0], "Philosophy of Science (General)": [16, 2, 4], "Philosophy of Biology": [1, 0, 0], "Philosophy of Physics": [4, 1, 0], "Philosophy of Cognitive Science": [6, 0, 2], "Philosophy of Computing / Philosophy of AI": [14, 1, 4], "Logic": [9, 0, 1], "Philosophy of Mathematics": [3, 0, 1], "Philosophy of Social Science": [1, 0, 1], "Decision Theory": [4, 0, 0], "Science, Logic, & Mathematics (General)": [1, 0, 0]},
-            jobTypeData: {"Tenure-Track": [13, 2, 1], "Postdoc / Fellowship": [39, 3, 9], "Visiting / Adjunct / Lecturer (Fixed-Term)": [27, 2, 6], "Tenured / Continuing / Permanent": [13, 0, 1], "Other": [8, 0, 1]},
-            institutionTypeData: {"Research University": [78, 5, 15], "Teaching College": [18, 2, 2], "Other": [4, 0, 1]},
-            stateData: {"AL": [1, 0, 0], "AK": [0, 0, 0], "AZ": [0, 0, 0], "AR": [0, 0, 0], "CA": [5, 1, 0], "CO": [2, 0, 0], "CT": [1, 0, 0], "DE": [0, 0, 1], "FL": [1, 1, 0], "GA": [3, 0, 1], "HI": [0, 0, 0], "ID": [0, 0, 0], "IL": [3, 0, 2], "IN": [3, 0, 0], "IA": [1, 0, 0], "KS": [0, 0, 0], "KY": [0, 0, 0], "LA": [0, 0, 0], "ME": [1, 0, 0], "MD": [2, 0, 0], "MA": [7, 0, 0], "MI": [1, 0, 0], "MN": [0, 0, 0], "MS": [1, 0, 0], "MO": [1, 0, 0], "MT": [0, 0, 0], "NE": [1, 0, 0], "NV": [0, 0, 0], "NH": [0, 0, 0], "NJ": [4, 0, 0], "NM": [0, 0, 0], "NY": [11, 1, 1], "NC": [4, 0, 0], "ND": [0, 0, 0], "OH": [0, 0, 0], "OK": [1, 0, 0], "OR": [0, 0, 0], "PA": [5, 1, 0], "RI": [0, 1, 1], "SC": [1, 0, 1], "SD": [0, 0, 0], "TN": [0, 0, 0], "TX": [5, 0, 1], "UT": [0, 0, 0], "VT": [0, 0, 0], "VA": [0, 0, 0], "WA": [0, 0, 0], "WV": [0, 0, 0], "WI": [0, 0, 0], "WY": [0, 0, 0]},
-            westCoastData: {"Claremont": [1]},
-            latinData: {"Mexico": [0, 0, 0], "Brazil": [0, 0, 0], "Argentina": [0, 0, 0], "Chile": [0, 0, 0], "Colombia": [0, 0, 0], "Peru": [0, 0, 0], "Venezuela": [0, 0, 0], "Ecuador": [0, 0, 0], "Guatemala": [0, 0, 0], "Cuba": [0, 0, 0], "Bolivia": [0, 0, 0], "Haiti": [0, 0, 0], "Dominican Republic": [0, 0, 0], "Honduras": [0, 0, 0], "Paraguay": [0, 0, 0], "El Salvador": [0, 0, 0], "Nicaragua": [0, 0, 0], "Costa Rica": [0, 0, 0], "Panama": [0, 0, 0], "Puerto Rico": [0, 0, 0], "Uruguay": [0, 0, 0]},
+            totalNewJobsWeekly: [65, 5, 8],
+            categories: {"Ethics": {"name": "Ethics", "data": [27, 3, 3], "subcategories": ["Meta-Ethics", "Normative Ethics", "Biomedical Ethics / Bioethics", "Neuroethics", "AI, Technology, and Information Ethics", "Environmental Ethics", "Animal Ethics", "Food and Agricultural Ethics", "Business Ethics", "Ethics of Population, Future Generations, and Global Justice", "Ethics (General / Applied Ethics, Broadly Construed)"], "color": "#ef4444"}, "Social & Political Philosophy": {"name": "Social & Political Philosophy", "data": [16, 2, 3], "subcategories": ["Social and Political Philosophy (General / Political Theory)", "Philosophy of Law", "Philosophy of Race", "Philosophy of Gender", "Feminist Philosophy", "Philosophy of Sexuality and Queer Theory", "PPE (Politics, Philosophy, and Economics)", "Philosophy of Education", "Social & Political Philosophy (General)"], "color": "#3b82f6"}, "Value Theory / Aesthetics": {"name": "Value Theory / Aesthetics", "data": [2, 0, 1], "subcategories": ["Aesthetics (General)", "Philosophy of Art", "Philosophy of Music", "Philosophy of Film and Media", "Philosophy of Literature", "Value Theory / Axiology", "Value Theory / Aesthetics (General)"], "color": "#06b6d4"}, "History of Philosophy": {"name": "History of Philosophy", "data": [13, 2, 3], "subcategories": ["Ancient Greek and Roman Philosophy", "Medieval and Renaissance Philosophy", "Early Modern Philosophy (17th/18th Century)", "19th/20th Century Philosophy", "American Philosophy", "Continental Philosophy", "History of Philosophy (General)"], "color": "#8b5cf6"}, "Non-Western & Cross-Cultural Philosophy": {"name": "Non-Western & Cross-Cultural Philosophy", "data": [3, 0, 1], "subcategories": ["Asian Philosophy", "African/Africana Philosophy", "Arabic and Islamic Philosophy", "Latin American Philosophy", "Native American / Indigenous Philosophy", "Comparative Philosophy / Cross-Cultural", "Non-Western Philosophy (General)"], "color": "#ec4899"}, "Metaphysics & Epistemology": {"name": "Metaphysics & Epistemology", "data": [15, 0, 3], "subcategories": ["Metaphysics", "Epistemology", "Philosophy of Mind", "Philosophy of Language", "Philosophy of Action", "Philosophy of Religion", "Metaphysics & Epistemology (General)"], "color": "#10b981"}, "Science, Logic, & Mathematics": {"name": "Science, Logic, & Mathematics", "data": [20, 3, 3], "subcategories": ["Philosophy of Science (General)", "Philosophy of Biology", "Philosophy of Physics", "Philosophy of Cognitive Science", "Philosophy of Computing / Philosophy of AI", "Logic", "Philosophy of Mathematics", "Philosophy of Social Science", "Decision Theory", "Science, Logic, & Mathematics (General)"], "color": "#f59e0b"}, "Open": {"name": "Open", "data": [22, 0, 3], "subcategories": [], "color": "#6b7280"}},
+            subcategoryData: {"Meta-Ethics": [0, 0, 0], "Normative Ethics": [2, 1, 1], "Biomedical Ethics / Bioethics": [8, 0, 0], "Neuroethics": [2, 0, 0], "AI, Technology, and Information Ethics": [10, 1, 2], "Environmental Ethics": [6, 0, 0], "Animal Ethics": [0, 0, 0], "Food and Agricultural Ethics": [1, 0, 0], "Business Ethics": [2, 0, 2], "Ethics of Population, Future Generations, and Global Justice": [1, 0, 1], "Ethics (General / Applied Ethics, Broadly Construed)": [17, 1, 1], "Social and Political Philosophy (General / Political Theory)": [10, 1, 3], "Philosophy of Law": [5, 0, 1], "Philosophy of Race": [1, 0, 1], "Philosophy of Gender": [0, 0, 0], "Feminist Philosophy": [1, 0, 1], "Philosophy of Sexuality and Queer Theory": [0, 0, 0], "PPE (Politics, Philosophy, and Economics)": [4, 0, 0], "Philosophy of Education": [2, 0, 0], "Social & Political Philosophy (General)": [0, 0, 0], "Aesthetics (General)": [0, 0, 0], "Philosophy of Art": [0, 0, 0], "Philosophy of Music": [0, 0, 0], "Philosophy of Film and Media": [0, 0, 0], "Philosophy of Literature": [0, 0, 1], "Value Theory / Axiology": [1, 0, 0], "Value Theory / Aesthetics (General)": [0, 0, 1], "Ancient Greek and Roman Philosophy": [3, 0, 1], "Medieval and Renaissance Philosophy": [1, 0, 1], "Early Modern Philosophy (17th/18th Century)": [3, 0, 0], "19th/20th Century Philosophy": [3, 1, 0], "American Philosophy": [2, 0, 0], "Continental Philosophy": [1, 0, 0], "History of Philosophy (General)": [3, 1, 3], "Asian Philosophy": [0, 0, 0], "African/Africana Philosophy": [0, 0, 0], "Arabic and Islamic Philosophy": [0, 0, 0], "Latin American Philosophy": [0, 0, 0], "Native American / Indigenous Philosophy": [0, 0, 0], "Comparative Philosophy / Cross-Cultural": [3, 0, 1], "Non-Western Philosophy (General)": [1, 0, 0], "Metaphysics": [3, 0, 0], "Epistemology": [7, 0, 1], "Philosophy of Mind": [5, 0, 2], "Philosophy of Language": [3, 0, 1], "Philosophy of Action": [1, 0, 0], "Philosophy of Religion": [4, 0, 1], "Metaphysics & Epistemology (General)": [1, 0, 0], "Philosophy of Science (General)": [9, 2, 0], "Philosophy of Biology": [0, 0, 0], "Philosophy of Physics": [0, 1, 0], "Philosophy of Cognitive Science": [3, 0, 2], "Philosophy of Computing / Philosophy of AI": [10, 1, 1], "Logic": [4, 0, 1], "Philosophy of Mathematics": [2, 0, 1], "Philosophy of Social Science": [0, 0, 0], "Decision Theory": [0, 0, 0], "Science, Logic, & Mathematics (General)": [1, 0, 0]},
+            jobTypeData: {"Tenure-Track": [10, 2, 1], "Postdoc / Fellowship": [16, 3, 1], "Visiting / Adjunct / Lecturer (Fixed-Term)": [24, 0, 5], "Tenured / Continuing / Permanent": [8, 0, 0], "Other": [7, 0, 1]},
+            institutionTypeData: {"Research University": [44, 4, 6], "Teaching College": [17, 1, 1], "Other": [4, 0, 1]},
+            stateData: {"AL": [1, 0, 0], "AK": [0, 0, 0], "AZ": [0, 0, 0], "AR": [0, 0, 0], "CA": [5, 1, 0], "CO": [2, 0, 0], "CT": [1, 0, 0], "DE": [0, 0, 1], "FL": [1, 1, 0], "GA": [3, 0, 1], "HI": [0, 0, 0], "ID": [0, 0, 0], "IL": [3, 0, 2], "IN": [3, 0, 0], "IA": [1, 0, 0], "KS": [0, 0, 0], "KY": [0, 0, 0], "LA": [0, 0, 0], "ME": [1, 0, 0], "MD": [2, 0, 0], "MA": [7, 0, 0], "MI": [1, 0, 0], "MN": [0, 0, 0], "MS": [1, 0, 0], "MO": [1, 0, 0], "MT": [0, 0, 0], "NE": [1, 0, 0], "NV": [0, 0, 0], "NH": [0, 0, 0], "NJ": [4, 0, 0], "NM": [0, 0, 0], "NY": [11, 1, 1], "NC": [4, 0, 0], "ND": [0, 0, 0], "OH": [0, 0, 0], "OK": [1, 0, 0], "OR": [0, 0, 0], "PA": [5, 1, 0], "RI": [0, 1, 1], "SC": [1, 0, 1], "SD": [0, 0, 0], "TN": [0, 0, 0], "TX": [5, 0, 1], "UT": [0, 0, 0], "VT": [0, 0, 0], "VA": [0, 0, 0], "WA": [0, 0, 0], "WV": [0, 0, 0], "WI": [0, 0, 0], "WY": [0, 0, 0], "DC": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+            westCoastData: {"Berkeley": [0, 0, 0], "Stanford": [0, 0, 0], "San Francisco": [0, 0, 0], "Oakland": [0, 0, 0], "San Jose": [0, 0, 0], "Santa Cruz": [0, 0, 0], "Davis": [0, 0, 0], "Los Angeles": [0, 0, 0], "San Diego": [0, 0, 0], "Irvine": [0, 0, 0], "Claremont": [1, 0, 0], "Riverside": [0, 0, 0], "Seattle": [0, 0, 0], "Portland": [0, 0, 0], "Eugene": [0, 0, 0], "Tacoma": [0, 0, 0], "Olympia": [0, 0, 0]},
             westCoastCities: {"Berkeley": {"lat": 37.8715, "lon": -122.273, "state": "CA"}, "Stanford": {"lat": 37.4275, "lon": -122.1697, "state": "CA"}, "San Francisco": {"lat": 37.7749, "lon": -122.4194, "state": "CA"}, "Oakland": {"lat": 37.8044, "lon": -122.2712, "state": "CA"}, "San Jose": {"lat": 37.3382, "lon": -121.8863, "state": "CA"}, "Santa Cruz": {"lat": 36.9741, "lon": -122.0308, "state": "CA"}, "Davis": {"lat": 38.5449, "lon": -121.7405, "state": "CA"}, "Los Angeles": {"lat": 34.0522, "lon": -118.2437, "state": "CA"}, "San Diego": {"lat": 32.7157, "lon": -117.1611, "state": "CA"}, "Irvine": {"lat": 33.6846, "lon": -117.8265, "state": "CA"}, "Claremont": {"lat": 34.0967, "lon": -117.7198, "state": "CA"}, "Riverside": {"lat": 33.9533, "lon": -117.3962, "state": "CA"}, "Seattle": {"lat": 47.6062, "lon": -122.3321, "state": "WA"}, "Portland": {"lat": 45.5152, "lon": -122.6784, "state": "OR"}, "Eugene": {"lat": 44.0521, "lon": -123.0868, "state": "OR"}, "Tacoma": {"lat": 47.2529, "lon": -122.4443, "state": "WA"}, "Olympia": {"lat": 47.0379, "lon": -122.9007, "state": "WA"}},
             seasonalMarkers: [],
             regionData: {"West": [7, 1, 0], "Northeast": [29, 3, 2], "South": [19, 1, 4], "Midwest": [10, 0, 2]},
             stateAlltime: {"AL": 1, "CA": 6, "CO": 2, "CT": 1, "DE": 1, "FL": 2, "GA": 4, "IL": 5, "IN": 3, "IA": 1, "ME": 1, "MD": 2, "MA": 7, "MI": 1, "MS": 1, "MO": 1, "NE": 1, "NJ": 4, "NY": 13, "NC": 4, "OK": 1, "PA": 6, "RI": 2, "SC": 2, "TX": 6},
             stateCategoryData: {"TX": {"Open": 2, "History of Philosophy": 3, "Non-Western & Cross-Cultural Philosophy": 1, "Science, Logic, & Mathematics": 1, "Ethics": 2, "Metaphysics & Epistemology": 1, "Social & Political Philosophy": 2, "Value Theory / Aesthetics": 1}, "MA": {"Metaphysics & Epistemology": 3, "Science, Logic, & Mathematics": 4, "Ethics": 4, "Open": 1, "Social & Political Philosophy": 1}, "PA": {"Open": 2, "Ethics": 2, "Science, Logic, & Mathematics": 3, "Metaphysics & Epistemology": 1, "History of Philosophy": 2}, "NY": {"Science, Logic, & Mathematics": 6, "Metaphysics & Epistemology": 4, "Open": 2, "Ethics": 6, "Non-Western & Cross-Cultural Philosophy": 1, "Social & Political Philosophy": 5, "History of Philosophy": 2}, "IL": {"History of Philosophy": 2, "Open": 3, "Metaphysics & Epistemology": 1, "Science, Logic, & Mathematics": 1, "Ethics": 1, "Social & Political Philosophy": 1}, "MO": {"Open": 1}, "NJ": {"Open": 4, "History of Philosophy": 1}, "ME": {"Ethics": 1, "Science, Logic, & Mathematics": 1, "History of Philosophy": 1}, "CA": {"Ethics": 2, "Open": 2, "Science, Logic, & Mathematics": 2, "History of Philosophy": 2, "Social & Political Philosophy": 2, "Metaphysics & Epistemology": 1, "Value Theory / Aesthetics": 1}, "SC": {"Social & Political Philosophy": 1, "Open": 1}, "GA": {"Ethics": 2, "Social & Political Philosophy": 1, "Open": 2, "Science, Logic, & Mathematics": 1, "Metaphysics & Epistemology": 2, "Non-Western & Cross-Cultural Philosophy": 1}, "NC": {"Science, Logic, & Mathematics": 1, "Metaphysics & Epistemology": 2, "History of Philosophy": 1, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 2, "Ethics": 2, "Social & Political Philosophy": 1}, "MD": {"Ethics": 2, "Social & Political Philosophy": 2, "Science, Logic, & Mathematics": 1}, "IA": {"Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1}, "CO": {"Metaphysics & Epistemology": 1, "Science, Logic, & Mathematics": 1, "Ethics": 1, "History of Philosophy": 1}, "NE": {"History of Philosophy": 1}, "IN": {"Ethics": 3, "Open": 1}, "CT": {"Metaphysics & Epistemology": 1, "Social & Political Philosophy": 1}, "FL": {"History of Philosophy": 1, "Science, Logic, & Mathematics": 2, "Ethics": 1}, "MI": {"Ethics": 1, "Social & Political Philosophy": 1}, "MS": {"Ethics": 1, "Science, Logic, & Mathematics": 1}, "OK": {"Social & Political Philosophy": 1, "History of Philosophy": 1, "Open": 1}, "AL": {"Ethics": 1}, "RI": {"Ethics": 1, "Social & Political Philosophy": 1, "Metaphysics & Epistemology": 1, "Science, Logic, & Mathematics": 1}, "DE": {"Open": 1}},
-            positionTypeByAosWeekly: {"Ethics": {"Tenure-Track": [8, 2, 0], "Postdoc / Fellowship": [16, 1, 2], "Visiting / Adjunct / Lecturer (Fixed-Term)": [9, 0, 3], "Tenured / Continuing / Permanent": [5, 0, 1], "Other": [2, 0, 0]}, "Social & Political Philosophy": {"Tenure-Track": [3, 1, 1], "Postdoc / Fellowship": [15, 1, 2], "Visiting / Adjunct / Lecturer (Fixed-Term)": [2, 0, 2], "Tenured / Continuing / Permanent": [5, 0, 1], "Other": [0, 0, 0]}, "Value Theory / Aesthetics": {"Tenure-Track": [1, 0, 1], "Postdoc / Fellowship": [3, 0, 2], "Visiting / Adjunct / Lecturer (Fixed-Term)": [0, 0, 0], "Tenured / Continuing / Permanent": [0, 0, 0], "Other": [0, 0, 0]}, "History of Philosophy": {"Tenure-Track": [5, 0, 1], "Postdoc / Fellowship": [3, 2, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [9, 0, 2], "Tenured / Continuing / Permanent": [2, 0, 0], "Other": [0, 0, 0]}, "Non-Western & Cross-Cultural Philosophy": {"Tenure-Track": [2, 0, 0], "Postdoc / Fellowship": [0, 0, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [2, 0, 1], "Tenured / Continuing / Permanent": [0, 0, 0], "Other": [0, 0, 0]}, "Metaphysics & Epistemology": {"Tenure-Track": [4, 0, 0], "Postdoc / Fellowship": [16, 0, 7], "Visiting / Adjunct / Lecturer (Fixed-Term)": [7, 1, 2], "Tenured / Continuing / Permanent": [2, 0, 0], "Other": [1, 0, 0]}, "Science, Logic, & Mathematics": {"Tenure-Track": [6, 1, 0], "Postdoc / Fellowship": [17, 2, 6], "Visiting / Adjunct / Lecturer (Fixed-Term)": [7, 0, 2], "Tenured / Continuing / Permanent": [6, 0, 0], "Other": [0, 0, 0]}, "Open": {"Tenure-Track": [3, 0, 1], "Postdoc / Fellowship": [6, 0, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [12, 2, 2], "Tenured / Continuing / Permanent": [2, 0, 0], "Other": [6, 0, 1]}},
-            positionTypeXAos: {"Open": {"Visiting / Adjunct / Lecturer (Fixed-Term)": 16, "Other": 7, "Postdoc / Fellowship": 6, "Tenure-Track": 4, "Tenured / Continuing / Permanent": 2}, "Metaphysics & Epistemology": {"Visiting / Adjunct / Lecturer (Fixed-Term)": 10, "Postdoc / Fellowship": 23, "Tenure-Track": 4, "Tenured / Continuing / Permanent": 2, "Other": 1}, "Science, Logic, & Mathematics": {"Visiting / Adjunct / Lecturer (Fixed-Term)": 9, "Tenured / Continuing / Permanent": 6, "Tenure-Track": 7, "Postdoc / Fellowship": 25}, "History of Philosophy": {"Postdoc / Fellowship": 5, "Tenure-Track": 6, "Visiting / Adjunct / Lecturer (Fixed-Term)": 11, "Tenured / Continuing / Permanent": 2}, "Ethics": {"Postdoc / Fellowship": 19, "Tenure-Track": 10, "Visiting / Adjunct / Lecturer (Fixed-Term)": 12, "Other": 2, "Tenured / Continuing / Permanent": 6}, "Social & Political Philosophy": {"Postdoc / Fellowship": 18, "Tenure-Track": 5, "Visiting / Adjunct / Lecturer (Fixed-Term)": 4, "Tenured / Continuing / Permanent": 6}, "Value Theory / Aesthetics": {"Postdoc / Fellowship": 5, "Tenure-Track": 2}, "Non-Western & Cross-Cultural Philosophy": {"Tenure-Track": 2, "Visiting / Adjunct / Lecturer (Fixed-Term)": 3}},
+            positionTypeByAosWeekly: {"Ethics": {"Tenure-Track": [6, 2, 0], "Postdoc / Fellowship": [6, 1, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [8, 0, 3], "Tenured / Continuing / Permanent": [5, 0, 0], "Other": [2, 0, 0]}, "Social & Political Philosophy": {"Tenure-Track": [2, 1, 1], "Postdoc / Fellowship": [8, 1, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [2, 0, 2], "Tenured / Continuing / Permanent": [4, 0, 0], "Other": [0, 0, 0]}, "Value Theory / Aesthetics": {"Tenure-Track": [0, 0, 1], "Postdoc / Fellowship": [2, 0, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [0, 0, 0], "Tenured / Continuing / Permanent": [0, 0, 0], "Other": [0, 0, 0]}, "History of Philosophy": {"Tenure-Track": [4, 0, 1], "Postdoc / Fellowship": [1, 2, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [7, 0, 2], "Tenured / Continuing / Permanent": [1, 0, 0], "Other": [0, 0, 0]}, "Non-Western & Cross-Cultural Philosophy": {"Tenure-Track": [1, 0, 0], "Postdoc / Fellowship": [0, 0, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [2, 0, 1], "Tenured / Continuing / Permanent": [0, 0, 0], "Other": [0, 0, 0]}, "Metaphysics & Epistemology": {"Tenure-Track": [3, 0, 0], "Postdoc / Fellowship": [4, 0, 1], "Visiting / Adjunct / Lecturer (Fixed-Term)": [6, 0, 2], "Tenured / Continuing / Permanent": [1, 0, 0], "Other": [1, 0, 0]}, "Science, Logic, & Mathematics": {"Tenure-Track": [4, 1, 0], "Postdoc / Fellowship": [5, 2, 1], "Visiting / Adjunct / Lecturer (Fixed-Term)": [7, 0, 2], "Tenured / Continuing / Permanent": [4, 0, 0], "Other": [0, 0, 0]}, "Open": {"Tenure-Track": [1, 0, 1], "Postdoc / Fellowship": [4, 0, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [11, 0, 1], "Tenured / Continuing / Permanent": [1, 0, 0], "Other": [5, 0, 1]}},
+            positionTypeXAos: {"Open": {"Visiting / Adjunct / Lecturer (Fixed-Term)": 12, "Other": 6, "Postdoc / Fellowship": 4, "Tenure-Track": 2, "Tenured / Continuing / Permanent": 1}, "Metaphysics & Epistemology": {"Visiting / Adjunct / Lecturer (Fixed-Term)": 8, "Other": 1, "Postdoc / Fellowship": 5, "Tenure-Track": 3, "Tenured / Continuing / Permanent": 1}, "Science, Logic, & Mathematics": {"Visiting / Adjunct / Lecturer (Fixed-Term)": 9, "Tenured / Continuing / Permanent": 4, "Postdoc / Fellowship": 8, "Tenure-Track": 5}, "History of Philosophy": {"Postdoc / Fellowship": 3, "Visiting / Adjunct / Lecturer (Fixed-Term)": 9, "Tenure-Track": 5, "Tenured / Continuing / Permanent": 1}, "Ethics": {"Visiting / Adjunct / Lecturer (Fixed-Term)": 11, "Tenure-Track": 8, "Other": 2, "Postdoc / Fellowship": 7, "Tenured / Continuing / Permanent": 5}, "Social & Political Philosophy": {"Visiting / Adjunct / Lecturer (Fixed-Term)": 4, "Tenure-Track": 4, "Postdoc / Fellowship": 9, "Tenured / Continuing / Permanent": 4}, "Non-Western & Cross-Cultural Philosophy": {"Visiting / Adjunct / Lecturer (Fixed-Term)": 3, "Tenure-Track": 1}, "Value Theory / Aesthetics": {"Postdoc / Fellowship": 2, "Tenure-Track": 1}},
             positionTypes: ["Tenure-Track", "Postdoc / Fellowship", "Visiting / Adjunct / Lecturer (Fixed-Term)", "Tenured / Continuing / Permanent", "Other"],
             positionTypeColors: {"Tenure-Track": "#10b981", "Postdoc / Fellowship": "#3b82f6", "Visiting / Adjunct / Lecturer (Fixed-Term)": "#f59e0b", "Tenured / Continuing / Permanent": "#8b5cf6", "Other": "#6b7280"},
             mainAosColors: {"Ethics": "#ef4444", "Social & Political Philosophy": "#3b82f6", "Value Theory / Aesthetics": "#06b6d4", "History of Philosophy": "#8b5cf6", "Non-Western & Cross-Cultural Philosophy": "#ec4899", "Metaphysics & Epistemology": "#10b981", "Science, Logic, & Mathematics": "#f59e0b", "Open": "#6b7280"},
             mainAosCategories: ["Ethics", "Social & Political Philosophy", "Value Theory / Aesthetics", "History of Philosophy", "Non-Western & Cross-Cultural Philosophy", "Metaphysics & Epistemology", "Science, Logic, & Mathematics", "Open"],
-            coocMatrix: {"Metaphysics & Epistemology": {"Science, Logic, & Mathematics": 23, "Ethics": 10, "Social & Political Philosophy": 8, "Value Theory / Aesthetics": 4, "History of Philosophy": 7, "Non-Western & Cross-Cultural Philosophy": 3, "Open": 3}, "Science, Logic, & Mathematics": {"Metaphysics & Epistemology": 23, "Ethics": 18, "Social & Political Philosophy": 7, "Value Theory / Aesthetics": 1, "Non-Western & Cross-Cultural Philosophy": 2, "History of Philosophy": 10, "Open": 2}, "History of Philosophy": {"Open": 6, "Ethics": 8, "Social & Political Philosophy": 6, "Value Theory / Aesthetics": 3, "Metaphysics & Epistemology": 7, "Science, Logic, & Mathematics": 10, "Non-Western & Cross-Cultural Philosophy": 3}, "Open": {"History of Philosophy": 6, "Ethics": 5, "Social & Political Philosophy": 5, "Value Theory / Aesthetics": 3, "Metaphysics & Epistemology": 3, "Science, Logic, & Mathematics": 2, "Non-Western & Cross-Cultural Philosophy": 3}, "Ethics": {"Social & Political Philosophy": 18, "Value Theory / Aesthetics": 3, "History of Philosophy": 8, "Metaphysics & Epistemology": 10, "Science, Logic, & Mathematics": 18, "Non-Western & Cross-Cultural Philosophy": 3, "Open": 5}, "Social & Political Philosophy": {"Ethics": 18, "Value Theory / Aesthetics": 5, "History of Philosophy": 6, "Metaphysics & Epistemology": 8, "Science, Logic, & Mathematics": 7, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 5}, "Value Theory / Aesthetics": {"Ethics": 3, "Social & Political Philosophy": 5, "History of Philosophy": 3, "Metaphysics & Epistemology": 4, "Science, Logic, & Mathematics": 1, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 3}, "Non-Western & Cross-Cultural Philosophy": {"Ethics": 3, "Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "Metaphysics & Epistemology": 3, "Science, Logic, & Mathematics": 2, "History of Philosophy": 3, "Open": 3}},
-            soloVsJoint: {"Open": {"solo": 23, "joint": 12}, "Metaphysics & Epistemology": {"solo": 2, "joint": 38}, "Science, Logic, & Mathematics": {"solo": 4, "joint": 43}, "History of Philosophy": {"solo": 3, "joint": 21}, "Ethics": {"solo": 7, "joint": 42}, "Social & Political Philosophy": {"solo": 4, "joint": 29}, "Value Theory / Aesthetics": {"solo": 0, "joint": 7}, "Non-Western & Cross-Cultural Philosophy": {"solo": 0, "joint": 5}},
-            crossCutting: {"Feminist Philosophy": {"total": 2, "by_main_aos": {"Social & Political Philosophy": 2}, "trend": [{"week": "2026-03-10", "count": 1}, {"week": "2026-03-16", "count": 0}, {"week": "2026-03-21", "count": 1}]}, "Philosophy of Race": {"total": 2, "by_main_aos": {"Social & Political Philosophy": 2}, "trend": [{"week": "2026-03-10", "count": 1}, {"week": "2026-03-16", "count": 0}, {"week": "2026-03-21", "count": 1}]}, "Philosophy of Gender": {"total": 0, "by_main_aos": {}, "trend": [{"week": "2026-03-10", "count": 0}, {"week": "2026-03-16", "count": 0}, {"week": "2026-03-21", "count": 0}]}, "Philosophy of Law": {"total": 9, "by_main_aos": {"Social & Political Philosophy": 9}, "trend": [{"week": "2026-03-10", "count": 7}, {"week": "2026-03-16", "count": 0}, {"week": "2026-03-21", "count": 2}]}},
-            detailAosByContext: {"Philosophy of Religion": {"solo": {"Metaphysics & Epistemology": 1}, "with_others": {"Ethics": 3, "Social & Political Philosophy": 2, "Value Theory / Aesthetics": 1, "Science, Logic, & Mathematics": 3, "Non-Western & Cross-Cultural Philosophy": 3, "History of Philosophy": 3, "Open": 2}, "total": 7}, "Philosophy of Mind": {"solo": {"Metaphysics & Epistemology": 1}, "with_others": {"Science, Logic, & Mathematics": 9, "Ethics": 5, "Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "History of Philosophy": 2, "Open": 1}, "total": 14}, "Philosophy of Language": {"solo": {}, "with_others": {"Science, Logic, & Mathematics": 5, "Ethics": 2, "Social & Political Philosophy": 1, "Open": 1, "Value Theory / Aesthetics": 2}, "total": 9}, "Logic": {"solo": {"Science, Logic, & Mathematics": 1}, "with_others": {"Metaphysics & Epistemology": 9, "Ethics": 1, "Social & Political Philosophy": 2, "Value Theory / Aesthetics": 1, "Non-Western & Cross-Cultural Philosophy": 2, "History of Philosophy": 2, "Open": 2}, "total": 10}, "American Philosophy": {"solo": {}, "with_others": {"Open": 2, "Social & Political Philosophy": 1}, "total": 2}, "19th/20th Century Philosophy": {"solo": {"History of Philosophy": 1}, "with_others": {"Open": 1, "Ethics": 1, "Science, Logic, & Mathematics": 3, "Metaphysics & Epistemology": 2, "Non-Western & Cross-Cultural Philosophy": 1}, "total": 7}, "Normative Ethics": {"solo": {"Ethics": 1}, "with_others": {"Social & Political Philosophy": 5, "Value Theory / Aesthetics": 2, "History of Philosophy": 4, "Metaphysics & Epistemology": 3, "Science, Logic, & Mathematics": 1, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 1}, "total": 8}, "Ethics (General / Applied Ethics, Broadly Construed)": {"solo": {"Ethics": 4}, "with_others": {"Social & Political Philosophy": 12, "Value Theory / Aesthetics": 2, "History of Philosophy": 6, "Metaphysics & Epistemology": 4, "Science, Logic, & Mathematics": 7, "Non-Western & Cross-Cultural Philosophy": 2, "Open": 4}, "total": 26}, "Social and Political Philosophy (General / Political Theory)": {"solo": {"Social & Political Philosophy": 3}, "with_others": {"Ethics": 13, "Value Theory / Aesthetics": 4, "History of Philosophy": 6, "Metaphysics & Epistemology": 7, "Science, Logic, & Mathematics": 6, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 4}, "total": 25}, "Philosophy of Law": {"solo": {"Social & Political Philosophy": 1}, "with_others": {"Ethics": 5, "Value Theory / Aesthetics": 1, "History of Philosophy": 3, "Metaphysics & Epistemology": 4, "Open": 2}, "total": 9}, "Aesthetics (General)": {"solo": {}, "with_others": {"Ethics": 2, "Social & Political Philosophy": 2, "History of Philosophy": 2, "Metaphysics & Epistemology": 2, "Science, Logic, & Mathematics": 1, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 1}, "total": 2}, "Value Theory / Axiology": {"solo": {}, "with_others": {"Ethics": 2, "Social & Political Philosophy": 2, "History of Philosophy": 1, "Metaphysics & Epistemology": 3}, "total": 4}, "Value Theory / Aesthetics (General)": {"solo": {}, "with_others": {"Ethics": 2, "Social & Political Philosophy": 3, "History of Philosophy": 3, "Metaphysics & Epistemology": 2, "Science, Logic, & Mathematics": 1, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 2}, "total": 3}, "History of Philosophy (General)": {"solo": {"History of Philosophy": 1}, "with_others": {"Ethics": 3, "Social & Political Philosophy": 4, "Value Theory / Aesthetics": 2, "Metaphysics & Epistemology": 3, "Science, Logic, & Mathematics": 4, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 3}, "total": 10}, "Philosophy of Action": {"solo": {}, "with_others": {"Ethics": 4, "Social & Political Philosophy": 2, "Value Theory / Aesthetics": 1, "History of Philosophy": 1, "Science, Logic, & Mathematics": 3}, "total": 5}, "Philosophy of Cognitive Science": {"solo": {}, "with_others": {"Metaphysics & Epistemology": 8, "Ethics": 1, "History of Philosophy": 1}, "total": 8}, "Metaphysics & Epistemology (General)": {"solo": {}, "with_others": {"Ethics": 1, "Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "Science, Logic, & Mathematics": 2, "Non-Western & Cross-Cultural Philosophy": 1, "History of Philosophy": 2, "Open": 1}, "total": 3}, "Philosophy of Science (General)": {"solo": {"Science, Logic, & Mathematics": 2}, "with_others": {"Ethics": 5, "Social & Political Philosophy": 4, "Value Theory / Aesthetics": 1, "Metaphysics & Epistemology": 12, "Non-Western & Cross-Cultural Philosophy": 2, "History of Philosophy": 7, "Open": 2}, "total": 22}, "Asian Philosophy": {"solo": {}, "with_others": {"Ethics": 1, "Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "Metaphysics & Epistemology": 1, "Science, Logic, & Mathematics": 1, "History of Philosophy": 1, "Open": 1}, "total": 1}, "Comparative Philosophy / Cross-Cultural": {"solo": {}, "with_others": {"Ethics": 3, "Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "Metaphysics & Epistemology": 3, "Science, Logic, & Mathematics": 2, "History of Philosophy": 3, "Open": 3}, "total": 5}, "Philosophy of Mathematics": {"solo": {}, "with_others": {"Metaphysics & Epistemology": 4}, "total": 4}, "Philosophy of Computing / Philosophy of AI": {"solo": {}, "with_others": {"Metaphysics & Epistemology": 7, "Ethics": 12, "History of Philosophy": 3, "Social & Political Philosophy": 3}, "total": 19}, "Epistemology": {"solo": {}, "with_others": {"Science, Logic, & Mathematics": 11, "History of Philosophy": 2, "Social & Political Philosophy": 4, "Ethics": 2, "Open": 1}, "total": 17}, "AI, Technology, and Information Ethics": {"solo": {"Ethics": 2}, "with_others": {"Science, Logic, & Mathematics": 13, "History of Philosophy": 3, "Social & Political Philosophy": 4, "Open": 1, "Metaphysics & Epistemology": 1, "Non-Western & Cross-Cultural Philosophy": 1}, "total": 17}, "Philosophy of Physics": {"solo": {"Science, Logic, & Mathematics": 2}, "with_others": {"Metaphysics & Epistemology": 2, "History of Philosophy": 1}, "total": 5}, "Neuroethics": {"solo": {}, "with_others": {"Metaphysics & Epistemology": 1, "Social & Political Philosophy": 1, "Open": 1, "Science, Logic, & Mathematics": 1}, "total": 3}, "Philosophy of Education": {"solo": {"Social & Political Philosophy": 1}, "with_others": {"Ethics": 2, "Value Theory / Aesthetics": 1, "Science, Logic, & Mathematics": 1}, "total": 4}, "Biomedical Ethics / Bioethics": {"solo": {"Ethics": 2}, "with_others": {"Social & Political Philosophy": 2, "Open": 1, "Science, Logic, & Mathematics": 5, "Metaphysics & Epistemology": 1}, "total": 9}, "Environmental Ethics": {"solo": {}, "with_others": {"Social & Political Philosophy": 3, "Open": 1, "Science, Logic, & Mathematics": 2, "Metaphysics & Epistemology": 1, "History of Philosophy": 1}, "total": 6}, "Philosophy of Race": {"solo": {}, "with_others": {"Ethics": 2, "Open": 1, "History of Philosophy": 1}, "total": 2}, "Feminist Philosophy": {"solo": {}, "with_others": {"Ethics": 2, "Open": 1, "Science, Logic, & Mathematics": 1, "History of Philosophy": 1}, "total": 2}, "Early Modern Philosophy (17th/18th Century)": {"solo": {"History of Philosophy": 2}, "with_others": {"Science, Logic, & Mathematics": 2, "Metaphysics & Epistemology": 2, "Non-Western & Cross-Cultural Philosophy": 1}, "total": 6}, "Meta-Ethics": {"solo": {"Ethics": 1}, "with_others": {"Metaphysics & Epistemology": 2, "Science, Logic, & Mathematics": 1, "Value Theory / Aesthetics": 1}, "total": 3}, "Metaphysics": {"solo": {}, "with_others": {"Science, Logic, & Mathematics": 2, "History of Philosophy": 1, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 1, "Ethics": 1, "Social & Political Philosophy": 1}, "total": 3}, "Philosophy of Biology": {"solo": {}, "with_others": {"Metaphysics & Epistemology": 1, "History of Philosophy": 1}, "total": 1}, "Decision Theory": {"solo": {}, "with_others": {"Metaphysics & Epistemology": 2, "Social & Political Philosophy": 2, "Ethics": 1}, "total": 4}, "Non-Western Philosophy (General)": {"solo": {}, "with_others": {"Open": 1, "Ethics": 1}, "total": 1}, "Medieval and Renaissance Philosophy": {"solo": {}, "with_others": {"Open": 1, "Science, Logic, & Mathematics": 1, "Social & Political Philosophy": 1, "Ethics": 1}, "total": 2}, "Ancient Greek and Roman Philosophy": {"solo": {"History of Philosophy": 2}, "with_others": {"Ethics": 3, "Science, Logic, & Mathematics": 2, "Social & Political Philosophy": 1}, "total": 5}, "PPE (Politics, Philosophy, and Economics)": {"solo": {"Social & Political Philosophy": 1}, "with_others": {"Science, Logic, & Mathematics": 2, "Metaphysics & Epistemology": 1, "Value Theory / Aesthetics": 1, "Open": 1}, "total": 5}, "Philosophy of Social Science": {"solo": {}, "with_others": {"Social & Political Philosophy": 2, "Ethics": 1}, "total": 2}, "Science, Logic, & Mathematics (General)": {"solo": {}, "with_others": {"Metaphysics & Epistemology": 1}, "total": 1}, "Business Ethics": {"solo": {"Ethics": 1}, "with_others": {"Social & Political Philosophy": 3, "Metaphysics & Epistemology": 1, "Non-Western & Cross-Cultural Philosophy": 1, "History of Philosophy": 1, "Science, Logic, & Mathematics": 1}, "total": 5}, "Ethics of Population, Future Generations, and Global Justice": {"solo": {}, "with_others": {"Social & Political Philosophy": 3, "History of Philosophy": 1}, "total": 3}, "Food and Agricultural Ethics": {"solo": {}, "with_others": {"Social & Political Philosophy": 1}, "total": 1}, "Continental Philosophy": {"solo": {}, "with_others": {"Metaphysics & Epistemology": 1}, "total": 1}, "Philosophy of Literature": {"solo": {}, "with_others": {"History of Philosophy": 1, "Social & Political Philosophy": 1, "Open": 1}, "total": 1}}
+            coocMatrix: {"Metaphysics & Epistemology": {"Science, Logic, & Mathematics": 10, "Ethics": 4, "History of Philosophy": 3, "Non-Western & Cross-Cultural Philosophy": 2, "Open": 1, "Social & Political Philosophy": 3}, "Science, Logic, & Mathematics": {"Metaphysics & Epistemology": 10, "Ethics": 12, "History of Philosophy": 8, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 1, "Social & Political Philosophy": 3}, "History of Philosophy": {"Open": 5, "Ethics": 5, "Science, Logic, & Mathematics": 8, "Metaphysics & Epistemology": 3, "Non-Western & Cross-Cultural Philosophy": 2, "Social & Political Philosophy": 4, "Value Theory / Aesthetics": 1}, "Open": {"History of Philosophy": 5, "Ethics": 4, "Social & Political Philosophy": 4, "Science, Logic, & Mathematics": 1, "Metaphysics & Epistemology": 1, "Non-Western & Cross-Cultural Philosophy": 2, "Value Theory / Aesthetics": 2}, "Ethics": {"Science, Logic, & Mathematics": 12, "History of Philosophy": 5, "Open": 4, "Social & Political Philosophy": 11, "Metaphysics & Epistemology": 4, "Non-Western & Cross-Cultural Philosophy": 2}, "Social & Political Philosophy": {"Ethics": 11, "Open": 4, "Value Theory / Aesthetics": 3, "Metaphysics & Epistemology": 3, "Science, Logic, & Mathematics": 3, "History of Philosophy": 4}, "Non-Western & Cross-Cultural Philosophy": {"Science, Logic, & Mathematics": 1, "Metaphysics & Epistemology": 2, "History of Philosophy": 2, "Open": 2, "Ethics": 2}, "Value Theory / Aesthetics": {"Social & Political Philosophy": 3, "Open": 2, "History of Philosophy": 1}},
+            soloVsJoint: {"Open": {"solo": 15, "joint": 10}, "Metaphysics & Epistemology": {"solo": 1, "joint": 17}, "Science, Logic, & Mathematics": {"solo": 1, "joint": 25}, "History of Philosophy": {"solo": 2, "joint": 16}, "Ethics": {"solo": 5, "joint": 28}, "Social & Political Philosophy": {"solo": 2, "joint": 19}, "Non-Western & Cross-Cultural Philosophy": {"solo": 0, "joint": 4}, "Value Theory / Aesthetics": {"solo": 0, "joint": 3}},
+            crossCutting: {"Feminist Philosophy": {"total": 2, "by_main": {"Ethics": 2, "Social & Political Philosophy": 2, "Open": 1, "Science, Logic, & Mathematics": 1, "History of Philosophy": 1}, "weekly": {"2026-03-10": 1, "2026-03-21": 1}}, "Philosophy of Race": {"total": 2, "by_main": {"Ethics": 2, "Social & Political Philosophy": 2, "Open": 1, "History of Philosophy": 1}, "weekly": {"2026-03-10": 1, "2026-03-21": 1}}, "Philosophy of Gender": {"total": 0, "by_main": {}, "weekly": {"2026-03-10": 0, "2026-03-21": 0}}, "Philosophy of Law": {"total": 6, "by_main": {"Social & Political Philosophy": 6, "Ethics": 3, "Open": 2, "History of Philosophy": 2, "Metaphysics & Epistemology": 1}, "weekly": {"2026-03-10": 5, "2026-03-21": 1}}},
+            detailAosByContext: {"Philosophy of Religion": {"solo": {"Metaphysics & Epistemology": 1}, "with_others": {"Ethics": 2, "Science, Logic, & Mathematics": 2, "History of Philosophy": 2, "Non-Western & Cross-Cultural Philosophy": 2, "Open": 1}, "total": 5}, "Philosophy of Mind": {"solo": {}, "with_others": {"Science, Logic, & Mathematics": 6, "Ethics": 2}, "total": 7}, "Philosophy of Language": {"solo": {}, "with_others": {"Science, Logic, & Mathematics": 3, "Ethics": 1, "Social & Political Philosophy": 1}, "total": 4}, "Logic": {"solo": {"Science, Logic, & Mathematics": 1}, "with_others": {"Metaphysics & Epistemology": 4, "History of Philosophy": 1, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 1}, "total": 5}, "American Philosophy": {"solo": {}, "with_others": {"Open": 2, "Social & Political Philosophy": 1}, "total": 2}, "19th/20th Century Philosophy": {"solo": {}, "with_others": {"Open": 1, "Ethics": 1, "Science, Logic, & Mathematics": 2, "Non-Western & Cross-Cultural Philosophy": 1}, "total": 4}, "Philosophy of Cognitive Science": {"solo": {}, "with_others": {"Metaphysics & Epistemology": 5}, "total": 5}, "AI, Technology, and Information Ethics": {"solo": {"Ethics": 1}, "with_others": {"Science, Logic, & Mathematics": 10, "History of Philosophy": 3, "Social & Political Philosophy": 3, "Open": 1, "Metaphysics & Epistemology": 1, "Non-Western & Cross-Cultural Philosophy": 1}, "total": 13}, "Ethics (General / Applied Ethics, Broadly Construed)": {"solo": {"Ethics": 4}, "with_others": {"Science, Logic, & Mathematics": 5, "History of Philosophy": 3, "Open": 3, "Metaphysics & Epistemology": 1, "Social & Political Philosophy": 6, "Non-Western & Cross-Cultural Philosophy": 1}, "total": 19}, "Philosophy of Computing / Philosophy of AI": {"solo": {}, "with_others": {"Ethics": 9, "History of Philosophy": 3, "Metaphysics & Epistemology": 3, "Social & Political Philosophy": 2}, "total": 12}, "Philosophy of Law": {"solo": {"Social & Political Philosophy": 1}, "with_others": {"Ethics": 3, "Open": 2, "History of Philosophy": 2, "Metaphysics & Epistemology": 1}, "total": 6}, "Biomedical Ethics / Bioethics": {"solo": {"Ethics": 2}, "with_others": {"Social & Political Philosophy": 2, "Open": 1, "Science, Logic, & Mathematics": 4, "Metaphysics & Epistemology": 1}, "total": 8}, "Neuroethics": {"solo": {}, "with_others": {"Social & Political Philosophy": 1, "Open": 1, "Science, Logic, & Mathematics": 1}, "total": 2}, "Environmental Ethics": {"solo": {}, "with_others": {"Social & Political Philosophy": 3, "Open": 1, "Science, Logic, & Mathematics": 2, "Metaphysics & Epistemology": 1, "History of Philosophy": 1}, "total": 6}, "Philosophy of Race": {"solo": {}, "with_others": {"Ethics": 2, "Open": 1, "History of Philosophy": 1}, "total": 2}, "Feminist Philosophy": {"solo": {}, "with_others": {"Ethics": 2, "Open": 1, "Science, Logic, & Mathematics": 1, "History of Philosophy": 1}, "total": 2}, "Philosophy of Science (General)": {"solo": {}, "with_others": {"Ethics": 3, "Metaphysics & Epistemology": 4, "History of Philosophy": 5, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 1, "Social & Political Philosophy": 2}, "total": 11}, "Metaphysics": {"solo": {}, "with_others": {"Science, Logic, & Mathematics": 2, "History of Philosophy": 1, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 1, "Ethics": 1, "Social & Political Philosophy": 1}, "total": 3}, "History of Philosophy (General)": {"solo": {}, "with_others": {"Science, Logic, & Mathematics": 4, "Metaphysics & Epistemology": 1, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 3, "Social & Political Philosophy": 3, "Value Theory / Aesthetics": 1, "Ethics": 2}, "total": 7}, "Comparative Philosophy / Cross-Cultural": {"solo": {}, "with_others": {"Science, Logic, & Mathematics": 1, "Metaphysics & Epistemology": 2, "History of Philosophy": 2, "Open": 2, "Ethics": 2}, "total": 4}, "Social and Political Philosophy (General / Political Theory)": {"solo": {"Social & Political Philosophy": 1}, "with_others": {"Ethics": 7, "Metaphysics & Epistemology": 2, "Science, Logic, & Mathematics": 2, "History of Philosophy": 4, "Open": 3, "Value Theory / Aesthetics": 2}, "total": 14}, "Non-Western Philosophy (General)": {"solo": {}, "with_others": {"Open": 1, "Ethics": 1}, "total": 1}, "Epistemology": {"solo": {}, "with_others": {"Ethics": 2, "Science, Logic, & Mathematics": 4, "Social & Political Philosophy": 3}, "total": 8}, "Philosophy of Action": {"solo": {}, "with_others": {"Ethics": 1, "Science, Logic, & Mathematics": 1}, "total": 1}, "Philosophy of Education": {"solo": {"Social & Political Philosophy": 1}, "with_others": {"Value Theory / Aesthetics": 1}, "total": 2}, "Value Theory / Axiology": {"solo": {}, "with_others": {"Social & Political Philosophy": 1}, "total": 1}, "Medieval and Renaissance Philosophy": {"solo": {}, "with_others": {"Open": 1, "Science, Logic, & Mathematics": 1, "Social & Political Philosophy": 1, "Ethics": 1}, "total": 2}, "Ancient Greek and Roman Philosophy": {"solo": {"History of Philosophy": 2}, "with_others": {"Ethics": 2, "Science, Logic, & Mathematics": 2, "Social & Political Philosophy": 1}, "total": 4}, "Metaphysics & Epistemology (General)": {"solo": {}, "with_others": {"Science, Logic, & Mathematics": 1}, "total": 1}, "Philosophy of Mathematics": {"solo": {}, "with_others": {"Metaphysics & Epistemology": 3}, "total": 3}, "Science, Logic, & Mathematics (General)": {"solo": {}, "with_others": {"Metaphysics & Epistemology": 1}, "total": 1}, "Normative Ethics": {"solo": {}, "with_others": {"History of Philosophy": 2, "Metaphysics & Epistemology": 1, "Social & Political Philosophy": 2}, "total": 4}, "PPE (Politics, Philosophy, and Economics)": {"solo": {"Social & Political Philosophy": 1}, "with_others": {"Metaphysics & Epistemology": 1, "Science, Logic, & Mathematics": 1, "Value Theory / Aesthetics": 1, "Open": 1}, "total": 4}, "Early Modern Philosophy (17th/18th Century)": {"solo": {"History of Philosophy": 1}, "with_others": {"Non-Western & Cross-Cultural Philosophy": 1, "Science, Logic, & Mathematics": 1}, "total": 3}, "Business Ethics": {"solo": {"Ethics": 1}, "with_others": {"Social & Political Philosophy": 2, "Metaphysics & Epistemology": 1, "Non-Western & Cross-Cultural Philosophy": 1, "History of Philosophy": 1}, "total": 4}, "Food and Agricultural Ethics": {"solo": {}, "with_others": {"Social & Political Philosophy": 1}, "total": 1}, "Ethics of Population, Future Generations, and Global Justice": {"solo": {}, "with_others": {"Social & Political Philosophy": 2, "History of Philosophy": 1}, "total": 2}, "Continental Philosophy": {"solo": {}, "with_others": {"Metaphysics & Epistemology": 1}, "total": 1}, "Philosophy of Physics": {"solo": {}, "with_others": {"History of Philosophy": 1}, "total": 1}, "Philosophy of Literature": {"solo": {}, "with_others": {"History of Philosophy": 1, "Social & Political Philosophy": 1, "Open": 1}, "total": 1}, "Value Theory / Aesthetics (General)": {"solo": {}, "with_others": {"History of Philosophy": 1, "Social & Political Philosophy": 1, "Open": 1}, "total": 1}}
         };
 
         // ===== SEASON PLUGIN =====
@@ -313,7 +296,7 @@
         // ===== MAIN CHART =====
         const mainCtx = document.getElementById('mainChart').getContext('2d');
         const totalDataset = {
-            label: 'Total (All)',
+            label: 'Total (All US)',
             data: data.totalNewJobsWeekly,
             borderColor: '#111827',
             backgroundColor: 'transparent',
@@ -408,344 +391,261 @@
             document.getElementById('modalTotal').textContent = total;
 
             // Subcategories
-            const subcategoryGrid = document.getElementById('subcategoryGrid');
-            subcategoryGrid.innerHTML = '';
-            category.subcategories.forEach(subcat => {
-                const subcatData = data.subcategoryData[subcat] || [];
-                const subcatCurrent = subcatData[subcatData.length - 1] || 0;
-                const subcatPrevious = subcatData[subcatData.length - 2] || 0;
-                const subcatChange = subcatCurrent - subcatPrevious;
-                const el = document.createElement('div');
-                el.className = 'bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-colors';
-                el.innerHTML = `
-                    <div class="font-medium text-gray-700 text-sm mb-1">${subcat}</div>
-                    <div class="flex items-center justify-between">
-                        <span class="text-xl font-bold text-gray-800">${subcatCurrent}</span>
-                        <span class="text-xs font-semibold ${subcatChange >= 0 ? 'text-green-600' : 'text-red-600'}">${subcatChange >= 0 ? '↑' : '↓'} ${Math.abs(subcatChange)}</span>
-                    </div>
-                `;
-                subcategoryGrid.appendChild(el);
+            const subcatGrid = document.getElementById('subcategoryGrid');
+            subcatGrid.innerHTML = '';
+            document.getElementById('subcategorySection').style.display = category.subcategories.length > 0 ? 'block' : 'none';
+            category.subcategories.forEach(sub => {
+                const subData = data.subcategoryData[sub] || [];
+                const subTotal = subData.reduce((a, b) => a + b, 0);
+                const subCurrent = subData[subData.length - 1] || 0;
+                const soloJointData = data.detailAosByContext[sub] || {};
+                const solo = Object.values(soloJointData.solo || {}).reduce((a, b) => a + b, 0);
+                const joint = Object.values(soloJointData.with_others || {}).reduce((a, b) => a + b, 0);
+                subcatGrid.innerHTML += `
+                    <div class="bg-gray-50 rounded-lg p-3">
+                        <div class="font-medium text-gray-800 text-sm mb-1">${sub}</div>
+                        <div class="text-xs text-gray-500">${subTotal} total · ${subCurrent} this week</div>
+                        ${(solo + joint) > 0 ? `<div class="text-xs text-indigo-600 mt-1">Solo: ${solo} · Joint: ${joint}</div>` : ''}
+                    </div>`;
             });
 
-            // Detail chart
-            const detailCtx = document.getElementById('detailChart').getContext('2d');
+            // Trend chart
+            const ctx = document.getElementById('detailChart').getContext('2d');
             if (detailChart) detailChart.destroy();
-            const detailDatasets = [{
-                label: category.name + ' (Total)',
-                data: category.data, borderColor: category.color, backgroundColor: category.color + '40',
-                tension: 0.4, fill: true, borderWidth: 3
-            }];
-            const dColors = ['#6366f1','#ec4899','#14b8a6','#f59e0b','#8b5cf6','#f97316','#06b6d4'];
-            category.subcategories.forEach((subcat, idx) => {
-                detailDatasets.push({
-                    label: subcat, data: data.subcategoryData[subcat] || [],
-                    borderColor: dColors[idx % dColors.length], backgroundColor: dColors[idx % dColors.length] + '20',
-                    tension: 0.4, borderWidth: 2, borderDash: [5, 5]
-                });
-            });
-            detailChart = new Chart(detailCtx, {
+            detailChart = new Chart(ctx, {
                 type: 'line',
-                data: { labels: data.dates, datasets: detailDatasets },
+                data: {
+                    labels: data.dates,
+                    datasets: [{ label: category.name, data: category.data, borderColor: category.color, backgroundColor: category.color + '30', tension: 0.4, fill: true }]
+                },
+                plugins: [seasonPlugin],
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15, font: { size: 11 } } } },
-                    scales: { y: { beginAtZero: true }, x: {} }
+                    plugins: { legend: { display: false }, tooltip: { backgroundColor: 'rgba(0,0,0,0.8)' } },
+                    scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
                 }
             });
 
-            // Lassiter solo/joint by subcategory
+            // Lassiter: solo vs. joint by detail subcategory
             const lassiterDiv = document.getElementById('lassiterChart');
-            lassiterDiv.innerHTML = '';
-            const byCtx = data.detailAosByContext;
-            if (category.subcategories.length > 0 && Object.keys(byCtx).length > 0) {
-                let html = '<table class="w-full border-collapse"><thead><tr>';
-                html += '<th class="text-left py-2 px-3 bg-gray-50 border border-gray-200 text-xs font-semibold text-gray-600">Subcategory</th>';
-                html += '<th class="py-2 px-3 bg-gray-50 border border-gray-200 text-xs font-semibold text-gray-600 text-center">Total</th>';
-                html += '<th class="py-2 px-3 bg-gray-50 border border-gray-200 text-xs font-semibold text-indigo-600 text-center">Solo</th>';
-                html += '<th class="py-2 px-3 bg-gray-50 border border-gray-200 text-xs font-semibold text-amber-600 text-center">Joint</th>';
-                html += '<th class="py-2 px-3 bg-gray-50 border border-gray-200 text-xs font-semibold text-gray-600">Top Co-occurring AOS</th>';
-                html += '</tr></thead><tbody>';
-                category.subcategories.forEach((subcat, i) => {
-                    const ctx = byCtx[subcat] || {};
-                    const soloCount = Object.values(ctx.solo || {}).reduce((a, b) => a + b, 0);
-                    const total = ctx.total || 0;
-                    const jointCount = total - soloCount;
-                    const topCooc = Object.entries(ctx.with_others || {}).sort((a, b) => b[1] - a[1]).slice(0, 2).map(([k, v]) => `${k} (${v})`).join(', ');
-                    html += `<tr class="${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">
-                        <td class="py-2 px-3 border border-gray-200 text-sm text-gray-700">${subcat}</td>
-                        <td class="py-2 px-3 border border-gray-200 text-center font-semibold">${total || '—'}</td>
-                        <td class="py-2 px-3 border border-gray-200 text-center text-indigo-600 font-semibold">${soloCount || '—'}</td>
-                        <td class="py-2 px-3 border border-gray-200 text-center text-amber-600 font-semibold">${jointCount > 0 ? jointCount : '—'}</td>
-                        <td class="py-2 px-3 border border-gray-200 text-xs text-gray-500">${topCooc || '—'}</td>
-                    </tr>`;
-                });
-                html += '</tbody></table>';
-                lassiterDiv.innerHTML = html;
-                document.getElementById('lassiterSection').classList.remove('hidden');
+            const lassiterSection = document.getElementById('lassiterSection');
+            if (category.subcategories.length > 0) {
+                lassiterSection.style.display = 'block';
+                const rows = category.subcategories.map(sub => {
+                    const ctx2 = data.detailAosByContext[sub] || {};
+                    const solo = Object.values(ctx2.solo || {}).reduce((a, b) => a + b, 0);
+                    const joint = Object.values(ctx2.with_others || {}).reduce((a, b) => a + b, 0);
+                    const total = ctx2.total || 0;
+                    return { sub, solo, joint, total };
+                }).filter(r => r.total > 0).sort((a, b) => b.total - a.total);
+                if (rows.length > 0) {
+                    let tableHtml = '<table class="w-full border-collapse text-xs"><thead><tr><th class="text-left py-2 px-3 bg-gray-50 border border-gray-200">Subcategory</th><th class="py-2 px-2 bg-gray-50 border border-gray-200 text-center">Total</th><th class="py-2 px-2 bg-gray-50 border border-gray-200 text-center text-indigo-700">Solo</th><th class="py-2 px-2 bg-gray-50 border border-gray-200 text-center text-purple-700">Joint</th></tr></thead><tbody>';
+                    rows.forEach((r, i) => {
+                        tableHtml += `<tr class="${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}"><td class="py-2 px-3 border border-gray-200 font-medium">${r.sub}</td><td class="py-2 px-2 border border-gray-200 text-center font-bold">${r.total}</td><td class="py-2 px-2 border border-gray-200 text-center text-indigo-700">${r.solo}</td><td class="py-2 px-2 border border-gray-200 text-center text-purple-700">${r.joint}</td></tr>`;
+                    });
+                    lassiterDiv.innerHTML = tableHtml + '</tbody></table>';
+                } else {
+                    lassiterDiv.innerHTML = '<div class="text-gray-400 text-sm">No co-occurrence data yet.</div>';
+                }
             } else {
-                document.getElementById('lassiterSection').classList.add('hidden');
+                lassiterSection.style.display = 'none';
             }
 
-            // Position type chart (modal)
+            // Job Types
             const jobTypeCtx = document.getElementById('jobTypeChart').getContext('2d');
             if (jobTypeChart) jobTypeChart.destroy();
+            const ptByAos = data.positionTypeByAosWeekly[key] || {};
+            const ptCurrent = data.positionTypes.map(pt => {
+                const arr = ptByAos[pt] || [];
+                return arr[arr.length - 1] || 0;
+            });
             jobTypeChart = new Chart(jobTypeCtx, {
                 type: 'doughnut',
                 data: {
                     labels: data.positionTypes,
-                    datasets: [{ data: data.positionTypes.map(pt => (data.jobTypeData[pt] || []).slice(-1)[0] || 0), backgroundColor: data.positionTypes.map(pt => data.positionTypeColors[pt] || '#6b7280') }]
+                    datasets: [{ data: ptCurrent, backgroundColor: data.positionTypes.map(pt => data.positionTypeColors[pt] || '#6b7280') }]
                 },
-                options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } } }
+                options: { responsive: true, plugins: { legend: { position: 'right', labels: { font: { size: 11 }, boxWidth: 12 } } } }
             });
 
-            // Institution type chart
+            // Institution Types
             const instCtx = document.getElementById('institutionChart').getContext('2d');
             if (institutionChart) institutionChart.destroy();
-            const instTypeLabels = ['Research University', 'Teaching College', 'Other'];
+            const instCurrent = ['Research University', 'Teaching College', 'Other'].map(it => {
+                const arr = data.institutionTypeData[it] || [];
+                return arr[arr.length - 1] || 0;
+            });
             institutionChart = new Chart(instCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: instTypeLabels,
-                    datasets: [{ data: instTypeLabels.map(t => (data.institutionTypeData[t] || []).slice(-1)[0] || 0), backgroundColor: ['#3b82f6','#10b981','#6b7280'] }]
+                    labels: ['Research University', 'Teaching College', 'Other'],
+                    datasets: [{ data: instCurrent, backgroundColor: ['#6366f1', '#10b981', '#6b7280'] }]
                 },
-                options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+                options: { responsive: true, plugins: { legend: { position: 'right', labels: { font: { size: 11 }, boxWidth: 12 } } } }
             });
 
-            // US States list
-            const statesList = document.getElementById('usStatesList');
-            statesList.innerHTML = '';
-            const latestStateData = Object.entries(data.stateData)
-                .map(([state, counts]) => [state, counts[counts.length - 1] || 0])
-                .filter(([s, c]) => c > 0).sort((a, b) => b[1] - a[1]).slice(0, 10);
-            if (latestStateData.length > 0) {
-                latestStateData.forEach(([state, count]) => {
-                    const isWC = ['CA', 'OR', 'WA'].includes(state);
-                    statesList.innerHTML += `<div class="flex justify-between items-center py-2 px-3 ${isWC ? 'bg-blue-100 rounded' : ''}"><span class="font-medium ${isWC ? 'text-blue-900' : 'text-gray-700'}">${state}</span><span class="font-bold ${isWC ? 'text-blue-900' : 'text-gray-800'}">${count}</span></div>`;
-                });
-                const wcData = Object.entries(data.westCoastData).map(([city, counts]) => [city, counts[counts.length - 1] || 0]).filter(([c, cnt]) => cnt > 0).sort((a, b) => b[1] - a[1]);
-                if (wcData.length > 0) {
-                    document.getElementById('westCoastDetail').classList.remove('hidden');
-                    document.getElementById('westCoastCities').innerHTML = wcData.map(([city, count]) => `<div class="flex justify-between py-1"><span>${city}</span><span class="font-bold">${count}</span></div>`).join('');
-                } else { document.getElementById('westCoastDetail').classList.add('hidden'); }
-            } else { statesList.innerHTML = '<div class="text-gray-500 text-center py-8">No US jobs in this category</div>'; }
-
-            // Latin America list
-            const latinList = document.getElementById('latinCountriesList');
-            const latinCounts = Object.entries(data.latinData).map(([country, counts]) => [country, counts[counts.length - 1] || 0]).filter(([c, cnt]) => cnt > 0).sort((a, b) => b[1] - a[1]);
-            if (latinCounts.length > 0) {
-                latinList.innerHTML = latinCounts.map(([country, count]) => `<div class="flex justify-between items-center py-2 px-3"><span class="font-medium text-gray-700">${country}</span><span class="font-bold text-gray-800">${count}</span></div>`).join('');
-            } else { latinList.innerHTML = '<div class="text-gray-500 text-center py-8">No Latin American jobs in this category</div>'; }
+            // US States list for this category
+            const statesDiv = document.getElementById('usStatesList');
+            const stateCatData = {};
+            Object.entries(data.stateCategoryData).forEach(([state, cats]) => {
+                if (cats[key]) stateCatData[state] = cats[key];
+            });
+            const sortedStates = Object.entries(stateCatData).sort((a, b) => b[1] - a[1]).slice(0, 10);
+            if (sortedStates.length > 0) {
+                statesDiv.innerHTML = sortedStates.map(([s, c]) => `<div class="flex justify-between py-1 text-sm"><span class="text-gray-700">${s}</span><span class="font-bold">${c}</span></div>`).join('');
+            } else {
+                statesDiv.innerHTML = '<div class="text-gray-400 text-sm">No state data yet</div>';
+            }
 
             // Insights
-            const insights = document.getElementById('insights');
-            const trendDir = category.data[category.data.length - 1] > category.data[0] ? 'upward' : category.data[category.data.length - 1] < category.data[0] ? 'downward' : 'stable';
-            let insightText = '<ul class="space-y-1">';
-            if (change > 0) { insightText += `<li>• Growing: up ${change} new jobs from last week (+${previousJobs > 0 ? ((change/previousJobs)*100).toFixed(1) : '∞'}%)</li>`; }
-            else if (change < 0) { insightText += `<li>• Declining: down ${Math.abs(change)} new jobs from last week</li>`; }
-            else { insightText += `<li>• Stable: same number of new jobs as last week</li>`; }
-            insightText += `<li>• Overall trend since tracking began: ${trendDir}</li>`;
-            insightText += `<li>• Average ${average} new jobs per week</li>`;
-            if (category.subcategories.length > 0) {
-                let hottestSub = category.subcategories[0]; let hottestCount = 0;
-                category.subcategories.forEach(sub => {
-                    const subTotal = (data.subcategoryData[sub] || []).reduce((a, b) => a + b, 0);
-                    if (subTotal > hottestCount) { hottestCount = subTotal; hottestSub = sub; }
-                });
-                insightText += `<li>• Most active subcategory: ${hottestSub} (${hottestCount} total jobs)</li>`;
-            }
-            insightText += '</ul>';
-            insights.innerHTML = insightText;
+            const insightsEl = document.getElementById('insights');
+            const insights = [];
+            if (total > 0) insights.push(`${total} total US jobs in this category since tracking began.`);
+            if (change > 0) insights.push(`Up ${change} from last week.`);
+            else if (change < 0) insights.push(`Down ${Math.abs(change)} from last week.`);
+            insightsEl.innerHTML = insights.map(i => `<div class="mb-1">• ${i}</div>`).join('');
 
             document.getElementById('detailModal').classList.remove('hidden');
         }
 
-        function closeModal() { document.getElementById('detailModal').classList.add('hidden'); }
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeModal(); closeStatePanel(); } });
+        function closeModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+            if (detailChart) { detailChart.destroy(); detailChart = null; }
+            if (jobTypeChart) { jobTypeChart.destroy(); jobTypeChart = null; }
+            if (institutionChart) { institutionChart.destroy(); institutionChart = null; }
+        }
+        document.getElementById('detailModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
 
-        // ===== REGIONAL TRENDS CHART =====
-        const regionColors = {'West':'#3b82f6','Northeast':'#10b981','South':'#ef4444','Midwest':'#f59e0b'};
+        // ===== REGIONAL CHART =====
+        const regionColors = { 'West': '#2563eb', 'Northeast': '#7c3aed', 'South': '#dc2626', 'Midwest': '#d97706' };
         new Chart(document.getElementById('regionalChart').getContext('2d'), {
             type: 'line',
             data: {
                 labels: data.dates,
-                datasets: Object.entries(data.regionData).map(([region, values]) => ({
-                    label: region, data: values,
+                datasets: Object.entries(data.regionData).map(([region, counts]) => ({
+                    label: region,
+                    data: counts,
                     borderColor: regionColors[region] || '#6b7280',
                     backgroundColor: (regionColors[region] || '#6b7280') + '20',
-                    tension: 0.4, fill: false,
-                    borderWidth: region === 'West' ? 3 : 2, borderDash: region === 'West' ? [] : [5, 5]
+                    tension: 0.4, fill: true, borderWidth: region === 'West' ? 3 : 1.5,
+                    pointRadius: 4
+                }))
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15, font: { size: 12 } } } },
+                scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
+            }
+        });
+
+        // ===== CO-OCCURRENCE MATRIX =====
+        const matrixDiv = document.getElementById('coocMatrixTable');
+        const matrixCats = data.mainAosCategories;
+        let matrixHtml = '<table class="border-collapse text-xs"><thead><tr><th class="p-2 bg-gray-50 border border-gray-200"></th>';
+        const shortNames = { 'Ethics': 'Ethics', 'Social & Political Philosophy': 'Soc/Pol', 'Value Theory / Aesthetics': 'Value/Aes', 'History of Philosophy': 'History', 'Non-Western & Cross-Cultural Philosophy': 'Non-West', 'Metaphysics & Epistemology': 'M&E', 'Science, Logic, & Mathematics': 'Sci/Log', 'Open': 'Open' };
+        matrixCats.forEach(c => { matrixHtml += `<th class="p-2 bg-gray-50 border border-gray-200 font-semibold text-gray-700" title="${c}">${shortNames[c] || c}</th>`; });
+        matrixHtml += '</tr></thead><tbody>';
+        const allVals = matrixCats.flatMap(r => matrixCats.map(c => r !== c ? (data.coocMatrix[r]?.[c] || 0) : 0));
+        const maxVal = Math.max(...allVals, 1);
+        matrixCats.forEach((row, ri) => {
+            matrixHtml += `<tr><td class="p-2 bg-gray-50 border border-gray-200 font-semibold text-gray-700 whitespace-nowrap">${shortNames[row] || row}</td>`;
+            matrixCats.forEach((col, ci) => {
+                if (row === col) {
+                    matrixHtml += '<td class="p-2 border border-gray-200 bg-gray-100 text-center text-gray-300">—</td>';
+                } else {
+                    const v = data.coocMatrix[row]?.[col] || 0;
+                    const intensity = v > 0 ? Math.max(0.1, v / maxVal) : 0;
+                    const bg = v > 0 ? `rgba(99,102,241,${intensity.toFixed(2)})` : '#f9fafb';
+                    const color = intensity > 0.5 ? 'white' : '#374151';
+                    matrixHtml += `<td class="p-2 border border-gray-200 text-center font-medium" style="background:${bg};color:${color}" title="${row} ↔ ${col}: ${v}">${v > 0 ? v : ''}</td>`;
+                }
+            });
+            matrixHtml += '</tr>';
+        });
+        matrixDiv.innerHTML = matrixHtml + '</tbody></table>';
+
+        // ===== SOLO VS JOINT CHART =====
+        const svjCats = Object.keys(data.soloVsJoint).filter(k => data.soloVsJoint[k].solo > 0 || data.soloVsJoint[k].joint > 0);
+        new Chart(document.getElementById('soloJointChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: svjCats,
+                datasets: [
+                    { label: 'Solo', data: svjCats.map(k => data.soloVsJoint[k].solo || 0), backgroundColor: '#6366f1', borderRadius: 3 },
+                    { label: 'Joint', data: svjCats.map(k => data.soloVsJoint[k].joint || 0), backgroundColor: '#a78bfa', borderRadius: 3 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } },
+                scales: { x: { stacked: false }, y: { beginAtZero: true, stacked: false } }
+            }
+        });
+
+        // ===== CROSS-CUTTING CHART =====
+        const ccColors = { 'Feminist Philosophy': '#ec4899', 'Philosophy of Race': '#f97316', 'Philosophy of Gender': '#8b5cf6', 'Philosophy of Law': '#0ea5e9' };
+        const ccAreas = Object.keys(data.crossCutting);
+        const ccWeeks = ccAreas.length > 0 ? Object.keys(data.crossCutting[ccAreas[0]]?.weekly || {}) : [];
+        new Chart(document.getElementById('crossCuttingChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ccWeeks,
+                datasets: ccAreas.map(area => ({
+                    label: area, data: ccWeeks.map(w => data.crossCutting[area]?.weekly[w] || 0),
+                    borderColor: ccColors[area] || '#6b7280', backgroundColor: (ccColors[area] || '#6b7280') + '30',
+                    tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
                 }))
             },
             options: {
                 responsive: true, maintainAspectRatio: false,
                 interaction: { mode: 'index', intersect: false },
                 plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15 } } },
-                scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } }
+                scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
             }
         });
 
-        // ===== CO-OCCURRENCE MATRIX =====
-        (function() {
-            const matrix = data.coocMatrix;
-            const cats = Object.keys(data.mainAosColors).filter(c => c !== 'Open');
-            const matrixDiv = document.getElementById('coocMatrixTable');
-            if (!matrix || Object.keys(matrix).length === 0) {
-                matrixDiv.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">Co-occurrence data will populate after jobs are classified.</div>';
-                return;
-            }
-            let maxVal = 0;
-            cats.forEach(r => cats.forEach(c => { if (r !== c) maxVal = Math.max(maxVal, (matrix[r] || {})[c] || 0); }));
-            let html = '<table class="w-full border-collapse text-xs"><thead><tr><th class="py-2 px-3 bg-gray-50 border border-gray-200 text-left text-gray-500">AOS</th>';
-            cats.forEach(c => {
-                const short = c.replace('Non-Western & Cross-Cultural Philosophy', 'Non-Western').replace('Science, Logic, & Mathematics', 'Sci/Logic/Math').replace('Social & Political Philosophy', 'Social/Pol').replace('Value Theory / Aesthetics', 'Value/Aes').replace('Metaphysics & Epistemology', 'M&E').replace('History of Philosophy', 'History');
-                html += `<th class="py-2 px-2 bg-gray-50 font-semibold text-gray-600 border border-gray-200 text-center" style="min-width:70px" title="${c}">${short}</th>`;
-            });
-            html += '</tr></thead><tbody>';
-            cats.forEach((row, i) => {
-                const shortRow = row.replace('Non-Western & Cross-Cultural Philosophy', 'Non-Western').replace('Science, Logic, & Mathematics', 'Sci/Logic/Math').replace('Social & Political Philosophy', 'Social/Political').replace('Value Theory / Aesthetics', 'Value/Aesthetics').replace('Metaphysics & Epistemology', 'M&E').replace('History of Philosophy', 'History');
-                html += `<tr class="${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}"><td class="py-2 px-3 font-semibold text-gray-700 border border-gray-200 whitespace-nowrap text-xs">${shortRow}</td>`;
-                cats.forEach(col => {
-                    if (row === col) {
-                        html += `<td class="py-2 px-2 text-center border border-gray-200 bg-gray-100 text-gray-400 text-xs">—</td>`;
-                    } else {
-                        const v = (matrix[row] || {})[col] || 0;
-                        const intensity = maxVal > 0 ? v / maxVal : 0;
-                        const alpha = Math.round(intensity * 180);
-                        html += `<td class="py-2 px-2 text-center border border-gray-200 text-xs ${v > 0 ? 'font-semibold text-gray-800' : 'text-gray-300'}" style="background-color:rgba(99,102,241,${alpha/255})">${v || '—'}</td>`;
-                    }
-                });
-                html += '</tr>';
-            });
-            html += '</tbody></table>';
-            matrixDiv.innerHTML = html;
-        })();
-
-        // ===== SOLO VS. JOINT =====
-        (function() {
-            const svj = data.soloVsJoint;
-            const cats = Object.keys(data.mainAosColors).filter(c => c !== 'Open');
-            const solos = cats.map(c => (svj[c] || {}).solo || 0);
-            const joints = cats.map(c => (svj[c] || {}).joint || 0);
-            if (!solos.some(v => v > 0) && !joints.some(v => v > 0)) {
-                document.getElementById('soloJointChart').parentElement.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">Solo/joint data will populate after jobs are classified.</div>';
-                return;
-            }
-            new Chart(document.getElementById('soloJointChart').getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: cats,
-                    datasets: [
-                        { label: 'Solo (only AOS)', data: solos, backgroundColor: '#6366f1cc', borderColor: '#6366f1', borderWidth: 1 },
-                        { label: 'Joint (with other AOS)', data: joints, backgroundColor: '#f59e0bcc', borderColor: '#f59e0b', borderWidth: 1 }
-                    ]
-                },
-                options: {
-                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-                    interaction: { mode: 'index', intersect: false },
-                    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15 } } },
-                    scales: {
-                        x: { stacked: true, beginAtZero: true, ticks: { precision: 0 } },
-                        y: { stacked: true, grid: { display: false } }
-                    }
-                }
-            });
-        })();
-
-        // ===== CROSS-CUTTING AREAS =====
-        (function() {
-            const cc = data.crossCutting;
-            const areas = Object.keys(cc || {});
-            if (areas.length === 0 || !areas.some(a => (cc[a].total || 0) > 0)) {
-                document.getElementById('crossCuttingChart').parentElement.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">Cross-cutting data will populate after jobs are classified.</div>';
-                return;
-            }
-            const ccColors = ['#ec4899','#3b82f6','#10b981','#8b5cf6'];
-            const allWeeks = data.dates;
-            const ccDatasets = areas.map((area, idx) => {
-                const trendMap = {};
-                (cc[area].trend || []).forEach(pt => { trendMap[pt.week] = pt.count; });
-                return {
-                    label: area, data: allWeeks.map(w => trendMap[w] || 0),
-                    borderColor: ccColors[idx % ccColors.length],
-                    backgroundColor: ccColors[idx % ccColors.length] + '30',
-                    tension: 0.4, fill: true, borderWidth: 2
-                };
-            });
-            new Chart(document.getElementById('crossCuttingChart').getContext('2d'), {
-                type: 'line',
-                data: { labels: allWeeks, datasets: ccDatasets },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    interaction: { mode: 'index', intersect: false },
-                    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15 } } },
-                    scales: { y: { beginAtZero: true, ticks: { precision: 0 } }, x: { grid: { display: false } } }
-                }
-            });
-        })();
-
-        // ===== POSITION TYPE TRENDS =====
-        (function() {
-            // Populate AOS filter dropdown
-            const filterSel = document.getElementById('posTypeAosFilter');
-            data.mainAosCategories.forEach(aos => {
-                const opt = document.createElement('option');
-                opt.value = aos;
-                opt.textContent = aos;
-                filterSel.appendChild(opt);
-            });
-
-            // Check if there's any data at all
-            const hasData = data.positionTypes.some(pt =>
-                (data.positionTypeByAosWeekly[data.mainAosCategories[0]] || {})[pt]?.some(v => v > 0)
-                || (data.jobTypeData[pt] || []).some(v => v > 0)
-            );
-            if (!hasData) {
-                document.getElementById('posTypeChart').parentElement.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">Position type data will populate after jobs are classified.</div>';
-                return;
-            }
-        })();
-
+        // ===== POSITION TYPE CHART =====
         let posTypeChart = null;
+        const posTypeSelect = document.getElementById('posTypeAosFilter');
+        data.mainAosCategories.forEach(aos => {
+            const opt = document.createElement('option');
+            opt.value = aos;
+            opt.textContent = aos;
+            posTypeSelect.appendChild(opt);
+        });
+
         function updatePositionTypeChart() {
-            const filter = document.getElementById('posTypeAosFilter').value;
-            const ctx = document.getElementById('posTypeChart').getContext('2d');
+            const selected = posTypeSelect.value;
+            let ptData;
+            if (selected === '__all__') {
+                ptData = data.jobTypeData;
+            } else {
+                ptData = data.positionTypeByAosWeekly[selected] || {};
+            }
+            const ptDatasets = data.positionTypes.map(pt => ({
+                label: pt,
+                data: ptData[pt] || Array(data.dates.length).fill(0),
+                borderColor: data.positionTypeColors[pt] || '#6b7280',
+                backgroundColor: (data.positionTypeColors[pt] || '#6b7280') + '30',
+                tension: 0.4, fill: true, borderWidth: 2, pointRadius: 3
+            }));
             if (posTypeChart) posTypeChart.destroy();
-
-            const datasets = data.positionTypes.map(pt => {
-                let series;
-                if (filter === '__all__') {
-                    series = data.jobTypeData[pt] || data.dates.map(() => 0);
-                } else {
-                    series = ((data.positionTypeByAosWeekly[filter] || {})[pt]) || data.dates.map(() => 0);
-                }
-                return {
-                    label: pt,
-                    data: series,
-                    borderColor: data.positionTypeColors[pt] || '#6b7280',
-                    backgroundColor: (data.positionTypeColors[pt] || '#6b7280') + '25',
-                    tension: 0.4, fill: true, borderWidth: 2, pointRadius: 3
-                };
-            });
-
-            posTypeChart = new Chart(ctx, {
+            posTypeChart = new Chart(document.getElementById('posTypeChart').getContext('2d'), {
                 type: 'line',
-                data: { labels: data.dates, datasets: datasets },
+                data: { labels: data.dates, datasets: ptDatasets },
                 plugins: [seasonPlugin],
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     interaction: { mode: 'index', intersect: false },
-                    plugins: {
-                        legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15, font: { size: 12 } } },
-                        tooltip: { backgroundColor: 'rgba(0,0,0,0.8)', padding: 12 }
-                    },
-                    scales: {
-                        y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: 'rgba(0,0,0,0.05)' } },
-                        x: { grid: { display: false } }
-                    }
+                    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 12, font: { size: 11 } } } },
+                    scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
                 }
             });
 
-            // Summary table: AOS rows × position type columns
+            // Summary table
             const tableDiv = document.getElementById('posTypeTable');
             const aosRows = data.mainAosCategories;
             let html = '<table class="w-full border-collapse"><thead><tr>';
@@ -793,10 +693,9 @@
             document.getElementById('westCoastChart').parentElement.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">No West Coast city data yet.</div>';
         }
 
-        // ===== D3 CHOROPLETH MAPS =====
-        let currentMapMode = 'current', usAtlasData = null, worldAtlasData = null;
+        // ===== D3 US CHOROPLETH =====
+        let currentMapMode = 'current', usAtlasData = null;
         const fipsToState = {"01":"AL","02":"AK","04":"AZ","05":"AR","06":"CA","08":"CO","09":"CT","10":"DE","12":"FL","13":"GA","15":"HI","16":"ID","17":"IL","18":"IN","19":"IA","20":"KS","21":"KY","22":"LA","23":"ME","24":"MD","25":"MA","26":"MI","27":"MN","28":"MS","29":"MO","30":"MT","31":"NE","32":"NV","33":"NH","34":"NJ","35":"NM","36":"NY","37":"NC","38":"ND","39":"OH","40":"OK","41":"OR","42":"PA","44":"RI","45":"SC","46":"SD","47":"TN","48":"TX","49":"UT","50":"VT","51":"VA","53":"WA","54":"WV","55":"WI","56":"WY"};
-        const latinNumeric = {"484":"Mexico","076":"Brazil","032":"Argentina","152":"Chile","170":"Colombia","604":"Peru","862":"Venezuela","218":"Ecuador","320":"Guatemala","192":"Cuba","068":"Bolivia","332":"Haiti","214":"Dominican Republic","340":"Honduras","600":"Paraguay","222":"El Salvador","558":"Nicaragua","188":"Costa Rica","591":"Panama","858":"Uruguay"};
 
         function getStateValues(mode) {
             if (mode === 'alltime') return data.stateAlltime;
@@ -810,7 +709,6 @@
             document.getElementById('mapModeNew').className = mode === 'current' ? 'px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white' : 'px-4 py-2 text-sm font-medium rounded-lg bg-gray-200 text-gray-700';
             document.getElementById('mapModeAll').className = mode === 'alltime' ? 'px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white' : 'px-4 py-2 text-sm font-medium rounded-lg bg-gray-200 text-gray-700';
             if (usAtlasData) drawUSChoropleth();
-            if (worldAtlasData) drawLatinChoropleth();
         }
 
         function drawUSChoropleth() {
@@ -819,7 +717,7 @@
             const values = getStateValues(currentMapMode);
             const maxVal = Math.max(...Object.values(values).filter(v => v > 0), 1);
             const wc = new Set(['CA', 'OR', 'WA']);
-            const width = el.clientWidth || 500, height = 300;
+            const width = el.clientWidth || 800, height = 400;
             const features = topojson.feature(usAtlasData, usAtlasData.objects.states);
             const projection = d3.geoAlbersUsa().fitSize([width, height], features);
             const path = d3.geoPath().projection(projection);
@@ -854,60 +752,12 @@
                 });
         }
 
-        function drawLatinChoropleth() {
-            const el = document.getElementById('latinMapEl');
-            el.innerHTML = '';
-            const values = {};
-            Object.entries(data.latinData).forEach(([country, counts]) => {
-                values[country] = currentMapMode === 'alltime' ? counts.reduce((a, b) => a + b, 0) : (counts[counts.length - 1] || 0);
-            });
-            const maxVal = Math.max(...Object.values(values).filter(v => v > 0), 1);
-            const numericVals = {};
-            Object.entries(latinNumeric).forEach(([code, country]) => { numericVals[code] = values[country] || 0; });
-            const latinSet = new Set(Object.keys(latinNumeric));
-            const allFeatures = topojson.feature(worldAtlasData, worldAtlasData.objects.countries).features;
-            const latinFeatures = allFeatures.filter(d => latinSet.has(String(d.id).padStart(3, '0')));
-            if (latinFeatures.length === 0) { el.innerHTML = '<div class="text-gray-400 text-center p-4 text-sm">No Latin American jobs tracked yet</div>'; return; }
-            const width = el.clientWidth || 400, height = 300;
-            const projection = d3.geoMercator().fitSize([width, height], {type: 'FeatureCollection', features: latinFeatures});
-            const path = d3.geoPath().projection(projection);
-            const svg = d3.select('#latinMapEl').append('svg').attr('width', '100%').attr('height', height).attr('viewBox', `0 0 ${width} ${height}`);
-            const tip = d3.select('#mapTooltip');
-            svg.append('g').selectAll('path').data(latinFeatures).join('path')
-                .attr('d', path)
-                .attr('fill', d => {
-                    const code = String(d.id).padStart(3, '0');
-                    const v = numericVals[code] || 0;
-                    if (v === 0) return '#e5e7eb';
-                    return d3.interpolate('#fce7f3', '#9d174d')(v / maxVal);
-                })
-                .attr('stroke', '#9ca3af').attr('stroke-width', 0.5).style('cursor', 'default')
-                .on('mouseover', function(event, d) {
-                    const code = String(d.id).padStart(3, '0');
-                    const country = latinNumeric[code] || '';
-                    const v = numericVals[code] || 0;
-                    if (!country) return;
-                    tip.style('display', 'block').html(`<strong>${country}</strong><br>${v} job${v !== 1 ? 's' : ''}`);
-                    d3.select(this).attr('stroke', '#111').attr('stroke-width', 1.5);
-                })
-                .on('mousemove', event => tip.style('left', (event.pageX + 12) + 'px').style('top', (event.pageY - 28) + 'px'))
-                .on('mouseout', function() {
-                    tip.style('display', 'none');
-                    d3.select(this).attr('stroke', '#9ca3af').attr('stroke-width', 0.5);
-                });
-        }
-
         async function initMaps() {
             try {
-                [usAtlasData, worldAtlasData] = await Promise.all([
-                    d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json'),
-                    d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
-                ]);
+                usAtlasData = await d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json');
                 drawUSChoropleth();
-                drawLatinChoropleth();
             } catch(e) {
                 document.getElementById('usMapEl').innerHTML = '<div class="text-gray-400 text-center p-4 text-sm">Map unavailable — check connection</div>';
-                document.getElementById('latinMapEl').innerHTML = '<div class="text-gray-400 text-center p-4 text-sm">Map unavailable</div>';
             }
         }
         initMaps();
