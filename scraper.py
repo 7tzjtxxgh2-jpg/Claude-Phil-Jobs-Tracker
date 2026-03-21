@@ -924,6 +924,12 @@ class PhilJobsScraper:
             if self.is_hiring_season(date):
                 seasonal_markers.append({'index': i, 'label': 'Hiring Season'})
 
+        # ── Pre-serialise complex JS objects (avoids {{}} double-brace issue inside f-strings) ──
+        categories_js = json.dumps({
+            k: {'name': k, 'data': v['data'], 'subcategories': v['subcategories'], 'color': v['color']}
+            for k, v in parent_categories.items()
+        })
+
         # ── Build HTML ───────────────────────────────────────────────────
         html = f'''<!DOCTYPE html>
 <html lang="en">
@@ -1195,7 +1201,7 @@ class PhilJobsScraper:
     <script>
         const data = {{
             dates: {json.dumps(dates)},
-            categories: {json.dumps({k: {{'name': k, 'data': v['data'], 'subcategories': v['subcategories'], 'color': v['color']}} for k, v in parent_categories.items()})},
+            categories: {categories_js},
             subcategoryData: {json.dumps(subcategory_data)},
             jobTypeData: {json.dumps(job_type_series)},
             institutionTypeData: {json.dumps(inst_type_series)},
