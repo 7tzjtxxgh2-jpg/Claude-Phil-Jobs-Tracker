@@ -22,8 +22,8 @@
       "application_url": "https://apptrkr.com/6976382",
       "deadline": "May 30, 2026, 11:59pm MST",
       "posted_date": "Yesterday, 8:56pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "5038019a140e3147022e891515055239",
       "scraped_date": "2026-03-10T02:47:34.819073",
@@ -34,9 +34,9 @@
         "detail_aos": {
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly states 'Visiting Assistant Professor' and 'Fixed term' in the job category, indicating a temporary teaching position with no path to permanence. The AOS is listed as 'Open', meaning any area of philosophy is acceptable."
       }
     },
     {
@@ -65,21 +65,24 @@
       "application_url": "https://apptrkr.com/6977509",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "Yesterday, 8:53pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "220fae3cf35ead7052a3e528c9bf0189",
       "scraped_date": "2026-03-10T02:47:35.661051",
       "classification": {
         "main_aos": [
-          "Open"
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics, Social & Political Philosophy": [],
+          "Metaphysics & Epistemology": [
+            "Philosophy of Religion"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly states 'Visiting Assistant Teaching Professor' and 'Fixed term,' indicating a temporary teaching-focused position with no path to permanence. The AOS requirements specify environmental philosophy (Environmental Ethics) and religious studies (Philosophy of Religion)."
       }
     },
     {
@@ -111,21 +114,28 @@
       "deadline": "March 28, 2026, 12:00am EST",
       "contact_email": "",
       "posted_date": "Yesterday, 2:46pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "05936f8f337e97d2c89aadb0836317a6",
       "scraped_date": "2026-03-10T02:47:36.454435",
       "classification": {
         "main_aos": [
-          "Open"
+          "Metaphysics & Epistemology",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Metaphysics & Epistemology": [
+            "Philosophy of Mind",
+            "Philosophy of Language"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Logic"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Teaching College",
+        "reasoning": "The posting explicitly describes these as non-renewable Lecturer positions (one for two years, one for one year) with a heavy teaching load of five courses per semester, characteristic of fixed-term teaching positions with no path to permanence. The department has specific teaching needs in philosophy of mind, philosophy of language, and logic, which map to Metaphysics & Epistemology and Science, Logic, & Mathematics."
       }
     },
     {
@@ -163,7 +173,7 @@
         },
         "position_type": "Other",
         "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "reasoning": "This is a non-academic position at a testing organization (LSAC), focused on test development and content creation for the LSAT rather than philosophical research or teaching. While the role touches on justice and fairness conceptually, it is fundamentally a technical/administrative position outside traditional academic philosophy."
       }
     },
     {
@@ -187,21 +197,23 @@
       "application_url": "https://cuny.jobs/new-york-ny/associate-professor-...",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "Yesterday, 2:42pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenured / Continuing / Permanent",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "f6ab6ffbfdf30d523859f76a4c514fa1",
       "scraped_date": "2026-03-10T02:47:37.979644",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Logic"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenured / Continuing / Permanent",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly specifies Logic as the primary area of specialization and seeks a tenured Associate Professor with international research standing at a major research-focused Ph.D. program. The Graduate Center, CUNY is a research university."
       }
     },
     {
@@ -229,21 +241,26 @@
       "deadline": "January 11, 2027, 12:00am CST",
       "contact_email": "",
       "posted_date": "March 6, 2026, 4:33pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "6b0c9ef10c4416fa2355c0202b8ef6e3",
       "scraped_date": "2026-03-10T02:47:38.696093",
       "classification": {
         "main_aos": [
+          "History of Philosophy",
           "Open"
         ],
         "detail_aos": {
+          "History of Philosophy": [
+            "American Philosophy",
+            "19th/20th Century Philosophy"
+          ],
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is a visiting fellowship program at a research center focused on John Dewey scholarship, with no teaching duties and an emphasis on independent research. The primary AOS is American Philosophy and 19th/20th Century Philosophy (Dewey's era), though the posting explicitly welcomes scholars from any discipline working on Dewey's legacy, justifying the inclusion of Open."
       }
     },
     {
@@ -277,21 +294,44 @@
       "deadline": "April 2, 2026, 5:00pm BST",
       "contact_email": "",
       "posted_date": "March 6, 2026, 4:31pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "b3e270461dda336a3c3ce88e393a94e3",
       "scraped_date": "2026-03-10T02:47:39.409412",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Social & Political Philosophy",
+          "Value Theory / Aesthetics",
+          "History of Philosophy",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Normative Ethics",
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
+          "Social & Political Philosophy": [
+            "Social and Political Philosophy (General / Political Theory)",
+            "Philosophy of Law"
+          ],
+          "Value Theory / Aesthetics": [
+            "Aesthetics (General)",
+            "Value Theory / Axiology",
+            "Value Theory / Aesthetics (General)"
+          ],
+          "History of Philosophy": [
+            "History of Philosophy (General)"
+          ],
+          "Metaphysics & Epistemology": [
+            "Philosophy of Mind",
+            "Philosophy of Action"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a postdoctoral research fellow position funded by the ERC, which is a fixed-term research fellowship. The project 'The Spontaneity of Freedom' addresses ethics, politics, law, aesthetics, and philosophy of mind, spanning multiple AOS categories as indicated in the job description."
       }
     },
     {
@@ -317,8 +357,8 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "March 6, 2026, 4:26pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "1e5e17b5ce52a306c4bd2e335bc08cd1",
       "scraped_date": "2026-03-10T02:47:40.127658",
@@ -329,9 +369,9 @@
         "detail_aos": {
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Teaching College",
+        "reasoning": "The posting explicitly describes this as a 'non-tenure-track Assistant Professor position,' which is a fixed-term teaching position with no path to permanence. The AOS is listed as Open, indicating no specific philosophical specialization is required. Truman State University is a teaching-focused liberal arts institution."
       }
     },
     {
@@ -359,21 +399,27 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "March 4, 2026, 5:15pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "edf8f886e9b3d7d0768399dc3362a1a8",
       "scraped_date": "2026-03-10T02:47:40.832898",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Cognitive Science"
+          ],
+          "Metaphysics & Epistemology": [
+            "Philosophy of Mind"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Teaching College",
+        "reasoning": "The posting explicitly describes this as a one-year Term Lecturer position with teaching-focused responsibilities (three courses per semester) and no path to permanence, fitting the fixed-term teaching category. The AOS is clearly Philosophy of Cognitive Science, which falls under Science, Logic, & Mathematics, with Philosophy of Mind as a closely related subcategory given the cognitive science focus."
       }
     },
     {
@@ -415,21 +461,52 @@
       "deadline": "September 20, 2026, 11:59pm +08:30",
       "contact_email": "",
       "posted_date": "March 4, 2026, 5:15pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenure-Track",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "d3ba6496c7b0f04debdf048e8e609567",
       "scraped_date": "2026-03-10T02:47:41.542979",
       "classification": {
         "main_aos": [
+          "Ethics",
+          "Social & Political Philosophy",
+          "Value Theory / Aesthetics",
+          "Metaphysics & Epistemology",
+          "Science, Logic, & Mathematics",
+          "Non-Western & Cross-Cultural Philosophy",
+          "History of Philosophy",
           "Open"
         ],
         "detail_aos": {
+          "Ethics": [
+            "Normative Ethics",
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
+          "Social & Political Philosophy": [
+            "Social and Political Philosophy (General / Political Theory)"
+          ],
+          "Value Theory / Aesthetics": [
+            "Aesthetics (General)",
+            "Value Theory / Aesthetics (General)"
+          ],
+          "Metaphysics & Epistemology": [
+            "Philosophy of Religion",
+            "Metaphysics & Epistemology (General)"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Logic",
+            "Philosophy of Science (General)"
+          ],
+          "Non-Western & Cross-Cultural Philosophy": [
+            "Asian Philosophy",
+            "Comparative Philosophy / Cross-Cultural"
+          ],
+          "History of Philosophy": [],
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenure-Track",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly lists multiple rank options including 'Tenure-Track Associate Professor' and 'Tenured Associate Professor,' indicating a tenure-track pathway. The position is open-rank but fundamentally tenure-eligible. Peking University is a major research institution, and the department emphasizes disciplinary balance and scholarly contributions."
       }
     },
     {
@@ -465,21 +542,29 @@
       "deadline": "April 19, 2026, 11:55pm BST",
       "contact_email": "",
       "posted_date": "March 3, 2026, 10:16pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "04cf56e9b4d630c57b180bf1c5f986f9",
       "scraped_date": "2026-03-10T02:47:42.254189",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Mathematics",
+            "Logic",
+            "Philosophy of Computing / Philosophy of AI"
+          ],
+          "Metaphysics & Epistemology": [
+            "Epistemology"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is an 18-month fixed-term Research Fellow position focused on a specific AHRC\u2013DFG research project involving philosophy of mathematics, logic, and computation. The role is explicitly research-focused with a defined end date, fitting the postdoc/fellowship category at a major research university."
       }
     },
     {
@@ -508,21 +593,23 @@
       "deadline": "April 3, 2026, 11:59pm BST",
       "contact_email": "",
       "posted_date": "March 3, 2026, 10:15pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "368fbf473fc825f097c1414b885db871",
       "scraped_date": "2026-03-10T02:47:43.085909",
       "classification": {
         "main_aos": [
-          "Open"
+          "Social & Political Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Social & Political Philosophy": [
+            "Social and Political Philosophy (General / Political Theory)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is a funded PhD studentship (graduate fellowship) with fixed 4-year duration focused on political philosophy, social epistemology, and migration studies. The position is research-focused rather than teaching-focused, making it a postdoctoral/fellowship-type position in the taxonomy."
       }
     },
     {
@@ -561,7 +648,7 @@
         },
         "position_type": "Other",
         "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "reasoning": "This is a non-academic administrative position focused on organizational management and chapter coordination for a graduate student organization, not a faculty or research position. The posting explicitly categorizes it as 'Other (non-academic) / Fixed term' and involves no teaching, research, or philosophical specialization requirements."
       }
     },
     {
@@ -596,21 +683,32 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "March 3, 2026, 10:12pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "ffe06e614fb9bd596ee8d3f263b32c34",
       "scraped_date": "2026-03-10T02:47:44.585681",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Science, Logic, & Mathematics",
+          "History of Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "AI, Technology, and Information Ethics",
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Computing / Philosophy of AI"
+          ],
+          "History of Philosophy": [
+            "19th/20th Century Philosophy"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Teaching College",
+        "reasoning": "The posting explicitly states 'Visiting Assistant Professor' and 'Visiting fellowship / Fixed term,' indicating a temporary teaching position with no path to permanence. The AOS requirements focus on Ethics of AI (a subfield of AI, Technology, and Information Ethics) and Modern Philosophy (19th/20th Century Philosophy), with secondary interests in related areas."
       }
     },
     {
@@ -639,21 +737,25 @@
       "deadline": "April 12, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "March 3, 2026, 10:12pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "214a4269b413bb33559acdc966a5b145",
       "scraped_date": "2026-03-10T02:47:45.302398",
       "classification": {
         "main_aos": [
+          "Ethics",
           "Open"
         ],
         "detail_aos": {
+          "Ethics": [
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Research University",
+        "reasoning": "This is a fixed-term 3-year lecturer position focused on teaching introductory general education and ethics courses, with no tenure track or permanence implied. The AOS is specified as 'Core Philosophy and Ethics' with an open AOC, indicating ethics is primary but the role encompasses broad introductory philosophy instruction."
       }
     },
     {
@@ -681,21 +783,23 @@
       "deadline": "March 23, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "February 27, 2026, 10:16pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "5eb2bd7469445fe1e0c655deda6cfcf9",
       "scraped_date": "2026-03-10T02:47:46.097413",
       "classification": {
         "main_aos": [
-          "Open"
+          "Social & Political Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Social & Political Philosophy": [
+            "Philosophy of Law"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly identifies Philosophy of Law as the AOS, which falls under Social & Political Philosophy. The position is titled Visiting Assistant Professor with a fixed one-year term renewable up to three years, indicating a temporary teaching-focused role with no path to permanence."
       }
     },
     {
@@ -724,21 +828,24 @@
       "deadline": "March 18, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 27, 2026, 10:15pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenured / Continuing / Permanent",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "553660b89acb7c5a1adbc4629e9ca044",
       "scraped_date": "2026-03-10T02:47:46.814911",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Physics",
+            "Philosophy of Science (General)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenured / Continuing / Permanent",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a Full Professor position (\u00a7 99 (1) UG 2002) in a permanent/continuing capacity at a research-focused university department. The AOS is clearly Philosophy of Physics with secondary emphasis on general Philosophy of Science, as stated in the job description."
       }
     },
     {
@@ -764,21 +871,23 @@
       "application_url": "https://apptrkr.com/6945453",
       "deadline": "April 23, 2026, 11:59pm EST",
       "posted_date": "February 26, 2026, 10:24pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "f5c8c5d945a40e96d78ca8f9bb7ea153",
       "scraped_date": "2026-03-10T02:47:47.541678",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly identifies this as a Visiting Assistant Professor position (fixed-term), and the AOS is specified as Ethics broadly construed. University of Scranton is a research university with doctoral programs."
       }
     },
     {
@@ -809,21 +918,27 @@
       "deadline": "May 15, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 26, 2026, 10:19pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "90ffc8cc6b01d1009e808628fb354bb4",
       "scraped_date": "2026-03-10T02:47:48.247816",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Neuroethics"
+          ],
+          "Metaphysics & Epistemology": [
+            "Philosophy of Mind"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The position is a pre-doctoral scholarship at a neuroscience and ethics center, focusing on the intersection of neuroscience and humanities. This maps primarily to Neuroethics and Philosophy of Mind, with the fixed-term fellowship structure indicating a postdoctoral/fellowship position."
       }
     },
     {
@@ -852,21 +967,25 @@
       "deadline": "March 15, 2026, 11:59pm BST",
       "contact_email": "",
       "posted_date": "February 26, 2026, 10:18pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "507d69e4a01ac83785e0d39b06d323f2",
       "scraped_date": "2026-03-10T02:47:49.025880",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Physics"
+          ],
+          "Metaphysics & Epistemology": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is a fixed-term research position (3 years) funded by an ERC grant, making it a postdoctoral/research fellowship role. The posting explicitly focuses on philosophy of physics, specifically gauge theory and cosmological boundary conditions, with secondary relevance to metaphysical foundations of physics."
       }
     },
     {
@@ -895,21 +1014,23 @@
       "deadline": "March 15, 2026, 11:59pm BST",
       "contact_email": "",
       "posted_date": "February 26, 2026, 10:13pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "732e6d6eecd3cc8a2eaaf2ffb291586a",
       "scraped_date": "2026-03-10T02:47:49.813637",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Physics"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a Research Officer position funded for 3 years at a research-focused centre, which constitutes a fixed-term research fellowship. The AOS is clearly Philosophy of Physics with specific focus on cosmology and the edge of the universe."
       }
     },
     {
@@ -937,21 +1058,27 @@
       "deadline": "April 15, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 25, 2026, 10:28pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "361f4f37972a8fe7b2ec0df2b40aeb53",
       "scraped_date": "2026-03-10T02:47:50.618337",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Social & Political Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
+          "Social & Political Philosophy": [
+            "Philosophy of Education"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is a doctoral student fellowship position (fixed-term, research-focused graduate fellowship) at a large research university. The specialization in ethics within teacher education spans both ethics and philosophy of education, with clear applied ethics dimensions."
       }
     },
     {
@@ -986,21 +1113,34 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "February 25, 2026, 10:27pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenure-Track",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "93e9a909e727b4624b56538e0b8fa355",
       "scraped_date": "2026-03-10T02:47:51.336658",
       "classification": {
         "main_aos": [
+          "Ethics",
+          "Social & Political Philosophy",
           "Open"
         ],
         "detail_aos": {
+          "Ethics": [
+            "Biomedical Ethics / Bioethics",
+            "Neuroethics",
+            "AI, Technology, and Information Ethics",
+            "Environmental Ethics"
+          ],
+          "Social & Political Philosophy": [
+            "Philosophy of Law",
+            "Philosophy of Race",
+            "Feminist Philosophy"
+          ],
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenure-Track",
+        "institution_type": "Research University",
+        "reasoning": "The job category explicitly states 'Tenure-track or similar,' and the posting indicates an open AOS with specific preferences for Biomedical Ethics, AI Ethics, Neuroethics, Philosophy of Race, Feminist Philosophy, Environmental Ethics, Philosophy of Law, and Social and Political Philosophy. Georgia State University is a major research institution."
       }
     },
     {
@@ -1027,21 +1167,25 @@
       "deadline": "April 10, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 24, 2026, 10:33pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenured / Continuing / Permanent",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "104818f4dfb78c9d61e02907e82851c4",
       "scraped_date": "2026-03-10T02:47:52.040305",
       "classification": {
         "main_aos": [
-          "Open"
+          "History of Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "History of Philosophy": [
+            "Early Modern Philosophy (17th/18th Century)",
+            "19th/20th Century Philosophy",
+            "History of Philosophy (General)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenured / Continuing / Permanent",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes this as a permanent professorship (successor position) at a research-focused institute. The AOS is clearly History of Philosophy with a specific focus on Early Modern through early 19th-century philosophy (Hobbes to Hegel period)."
       }
     },
     {
@@ -1070,21 +1214,24 @@
       "deadline": "April 8, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 24, 2026, 10:32pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "16a72c318f979a82c01b0528b78561e4",
       "scraped_date": "2026-03-10T02:47:52.750730",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Meta-Ethics",
+            "Normative Ethics"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is a fixed-term doctoral researcher position (3 years) focused on independent research in ethics and metaethics at a research university. While labeled a 'graduate fellowship,' the emphasis on independent research and the fixed-term nature align with postdoctoral/research fellowship positions rather than traditional graduate study."
       }
     },
     {
@@ -1109,21 +1256,28 @@
       "deadline": "March 16, 2026, 11:59pm BST",
       "contact_email": "",
       "posted_date": "February 24, 2026, 10:27pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenured / Continuing / Permanent",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "cd9c22880659b98f00dfd1970485fa8b",
       "scraped_date": "2026-03-10T02:47:53.454149",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Logic",
+            "Philosophy of Computing / Philosophy of AI"
+          ],
+          "Metaphysics & Epistemology": [
+            "Philosophy of Language"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenured / Continuing / Permanent",
+        "institution_type": "Research University",
+        "reasoning": "The position is explicitly described as 'Senior faculty / Tenured, continuing or permanent' at Lecturer or Associate Professor level. The role focuses on programming principles, logic, and verification within a joint philosophy and computer science program, placing it primarily in Logic and Philosophy of Computing, with secondary relevance to Philosophy of Language."
       }
     },
     {
@@ -1162,7 +1316,7 @@
         },
         "position_type": "Other",
         "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "reasoning": "This is a non-academic editorial/administrative position at a nonprofit media organization, not a traditional faculty role. While the position requires philosophical knowledge, it is explicitly categorized as 'Other (non-academic)' and does not fit tenure-track, postdoc, visiting, or tenured faculty categories."
       }
     },
     {
@@ -1197,14 +1351,20 @@
       "scraped_date": "2026-03-10T02:47:54.863951",
       "classification": {
         "main_aos": [
-          "Open"
+          "Metaphysics & Epistemology",
+          "Ethics"
         ],
         "detail_aos": {
-          "Open": []
+          "Metaphysics & Epistemology": [
+            "Philosophy of Religion"
+          ],
+          "Ethics": [
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ]
         },
         "position_type": "Other",
         "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "reasoning": "This is an editorial and executive director position at a nonprofit organization, not an academic faculty role, making it non-academic despite the philosophical content. The posting explicitly indicates preference for philosophy of religion and ethics, with the role focused on secular humanism advocacy and magazine editorship rather than teaching or research."
       }
     },
     {
@@ -1229,8 +1389,8 @@
       "deadline": "March 29, 2026, 11:59pm IST",
       "contact_email": "",
       "posted_date": "February 24, 2026, 10:19pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenured / Continuing / Permanent",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "767505203d5428545be7d5f1a674bde4",
       "scraped_date": "2026-03-10T02:47:55.691964",
@@ -1241,9 +1401,9 @@
         "detail_aos": {
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenured / Continuing / Permanent",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly states 'Open' for AOS with preference for diverse expertise across broad philosophical topics, indicating no specific specialization requirement. The 'Senior Academic Faculty Position' with open rank and contract type at a research-focused institution indicates a permanent or continuing position rather than fixed-term or tenure-track."
       }
     },
     {
@@ -1273,21 +1433,23 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "February 20, 2026, 7:30pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "219cd8359a42ffad1a12d2306b70a168",
       "scraped_date": "2026-03-10T02:47:56.406401",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "AI, Technology, and Information Ethics"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly seeks a Postdoctoral Fellow with expertise in ethics of AI, a research-focused fixed-term position. The role emphasizes conducting focused research and publishing in peer-reviewed journals, characteristic of postdoctoral fellowships at a research institution."
       }
     },
     {
@@ -1316,21 +1478,30 @@
       "application_url": "https://www.hss.caltech.edu/about/job-opportunitie...",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "February 20, 2026, 7:22pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "0c1940e0e39a0e71b65acb09e14e9cf5",
       "scraped_date": "2026-03-10T02:47:57.111752",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "AI, Technology, and Information Ethics",
+            "Environmental Ethics",
+            "Biomedical Ethics / Bioethics",
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Science (General)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is explicitly a postdoctoral scholar position at a research-focused center (Caltech) dedicated to science, ethics, and policy. The AOS requirements clearly specify applied ethics, environmental ethics, and biomedical ethics, with philosophy of science as a complementary area of competence."
       }
     },
     {
@@ -1359,21 +1530,27 @@
       "deadline": "March 16, 2026, 11:59pm BST",
       "contact_email": "",
       "posted_date": "February 20, 2026, 7:20pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "e854ecd09f3cb10a7689f09a3ed08cfe",
       "scraped_date": "2026-03-10T02:47:57.825389",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "AI, Technology, and Information Ethics"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Computing / Philosophy of AI"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a PhD position as a 'Graduate fellowship / Fixed term,' which is a research-focused fellowship with a fixed term. The AOS clearly centers on AI ethics and philosophy of science, with the description emphasizing machine learning evaluation, fairness, bias, and justice concerns in AI systems."
       }
     },
     {
@@ -1406,21 +1583,39 @@
       "deadline": "March 20, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "February 18, 2026, 6:15pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "aac14449b50b438dbbe9e07b90411747",
       "scraped_date": "2026-03-10T02:47:58.669911",
       "classification": {
         "main_aos": [
+          "Science, Logic, & Mathematics",
+          "Metaphysics & Epistemology",
+          "History of Philosophy",
+          "Non-Western & Cross-Cultural Philosophy",
           "Open"
         ],
         "detail_aos": {
+          "Science, Logic, & Mathematics": [
+            "Logic",
+            "Philosophy of Science (General)"
+          ],
+          "Metaphysics & Epistemology": [
+            "Metaphysics",
+            "Philosophy of Religion"
+          ],
+          "History of Philosophy": [
+            "History of Philosophy (General)"
+          ],
+          "Non-Western & Cross-Cultural Philosophy": [
+            "Comparative Philosophy / Cross-Cultural"
+          ],
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Teaching College",
+        "reasoning": "The position is explicitly described as a renewable 3-year fixed-term appointment at the rank of Teaching Assistant Professor with emphasis on teaching competence, making it a fixed-term teaching position without a path to permanence. The required AOS includes Logic (mandatory) plus demonstrated teaching competence in Philosophy of Science/Technology, Metaphysics, History of Analytic Philosophy, and optional Religious Studies/comparative religion."
       }
     },
     {
@@ -1446,8 +1641,8 @@
       "deadline": "March 16, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 18, 2026, 6:13pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "7a1aa391b15165daec53e2edb98a919d",
       "scraped_date": "2026-03-10T02:47:59.393767",
@@ -1458,9 +1653,9 @@
         "detail_aos": {
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is a 4-year salaried PhD position (graduate fellowship) explicitly open to all areas of philosophy, with no specific AOS requirements. The position is fixed-term and research-focused, fitting the postdoc/fellowship category for advanced research training positions."
       }
     },
     {
@@ -1490,21 +1685,28 @@
       "deadline": "May 1, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 18, 2026, 6:11pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "b058b871cf4f755fa071d0a7eede89d9",
       "scraped_date": "2026-03-10T02:48:00.112962",
       "classification": {
         "main_aos": [
-          "Open"
+          "Metaphysics & Epistemology",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Metaphysics & Epistemology": [
+            "Philosophy of Mind",
+            "Philosophy of Action"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Cognitive Science"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is explicitly a two-year postdoctoral fellowship at a research institution (Institut Jean Nicod, CNRS/EHESS/ENS). The AOS is clearly Philosophy of Cognitive Science with related competencies in Philosophy of Mind and Action Theory."
       }
     },
     {
@@ -1535,21 +1737,32 @@
       "deadline": "April 1, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 18, 2026, 6:10pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "565e7c1ed0d612a2da868d0c91a844e7",
       "scraped_date": "2026-03-10T02:48:00.909783",
       "classification": {
         "main_aos": [
-          "Open"
+          "Metaphysics & Epistemology",
+          "Ethics",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Metaphysics & Epistemology": [
+            "Philosophy of Mind",
+            "Philosophy of Action"
+          ],
+          "Ethics": [
+            "Meta-Ethics"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Cognitive Science"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a two-year postdoctoral fellowship at a research institution (Institut Jean Nicod, CNRS/EHESS/ENS). The AOS focuses on philosophy of action and philosophy of mind with connections to ethics (moral psychology) and cognitive science."
       }
     },
     {
@@ -1588,21 +1801,35 @@
       "deadline": "May 31, 2026, 11:59pm IST",
       "contact_email": "",
       "posted_date": "February 18, 2026, 6:07pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "2aea5005fac00e57eaf97c2319bb8678",
       "scraped_date": "2026-03-10T02:48:01.623191",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics",
+          "Metaphysics & Epistemology",
+          "History of Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Science (General)",
+            "Philosophy of Biology",
+            "Philosophy of Cognitive Science"
+          ],
+          "Metaphysics & Epistemology": [
+            "Philosophy of Mind",
+            "Epistemology"
+          ],
+          "History of Philosophy": [
+            "Early Modern Philosophy (17th/18th Century)",
+            "19th/20th Century Philosophy"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is a funded PhD fellowship position at a research-intensive institution (Technion). The posting explicitly lists philosophy of science (life sciences, cognitive science, pharmacy/medicine), philosophy of mind and perception, and early modern/modern philosophy as recruitment areas."
       }
     },
     {
@@ -1631,21 +1858,29 @@
       "deadline": "May 17, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 13, 2026, 9:52pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "cf4f7cc9a12a80e20581d02e2c7f65ce",
       "scraped_date": "2026-03-10T02:48:02.333803",
       "classification": {
         "main_aos": [
-          "Open"
+          "Metaphysics & Epistemology",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Metaphysics & Epistemology": [
+            "Epistemology"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Science (General)",
+            "Decision Theory",
+            "Logic"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a postdoctoral position (2+1 years, fixed-term) focused on formal epistemology, philosophy of science, and decision theory\u2014specifically on qualitative epistemic grading and aggregation methods in scientific evaluation. This is a research-focused fellowship position at a research university."
       }
     },
     {
@@ -1674,21 +1909,33 @@
       "deadline": "May 17, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "February 13, 2026, 9:50pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "78d3db1627bf5948cc1c23163f8ffec5",
       "scraped_date": "2026-03-10T02:48:03.046743",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics",
+          "Social & Political Philosophy",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Science (General)",
+            "Decision Theory",
+            "Logic"
+          ],
+          "Social & Political Philosophy": [
+            "Social and Political Philosophy (General / Political Theory)"
+          ],
+          "Metaphysics & Epistemology": [
+            "Epistemology"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is a 3-year PhD fellowship focused on formal epistemology, decision theory, and collective decision-making in expert committees. The position is research-focused and fixed-term, fitting the postdoc/fellowship category, and the institution is a research university."
       }
     },
     {
@@ -1715,8 +1962,8 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "February 13, 2026, 9:48pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "674c28889d4f3c2ac7aa3b5684ab619c",
       "scraped_date": "2026-03-10T02:48:03.753673",
@@ -1727,9 +1974,9 @@
         "detail_aos": {
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Teaching College",
+        "reasoning": "The posting explicitly states 'Visiting Assistant Professor' with 'Fixed term' job category, indicating a temporary teaching position with no path to permanence. While Philosophy of Science is mentioned as an Area of Competence, the Area of Specialization is explicitly listed as 'Open,' meaning any area is acceptable."
       }
     },
     {
@@ -1761,21 +2008,27 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "February 11, 2026, 10:23pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "e6a7d5a538b177b068c044f046b51566",
       "scraped_date": "2026-03-10T02:48:04.470531",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Social & Political Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
+          "Social & Political Philosophy": [
+            "Social and Political Philosophy (General / Political Theory)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is explicitly a Resident Fellowship Program at a military institution focused on ethics and leadership. The position is fixed-term and research/scholarship-focused rather than tenure-track or permanent, fitting the postdoc/fellowship category. The AOS centers on ethics broadly construed and political philosophy as applied to military and leadership contexts."
       }
     },
     {
@@ -1803,21 +2056,30 @@
       "deadline": "March 13, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "February 11, 2026, 10:12pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "6c337d24a9b762edb696ed4f02e9344a",
       "scraped_date": "2026-03-10T02:48:05.175985",
       "classification": {
         "main_aos": [
-          "Open"
+          "Open",
+          "Non-Western & Cross-Cultural Philosophy",
+          "Ethics"
         ],
         "detail_aos": {
-          "Open": []
+          "Open": [],
+          "Non-Western & Cross-Cultural Philosophy": [
+            "Non-Western Philosophy (General)",
+            "Comparative Philosophy / Cross-Cultural"
+          ],
+          "Ethics": [
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Teaching College",
+        "reasoning": "This is explicitly a one-year non-tenure-track Visiting Assistant Professor sabbatical replacement position with a teaching focus (18 credit hours/year). The AOS is open but the AOC specifies non-European philosophy or ethics, indicating preference for those areas while remaining flexible."
       }
     },
     {
@@ -1853,21 +2115,34 @@
       "deadline": "March 15, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "February 10, 2026, 10:25pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "8cedc02b1e53cb3ea96d1e4509c87891",
       "scraped_date": "2026-03-10T02:48:05.885657",
       "classification": {
         "main_aos": [
-          "Open"
+          "Metaphysics & Epistemology",
+          "Ethics",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Metaphysics & Epistemology": [
+            "Philosophy of Mind",
+            "Metaphysics",
+            "Epistemology",
+            "Philosophy of Language",
+            "Philosophy of Action"
+          ],
+          "Ethics": [
+            "Biomedical Ethics / Bioethics",
+            "Environmental Ethics"
+          ],
+          "Science, Logic, & Mathematics": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Teaching College",
+        "reasoning": "The posting explicitly describes this as a Visiting Assistant Teaching Professor (VATP) with a fixed one-year term teaching two courses, making it a fixed-term teaching position with no path to permanence. The AOS requirements span Philosophy of Mind, Metaphysics & Epistemology, Medical Ethics, Environmental Ethics, Philosophy of Language, and Rationality and Action."
       }
     },
     {
@@ -1898,21 +2173,27 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "February 10, 2026, 10:24pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "4fd0292a9693381d6655885717371106",
       "scraped_date": "2026-03-10T02:48:06.611119",
       "classification": {
         "main_aos": [
-          "Open"
+          "Social & Political Philosophy",
+          "Value Theory / Aesthetics"
         ],
         "detail_aos": {
-          "Open": []
+          "Social & Political Philosophy": [
+            "Philosophy of Education"
+          ],
+          "Value Theory / Aesthetics": [
+            "Value Theory / Axiology"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a postdoctoral research position focused on civic education and civic engagement. While the AOS listed (Civic Education, Citizenship) maps most directly to Philosophy of Education and value-oriented inquiry, the research emphasis on civic literacy and dispositions also touches on broader value theory and axiology."
       }
     },
     {
@@ -1936,21 +2217,26 @@
       "application_url": "https://apptrkr.com/6863190",
       "deadline": "March 15, 2026, 11:59pm EST",
       "posted_date": "February 9, 2026, 10:26pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "b14e9ce208624c55f73640310f4e29ba",
       "scraped_date": "2026-03-10T02:48:07.310000",
       "classification": {
         "main_aos": [
+          "History of Philosophy",
           "Open"
         ],
         "detail_aos": {
+          "History of Philosophy": [
+            "Medieval and Renaissance Philosophy",
+            "History of Philosophy (General)"
+          ],
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes this as a fixed-term Lecturer position for Academic Year 2026-2027 with no mention of tenure-track or permanence. The Catholic Intellectual Tradition is primarily rooted in medieval and early modern philosophy, though the open AOC suggests flexibility in philosophical approach."
       }
     },
     {
@@ -1978,21 +2264,27 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "February 6, 2026, 10:00pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenured / Continuing / Permanent",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "dac46cb14cfed62ca3fbc8e0d25e9b9c",
       "scraped_date": "2026-03-10T02:48:08.045332",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "AI, Technology, and Information Ethics"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Computing / Philosophy of AI"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenured / Continuing / Permanent",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly specifies 'Tenured, continuing or permanent' in the job category, indicating a permanent position. The AOS is clearly stated as 'Artificial Intelligence Ethics,' which maps to both Ethics (specifically AI, Technology, and Information Ethics) and Science, Logic, & Mathematics (Philosophy of Computing / Philosophy of AI)."
       }
     },
     {
@@ -2019,21 +2311,23 @@
       "deadline": "March 16, 2026, 11:00am PST",
       "contact_email": "",
       "posted_date": "February 5, 2026, 7:54pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "24264be7e76a4df6d0870932d5c42688",
       "scraped_date": "2026-03-10T02:48:08.750248",
       "classification": {
         "main_aos": [
-          "Open"
+          "History of Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "History of Philosophy": [
+            "Ancient Greek and Roman Philosophy"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Teaching College",
+        "reasoning": "The posting explicitly describes a temporary, one-year Visiting Assistant Professor position with a heavy teaching load (5 courses), characteristic of fixed-term visiting positions. The AOS is clearly specified as Ancient Philosophy, which falls under the History of Philosophy main category with Ancient Greek and Roman Philosophy as the detail subcategory."
       }
     },
     {
@@ -2060,21 +2354,29 @@
       "application_url": "https://www.uni-hamburg.de/en/stellenangebote/form...",
       "deadline": "March 31, 2026, 11:59pm CET",
       "posted_date": "February 2, 2026, 6:40pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "7b3a8fd21375ecd7297d15de15b40772",
       "scraped_date": "2026-03-10T02:48:09.493358",
       "classification": {
         "main_aos": [
-          "Open"
+          "Social & Political Philosophy",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Social & Political Philosophy": [
+            "Social and Political Philosophy (General / Political Theory)",
+            "PPE (Politics, Philosophy, and Economics)"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Decision Theory",
+            "Philosophy of Social Science"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is a DFG-funded doctoral research fellowship with a fixed three-year term focused on collective decision-making, which spans political philosophy, decision theory, and social science methodology. The position is explicitly a graduate fellowship with fixed-term funding rather than a tenure-track or permanent appointment."
       }
     },
     {
@@ -2106,21 +2408,31 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 29, 2026, 8:55pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "9d2739a74d759bd2488d243dc388a36e",
       "scraped_date": "2026-03-10T02:48:10.215127",
       "classification": {
         "main_aos": [
-          "Open"
+          "Metaphysics & Epistemology",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Metaphysics & Epistemology": [
+            "Epistemology",
+            "Metaphysics & Epistemology (General)"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Science (General)",
+            "Philosophy of Mathematics",
+            "Philosophy of Computing / Philosophy of AI",
+            "Science, Logic, & Mathematics (General)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Teaching College",
+        "reasoning": "The posting explicitly describes a one-year visiting assistant professor position (fixed-term, potentially renewable), which is a temporary teaching-focused role. The AOS requirements clearly specify Philosophy of Science or Epistemology, with broad construal including history of sciences, philosophy of technology, mathematics, and computing."
       }
     },
     {
@@ -2151,21 +2463,26 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 29, 2026, 8:54pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "9d2739a74d759bd2488d243dc388a36e",
       "scraped_date": "2026-03-10T02:48:11.019307",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "History of Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Normative Ethics",
+            "Environmental Ethics"
+          ],
+          "History of Philosophy": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Teaching College",
+        "reasoning": "This is explicitly a one-year visiting assistant professor position at a teaching college (Colorado College), which is a fixed-term teaching role with no path to permanence. The posting clearly specifies Applied Ethics, Normative Ethics, and Environmental Ethics as the primary AOS, with History of Philosophy mentioned as a secondary area of contribution."
       }
     },
     {
@@ -2196,21 +2513,28 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 27, 2026, 4:51pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "8ae4d1101867e0f01fde37a6f919ffc3",
       "scraped_date": "2026-03-10T02:48:11.724145",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Biomedical Ethics / Bioethics"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Science (General)",
+            "Decision Theory"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is explicitly a postdoctoral research fellow position at a biomedical ethics unit focused on drug trials and the intersection of moral and scientific issues. The position emphasizes research output and interdisciplinary work with decision science and statistics, fitting the postdoc/fellowship category."
       }
     },
     {
@@ -2242,21 +2566,29 @@
       "deadline": "April 15, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "January 27, 2026, 4:51pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenure-Track",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "76f2c1f67959806686d91fddbb47cb53",
       "scraped_date": "2026-03-10T02:48:12.437690",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Biomedical Ethics / Bioethics",
+            "Neuroethics",
+            "AI, Technology, and Information Ethics"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Computing / Philosophy of AI"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenure-Track",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes an 'open rank, tenure-eligible position' at a medical school research institution. The AOS focuses on bioethics subdisciplines (neuroethics, AI ethics, ELSI genetics, clinical/transplant ethics), with secondary relevance to philosophy of AI under science/logic."
       }
     },
     {
@@ -2287,21 +2619,25 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 23, 2026, 10:25pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "1476e481cd31d063630dc72fa5c409c0",
       "scraped_date": "2026-03-10T02:48:13.255049",
       "classification": {
         "main_aos": [
-          "Open"
+          "Social & Political Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Social & Political Philosophy": [
+            "PPE (Politics, Philosophy, and Economics)",
+            "Philosophy of Education",
+            "Social and Political Philosophy (General / Political Theory)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a postdoctoral associate position renewable for up to three years, supported by a Department of Education grant focused on civil discourse and civic renewal. The AOS is clearly specified as PPE or related areas, which maps to Social & Political Philosophy with emphasis on PPE, Philosophy of Education, and general political theory."
       }
     },
     {
@@ -2338,21 +2674,28 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 23, 2026, 10:23pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "4688a6546587046af1e3b62403700a14",
       "scraped_date": "2026-03-10T02:48:14.087162",
       "classification": {
         "main_aos": [
-          "Open"
+          "Social & Political Philosophy",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Social & Political Philosophy": [
+            "PPE (Politics, Philosophy, and Economics)",
+            "Social and Political Philosophy (General / Political Theory)"
+          ],
+          "Metaphysics & Epistemology": [
+            "Epistemology"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes two postdoctoral associate positions supported by a Department of Education grant with renewable terms up to three years, fitting the postdoc/fellowship category. The AOS requirements specify PPE, Social and Political Philosophy, and Formal and Social Epistemology, which map to the Social & Political Philosophy and Epistemology subcategories."
       }
     },
     {
@@ -2386,21 +2729,28 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 23, 2026, 10:22pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "1f8c04180eb50e89b58d1b80d2d2fe39",
       "scraped_date": "2026-03-10T02:48:14.792294",
       "classification": {
         "main_aos": [
-          "Open"
+          "Social & Political Philosophy",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Social & Political Philosophy": [
+            "PPE (Politics, Philosophy, and Economics)",
+            "Social and Political Philosophy (General / Political Theory)"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Science (General)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a 'Postdoctoral Associate (Research Fellow)' position renewable for up to three years, supported by a Department of Education grant focused on civic discourse and renewal. The AOS emphasizes PPE, social epistemology, and empirical/experimental methods, indicating research-focused work in political philosophy and philosophy of science."
       }
     },
     {
@@ -2426,21 +2776,30 @@
       "deadline": "March 15, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "January 23, 2026, 10:17pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "e7eb7d2b05aebcf0e241535a25141069",
       "scraped_date": "2026-03-10T02:48:15.525121",
       "classification": {
         "main_aos": [
-          "Open"
+          "History of Philosophy",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "History of Philosophy": [
+            "Early Modern Philosophy (17th/18th Century)",
+            "19th/20th Century Philosophy",
+            "History of Philosophy (General)"
+          ],
+          "Metaphysics & Epistemology": [
+            "Epistemology",
+            "Metaphysics & Epistemology (General)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Research University",
+        "reasoning": "The position is explicitly a Visiting Professorship for a fixed term (2026-2027), making it a fixed-term visiting position. The AOS focuses on Bertrand Russell and early analytic philosophy, which falls primarily under History of Philosophy (19th/20th century) with secondary relevance to Metaphysics & Epistemology given Russell's contributions to logic, epistemology, and metaphysics."
       }
     },
     {
@@ -2466,21 +2825,23 @@
       "deadline": "March 20, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "January 22, 2026, 10:21pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "c4b3f2acc23b78aba761d07f48b22737",
       "scraped_date": "2026-03-10T02:48:16.236082",
       "classification": {
         "main_aos": [
-          "Open"
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Metaphysics & Epistemology": [
+            "Philosophy of Mind"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes two postdoctoral positions (one or two years) within a research group funded by major grants (ERC, FWO, etc.), with a clear focus on philosophy of mind. The position is fixed-term and research-focused, fitting the postdoc/fellowship category."
       }
     },
     {
@@ -2508,21 +2869,27 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 22, 2026, 10:21pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenure-Track",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "b1f329bcf425f741864b0ab8a02f7f2a",
       "scraped_date": "2026-03-10T02:48:16.958814",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "AI, Technology, and Information Ethics"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Computing / Philosophy of AI"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenure-Track",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a tenure-track Assistant Professor position in AI Ethics. AI Ethics falls under both Ethics (specifically AI, Technology, and Information Ethics) and Science, Logic, & Mathematics (Philosophy of AI/Computing), making this a cross-disciplinary specialization."
       }
     },
     {
@@ -2547,8 +2914,8 @@
       "application_url": "https://apply.interfolio.com/180233",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "January 21, 2026, 10:04pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "82b9a85503ab1a59c56c2d6b4c3b55d0",
       "scraped_date": "2026-03-10T02:48:17.674436",
@@ -2559,9 +2926,9 @@
         "detail_aos": {
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Teaching College",
+        "reasoning": "This is explicitly a one-year visiting appointment with no path to permanence, making it a fixed-term visiting position. The AOS is open with no specific philosophical area required, and Amherst College is a teaching-focused liberal arts institution."
       }
     },
     {
@@ -2587,7 +2954,7 @@
       "contact_email": "",
       "posted_date": "January 21, 2026, 10:02pm UTC",
       "job_type": "Other",
-      "institution_type": "Other",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "93ffdfa9bccfe3e29cd35ef115ff53ca",
       "scraped_date": "2026-03-10T02:48:18.412433",
@@ -2599,8 +2966,8 @@
           "Open": []
         },
         "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "institution_type": "Research University",
+        "reasoning": "This is a department chair/head position with administrative leadership responsibilities, which falls outside the faculty position categories. While the posting mentions the department's strengths in computing, statistics, mathematics, and AI, the AOS is explicitly listed as Open, and the role is primarily administrative rather than faculty-focused."
       }
     },
     {
@@ -2629,21 +2996,26 @@
       "deadline": "March 20, 2026, 11:59pm SGT",
       "contact_email": "",
       "posted_date": "January 20, 2026, 3:30pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "50489a9e7840c9077b70d260d95b0917",
       "scraped_date": "2026-03-10T02:48:19.134434",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Physics",
+            "Philosophy of Science (General)"
+          ],
+          "Metaphysics & Epistemology": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly identifies this as a Research Fellow position (postdoctoral/fixed-term research role) focused on conceptual foundations of thermodynamics, which falls squarely within Philosophy of Physics and Philosophy of Science. Nanyang Technological University is a research university."
       }
     },
     {
@@ -2668,8 +3040,8 @@
       "application_url": "https://employment.davidson.edu",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "January 20, 2026, 2:59pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "4a6f5ae748e438ed7fac903603b5fe3b",
       "scraped_date": "2026-03-10T02:48:19.984730",
@@ -2680,9 +3052,9 @@
         "detail_aos": {
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Teaching College",
+        "reasoning": "This is explicitly a two-year Visiting Assistant Professor position (fixed-term, non-tenure-track) at a teaching-focused liberal arts college. While the posting mentions anticipated teaching needs in specific areas (early modern philosophy, political philosophy, epistemology, philosophy of language), the AOS is formally listed as Open, indicating any area of philosophy is acceptable."
       }
     },
     {
@@ -2707,7 +3079,7 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "January 14, 2026, 8:45pm UTC",
       "job_type": "Other",
-      "institution_type": "Other",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "37e7999f989d9b644d110effc830d9a9",
       "scraped_date": "2026-03-10T02:48:20.707188",
@@ -2715,12 +3087,10 @@
         "main_aos": [
           "Open"
         ],
-        "detail_aos": {
-          "Open": []
-        },
+        "detail_aos": {},
         "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "institution_type": "Research University",
+        "reasoning": "This is a Dean position, which is explicitly administrative and non-academic in nature, falling outside the scope of philosophy faculty classifications. The posting does not describe a philosophy-specific role or require philosophical expertise."
       }
     },
     {
@@ -2749,21 +3119,28 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 14, 2026, 8:24pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenure-Track",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "245b2ff3c2edb0138d9b6227b0156799",
       "scraped_date": "2026-03-10T02:48:21.413070",
       "classification": {
         "main_aos": [
-          "Open"
+          "History of Philosophy",
+          "Non-Western & Cross-Cultural Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "History of Philosophy": [
+            "Early Modern Philosophy (17th/18th Century)",
+            "19th/20th Century Philosophy"
+          ],
+          "Non-Western & Cross-Cultural Philosophy": [
+            "Comparative Philosophy / Cross-Cultural"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenure-Track",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly seeks a tenure-track Assistant Professor with expertise in Early or Late Modern Philosophy (Descartes to Hegel), with particular interest in intersections with Non-Western traditions. UT Dallas is a research university, and the position is clearly described as tenure-track."
       }
     },
     {
@@ -2789,21 +3166,30 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 14, 2026, 7:46pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "1395145bbeafbfac83207c7f2170318f",
       "scraped_date": "2026-03-10T02:48:22.142221",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics",
+          "Ethics",
+          "Social & Political Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Computing / Philosophy of AI",
+            "Philosophy of Science (General)"
+          ],
+          "Ethics": [
+            "AI, Technology, and Information Ethics"
+          ],
+          "Social & Political Philosophy": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is explicitly a postdoctoral fellowship at a research institute focused on data science and AI with applications across multiple domains including ethics, policy, and governance. The position emphasizes foundational research methods and interdisciplinary collaboration, making it research-focused rather than teaching-focused."
       }
     },
     {
@@ -2829,8 +3215,8 @@
       "deadline": "March 31, 2026, 11:59pm HKT",
       "contact_email": "",
       "posted_date": "January 13, 2026, 4:55pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "5ad7afe193a32adc5ca4523d5c1f9944",
       "scraped_date": "2026-03-10T02:48:22.851397",
@@ -2841,9 +3227,9 @@
         "detail_aos": {
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly states 'two-year fixed-term basis' with 'possibility of renewal,' indicating a temporary teaching position without a path to permanence. The AOS is listed as 'Open' with no specific philosophical specialization required, so no detail subcategories apply."
       }
     },
     {
@@ -2872,21 +3258,27 @@
       "deadline": "April 13, 2026, 11:59pm AST",
       "contact_email": "",
       "posted_date": "January 9, 2026, 3:22pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "71bb9324f0d6f0b5f74890136947ac05",
       "scraped_date": "2026-03-10T02:48:23.555127",
       "classification": {
         "main_aos": [
-          "Open"
+          "History of Philosophy",
+          "Ethics"
         ],
         "detail_aos": {
-          "Open": []
+          "History of Philosophy": [
+            "Ancient Greek and Roman Philosophy"
+          ],
+          "Ethics": [
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Teaching College",
+        "reasoning": "The job category explicitly states 'Visiting fellowship / Professorship / Fixed term', indicating a fixed-term position with no path to permanence. The AOS is specified as Ancient Philosophy with Ethics/Open as area of competence, placing this in History of Philosophy (Ancient) and Ethics."
       }
     },
     {
@@ -2910,21 +3302,27 @@
       "application_url": "https://apptrkr.com/6799547",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "January 8, 2026, 7:34pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenured / Continuing / Permanent",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "bd91269a459bcab7d6be63054d77c934",
       "scraped_date": "2026-03-10T02:48:24.310067",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics",
+          "Ethics"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Computing / Philosophy of AI"
+          ],
+          "Ethics": [
+            "AI, Technology, and Information Ethics"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenured / Continuing / Permanent",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly seeks an Associate or Full Professor position in AI for Education, which maps to philosophy of AI and AI ethics. The position is described as tenure-track or similar senior faculty role at a major research university with multiple colleges involved."
       }
     },
     {
@@ -2956,21 +3354,24 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "January 5, 2026, 10:31pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "4e73680cb5efa72e497620a618cb3e5c",
       "scraped_date": "2026-03-10T02:48:25.015267",
       "classification": {
         "main_aos": [
-          "Open"
+          "History of Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "History of Philosophy": [
+            "Ancient Greek and Roman Philosophy",
+            "Early Modern Philosophy (17th/18th Century)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes this as a 'Visiting Faculty' position with 'Fixed term' job category, making it a temporary teaching-focused role. The AOS is clearly specified as Ancient or Early Modern Philosophy, both subcategories within History of Philosophy."
       }
     },
     {
@@ -2996,21 +3397,26 @@
       "application_url": "https://marian.rec.pro.ukg.net/MAR1500MNUI/JobBoar...",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "December 17, 2025, 10:31pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenure-Track",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "b602cf97ade6226ecdf083d719e1f93f",
       "scraped_date": "2026-03-10T02:48:25.733124",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Biomedical Ethics / Bioethics",
+            "Business Ethics",
+            "AI, Technology, and Information Ethics",
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenure-Track",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly states 'tenure-track appointment as Assistant Professor of Philosophy' with a primary AOS in Ethics. The description emphasizes applied ethics courses including bioethics, capitalism/markets ethics, and engineering ethics, indicating multiple applied ethics subcategories are relevant."
       }
     },
     {
@@ -3041,21 +3447,29 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "December 17, 2025, 10:30pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "45f5e0349cab131990d308b19bcea1b7",
       "scraped_date": "2026-03-10T02:48:26.432273",
       "classification": {
         "main_aos": [
-          "Open"
+          "Metaphysics & Epistemology",
+          "Social & Political Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Metaphysics & Epistemology": [
+            "Metaphysics",
+            "Epistemology",
+            "Philosophy of Language"
+          ],
+          "Social & Political Philosophy": [
+            "Social and Political Philosophy (General / Political Theory)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a 2-year postdoctoral position with a secondary teaching component, which fits the postdoc/fellowship category. The AOS focuses on social and political issues within metaphysics, epistemology, and philosophy of language, spanning both Metaphysics & Epistemology and Social & Political Philosophy main categories."
       }
     },
     {
@@ -3084,21 +3498,28 @@
       "deadline": "March 23, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "December 17, 2025, 10:20pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "b323f76df27e3c76ee98532a42a50cd4",
       "scraped_date": "2026-03-10T02:48:27.138786",
       "classification": {
         "main_aos": [
-          "Open"
+          "History of Philosophy",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "History of Philosophy": [
+            "Early Modern Philosophy (17th/18th Century)",
+            "History of Philosophy (General)"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Science (General)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Teaching College",
+        "reasoning": "The posting explicitly states 'Visiting Assistant Professor' with a fixed-term appointment, making it a visiting position. The AOS focuses on early modern European philosophy and history of science through primary sources, spanning both history of philosophy and philosophy of science."
       }
     },
     {
@@ -3128,21 +3549,27 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "December 17, 2025, 10:00pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "1375f80d3f5b8728a2941b565d27ff1e",
       "scraped_date": "2026-03-10T02:48:27.858215",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Social & Political Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Ethics of Population, Future Generations, and Global Justice"
+          ],
+          "Social & Political Philosophy": [
+            "Social and Political Philosophy (General / Political Theory)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a postdoctoral position funded by an ERC Consolidator Grant focused on population ethics and fertility policy from a normative perspective. This falls squarely within ethics of population and global justice, with secondary relevance to political philosophy given the policy dimension."
       }
     },
     {
@@ -3168,21 +3595,32 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "December 16, 2025, 10:27pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "663822a341dda008585bb23411e7cdb8",
       "scraped_date": "2026-03-10T02:48:28.560970",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Social & Political Philosophy",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
+          "Social & Political Philosophy": [
+            "Philosophy of Law",
+            "Social and Political Philosophy (General / Political Theory)"
+          ],
+          "Metaphysics & Epistemology": [
+            "Philosophy of Action"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is explicitly a postdoctoral fellowship at a research-focused alliance between two major research universities. The posting emphasizes practical philosophy, normativity, law, and the evaluation of human action and institutions, spanning ethics, political philosophy, and philosophy of law."
       }
     },
     {
@@ -3211,21 +3649,23 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "December 12, 2025, 9:07pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenured / Continuing / Permanent",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "2612b048ed2dc467b7411c88613eaf05",
       "scraped_date": "2026-03-10T02:48:29.270365",
       "classification": {
         "main_aos": [
-          "Open"
+          "Social & Political Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Social & Political Philosophy": [
+            "Social and Political Philosophy (General / Political Theory)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenured / Continuing / Permanent",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a senior-level hire for a Professor position with editorial leadership responsibilities at an elite research university. The AOS is clearly specified as social and political philosophy, with no indication of specialization in narrower subfields beyond general political theory."
       }
     },
     {
@@ -3261,21 +3701,30 @@
       "application_url": "https://careers.msu.edu/jobs/prof-wk-kellogg-chair...",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "December 12, 2025, 9:05pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenured / Continuing / Permanent",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "7ca8b14c2ef472467df0be7ba9c38845",
       "scraped_date": "2026-03-10T02:48:29.974069",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Social & Political Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Environmental Ethics",
+            "Food and Agricultural Ethics",
+            "Ethics of Population, Future Generations, and Global Justice",
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
+          "Social & Political Philosophy": [
+            "Social and Political Philosophy (General / Political Theory)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenured / Continuing / Permanent",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a tenured Professor position (W.K. Kellogg Endowed Chair), making it a permanent faculty role. The position focuses on philosophical ethics applied to agriculture, food systems, sustainability, and community, which primarily falls under Ethics (particularly Environmental Ethics and Food and Agricultural Ethics) with secondary relevance to Social & Political Philosophy."
       }
     },
     {
@@ -3305,21 +3754,28 @@
       "application_url": "https://www.click2apply.net/ARpX1jtNOxzGEUomOHoAK7",
       "deadline": "August 1, 2027, 11:59pm EST",
       "posted_date": "December 10, 2025, 10:07pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenured / Continuing / Permanent",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "491da1ff80c4e1f58d761ff0d0dc1268",
       "scraped_date": "2026-03-10T02:48:30.684665",
       "classification": {
         "main_aos": [
-          "Open"
+          "Social & Political Philosophy",
+          "Ethics"
         ],
         "detail_aos": {
-          "Open": []
+          "Social & Political Philosophy": [
+            "Social and Political Philosophy (General / Political Theory)",
+            "Philosophy of Law"
+          ],
+          "Ethics": [
+            "Business Ethics"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenured / Continuing / Permanent",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes this as an endowed chair position at the full or associate professor level, which is a permanent senior faculty position. The focus on free speech and free enterprise implicates social/political philosophy (particularly political theory and philosophy of law) alongside business ethics."
       }
     },
     {
@@ -3349,20 +3805,22 @@
       "contact_email": "",
       "posted_date": "December 10, 2025, 10:06pm UTC",
       "job_type": "Other",
-      "institution_type": "Other",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "d5907467fdf070b5975daa7da27ae583",
       "scraped_date": "2026-03-10T02:48:31.405711",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ]
         },
         "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "institution_type": "Teaching College",
+        "reasoning": "This is a non-academic administrative position managing ethics programming and internships, not a faculty role with teaching or research responsibilities. The position focuses on program coordination and student engagement rather than scholarly work in philosophy."
       }
     },
     {
@@ -3391,21 +3849,28 @@
       "deadline": "Yesterday, 11:59pm CST",
       "contact_email": "",
       "posted_date": "December 10, 2025, 10:00pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "1baf5581fd722c8350ac824c18315af2",
       "scraped_date": "2026-03-10T02:48:32.112367",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "AI, Technology, and Information Ethics",
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Computing / Philosophy of AI"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a postdoctoral research associate position focused on ethics of AI and emerging technologies. This clearly falls under applied ethics and philosophy of technology/AI, with the postdoc designation indicating a fixed-term research fellowship at a research university."
       }
     },
     {
@@ -3438,21 +3903,29 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "December 2, 2025, 10:32pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenure-Track",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "512eafde3d41c5f45c8f5533fc1480d4",
       "scraped_date": "2026-03-10T02:48:32.836534",
       "classification": {
         "main_aos": [
-          "Open"
+          "Metaphysics & Epistemology",
+          "Science, Logic, & Mathematics",
+          "History of Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Metaphysics & Epistemology": [
+            "Philosophy of Religion"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Science (General)"
+          ],
+          "History of Philosophy": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenure-Track",
+        "institution_type": "Teaching College",
+        "reasoning": "The posting explicitly describes a tenure-track appointment at the Assistant Professor level. The position focuses on philosophy of religion and philosophy of science, with teaching responsibilities across religious studies and philosophy departments at a liberal arts college."
       }
     },
     {
@@ -3485,21 +3958,28 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "December 2, 2025, 10:31pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenure-Track",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "647f8b72193ff0f8ffb7256fa753cdd9",
       "scraped_date": "2026-03-10T02:48:33.542049",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Biomedical Ethics / Bioethics",
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Science (General)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenure-Track",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes an open-rank tenure-track position (Assistant/Associate/Full Professor) in Ethics and Health, specifically mentioning research ethics, clinical ethics, and public health ethics. The position is at Northeastern University, a research institution, with tenure home in the Department of Philosophy and Religion."
       }
     },
     {
@@ -3523,8 +4003,8 @@
       "application_url": "https://jobs.hku.hk",
       "deadline": "April 30, 2026, 11:59pm HKT",
       "posted_date": "December 2, 2025, 10:28pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenure-Track",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "e1a5651c8488c7b560309662082f98bd",
       "scraped_date": "2026-03-10T02:48:34.256472",
@@ -3535,9 +4015,9 @@
         "detail_aos": {
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenure-Track",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly invites applications for tenure-track Assistant Professor positions (with consideration for tenure after two three-year contracts) as well as tenured Professor/Associate Professor positions. The AOS is listed as Open, indicating no specific philosophical specialization is required. The University of Hong Kong is a major research institution."
       }
     },
     {
@@ -3564,21 +4044,23 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "December 1, 2025, 10:26pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "876d339170acf030f9fbd00d5b10d7ee",
       "scraped_date": "2026-03-10T02:48:34.971179",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Biomedical Ethics / Bioethics"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is explicitly a two-year fixed-term fellowship focused on clinical ethics and bioethics training, designed to prepare candidates for bioethics careers. The position is research and professional development-focused rather than tenure-track or permanent."
       }
     },
     {
@@ -3602,21 +4084,30 @@
       "application_url": "http://apply.interfolio.com/177567",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "December 1, 2025, 10:19pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenured / Continuing / Permanent",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "7e276aa115198afbf375766795044f53",
       "scraped_date": "2026-03-10T02:48:35.670254",
       "classification": {
         "main_aos": [
+          "Social & Political Philosophy",
+          "History of Philosophy",
           "Open"
         ],
         "detail_aos": {
+          "Social & Political Philosophy": [
+            "Philosophy of Law",
+            "Social and Political Philosophy (General / Political Theory)"
+          ],
+          "History of Philosophy": [
+            "American Philosophy"
+          ],
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenured / Continuing / Permanent",
+        "institution_type": "Research University",
+        "reasoning": "The Sanders Chair is an endowed senior faculty position explicitly described as tenured/continuing, and the posting emphasizes leadership of a constitutional heritage institute with focus on law, liberty, and American constitutional themes, suggesting primary relevance to philosophy of law, political philosophy, and American philosophy, though the AOS is listed as open."
       }
     },
     {
@@ -3642,8 +4133,8 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "November 25, 2025, 10:04pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "82dd24a7fcbfcd2f119152e3ab484a27",
       "scraped_date": "2026-03-10T02:48:36.379603",
@@ -3654,9 +4145,9 @@
         "detail_aos": {
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly states 'Lecturer (General), Non-Tenure Track' in the title, indicating a fixed-term teaching position without a path to permanence. The AOS is listed as 'Open,' meaning any area of philosophy is acceptable. Loyola University Chicago is a research university with graduate programs."
       }
     },
     {
@@ -3688,21 +4179,27 @@
       "deadline": "March 31, 2026, 11:59pm PST",
       "contact_email": "",
       "posted_date": "November 25, 2025, 10:04pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenure-Track",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "e434bbfef5633e643c46aabe584c8e7b",
       "scraped_date": "2026-03-10T02:48:37.091592",
       "classification": {
         "main_aos": [
-          "Open"
+          "Social & Political Philosophy",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Social & Political Philosophy": [
+            "Philosophy of Law"
+          ],
+          "Metaphysics & Epistemology": [
+            "Epistemology"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenure-Track",
+        "institution_type": "Teaching College",
+        "reasoning": "The posting explicitly describes a tenure-track Assistant Professor position with primary AOS in Philosophy and Law (Philosophy of Law) and secondary competencies in Epistemology and Logic. The emphasis on teaching undergraduate Pre-Law curriculum and student advising indicates a teaching-focused institution."
       }
     },
     {
@@ -3728,8 +4225,8 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "November 24, 2025, 8:31pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "f84b4a02cbdafc6e33a8b18ff09847c5",
       "scraped_date": "2026-03-10T02:48:37.810418",
@@ -3740,9 +4237,9 @@
         "detail_aos": {
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes this as a Postdoctoral Fellowship with no specific AOS requirements mentioned, making it an open position. Princeton University is a research university, and the fixed-term postdoctoral fellowship structure is clearly indicated in both the title and job category."
       }
     },
     {
@@ -3769,21 +4266,28 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "November 20, 2025, 8:47pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "5f8bc27d4fe2ba1ddd14bd569146f193",
       "scraped_date": "2026-03-10T02:48:38.630703",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Normative Ethics"
+          ],
+          "Metaphysics & Epistemology": [
+            "Epistemology",
+            "Philosophy of Mind"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is an explicitly grant-funded postdoctoral fellowship position at a research university. The position focuses on intellectual virtue, character development, and attentional literacy\u2014areas that fall primarily under virtue ethics (normative ethics) with secondary connections to epistemology and philosophy of mind regarding attention and cognition."
       }
     },
     {
@@ -3811,21 +4315,28 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "November 20, 2025, 7:14pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "b7b5fd37140d0d94dc52dc85d288ada4",
       "scraped_date": "2026-03-10T02:48:39.327031",
       "classification": {
         "main_aos": [
+          "Social & Political Philosophy",
+          "Value Theory / Aesthetics",
           "Open"
         ],
         "detail_aos": {
+          "Social & Political Philosophy": [
+            "PPE (Politics, Philosophy, and Economics)",
+            "Social and Political Philosophy (General / Political Theory)"
+          ],
+          "Value Theory / Aesthetics": [],
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a two-year postdoctoral position at a research-focused institution (R2 Carnegie Classification). While the AOS is listed as open, the Smith Institute's focus on Political Economy and Philosophy with preference for PPE specializations clearly indicates Social & Political Philosophy as the primary area, with Value Theory included given the institute's philosophical mission."
       }
     },
     {
@@ -3853,21 +4364,28 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "November 11, 2025, 8:03pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenured / Continuing / Permanent",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "68c3adece2e2b7ce0021293449f8c5d1",
       "scraped_date": "2026-03-10T02:48:40.028235",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Cognitive Science",
+            "Philosophy of Computing / Philosophy of AI"
+          ],
+          "Metaphysics & Epistemology": [
+            "Philosophy of Mind"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenured / Continuing / Permanent",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes this as a 'renewable Lecturer position' under the job category 'Tenured, continuing or permanent,' indicating a permanent non-tenure-track position. The AOS is clearly specified as Philosophy of Cognitive Science and Artificial Intelligence, which maps to Philosophy of Cognitive Science and Philosophy of Computing/AI under Science, Logic, & Mathematics, with Philosophy of Mind also relevant under Metaphysics & Epistemology."
       }
     },
     {
@@ -3894,7 +4412,7 @@
       "contact_email": "",
       "posted_date": "November 10, 2025, 5:25pm UTC",
       "job_type": "Other",
-      "institution_type": "Other",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "ed44fde55b547d48dda1833005e790af",
       "scraped_date": "2026-03-10T02:48:40.754583",
@@ -3906,8 +4424,8 @@
           "Open": []
         },
         "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "institution_type": "Research University",
+        "reasoning": "This is a department chair position with administrative focus rather than a faculty research or teaching role. While the posting mentions a tenured professor title, the primary function is administrative leadership of the department, making it an 'Other' position type rather than a traditional faculty appointment."
       }
     },
     {
@@ -3937,21 +4455,31 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "November 6, 2025, 7:15pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "31b4832d95372d320a9bff934ed947bd",
       "scraped_date": "2026-03-10T02:48:41.460901",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Mathematics",
+            "Philosophy of Cognitive Science",
+            "Philosophy of Computing / Philosophy of AI",
+            "Logic",
+            "Philosophy of Science (General)"
+          ],
+          "Metaphysics & Epistemology": [
+            "Epistemology"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is explicitly a postdoctoral fellowship position funded by the John Templeton Foundation with a three-year research focus. The posting emphasizes philosophy of mathematics, cognitive science of mathematical discovery, and logic as primary areas of interest, with secondary relevance to epistemology regarding how mathematical knowledge is constructed."
       }
     },
     {
@@ -3977,8 +4505,8 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "November 4, 2025, 4:47pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "e5b40dbd044bcd99ba187b6d857079a0",
       "scraped_date": "2026-03-10T02:48:42.256433",
@@ -3989,9 +4517,9 @@
         "detail_aos": {
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is explicitly a postdoctoral fellowship position at a research-focused institution (Fudan University School of Philosophy) with no specific AOS requirements stated, making it open to all areas of philosophy."
       }
     },
     {
@@ -4017,8 +4545,8 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "November 3, 2025, 9:13pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "ab62c10182e062b30f9bd78b068731ad",
       "scraped_date": "2026-03-10T02:48:42.952619",
@@ -4029,9 +4557,9 @@
         "detail_aos": {
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes this as a postdoctoral research position with a fixed initial term of one year and possible renewal, which is characteristic of postdoctoral fellowships. The AOS is listed as Open, indicating no specific philosophical specialization is required."
       }
     },
     {
@@ -4064,21 +4592,27 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "October 30, 2025, 7:46pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenured / Continuing / Permanent",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "c4ffda6a0aa3a06f61b39cfc83e8a5f6",
       "scraped_date": "2026-03-10T02:48:43.653089",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Social & Political Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Biomedical Ethics / Bioethics",
+            "Environmental Ethics",
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
+          "Social & Political Philosophy": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenured / Continuing / Permanent",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes this as a Distinguished Professorship at Associate or Full Professor rank with permanent/continuing status. The AOS is clearly bioethics with specific mention of medical/healthcare ethics, research ethics, public health ethics, disability ethics, and reproductive ethics; environmental ethics is also mentioned, warranting inclusion of both Ethics and Social & Political Philosophy as main categories given the public health and policy dimensions."
       }
     },
     {
@@ -4106,21 +4640,25 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "October 30, 2025, 7:26pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "3cb38ff01e3480fc517987351a1fcebd",
       "scraped_date": "2026-03-10T02:48:44.356069",
       "classification": {
         "main_aos": [
+          "Ethics",
           "Open"
         ],
         "detail_aos": {
+          "Ethics": [
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes this as a one-semester Visiting Lecturer position (fixed-term), which is teaching-focused with no path to permanence. While AOS is listed as open, the area of competence specifies ethics and critical thinking, indicating ethics as a primary focus area."
       }
     },
     {
@@ -4146,21 +4684,23 @@
       "application_url": "https://uab.peopleadmin.com/postings/26500",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "October 28, 2025, 4:06pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenure-Track",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "b81a3b0f38b38b64d9f7b31f6d481b72",
       "scraped_date": "2026-03-10T02:48:45.156342",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenure-Track",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly specifies applied ethics broadly construed as the required AOS. The position is clearly described as tenure-track Assistant Professor beginning August 2026, and UAB is a research university with a 3/2 teaching load."
       }
     },
     {
@@ -4189,21 +4729,32 @@
       "application_url": "https://apptrkr.com/6668124",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "October 27, 2025, 8:48pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenure-Track",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "763a9e612d83ce3ee913b32361ba839a",
       "scraped_date": "2026-03-10T02:48:45.860009",
       "classification": {
         "main_aos": [
-          "Open"
+          "History of Philosophy",
+          "Ethics",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "History of Philosophy": [
+            "Ancient Greek and Roman Philosophy"
+          ],
+          "Ethics": [
+            "AI, Technology, and Information Ethics",
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Computing / Philosophy of AI"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenure-Track",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly lists Ancient Philosophy, Philosophy of Technology, and Ethics as acceptable areas of specialization. The position is clearly identified as tenure-track Assistant Professor at a research university."
       }
     },
     {
@@ -4232,21 +4783,25 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "October 22, 2025, 9:05pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenure-Track",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "1892ed4be85c8ad5ed288e2ca947ddbc",
       "scraped_date": "2026-03-10T02:48:46.573531",
       "classification": {
         "main_aos": [
-          "Open"
+          "History of Philosophy",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "History of Philosophy": [
+            "Continental Philosophy"
+          ],
+          "Metaphysics & Epistemology": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenure-Track",
+        "institution_type": "Research University",
+        "reasoning": "The position explicitly seeks a tenure-track Assistant Professor specializing in French and/or Francophone Phenomenology, which is a Continental philosophical tradition. Phenomenology is primarily an epistemological and metaphysical approach within Continental philosophy, making both main categories applicable."
       }
     },
     {
@@ -4272,21 +4827,27 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "October 22, 2025, 9:02pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "1261267a016a392b5c25656eb4e155e8",
       "scraped_date": "2026-03-10T02:48:47.276171",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Social & Political Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
+          "Social & Political Philosophy": [
+            "Social and Political Philosophy (General / Political Theory)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a non-tenure-track Visiting Assistant Professor position with a one-year term and possible renewal, fitting the fixed-term visiting category. The position emphasizes ethics and leadership with connections to public policy and political theory, spanning both Ethics and Social & Political Philosophy."
       }
     },
     {
@@ -4316,8 +4877,8 @@
       "deadline": "May 12, 2026, 11:59pm IST",
       "contact_email": "",
       "posted_date": "March 13, 2026, 9:22pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "26a7279a0b1535e9897a9ab8cb7ad39e",
       "scraped_date": "2026-03-16T09:54:51.345840",
@@ -4328,9 +4889,9 @@
         "detail_aos": {
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Teaching College",
+        "reasoning": "The posting explicitly describes this as a 'one-year renewal position' with fixed-term status and primary duties focused on instruction, indicating a temporary teaching role with no path to permanence. The AOS is open to all areas of philosophy within the Catholic intellectual tradition, with no specific specialization required."
       }
     },
     {
@@ -4358,21 +4919,28 @@
       "deadline": "May 1, 2026, 11:59pm PST",
       "contact_email": "",
       "posted_date": "March 13, 2026, 9:21pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "11e1008dbfbc0b87d7bd8b250cb779da",
       "scraped_date": "2026-03-16T09:54:52.033234",
       "classification": {
         "main_aos": [
-          "Open"
+          "History of Philosophy",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "History of Philosophy": [
+            "19th/20th Century Philosophy"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Science (General)",
+            "Philosophy of Physics"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is explicitly a postdoctoral scholar position focused on history and philosophy of 20th century physics, particularly general relativity and cosmology. The role combines historical scholarship on Einstein's papers with philosophical engagement in physics, spanning both history of philosophy and philosophy of science."
       }
     },
     {
@@ -4405,21 +4973,27 @@
       "deadline": "May 10, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "March 11, 2026, 9:14pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenure-Track",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "6647c703667b96d63560ab53a741282f",
       "scraped_date": "2026-03-16T09:54:52.861112",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "AI, Technology, and Information Ethics"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Computing / Philosophy of AI"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenure-Track",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly seeks an Assistant/Associate/Professor in AI Ethics on a tenure-track line at a Top 50 research university. The AOS and AOC clearly indicate focus on AI ethics and technology ethics, spanning both ethics and philosophy of AI."
       }
     },
     {
@@ -4449,21 +5023,23 @@
       "deadline": "March 24, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "March 11, 2026, 9:13pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenure-Track",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "6b30f9b346c938454e370dae36aa1ae4",
       "scraped_date": "2026-03-16T09:54:53.668854",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Social & Political Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [],
+          "Social & Political Philosophy": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenure-Track",
+        "institution_type": "Teaching College",
+        "reasoning": "The posting explicitly describes a tenure-track Assistant Professor position at a teaching-focused institution. The AOS is specified as Ethics and Social/Political Philosophy, though no specific detail subcategories are mentioned in the excerpt provided."
       }
     },
     {
@@ -4495,21 +5071,27 @@
       "deadline": "May 1, 2026, 5:00pm EST",
       "contact_email": "",
       "posted_date": "March 11, 2026, 9:12pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "623b720143e63c3b7b953bd49778511f",
       "scraped_date": "2026-03-16T09:54:54.473721",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics",
+          "History of Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Science (General)"
+          ],
+          "History of Philosophy": [
+            "History of Philosophy (General)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is a fixed-term, month-long summer archival fellowship explicitly focused on history of philosophy of science and philosophy of science research at a specialized research center. The position is research-focused with a stipend and archival access, fitting the postdoc/fellowship category despite being shorter-term than typical postdocs."
       }
     },
     {
@@ -4535,21 +5117,27 @@
       "deadline": "April 2, 2026, 11:59pm BST",
       "contact_email": "",
       "posted_date": "March 10, 2026, 5:44pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "37e8e8625f223feeb0359d5ab1856aea",
       "scraped_date": "2026-03-16T09:54:55.168234",
       "classification": {
         "main_aos": [
+          "Metaphysics & Epistemology",
           "Open"
         ],
         "detail_aos": {
+          "Metaphysics & Epistemology": [
+            "Philosophy of Language",
+            "Philosophy of Mind",
+            "Epistemology"
+          ],
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly specifies Philosophy of Language as the primary AOS, with openness to related areas (Mind, Epistemology, Applied Ethics). The position is a fixed-term contract for 3 years with the title \"Lecturer,\" which indicates a temporary teaching-focused role without a path to permanence at the institution."
       }
     },
     {
@@ -4578,21 +5166,28 @@
       "deadline": "April 10, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "March 10, 2026, 5:44pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "c49b120ced5108d13618adf3dc371f58",
       "scraped_date": "2026-03-16T09:54:55.859380",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Social & Political Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Normative Ethics",
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
+          "Social & Political Philosophy": [
+            "Social and Political Philosophy (General / Political Theory)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a two-year postdoctoral fellowship (Postdoctoral Associate) with AOS in Moral or Political Philosophy. Cornell University is a research university, and the position is fixed-term and research/teaching-focused without a path to permanence."
       }
     },
     {
@@ -4620,21 +5215,32 @@
       "application_url": "https://careers.hprod.onehcm.usg.edu/psp/careers/C...",
       "deadline": "April 20, 2026, 11:59pm EST",
       "posted_date": "Yesterday, 3:36pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "d03b657804593cda8707fd6e63d4884d",
       "scraped_date": "2026-03-21T16:36:26.332841",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Metaphysics & Epistemology",
+          "Non-Western & Cross-Cultural Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Business Ethics",
+            "AI, Technology, and Information Ethics"
+          ],
+          "Metaphysics & Epistemology": [
+            "Philosophy of Religion"
+          ],
+          "Non-Western & Cross-Cultural Philosophy": [
+            "Comparative Philosophy / Cross-Cultural"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes this as a 'Limited-Term Instructor' position with a 5/4 teaching load and minimal research expectations, indicating a fixed-term teaching-focused role with no path to permanence. The preferred teaching competencies in Professional Ethics, Technology and Human Values, and Introduction to World Religions map to Business Ethics, Technology Ethics, and Philosophy of Religion respectively."
       }
     },
     {
@@ -4663,21 +5269,34 @@
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "contact_email": "",
       "posted_date": "Yesterday, 3:29pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenure-Track",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "4bac4ae9677a0ceaad516d74181b52a9",
       "scraped_date": "2026-03-21T16:36:27.121407",
       "classification": {
         "main_aos": [
+          "History of Philosophy",
+          "Social & Political Philosophy",
+          "Value Theory / Aesthetics",
           "Open"
         ],
         "detail_aos": {
+          "History of Philosophy": [
+            "History of Philosophy (General)"
+          ],
+          "Social & Political Philosophy": [
+            "Social and Political Philosophy (General / Political Theory)"
+          ],
+          "Value Theory / Aesthetics": [
+            "Philosophy of Literature",
+            "Value Theory / Aesthetics (General)"
+          ],
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenure-Track",
+        "institution_type": "Research University",
+        "reasoning": "This is an explicitly tenure-track assistant professor position at a major research university. The posting emphasizes Great Books and discussion-based curriculum with openness to disciplinary specialty, covering political thought, philosophy, literature, and liberal arts broadly, which maps to multiple AOS categories with History of Philosophy as primary."
       }
     },
     {
@@ -4711,21 +5330,31 @@
       "deadline": "April 6, 2026, 6:00pm CST",
       "contact_email": "",
       "posted_date": "Yesterday, 3:10pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "fae83183ff0c8d60813b75161b7218ac",
       "scraped_date": "2026-03-21T16:36:27.795816",
       "classification": {
         "main_aos": [
-          "Open"
+          "Metaphysics & Epistemology",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Metaphysics & Epistemology": [
+            "Epistemology",
+            "Philosophy of Mind",
+            "Philosophy of Language"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Cognitive Science",
+            "Philosophy of Mathematics",
+            "Logic"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Research University",
+        "reasoning": "The position is explicitly titled 'Lecturer' and categorized as 'Junior faculty / Fixed term,' indicating a temporary teaching-focused role without tenure-track status. The AOS requirements specify Formal Epistemology, Philosophy of Language, Philosophy of Mind/Cognitive Science, and Philosophy of Mathematics, which fall primarily under Metaphysics & Epistemology and Science, Logic, & Mathematics."
       }
     },
     {
@@ -4761,21 +5390,36 @@
       "deadline": "April 6, 2026, 6:00pm CST",
       "contact_email": "",
       "posted_date": "Yesterday, 3:10pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "fae83183ff0c8d60813b75161b7218ac",
       "scraped_date": "2026-03-21T16:36:28.495892",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Social & Political Philosophy",
+          "History of Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Normative Ethics",
+            "Business Ethics",
+            "Ethics of Population, Future Generations, and Global Justice",
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
+          "Social & Political Philosophy": [
+            "Social and Political Philosophy (General / Political Theory)",
+            "Philosophy of Law",
+            "Philosophy of Race"
+          ],
+          "History of Philosophy": [
+            "History of Philosophy (General)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly identifies this as a Lecturer position in the 'Junior faculty / Fixed term' job category, indicating a fixed-term teaching position without tenure-track status. The AOS requirements are clearly specified as Ethics, Social/Political Philosophy, or History of Philosophy, with specific subfields mentioned including moral philosophy, legal philosophy, social philosophy, and philosophy of race."
       }
     },
     {
@@ -4806,21 +5450,38 @@
       "application_url": "https://apptrkr.com/7011274",
       "deadline": "No deadline specified (applications considered on an ongoing basis)",
       "posted_date": "March 19, 2026, 7:26pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "02da642409eabbad1e9aca0a05f4c8cc",
       "scraped_date": "2026-03-21T16:36:29.295697",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics",
+          "History of Philosophy",
+          "Social & Political Philosophy",
+          "Ethics"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Computing / Philosophy of AI"
+          ],
+          "History of Philosophy": [
+            "Ancient Greek and Roman Philosophy",
+            "Medieval and Renaissance Philosophy",
+            "History of Philosophy (General)"
+          ],
+          "Social & Political Philosophy": [
+            "Feminist Philosophy",
+            "Social and Political Philosophy (General / Political Theory)"
+          ],
+          "Ethics": [
+            "AI, Technology, and Information Ethics"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Teaching College",
+        "reasoning": "The posting explicitly states \"Guest Faculty\" and \"Non-Tenure Track\" for a half-time fixed-term position teaching two courses. Philosophy of Technology is the primary AOS requirement, supplemented by History of Philosophy (Ancient/Medieval) and Socio-Political/Feminist Philosophy as noted in the AOC section."
       }
     },
     {
@@ -4848,21 +5509,28 @@
       "deadline": "April 10, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "March 18, 2026, 9:02pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "e6ca85b4efbfeafbd8c967e5d6ead78e",
       "scraped_date": "2026-03-21T16:36:30.092842",
       "classification": {
         "main_aos": [
-          "Open"
+          "Metaphysics & Epistemology",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Metaphysics & Epistemology": [
+            "Epistemology",
+            "Philosophy of Language"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Science (General)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is a 4-year PhD position funded by an SNSF Starting Grant, which is a research-focused fellowship position rather than a traditional tenure-track or teaching role. The posting explicitly specifies three AOS areas: Epistemology, Philosophy of Language, and Philosophy of Science."
       }
     },
     {
@@ -4889,21 +5557,28 @@
       "deadline": "May 6, 2026, 11:59pm CET",
       "contact_email": "",
       "posted_date": "March 18, 2026, 9:02pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Tenured / Continuing / Permanent",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "d26665ca8a89d7503a76971b36be7726",
       "scraped_date": "2026-03-21T16:36:30.725658",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Social & Political Philosophy"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Normative Ethics",
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
+          "Social & Political Philosophy": [
+            "Social and Political Philosophy (General / Political Theory)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Tenured / Continuing / Permanent",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly seeks a Professor in Practical Philosophy with focus on Ethics, emphasizing theoretical and critical work grounded in practical questions and societal structures. The position is described as senior faculty with continuing/permanent status at a major research university."
       }
     },
     {
@@ -4929,8 +5604,8 @@
       "deadline": "March 30, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "March 17, 2026, 9:20pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "30a9cff0db56242ba019c37b4e8be61c",
       "scraped_date": "2026-03-21T16:36:31.432738",
@@ -4941,9 +5616,9 @@
         "detail_aos": {
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes this as a Lecturer position with annual contracts that are renewable but not tenure-track, making it a fixed-term teaching position. The AOS is listed as open with no specific philosophical specialization required."
       }
     },
     {
@@ -4982,7 +5657,7 @@
         },
         "position_type": "Other",
         "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "reasoning": "This is a purely administrative position with the American Philosophical Association, not an academic faculty position. The role is explicitly categorized as non-academic administration and involves secretarial/administrative duties rather than teaching, research, or scholarship in philosophy."
       }
     },
     {
@@ -5010,21 +5685,27 @@
       "deadline": "April 1, 2026, 11:59pm EST",
       "contact_email": "",
       "posted_date": "March 16, 2026, 3:55pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "a5316cf673383f1e6cf5326202695455",
       "scraped_date": "2026-03-21T16:36:32.749964",
       "classification": {
         "main_aos": [
-          "Open"
+          "Metaphysics & Epistemology",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Metaphysics & Epistemology": [
+            "Philosophy of Mind"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Cognitive Science"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly describes a postdoctoral research associate position with a fixed two-year term beginning July 2026, which is characteristic of postdoctoral fellowships. The specialization is clearly in Philosophy of Mind and Philosophy of Cognitive Science, with the area of competence otherwise open."
       }
     },
     {
@@ -5052,21 +5733,23 @@
       "application_type": "Email",
       "deadline": "April 8, 2026, 11:59pm CET",
       "posted_date": "March 16, 2026, 3:53pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "105e2370d260cb9a87a9cbc89bc97a2d",
       "scraped_date": "2026-03-21T16:36:33.556274",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Science (General)"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "The posting explicitly advertises a postdoctoral position in Philosophy of Science with a fixed-term contract (1 year extendable to 3 years) at a research-focused faculty within a university. The AOS is clearly specified as Philosophy of Science."
       }
     },
     {
@@ -5095,21 +5778,31 @@
       "application_url": "https://www.bristol.ac.uk/jobs/find/details/?jobId...",
       "deadline": "April 9, 2026, 11:59pm BST",
       "posted_date": "March 16, 2026, 3:51pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "5d96955300e84f33418f03781c378881",
       "scraped_date": "2026-03-21T16:36:34.223445",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Value Theory / Aesthetics",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "Meta-Ethics"
+          ],
+          "Value Theory / Aesthetics": [
+            "Value Theory / Axiology"
+          ],
+          "Metaphysics & Epistemology": [
+            "Philosophy of Language"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is a three-year postdoctoral research position explicitly described as fixed-term within an ERC-funded project. The position focuses on metaethics and value theory (evaluative adjectives and their semantics), with a secondary component in philosophy of language, as the project investigates how evaluative language expresses value."
       }
     },
     {
@@ -5139,21 +5832,27 @@
       "application_url": "https://www.bristol.ac.uk/jobs/find/details/?jobId...",
       "deadline": "April 9, 2026, 11:59pm BST",
       "posted_date": "March 16, 2026, 3:51pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "875053637cf7e67e4b5d51cc50ed158f",
       "scraped_date": "2026-03-21T16:36:34.850108",
       "classification": {
         "main_aos": [
-          "Open"
+          "Metaphysics & Epistemology",
+          "Value Theory / Aesthetics"
         ],
         "detail_aos": {
-          "Open": []
+          "Metaphysics & Epistemology": [
+            "Philosophy of Language"
+          ],
+          "Value Theory / Aesthetics": [
+            "Value Theory / Axiology"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is an explicitly three-year postdoctoral research position within an ERC project. The position focuses on philosophy of language and evaluative adjectives, which bridges philosophy of language (Metaphysics & Epistemology) and value theory/axiology (Value Theory / Aesthetics)."
       }
     },
     {
@@ -5183,21 +5882,35 @@
       "deadline": "April 30, 2026, 11:59pm BST",
       "contact_email": "",
       "posted_date": "March 16, 2026, 3:40pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "5c932a85ee5168b6b08cf9d90e6df2cf",
       "scraped_date": "2026-03-21T16:36:35.549224",
       "classification": {
         "main_aos": [
-          "Open"
+          "Ethics",
+          "Social & Political Philosophy",
+          "Science, Logic, & Mathematics"
         ],
         "detail_aos": {
-          "Open": []
+          "Ethics": [
+            "AI, Technology, and Information Ethics",
+            "Business Ethics",
+            "Ethics (General / Applied Ethics, Broadly Construed)"
+          ],
+          "Social & Political Philosophy": [
+            "Social and Political Philosophy (General / Political Theory)",
+            "Philosophy of Education"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Computing / Philosophy of AI",
+            "Philosophy of Social Science"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is explicitly a postdoctoral research position funded by a UKRI Future Leaders Fellowship Grant, focused on AI ethics, worker autonomy, and social/political dimensions of AI-driven economies. The position is research-focused and fixed-term at a leading research university."
       }
     },
     {
@@ -5226,21 +5939,28 @@
       "deadline": "April 20, 2026, 11:59pm BST",
       "contact_email": "",
       "posted_date": "March 16, 2026, 3:39pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "0340f3270a0648ba241275a359bdd00a",
       "scraped_date": "2026-03-21T16:36:36.250611",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Science (General)",
+            "Philosophy of Computing / Philosophy of AI"
+          ],
+          "Metaphysics & Epistemology": [
+            "Epistemology"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is an explicitly described 2-year Postdoctoral Research Associate position funded by an ERC Starting Grant, making it a fixed-term research fellowship. The posting focuses on philosophy of science and machine learning with epistemological concerns about ML models as toy models and their reliability in knowledge institutions."
       }
     },
     {
@@ -5269,21 +5989,28 @@
       "deadline": "April 20, 2026, 11:59pm BST",
       "contact_email": "",
       "posted_date": "March 16, 2026, 3:38pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "928521fd6890e75cdca2506ec4436d75",
       "scraped_date": "2026-03-21T16:36:36.977820",
       "classification": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Science (General)",
+            "Philosophy of Computing / Philosophy of AI"
+          ],
+          "Metaphysics & Epistemology": [
+            "Epistemology"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is a 3-year postdoctoral research position explicitly focused on philosophy of science and machine learning within an ERC-funded project. The posting emphasizes epistemological questions about ML models as toy models and their role in knowledge institutions, spanning philosophy of science and AI/computing philosophy."
       }
     },
     {
@@ -5313,21 +6040,28 @@
       "application_url": "https://www.kcl.ac.uk/jobs/140866-ytl-early-career...",
       "deadline": "April 15, 2026, 11:59pm BST",
       "posted_date": "March 16, 2026, 3:36pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Postdoc / Fellowship",
+      "institution_type": "Research University",
       "status": "active",
       "hash": "5a9098c05847ab6daa06a26526b37619",
       "scraped_date": "2026-03-21T16:36:37.768983",
       "classification": {
         "main_aos": [
-          "Open"
+          "Social & Political Philosophy",
+          "Metaphysics & Epistemology"
         ],
         "detail_aos": {
-          "Open": []
+          "Social & Political Philosophy": [
+            "Social and Political Philosophy (General / Political Theory)",
+            "Philosophy of Law"
+          ],
+          "Metaphysics & Epistemology": [
+            "Philosophy of Religion"
+          ]
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "reasoning": "This is a 12-month early career research fellowship for a postdoctoral researcher with a PhD, explicitly focused on legal and political philosophical research. The position is research-focused and fixed-term, fitting the postdoc/fellowship category, and the AOS clearly emphasizes politics, philosophy, and law."
       }
     },
     {
@@ -5357,8 +6091,8 @@
       "deadline": "May 12, 2026, 11:59pm IST",
       "contact_email": "",
       "posted_date": "March 13, 2026, 9:22pm UTC",
-      "job_type": "Other",
-      "institution_type": "Other",
+      "job_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "institution_type": "Teaching College",
       "status": "active",
       "hash": "1454710360511732b1b5271bda1ee439",
       "scraped_date": "2026-03-21T16:36:38.424857",
@@ -5369,9 +6103,9 @@
         "detail_aos": {
           "Open": []
         },
-        "position_type": "Other",
-        "institution_type": "Other",
-        "reasoning": "classification_failed"
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Teaching College",
+        "reasoning": "The posting explicitly describes this as a 'one-year renewal position' with fixed-term status and primary duties focused on regular instruction, indicating a temporary teaching-focused role with no path to permanence. The AOS is open to all areas of philosophy within the Catholic intellectual tradition, with no specific specialization required."
       }
     }
   ],
@@ -5539,6 +6273,12 @@
       "total_jobs": 100,
       "new_jobs": 0,
       "new_job_ids": []
+    },
+    {
+      "date": "2026-03-21",
+      "total_jobs": 100,
+      "new_jobs": 0,
+      "new_job_ids": []
     }
   ],
   "weekly_trends": [
@@ -5546,15 +6286,117 @@
       "date": "2026-03-10",
       "new_jobs_count": 100,
       "main_aos_counts": {
-        "Open": 100
+        "Open": 29,
+        "Metaphysics & Epistemology": 30,
+        "Science, Logic, & Mathematics": 36,
+        "History of Philosophy": 19,
+        "Ethics": 40,
+        "Social & Political Philosophy": 25,
+        "Value Theory / Aesthetics": 4,
+        "Non-Western & Cross-Cultural Philosophy": 4
       },
-      "detail_aos_counts": {},
+      "detail_aos_counts": {
+        "Metaphysics & Epistemology::Philosophy of Religion": 5,
+        "Metaphysics & Epistemology::Philosophy of Mind": 11,
+        "Metaphysics & Epistemology::Philosophy of Language": 4,
+        "Science, Logic, & Mathematics::Logic": 9,
+        "History of Philosophy::American Philosophy": 2,
+        "History of Philosophy::19th/20th Century Philosophy": 6,
+        "Ethics::Normative Ethics": 5,
+        "Ethics::Ethics (General / Applied Ethics, Broadly Construed)": 22,
+        "Social & Political Philosophy::Social and Political Philosophy (General / Political Theory)": 18,
+        "Social & Political Philosophy::Philosophy of Law": 7,
+        "Value Theory / Aesthetics::Aesthetics (General)": 2,
+        "Value Theory / Aesthetics::Value Theory / Axiology": 2,
+        "Value Theory / Aesthetics::Value Theory / Aesthetics (General)": 2,
+        "History of Philosophy::History of Philosophy (General)": 6,
+        "Metaphysics & Epistemology::Philosophy of Action": 5,
+        "Science, Logic, & Mathematics::Philosophy of Cognitive Science": 6,
+        "Metaphysics & Epistemology::Metaphysics & Epistemology (General)": 3,
+        "Science, Logic, & Mathematics::Philosophy of Science (General)": 16,
+        "Non-Western & Cross-Cultural Philosophy::Asian Philosophy": 1,
+        "Non-Western & Cross-Cultural Philosophy::Comparative Philosophy / Cross-Cultural": 4,
+        "Science, Logic, & Mathematics::Philosophy of Mathematics": 3,
+        "Science, Logic, & Mathematics::Philosophy of Computing / Philosophy of AI": 14,
+        "Metaphysics & Epistemology::Epistemology": 12,
+        "Ethics::AI, Technology, and Information Ethics": 13,
+        "Science, Logic, & Mathematics::Philosophy of Physics": 4,
+        "Ethics::Neuroethics": 3,
+        "Social & Political Philosophy::Philosophy of Education": 3,
+        "Ethics::Biomedical Ethics / Bioethics": 9,
+        "Ethics::Environmental Ethics": 6,
+        "Social & Political Philosophy::Philosophy of Race": 1,
+        "Social & Political Philosophy::Feminist Philosophy": 1,
+        "History of Philosophy::Early Modern Philosophy (17th/18th Century)": 6,
+        "Ethics::Meta-Ethics": 2,
+        "Metaphysics & Epistemology::Metaphysics": 3,
+        "Science, Logic, & Mathematics::Philosophy of Biology": 1,
+        "Science, Logic, & Mathematics::Decision Theory": 4,
+        "Non-Western & Cross-Cultural Philosophy::Non-Western Philosophy (General)": 1,
+        "History of Philosophy::Medieval and Renaissance Philosophy": 1,
+        "History of Philosophy::Ancient Greek and Roman Philosophy": 4,
+        "Social & Political Philosophy::PPE (Politics, Philosophy, and Economics)": 5,
+        "Science, Logic, & Mathematics::Philosophy of Social Science": 1,
+        "Science, Logic, & Mathematics::Science, Logic, & Mathematics (General)": 1,
+        "Ethics::Business Ethics": 2,
+        "Ethics::Ethics of Population, Future Generations, and Global Justice": 2,
+        "Ethics::Food and Agricultural Ethics": 1,
+        "History of Philosophy::Continental Philosophy": 1
+      },
       "position_type_counts": {
-        "Other": 100
+        "Visiting / Adjunct / Lecturer (Fixed-Term)": 27,
+        "Other": 8,
+        "Tenured / Continuing / Permanent": 13,
+        "Postdoc / Fellowship": 39,
+        "Tenure-Track": 13
       },
       "position_type_by_aos": {
         "Open": {
-          "Other": 100
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 12,
+          "Other": 6,
+          "Postdoc / Fellowship": 6,
+          "Tenure-Track": 3,
+          "Tenured / Continuing / Permanent": 2
+        },
+        "Metaphysics & Epistemology": {
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 7,
+          "Postdoc / Fellowship": 16,
+          "Tenure-Track": 4,
+          "Tenured / Continuing / Permanent": 2,
+          "Other": 1
+        },
+        "Science, Logic, & Mathematics": {
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 7,
+          "Tenured / Continuing / Permanent": 6,
+          "Tenure-Track": 6,
+          "Postdoc / Fellowship": 17
+        },
+        "History of Philosophy": {
+          "Postdoc / Fellowship": 3,
+          "Tenure-Track": 5,
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 9,
+          "Tenured / Continuing / Permanent": 2
+        },
+        "Ethics": {
+          "Postdoc / Fellowship": 16,
+          "Tenure-Track": 8,
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 9,
+          "Other": 2,
+          "Tenured / Continuing / Permanent": 5
+        },
+        "Social & Political Philosophy": {
+          "Postdoc / Fellowship": 15,
+          "Tenure-Track": 3,
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 2,
+          "Tenured / Continuing / Permanent": 5
+        },
+        "Value Theory / Aesthetics": {
+          "Postdoc / Fellowship": 3,
+          "Tenure-Track": 1
+        },
+        "Non-Western & Cross-Cultural Philosophy": {
+          "Tenure-Track": 2,
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 2
         }
       },
       "job_category_counts": {
@@ -5576,7 +6418,9 @@
         "Administration (non-academic) / Tenured, continuing or permanent": 1
       },
       "institution_type_counts": {
-        "Other": 100
+        "Research University": 78,
+        "Teaching College": 18,
+        "Other": 4
       },
       "state_counts": {
         "TX": 5,
@@ -5628,15 +6472,53 @@
       "date": "2026-03-16",
       "new_jobs_count": 7,
       "main_aos_counts": {
-        "Open": 7
+        "Open": 2,
+        "History of Philosophy": 2,
+        "Science, Logic, & Mathematics": 3,
+        "Ethics": 3,
+        "Social & Political Philosophy": 2,
+        "Metaphysics & Epistemology": 1
       },
-      "detail_aos_counts": {},
+      "detail_aos_counts": {
+        "History of Philosophy::19th/20th Century Philosophy": 1,
+        "Science, Logic, & Mathematics::Philosophy of Science (General)": 2,
+        "Science, Logic, & Mathematics::Philosophy of Physics": 1,
+        "Ethics::AI, Technology, and Information Ethics": 1,
+        "Science, Logic, & Mathematics::Philosophy of Computing / Philosophy of AI": 1,
+        "History of Philosophy::History of Philosophy (General)": 1,
+        "Metaphysics & Epistemology::Philosophy of Language": 1,
+        "Metaphysics & Epistemology::Philosophy of Mind": 1,
+        "Metaphysics & Epistemology::Epistemology": 1,
+        "Ethics::Normative Ethics": 1,
+        "Ethics::Ethics (General / Applied Ethics, Broadly Construed)": 1,
+        "Social & Political Philosophy::Social and Political Philosophy (General / Political Theory)": 1
+      },
       "position_type_counts": {
-        "Other": 7
+        "Visiting / Adjunct / Lecturer (Fixed-Term)": 2,
+        "Postdoc / Fellowship": 3,
+        "Tenure-Track": 2
       },
       "position_type_by_aos": {
         "Open": {
-          "Other": 7
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 2
+        },
+        "History of Philosophy": {
+          "Postdoc / Fellowship": 2
+        },
+        "Science, Logic, & Mathematics": {
+          "Postdoc / Fellowship": 2,
+          "Tenure-Track": 1
+        },
+        "Ethics": {
+          "Tenure-Track": 2,
+          "Postdoc / Fellowship": 1
+        },
+        "Social & Political Philosophy": {
+          "Tenure-Track": 1,
+          "Postdoc / Fellowship": 1
+        },
+        "Metaphysics & Epistemology": {
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 1
         }
       },
       "job_category_counts": {
@@ -5647,7 +6529,8 @@
         "Junior faculty / Fixed term": 1
       },
       "institution_type_counts": {
-        "Other": 7
+        "Teaching College": 2,
+        "Research University": 5
       },
       "state_counts": {
         "CA": 1,
@@ -5667,15 +6550,87 @@
       "date": "2026-03-21",
       "new_jobs_count": 18,
       "main_aos_counts": {
-        "Open": 18
+        "Ethics": 6,
+        "Metaphysics & Epistemology": 9,
+        "Non-Western & Cross-Cultural Philosophy": 1,
+        "History of Philosophy": 3,
+        "Social & Political Philosophy": 6,
+        "Value Theory / Aesthetics": 3,
+        "Open": 4,
+        "Science, Logic, & Mathematics": 8
       },
-      "detail_aos_counts": {},
+      "detail_aos_counts": {
+        "Ethics::Business Ethics": 3,
+        "Ethics::AI, Technology, and Information Ethics": 3,
+        "Metaphysics & Epistemology::Philosophy of Religion": 2,
+        "Non-Western & Cross-Cultural Philosophy::Comparative Philosophy / Cross-Cultural": 1,
+        "History of Philosophy::History of Philosophy (General)": 3,
+        "Social & Political Philosophy::Social and Political Philosophy (General / Political Theory)": 6,
+        "Value Theory / Aesthetics::Philosophy of Literature": 1,
+        "Value Theory / Aesthetics::Value Theory / Aesthetics (General)": 1,
+        "Metaphysics & Epistemology::Epistemology": 4,
+        "Metaphysics & Epistemology::Philosophy of Mind": 2,
+        "Metaphysics & Epistemology::Philosophy of Language": 4,
+        "Science, Logic, & Mathematics::Philosophy of Cognitive Science": 2,
+        "Science, Logic, & Mathematics::Philosophy of Mathematics": 1,
+        "Science, Logic, & Mathematics::Logic": 1,
+        "Ethics::Normative Ethics": 2,
+        "Ethics::Ethics of Population, Future Generations, and Global Justice": 1,
+        "Ethics::Ethics (General / Applied Ethics, Broadly Construed)": 3,
+        "Social & Political Philosophy::Philosophy of Law": 2,
+        "Social & Political Philosophy::Philosophy of Race": 1,
+        "Science, Logic, & Mathematics::Philosophy of Computing / Philosophy of AI": 4,
+        "History of Philosophy::Ancient Greek and Roman Philosophy": 1,
+        "History of Philosophy::Medieval and Renaissance Philosophy": 1,
+        "Social & Political Philosophy::Feminist Philosophy": 1,
+        "Science, Logic, & Mathematics::Philosophy of Science (General)": 4,
+        "Ethics::Meta-Ethics": 1,
+        "Value Theory / Aesthetics::Value Theory / Axiology": 2,
+        "Social & Political Philosophy::Philosophy of Education": 1,
+        "Science, Logic, & Mathematics::Philosophy of Social Science": 1
+      },
       "position_type_counts": {
-        "Other": 18
+        "Visiting / Adjunct / Lecturer (Fixed-Term)": 6,
+        "Tenure-Track": 1,
+        "Postdoc / Fellowship": 9,
+        "Tenured / Continuing / Permanent": 1,
+        "Other": 1
       },
       "position_type_by_aos": {
+        "Ethics": {
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 3,
+          "Tenured / Continuing / Permanent": 1,
+          "Postdoc / Fellowship": 2
+        },
+        "Metaphysics & Epistemology": {
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 2,
+          "Postdoc / Fellowship": 7
+        },
+        "Non-Western & Cross-Cultural Philosophy": {
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 1
+        },
+        "History of Philosophy": {
+          "Tenure-Track": 1,
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 2
+        },
+        "Social & Political Philosophy": {
+          "Tenure-Track": 1,
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 2,
+          "Tenured / Continuing / Permanent": 1,
+          "Postdoc / Fellowship": 2
+        },
+        "Value Theory / Aesthetics": {
+          "Tenure-Track": 1,
+          "Postdoc / Fellowship": 2
+        },
         "Open": {
-          "Other": 18
+          "Tenure-Track": 1,
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 2,
+          "Other": 1
+        },
+        "Science, Logic, & Mathematics": {
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 2,
+          "Postdoc / Fellowship": 6
         }
       },
       "job_category_counts": {
@@ -5689,7 +6644,9 @@
         "Other (non-academic) / Fixed term": 1
       },
       "institution_type_counts": {
-        "Other": 18
+        "Research University": 15,
+        "Teaching College": 2,
+        "Other": 1
       },
       "state_counts": {
         "GA": 1,
@@ -5708,32 +6665,6 @@
         "United Kingdom": 6,
         "Ireland": 1
       },
-      "west_coast_city_counts": {}
-    },
-    {
-      "date": "2026-03-21",
-      "new_jobs_count": 0,
-      "main_aos_counts": {},
-      "detail_aos_counts": {},
-      "position_type_counts": {},
-      "position_type_by_aos": {},
-      "job_category_counts": {},
-      "institution_type_counts": {},
-      "state_counts": {},
-      "country_counts": {},
-      "west_coast_city_counts": {}
-    },
-    {
-      "date": "2026-03-21",
-      "new_jobs_count": 0,
-      "main_aos_counts": {},
-      "detail_aos_counts": {},
-      "position_type_counts": {},
-      "position_type_by_aos": {},
-      "job_category_counts": {},
-      "institution_type_counts": {},
-      "state_counts": {},
-      "country_counts": {},
       "west_coast_city_counts": {}
     }
   ]

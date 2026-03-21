@@ -1,20 +1,649 @@
 {
-  "main_aos_matrix": {},
-  "detail_aos_by_context": {},
+  "main_aos_matrix": {
+    "Metaphysics & Epistemology": {
+      "Science, Logic, & Mathematics": 23,
+      "Ethics": 10,
+      "Social & Political Philosophy": 8,
+      "Value Theory / Aesthetics": 4,
+      "History of Philosophy": 7,
+      "Non-Western & Cross-Cultural Philosophy": 3,
+      "Open": 3
+    },
+    "Science, Logic, & Mathematics": {
+      "Metaphysics & Epistemology": 23,
+      "Ethics": 18,
+      "Social & Political Philosophy": 7,
+      "Value Theory / Aesthetics": 1,
+      "Non-Western & Cross-Cultural Philosophy": 2,
+      "History of Philosophy": 10,
+      "Open": 2
+    },
+    "History of Philosophy": {
+      "Open": 6,
+      "Ethics": 8,
+      "Social & Political Philosophy": 6,
+      "Value Theory / Aesthetics": 3,
+      "Metaphysics & Epistemology": 7,
+      "Science, Logic, & Mathematics": 10,
+      "Non-Western & Cross-Cultural Philosophy": 3
+    },
+    "Open": {
+      "History of Philosophy": 6,
+      "Ethics": 5,
+      "Social & Political Philosophy": 5,
+      "Value Theory / Aesthetics": 3,
+      "Metaphysics & Epistemology": 3,
+      "Science, Logic, & Mathematics": 2,
+      "Non-Western & Cross-Cultural Philosophy": 3
+    },
+    "Ethics": {
+      "Social & Political Philosophy": 18,
+      "Value Theory / Aesthetics": 3,
+      "History of Philosophy": 8,
+      "Metaphysics & Epistemology": 10,
+      "Science, Logic, & Mathematics": 18,
+      "Non-Western & Cross-Cultural Philosophy": 3,
+      "Open": 5
+    },
+    "Social & Political Philosophy": {
+      "Ethics": 18,
+      "Value Theory / Aesthetics": 5,
+      "History of Philosophy": 6,
+      "Metaphysics & Epistemology": 8,
+      "Science, Logic, & Mathematics": 7,
+      "Non-Western & Cross-Cultural Philosophy": 1,
+      "Open": 5
+    },
+    "Value Theory / Aesthetics": {
+      "Ethics": 3,
+      "Social & Political Philosophy": 5,
+      "History of Philosophy": 3,
+      "Metaphysics & Epistemology": 4,
+      "Science, Logic, & Mathematics": 1,
+      "Non-Western & Cross-Cultural Philosophy": 1,
+      "Open": 3
+    },
+    "Non-Western & Cross-Cultural Philosophy": {
+      "Ethics": 3,
+      "Social & Political Philosophy": 1,
+      "Value Theory / Aesthetics": 1,
+      "Metaphysics & Epistemology": 3,
+      "Science, Logic, & Mathematics": 2,
+      "History of Philosophy": 3,
+      "Open": 3
+    }
+  },
+  "detail_aos_by_context": {
+    "Philosophy of Religion": {
+      "solo": {
+        "Metaphysics & Epistemology": 1
+      },
+      "with_others": {
+        "Ethics": 3,
+        "Social & Political Philosophy": 2,
+        "Value Theory / Aesthetics": 1,
+        "Science, Logic, & Mathematics": 3,
+        "Non-Western & Cross-Cultural Philosophy": 3,
+        "History of Philosophy": 3,
+        "Open": 2
+      },
+      "total": 7
+    },
+    "Philosophy of Mind": {
+      "solo": {
+        "Metaphysics & Epistemology": 1
+      },
+      "with_others": {
+        "Science, Logic, & Mathematics": 9,
+        "Ethics": 5,
+        "Social & Political Philosophy": 1,
+        "Value Theory / Aesthetics": 1,
+        "History of Philosophy": 2,
+        "Open": 1
+      },
+      "total": 14
+    },
+    "Philosophy of Language": {
+      "solo": {},
+      "with_others": {
+        "Science, Logic, & Mathematics": 5,
+        "Ethics": 2,
+        "Social & Political Philosophy": 1,
+        "Open": 1,
+        "Value Theory / Aesthetics": 2
+      },
+      "total": 9
+    },
+    "Logic": {
+      "solo": {
+        "Science, Logic, & Mathematics": 1
+      },
+      "with_others": {
+        "Metaphysics & Epistemology": 9,
+        "Ethics": 1,
+        "Social & Political Philosophy": 2,
+        "Value Theory / Aesthetics": 1,
+        "Non-Western & Cross-Cultural Philosophy": 2,
+        "History of Philosophy": 2,
+        "Open": 2
+      },
+      "total": 10
+    },
+    "American Philosophy": {
+      "solo": {},
+      "with_others": {
+        "Open": 2,
+        "Social & Political Philosophy": 1
+      },
+      "total": 2
+    },
+    "19th/20th Century Philosophy": {
+      "solo": {
+        "History of Philosophy": 1
+      },
+      "with_others": {
+        "Open": 1,
+        "Ethics": 1,
+        "Science, Logic, & Mathematics": 3,
+        "Metaphysics & Epistemology": 2,
+        "Non-Western & Cross-Cultural Philosophy": 1
+      },
+      "total": 7
+    },
+    "Normative Ethics": {
+      "solo": {
+        "Ethics": 1
+      },
+      "with_others": {
+        "Social & Political Philosophy": 5,
+        "Value Theory / Aesthetics": 2,
+        "History of Philosophy": 4,
+        "Metaphysics & Epistemology": 3,
+        "Science, Logic, & Mathematics": 1,
+        "Non-Western & Cross-Cultural Philosophy": 1,
+        "Open": 1
+      },
+      "total": 8
+    },
+    "Ethics (General / Applied Ethics, Broadly Construed)": {
+      "solo": {
+        "Ethics": 4
+      },
+      "with_others": {
+        "Social & Political Philosophy": 12,
+        "Value Theory / Aesthetics": 2,
+        "History of Philosophy": 6,
+        "Metaphysics & Epistemology": 4,
+        "Science, Logic, & Mathematics": 7,
+        "Non-Western & Cross-Cultural Philosophy": 2,
+        "Open": 4
+      },
+      "total": 26
+    },
+    "Social and Political Philosophy (General / Political Theory)": {
+      "solo": {
+        "Social & Political Philosophy": 3
+      },
+      "with_others": {
+        "Ethics": 13,
+        "Value Theory / Aesthetics": 4,
+        "History of Philosophy": 6,
+        "Metaphysics & Epistemology": 7,
+        "Science, Logic, & Mathematics": 6,
+        "Non-Western & Cross-Cultural Philosophy": 1,
+        "Open": 4
+      },
+      "total": 25
+    },
+    "Philosophy of Law": {
+      "solo": {
+        "Social & Political Philosophy": 1
+      },
+      "with_others": {
+        "Ethics": 5,
+        "Value Theory / Aesthetics": 1,
+        "History of Philosophy": 3,
+        "Metaphysics & Epistemology": 4,
+        "Open": 2
+      },
+      "total": 9
+    },
+    "Aesthetics (General)": {
+      "solo": {},
+      "with_others": {
+        "Ethics": 2,
+        "Social & Political Philosophy": 2,
+        "History of Philosophy": 2,
+        "Metaphysics & Epistemology": 2,
+        "Science, Logic, & Mathematics": 1,
+        "Non-Western & Cross-Cultural Philosophy": 1,
+        "Open": 1
+      },
+      "total": 2
+    },
+    "Value Theory / Axiology": {
+      "solo": {},
+      "with_others": {
+        "Ethics": 2,
+        "Social & Political Philosophy": 2,
+        "History of Philosophy": 1,
+        "Metaphysics & Epistemology": 3
+      },
+      "total": 4
+    },
+    "Value Theory / Aesthetics (General)": {
+      "solo": {},
+      "with_others": {
+        "Ethics": 2,
+        "Social & Political Philosophy": 3,
+        "History of Philosophy": 3,
+        "Metaphysics & Epistemology": 2,
+        "Science, Logic, & Mathematics": 1,
+        "Non-Western & Cross-Cultural Philosophy": 1,
+        "Open": 2
+      },
+      "total": 3
+    },
+    "History of Philosophy (General)": {
+      "solo": {
+        "History of Philosophy": 1
+      },
+      "with_others": {
+        "Ethics": 3,
+        "Social & Political Philosophy": 4,
+        "Value Theory / Aesthetics": 2,
+        "Metaphysics & Epistemology": 3,
+        "Science, Logic, & Mathematics": 4,
+        "Non-Western & Cross-Cultural Philosophy": 1,
+        "Open": 3
+      },
+      "total": 10
+    },
+    "Philosophy of Action": {
+      "solo": {},
+      "with_others": {
+        "Ethics": 4,
+        "Social & Political Philosophy": 2,
+        "Value Theory / Aesthetics": 1,
+        "History of Philosophy": 1,
+        "Science, Logic, & Mathematics": 3
+      },
+      "total": 5
+    },
+    "Philosophy of Cognitive Science": {
+      "solo": {},
+      "with_others": {
+        "Metaphysics & Epistemology": 8,
+        "Ethics": 1,
+        "History of Philosophy": 1
+      },
+      "total": 8
+    },
+    "Metaphysics & Epistemology (General)": {
+      "solo": {},
+      "with_others": {
+        "Ethics": 1,
+        "Social & Political Philosophy": 1,
+        "Value Theory / Aesthetics": 1,
+        "Science, Logic, & Mathematics": 2,
+        "Non-Western & Cross-Cultural Philosophy": 1,
+        "History of Philosophy": 2,
+        "Open": 1
+      },
+      "total": 3
+    },
+    "Philosophy of Science (General)": {
+      "solo": {
+        "Science, Logic, & Mathematics": 2
+      },
+      "with_others": {
+        "Ethics": 5,
+        "Social & Political Philosophy": 4,
+        "Value Theory / Aesthetics": 1,
+        "Metaphysics & Epistemology": 12,
+        "Non-Western & Cross-Cultural Philosophy": 2,
+        "History of Philosophy": 7,
+        "Open": 2
+      },
+      "total": 22
+    },
+    "Asian Philosophy": {
+      "solo": {},
+      "with_others": {
+        "Ethics": 1,
+        "Social & Political Philosophy": 1,
+        "Value Theory / Aesthetics": 1,
+        "Metaphysics & Epistemology": 1,
+        "Science, Logic, & Mathematics": 1,
+        "History of Philosophy": 1,
+        "Open": 1
+      },
+      "total": 1
+    },
+    "Comparative Philosophy / Cross-Cultural": {
+      "solo": {},
+      "with_others": {
+        "Ethics": 3,
+        "Social & Political Philosophy": 1,
+        "Value Theory / Aesthetics": 1,
+        "Metaphysics & Epistemology": 3,
+        "Science, Logic, & Mathematics": 2,
+        "History of Philosophy": 3,
+        "Open": 3
+      },
+      "total": 5
+    },
+    "Philosophy of Mathematics": {
+      "solo": {},
+      "with_others": {
+        "Metaphysics & Epistemology": 4
+      },
+      "total": 4
+    },
+    "Philosophy of Computing / Philosophy of AI": {
+      "solo": {},
+      "with_others": {
+        "Metaphysics & Epistemology": 7,
+        "Ethics": 12,
+        "History of Philosophy": 3,
+        "Social & Political Philosophy": 3
+      },
+      "total": 19
+    },
+    "Epistemology": {
+      "solo": {},
+      "with_others": {
+        "Science, Logic, & Mathematics": 11,
+        "History of Philosophy": 2,
+        "Social & Political Philosophy": 4,
+        "Ethics": 2,
+        "Open": 1
+      },
+      "total": 17
+    },
+    "AI, Technology, and Information Ethics": {
+      "solo": {
+        "Ethics": 2
+      },
+      "with_others": {
+        "Science, Logic, & Mathematics": 13,
+        "History of Philosophy": 3,
+        "Social & Political Philosophy": 4,
+        "Open": 1,
+        "Metaphysics & Epistemology": 1,
+        "Non-Western & Cross-Cultural Philosophy": 1
+      },
+      "total": 17
+    },
+    "Philosophy of Physics": {
+      "solo": {
+        "Science, Logic, & Mathematics": 2
+      },
+      "with_others": {
+        "Metaphysics & Epistemology": 2,
+        "History of Philosophy": 1
+      },
+      "total": 5
+    },
+    "Neuroethics": {
+      "solo": {},
+      "with_others": {
+        "Metaphysics & Epistemology": 1,
+        "Social & Political Philosophy": 1,
+        "Open": 1,
+        "Science, Logic, & Mathematics": 1
+      },
+      "total": 3
+    },
+    "Philosophy of Education": {
+      "solo": {
+        "Social & Political Philosophy": 1
+      },
+      "with_others": {
+        "Ethics": 2,
+        "Value Theory / Aesthetics": 1,
+        "Science, Logic, & Mathematics": 1
+      },
+      "total": 4
+    },
+    "Biomedical Ethics / Bioethics": {
+      "solo": {
+        "Ethics": 2
+      },
+      "with_others": {
+        "Social & Political Philosophy": 2,
+        "Open": 1,
+        "Science, Logic, & Mathematics": 5,
+        "Metaphysics & Epistemology": 1
+      },
+      "total": 9
+    },
+    "Environmental Ethics": {
+      "solo": {},
+      "with_others": {
+        "Social & Political Philosophy": 3,
+        "Open": 1,
+        "Science, Logic, & Mathematics": 2,
+        "Metaphysics & Epistemology": 1,
+        "History of Philosophy": 1
+      },
+      "total": 6
+    },
+    "Philosophy of Race": {
+      "solo": {},
+      "with_others": {
+        "Ethics": 2,
+        "Open": 1,
+        "History of Philosophy": 1
+      },
+      "total": 2
+    },
+    "Feminist Philosophy": {
+      "solo": {},
+      "with_others": {
+        "Ethics": 2,
+        "Open": 1,
+        "Science, Logic, & Mathematics": 1,
+        "History of Philosophy": 1
+      },
+      "total": 2
+    },
+    "Early Modern Philosophy (17th/18th Century)": {
+      "solo": {
+        "History of Philosophy": 2
+      },
+      "with_others": {
+        "Science, Logic, & Mathematics": 2,
+        "Metaphysics & Epistemology": 2,
+        "Non-Western & Cross-Cultural Philosophy": 1
+      },
+      "total": 6
+    },
+    "Meta-Ethics": {
+      "solo": {
+        "Ethics": 1
+      },
+      "with_others": {
+        "Metaphysics & Epistemology": 2,
+        "Science, Logic, & Mathematics": 1,
+        "Value Theory / Aesthetics": 1
+      },
+      "total": 3
+    },
+    "Metaphysics": {
+      "solo": {},
+      "with_others": {
+        "Science, Logic, & Mathematics": 2,
+        "History of Philosophy": 1,
+        "Non-Western & Cross-Cultural Philosophy": 1,
+        "Open": 1,
+        "Ethics": 1,
+        "Social & Political Philosophy": 1
+      },
+      "total": 3
+    },
+    "Philosophy of Biology": {
+      "solo": {},
+      "with_others": {
+        "Metaphysics & Epistemology": 1,
+        "History of Philosophy": 1
+      },
+      "total": 1
+    },
+    "Decision Theory": {
+      "solo": {},
+      "with_others": {
+        "Metaphysics & Epistemology": 2,
+        "Social & Political Philosophy": 2,
+        "Ethics": 1
+      },
+      "total": 4
+    },
+    "Non-Western Philosophy (General)": {
+      "solo": {},
+      "with_others": {
+        "Open": 1,
+        "Ethics": 1
+      },
+      "total": 1
+    },
+    "Medieval and Renaissance Philosophy": {
+      "solo": {},
+      "with_others": {
+        "Open": 1,
+        "Science, Logic, & Mathematics": 1,
+        "Social & Political Philosophy": 1,
+        "Ethics": 1
+      },
+      "total": 2
+    },
+    "Ancient Greek and Roman Philosophy": {
+      "solo": {
+        "History of Philosophy": 2
+      },
+      "with_others": {
+        "Ethics": 3,
+        "Science, Logic, & Mathematics": 2,
+        "Social & Political Philosophy": 1
+      },
+      "total": 5
+    },
+    "PPE (Politics, Philosophy, and Economics)": {
+      "solo": {
+        "Social & Political Philosophy": 1
+      },
+      "with_others": {
+        "Science, Logic, & Mathematics": 2,
+        "Metaphysics & Epistemology": 1,
+        "Value Theory / Aesthetics": 1,
+        "Open": 1
+      },
+      "total": 5
+    },
+    "Philosophy of Social Science": {
+      "solo": {},
+      "with_others": {
+        "Social & Political Philosophy": 2,
+        "Ethics": 1
+      },
+      "total": 2
+    },
+    "Science, Logic, & Mathematics (General)": {
+      "solo": {},
+      "with_others": {
+        "Metaphysics & Epistemology": 1
+      },
+      "total": 1
+    },
+    "Business Ethics": {
+      "solo": {
+        "Ethics": 1
+      },
+      "with_others": {
+        "Social & Political Philosophy": 3,
+        "Metaphysics & Epistemology": 1,
+        "Non-Western & Cross-Cultural Philosophy": 1,
+        "History of Philosophy": 1,
+        "Science, Logic, & Mathematics": 1
+      },
+      "total": 5
+    },
+    "Ethics of Population, Future Generations, and Global Justice": {
+      "solo": {},
+      "with_others": {
+        "Social & Political Philosophy": 3,
+        "History of Philosophy": 1
+      },
+      "total": 3
+    },
+    "Food and Agricultural Ethics": {
+      "solo": {},
+      "with_others": {
+        "Social & Political Philosophy": 1
+      },
+      "total": 1
+    },
+    "Continental Philosophy": {
+      "solo": {},
+      "with_others": {
+        "Metaphysics & Epistemology": 1
+      },
+      "total": 1
+    },
+    "Philosophy of Literature": {
+      "solo": {},
+      "with_others": {
+        "History of Philosophy": 1,
+        "Social & Political Philosophy": 1,
+        "Open": 1
+      },
+      "total": 1
+    }
+  },
   "main_aos_solo_vs_joint": {
     "Open": {
-      "solo": 125,
-      "joint": 0
+      "solo": 23,
+      "joint": 12
+    },
+    "Metaphysics & Epistemology": {
+      "solo": 2,
+      "joint": 38
+    },
+    "Science, Logic, & Mathematics": {
+      "solo": 4,
+      "joint": 43
+    },
+    "History of Philosophy": {
+      "solo": 3,
+      "joint": 21
+    },
+    "Ethics": {
+      "solo": 7,
+      "joint": 42
+    },
+    "Social & Political Philosophy": {
+      "solo": 4,
+      "joint": 29
+    },
+    "Value Theory / Aesthetics": {
+      "solo": 0,
+      "joint": 7
+    },
+    "Non-Western & Cross-Cultural Philosophy": {
+      "solo": 0,
+      "joint": 5
     }
   },
   "cross_cutting_areas": {
     "Feminist Philosophy": {
-      "total": 0,
-      "by_main_aos": {},
+      "total": 2,
+      "by_main_aos": {
+        "Social & Political Philosophy": 2
+      },
       "trend": [
         {
           "week": "2026-03-10",
-          "count": 0
+          "count": 1
         },
         {
           "week": "2026-03-16",
@@ -22,17 +651,19 @@
         },
         {
           "week": "2026-03-21",
-          "count": 0
+          "count": 1
         }
       ]
     },
     "Philosophy of Race": {
-      "total": 0,
-      "by_main_aos": {},
+      "total": 2,
+      "by_main_aos": {
+        "Social & Political Philosophy": 2
+      },
       "trend": [
         {
           "week": "2026-03-10",
-          "count": 0
+          "count": 1
         },
         {
           "week": "2026-03-16",
@@ -40,7 +671,7 @@
         },
         {
           "week": "2026-03-21",
-          "count": 0
+          "count": 1
         }
       ]
     },
@@ -63,12 +694,14 @@
       ]
     },
     "Philosophy of Law": {
-      "total": 0,
-      "by_main_aos": {},
+      "total": 9,
+      "by_main_aos": {
+        "Social & Political Philosophy": 9
+      },
       "trend": [
         {
           "week": "2026-03-10",
-          "count": 0
+          "count": 7
         },
         {
           "week": "2026-03-16",
@@ -76,7 +709,7 @@
         },
         {
           "week": "2026-03-21",
-          "count": 0
+          "count": 2
         }
       ]
     }
