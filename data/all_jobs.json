@@ -727,7 +727,7 @@
       "workload": "Full time",
       "vacancies": "1",
       "location": "Stanford, Ca, United States",
-      "state": null,
+      "state": "CA",
       "country": "United States",
       "city": null,
       "start_date": "August 1, 2026",
@@ -6285,6 +6285,12 @@
       "total_jobs": 100,
       "new_jobs": 0,
       "new_job_ids": []
+    },
+    {
+      "date": "2026-03-21",
+      "total_jobs": 100,
+      "new_jobs": 0,
+      "new_job_ids": []
     }
   ],
   "weekly_trends": [
@@ -6437,9 +6443,9 @@
         "MO": 1,
         "NJ": 4,
         "ME": 1,
+        "CA": 5,
         "SC": 1,
         "GA": 3,
-        "CA": 4,
         "NC": 4,
         "MD": 2,
         "IA": 1,
@@ -6671,19 +6677,6 @@
         "United Kingdom": 6,
         "Ireland": 1
       },
-      "west_coast_city_counts": {}
-    },
-    {
-      "date": "2026-03-21",
-      "new_jobs_count": 0,
-      "main_aos_counts": {},
-      "detail_aos_counts": {},
-      "position_type_counts": {},
-      "position_type_by_aos": {},
-      "job_category_counts": {},
-      "institution_type_counts": {},
-      "state_counts": {},
-      "country_counts": {},
       "west_coast_city_counts": {}
     }
   ]
