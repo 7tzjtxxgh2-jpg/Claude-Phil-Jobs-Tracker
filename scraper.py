@@ -797,10 +797,12 @@ class PhilJobsScraper:
                 'subcategories': DETAIL_AOS.get(cat, []),
                 'color': MAIN_AOS_COLORS.get(cat, '#6b7280'),
             }
+        total_new_jobs_weekly = []
         for trend in trends:
             main_counts = trend.get('main_aos_counts', {})
             for cat in MAIN_AOS_CATEGORIES:
                 parent_categories[cat]['data'].append(main_counts.get(cat, 0))
+            total_new_jobs_weekly.append(trend.get('new_jobs_count', 0))
 
         # ── Detail AOS series (keyed by detail name) ────────────────────
         subcategory_data = {}
@@ -1205,6 +1207,7 @@ class PhilJobsScraper:
     <script>
         const data = {{
             dates: {json.dumps(dates)},
+            totalNewJobsWeekly: {json.dumps(total_new_jobs_weekly)},
             categories: {categories_js},
             subcategoryData: {json.dumps(subcategory_data)},
             jobTypeData: {json.dumps(job_type_series)},
@@ -1248,14 +1251,28 @@ class PhilJobsScraper:
 
         // ===== MAIN CHART =====
         const mainCtx = document.getElementById('mainChart').getContext('2d');
-        const datasets = Object.entries(data.categories).map(([key, cat]) => ({{
+        const totalDataset = {{
+            label: 'Total (All)',
+            data: data.totalNewJobsWeekly,
+            borderColor: '#111827',
+            backgroundColor: 'transparent',
+            borderWidth: 2.5,
+            borderDash: [6, 3],
+            tension: 0.4,
+            fill: false,
+            pointRadius: 4,
+            pointBackgroundColor: '#111827',
+            order: 0
+        }};
+        const datasets = [totalDataset, ...Object.entries(data.categories).map(([key, cat]) => ({{
             label: cat.name,
             data: cat.data,
             borderColor: cat.color,
             backgroundColor: cat.color + '20',
             tension: 0.4,
-            fill: true
-        }}));
+            fill: true,
+            order: 1
+        }}))];
         new Chart(mainCtx, {{
             type: 'line',
             data: {{ labels: data.dates, datasets: datasets }},
