@@ -1,416 +1,587 @@
-# PhilJobs Market Analytics - Project Specification
+# PhilJobs Market Analytics Dashboard
 
-## Project Overview
+An automated system that scrapes philosophy job postings from [PhilJobs.org](https://philjobs.org) every week, classifies them using the Claude AI API, and generates an interactive analytics dashboard hosted on GitHub Pages. The goal is to track multi-year trends in the academic philosophy job market to inform research specialization and career planning decisions.
 
-An automated system that scrapes philosophy job postings from PhilJobs.org weekly, tracks market trends over time, and provides interactive analytics to inform academic career planning decisions.
+**Owner:** PhD student, Philosophy (Sartre / Existentialism), Marquette University
+**Timeline:** 3-year longitudinal data collection (until job market entry)
+**Primary goal:** Understand which AOS categories and position types are growing or declining, with particular interest in West Coast institutions
 
-**Owner:** PhD student in Philosophy (Existentialism/Sartre) at Marquette University  
-**Timeline:** 3-year data collection period (until job market entry)  
-**Primary Goal:** Identify which philosophy specializations have the best job prospects, particularly on the West Coast
+**Live dashboard (US):** `https://[your-github-username].github.io/Claude-Phil-Jobs-Tracker/`
+**Live dashboard (International):** `https://[your-github-username].github.io/Claude-Phil-Jobs-Tracker/international.html`
+
+---
+
+## Table of Contents
+
+1. [System Architecture](#system-architecture)
+2. [Automation & Schedule](#automation--schedule)
+3. [Data Collection](#data-collection)
+4. [Deduplication Strategy](#deduplication-strategy)
+5. [AI Classification Methodology](#ai-classification-methodology)
+6. [AOS Taxonomy](#aos-taxonomy)
+7. [Position Type Taxonomy](#position-type-taxonomy)
+8. [Geographic Methodology](#geographic-methodology)
+9. [Dashboard Features](#dashboard-features)
+10. [Data Files](#data-files)
+11. [Setup & Configuration](#setup--configuration)
+12. [Running Manually](#running-manually)
+13. [Known Issues & Roadmap](#known-issues--roadmap)
 
 ---
 
 ## System Architecture
 
-### 1. Automated Scraper (`scraper.py`)
-- **Runs:** Every Monday at 9 AM UTC via GitHub Actions
-- **Scrapes:** PhilJobs.org for all active job listings
-- **Extracts:** Full details from each job posting page
-- **Tracks:** Only NEW unique jobs each week (not total active jobs)
+```
+PhilJobs.org
+    │
+    ▼
+scraper.py  (Python)
+    ├── Fetches all active job IDs from listing page
+    ├── Scrapes full details for each job
+    ├── Deduplicates against historical data (MD5 hash)
+    ├── Classifies NEW jobs only via Claude API
+    ├── Resolves missing US states via Claude API
+    ├── Calculates weekly trend aggregates
+    ├── Computes co-occurrence matrix
+    ├── Generates docs/index.html (US dashboard)
+    └── Generates docs/international.html (International dashboard)
+         │
+         ▼
+    GitHub Actions (commits data/ and docs/ to repo)
+         │
+         ▼
+    GitHub Pages (serves docs/ as live website)
+```
 
-### 2. Data Storage
-- **Location:** `data/` folder in GitHub repository
-- **Format:** JSON files with weekly snapshots
-- **Files:**
-  - `all_jobs.json` - Complete historical record of all unique jobs
-  - `snapshot_YYYY-MM-DD.json` - Each week's scrape
-  - `report_YYYY-MM-DD.md` - Human-readable weekly summary
-  - `trends_dashboard.html` - Interactive analytics dashboard
-
-### 3. GitHub Actions Workflow
-- **File:** `.github/workflows/weekly-scrape.yml`
-- **Schedule:** Cron job every Monday 9 AM UTC
-- **Process:** Scrape → Deduplicate → Calculate trends → Generate dashboard → Commit to repo
-
----
-
-## Data Collection Specifications
-
-### Job Data Fields Collected
-
-**Basic Information:**
-- Institution name
-- Job title
-- Job ID and PhilJobs URL
-- Posted date
-- Application deadline
-
-**Categorization:**
-- **AOS (Area of Specialization)** - Raw text + normalized categories
-- **AOC (Area of Competence)** - Raw text + normalized categories
-- **Job Type:** Tenure-track, Postdoc, Adjunct/Visiting, Tenured, Other
-- **Institution Type:** Research University, Teaching College, Other
-
-**Location Data:**
-- Full location string
-- US State (if applicable)
-- City (if applicable, especially West Coast cities)
-- Country (including Latin American countries)
-
-**Other:**
-- Workload (full-time/part-time)
-- Number of vacancies
-- Start date
-- Full job description text
-- Application details (type, URL, contact)
-
-### Deduplication Strategy
-
-Jobs are deduplicated using MD5 hash of: `institution_title_jobID`
-
-This ensures:
-- Same job posting counted only once across weeks
-- Expired and re-posted jobs counted as new if substantively different
-- Accurate "new jobs per week" metrics
+**Core files:**
+| File | Purpose |
+|------|---------|
+| `scraper.py` | Main script — scraping, classification, trend calculation, HTML generation |
+| `.github/workflows/weekly-scrape.yml` | GitHub Actions automation |
+| `data/all_jobs.json` | Master historical record of all jobs and trends |
+| `data/co_occurrence.json` | Computed AOS co-occurrence matrix |
+| `data/snapshot_YYYY-MM-DD.json` | Weekly scrape snapshots |
+| `docs/index.html` | US market dashboard (served via GitHub Pages) |
+| `docs/international.html` | International market dashboard |
 
 ---
 
-## Specialization Categorization System
+## Automation & Schedule
 
-### Category Hierarchy
+The scraper runs automatically via **GitHub Actions** every **Monday at 14:00 UTC (9:00 AM Central Time during CDT)**.
 
-Jobs are organized into **8 major categories** with **subcategories**:
+**Cron expression:** `0 14 * * 1`
 
-#### 1. Ethics
-- ethics (general)
-- applied ethics
-- bioethics
-- environmental ethics
-- ai ethics
+On each run, GitHub Actions:
+1. Checks out the repository
+2. Installs Python dependencies (`requests`, `beautifulsoup4`, `anthropic`)
+3. Runs `scraper.py`
+4. Commits any changes to `data/` and `docs/` with message `Weekly scrape: YYYY-MM-DD`
+5. Pushes to `main` branch (GitHub Pages auto-updates)
+6. On failure: automatically opens a GitHub Issue titled `⚠️ Weekly scrape FAILED — YYYY-MM-DD` with a link to the failed run log
 
-#### 2. Social & Political
-- social and political philosophy
-- philosophy of race
-- philosophy of gender
-- philosophy of law
+**Manual trigger:** Go to repository → Actions tab → "Weekly PhilJobs Scraper" → "Run workflow"
 
-#### 3. History of Philosophy
-- ancient philosophy
-- medieval philosophy
-- early modern philosophy
-- continental philosophy
-- american philosophy
-- history of philosophy (general)
-
-#### 4. Non-Western Philosophy
-- asian philosophy
-- african/africana philosophy
-- latin american philosophy
-- islamic philosophy
-- indigenous philosophy
-
-#### 5. Metaphysics & Epistemology
-- metaphysics
-- epistemology
-- philosophy of mind
-- philosophy of language
-- philosophy of action
-- philosophy of religion
-
-#### 6. Science & Logic
-- philosophy of science
-- philosophy of physics
-- logic
-- philosophy of mathematics
-- philosophy of technology
-- philosophy of artificial intelligence
-
-#### 7. Value Theory/Aesthetics
-- aesthetics
-- value theory
-
-#### 8. Other
-- PPE (Politics, Philosophy, Economics)
-- public philosophy
-- critical thinking
-
-### Normalization Rules
-
-Raw AOS/AOC text is parsed and normalized:
-- Split on: commas, semicolons, slashes, "and", "or"
-- Filter out: noise words ("broadly construed", "open", "and", "or", etc.)
-- Map to canonical forms (e.g., "AI Ethics" = "ethics of AI" = "ai ethics")
-- Long sentences (>15 chars) are discarded as noise
+**Required secret:** The repository must have `CLAUDE` set as a GitHub Actions secret containing a valid Anthropic API key. Without it, new jobs will receive fallback classifications and will be reclassified on the next successful run.
 
 ---
 
-## Dashboard Requirements
+## Data Collection
 
-### Core Functionality
+### How jobs are found
 
-**✅ IMPLEMENTED:**
-1. **Overview Chart** - Line graph showing new jobs per week for all major categories
-2. **Seasonal Markers** - Visual indicators for hiring season (Sept-Jan)
-3. **Category Cards** - Clickable cards for each major category showing current week stats
-4. **Drill-Down Modals** - Click category → see detailed view with:
-   - Subcategory breakdown
-   - Trend chart (parent + all subcategories)
-   - Week-over-week change indicators
-   - Job type pie chart (Tenure-track vs Postdoc vs Adjunct, etc.)
-   - Institution type pie chart (Research vs Teaching)
-   - Key insights (auto-generated)
+The scraper uses PhilJobs's detailed query view (`/jobQuery/execute?view=On+screen+-+detailed`) to retrieve all currently active listings. It paginates through all result pages, collecting job IDs. If this endpoint fails, it falls back to scraping job links from the homepage.
 
-**❌ NOT IMPLEMENTED (NEEDS WORK):**
-5. **Interactive Maps** - Currently shows placeholder lists, needs:
-   - US State-level SVG map with color intensity by job count
-   - West Coast detail view (CA, OR, WA) with city-level markers
-   - Latin America country-level SVG map
-   - Maps should update when category is selected (integrated filtering)
+A 0.5-second delay is inserted between each individual job page request to avoid overloading the PhilJobs server.
 
-### Geographic Features (HIGH PRIORITY)
+### Fields collected per job
 
-**West Coast Focus:**
-User specifically wants West Coast positions (San Francisco Bay Area, Pacific Northwest)
+| Field | Source | Notes |
+|-------|--------|-------|
+| `id` | PhilJobs URL | Numeric job ID |
+| `url` | Constructed | `philjobs.org/job/show/{id}` |
+| `institution` | `<h2>` tag | Hiring institution name |
+| `title` | `<h1>` tag | Job title |
+| `job_category` | Table row | PhilJobs's own category label |
+| `aos` | Table row | Raw AOS text from posting |
+| `aoc` | Table row | Raw AOC (Area of Competence) text |
+| `location` | Table row | Free-text location string |
+| `state` | Parsed from location | 2-letter US state code, or `null` |
+| `country` | Parsed from location | Country name |
+| `city` | Parsed from location | City name (first part before comma) |
+| `deadline` | Table row | Hard application deadline |
+| `posted_date` | Table row | "Time created" on PhilJobs |
+| `description` | Table row | Full job description text |
+| `workload` | Table row | Full-time / part-time |
+| `vacancies` | Table row | Number of positions |
+| `start_date` | Table row | Anticipated start date |
+| `application_type` | Table row | How to apply |
+| `application_url` | Table row | Link to application portal |
+| `contact_email` | Table row | Contact email if provided |
+| `hash` | Computed | MD5 of `institution_title` — used for deduplication |
+| `scraped_date` | System clock | ISO datetime when this job was first scraped |
+| `status` | Title text | `active` or `expired` (if title contains "(EXPIRED)") |
+| `classification` | Claude API | Full classification object — see [AI Classification](#ai-classification-methodology) |
+| `job_type` | Synced from classification | Top-level copy of `position_type` for backward compatibility |
+| `institution_type` | Synced from classification | Top-level copy |
 
-**City-level tracking for:**
-- **Bay Area:** Berkeley, Stanford, San Francisco, Oakland, San Jose, Santa Cruz, Davis
+---
+
+## Deduplication Strategy
+
+A job is considered unique if its `institution + title` combination has not been seen before. The hash is:
+
+```python
+hash = MD5(f"{institution}_{title}")
+```
+
+On each run, only jobs whose hash is **not** in the existing `all_jobs.json` are treated as new. This means:
+- The same posting appearing multiple weeks on PhilJobs is counted **only once** (when first seen)
+- A job re-posted under a meaningfully different title or institution name would be counted as new
+- "New jobs this week" in the dashboard = genuinely new market entries, not total active listings
+
+Weekly trend data reflects new entries per week, not the total active job pool size.
+
+---
+
+## AI Classification Methodology
+
+### Why Claude API?
+
+Raw PhilJobs data includes free-text AOS descriptions (e.g., "Ethics, broadly construed; Philosophy of Mind") that are too varied for simple keyword matching. Claude Haiku is used to normalize these into a controlled taxonomy, classify position types from job titles and descriptions, and identify institution types — tasks that benefit from linguistic understanding.
+
+### Model and settings
+
+- **Model:** `claude-haiku-4-5-20251001`
+- **Temperature:** `0` (deterministic — same input always produces same output)
+- **Max tokens:** `1000`
+- **Retries:** 3 attempts per job on API failure, with 1-second backoff
+
+### What gets classified
+
+**Only new jobs are classified** on each weekly run. Jobs already in `all_jobs.json` with a valid `classification` object are never re-sent to the API. This keeps API costs low and preserves consistency of historical data.
+
+### Classification output
+
+Each job receives a `classification` object with these fields:
+
+```json
+{
+  "main_aos": ["Ethics", "Social & Political Philosophy"],
+  "detail_aos": {
+    "Ethics": ["Biomedical Ethics / Bioethics"],
+    "Social & Political Philosophy": ["Philosophy of Law"]
+  },
+  "position_type": "Tenure-Track",
+  "institution_type": "Research University",
+  "state_us": "NY",
+  "reasoning": "Job title and AOS explicitly indicate a tenure-track position in bioethics and philosophy of law."
+}
+```
+
+### Validation
+
+After receiving Claude's response, the scraper validates and sanitizes every field:
+- `main_aos` entries not in the canonical 8-category list are dropped; if none remain, falls back to `["Open"]`
+- `detail_aos` subcategories not in the defined list for that main category are dropped
+- `position_type` must be one of the 5 canonical values; old legacy labels (e.g., `"Tenure-track"`, `"Postdoc"`) are automatically migrated
+- `state_us` must be a 2-letter alpha code; anything else becomes `"INTERNATIONAL"`
+
+### Fallback behavior
+
+If the API key is missing, the `anthropic` package is not installed, or all 3 retry attempts fail, the job receives a fallback classification:
+
+```json
+{
+  "main_aos": ["Open"],
+  "detail_aos": {"Open": []},
+  "position_type": "Other",
+  "institution_type": "Other",
+  "reasoning": "classification_failed"
+}
+```
+
+Jobs with `reasoning: "classification_failed"` are detected on subsequent runs and reclassified automatically once the API is available.
+
+### Checkpoint saves
+
+During bulk reclassification, the data file is saved to disk every 10 jobs as a checkpoint. This prevents data loss if a long reclassification run is interrupted.
+
+---
+
+## AOS Taxonomy
+
+The taxonomy has two levels: 8 **main categories** and fine-grained **subcategories** within each.
+
+### Main AOS Categories
+
+| Category | Color |
+|----------|-------|
+| Ethics | `#ef4444` (red) |
+| Social & Political Philosophy | `#3b82f6` (blue) |
+| Value Theory / Aesthetics | `#06b6d4` (cyan) |
+| History of Philosophy | `#8b5cf6` (purple) |
+| Non-Western & Cross-Cultural Philosophy | `#ec4899` (pink) |
+| Metaphysics & Epistemology | `#10b981` (green) |
+| Science, Logic, & Mathematics | `#f59e0b` (amber) |
+| Open | `#6b7280` (gray) |
+
+"Open" means the posting explicitly accepts any AOS — the position is not specialized. This is distinct from a classification failure.
+
+**A single job can belong to multiple main AOS categories** (e.g., a position in "Philosophy of Law" might be classified under both Ethics and Social & Political Philosophy). The main chart counts each main-category assignment, not each unique job, so weekly totals across categories will exceed the total new job count.
+
+### Subcategories
+
+<details>
+<summary>Ethics (11 subcategories)</summary>
+
+- Meta-Ethics
+- Normative Ethics
+- Biomedical Ethics / Bioethics
+- Neuroethics
+- AI, Technology, and Information Ethics
+- Environmental Ethics
+- Animal Ethics
+- Food and Agricultural Ethics
+- Business Ethics
+- Ethics of Population, Future Generations, and Global Justice
+- Ethics (General / Applied Ethics, Broadly Construed)
+</details>
+
+<details>
+<summary>Social & Political Philosophy (9 subcategories)</summary>
+
+- Social and Political Philosophy (General / Political Theory)
+- Philosophy of Law
+- Philosophy of Race
+- Philosophy of Gender
+- Feminist Philosophy
+- Philosophy of Sexuality and Queer Theory
+- PPE (Politics, Philosophy, and Economics)
+- Philosophy of Education
+- Social & Political Philosophy (General)
+</details>
+
+<details>
+<summary>Value Theory / Aesthetics (7 subcategories)</summary>
+
+- Aesthetics (General)
+- Philosophy of Art
+- Philosophy of Music
+- Philosophy of Film and Media
+- Philosophy of Literature
+- Value Theory / Axiology
+- Value Theory / Aesthetics (General)
+</details>
+
+<details>
+<summary>History of Philosophy (7 subcategories)</summary>
+
+- Ancient Greek and Roman Philosophy
+- Medieval and Renaissance Philosophy
+- Early Modern Philosophy (17th/18th Century)
+- 19th/20th Century Philosophy
+- American Philosophy
+- Continental Philosophy
+- History of Philosophy (General)
+</details>
+
+<details>
+<summary>Non-Western & Cross-Cultural Philosophy (7 subcategories)</summary>
+
+- Asian Philosophy
+- African/Africana Philosophy
+- Arabic and Islamic Philosophy
+- Latin American Philosophy
+- Native American / Indigenous Philosophy
+- Comparative Philosophy / Cross-Cultural
+- Non-Western Philosophy (General)
+</details>
+
+<details>
+<summary>Metaphysics & Epistemology (7 subcategories)</summary>
+
+- Metaphysics
+- Epistemology
+- Philosophy of Mind
+- Philosophy of Language
+- Philosophy of Action
+- Philosophy of Religion
+- Metaphysics & Epistemology (General)
+</details>
+
+<details>
+<summary>Science, Logic, & Mathematics (10 subcategories)</summary>
+
+- Philosophy of Science (General)
+- Philosophy of Biology
+- Philosophy of Physics
+- Philosophy of Cognitive Science
+- Philosophy of Computing / Philosophy of AI
+- Logic
+- Philosophy of Mathematics
+- Philosophy of Social Science
+- Decision Theory
+- Science, Logic, & Mathematics (General)
+</details>
+
+### Cross-Cutting Areas
+
+Four subcategories are designated as "cross-cutting" because they appear across multiple main categories and have particular sociological significance in the job market: **Feminist Philosophy**, **Philosophy of Race**, **Philosophy of Gender**, and **Philosophy of Law**. These are tracked separately in the dashboard to reveal patterns that pure main-category analysis would miss.
+
+---
+
+## Position Type Taxonomy
+
+Every job is assigned exactly one of these five position types:
+
+| Type | Description |
+|------|-------------|
+| **Tenure-Track** | Explicitly described as tenure-track; "Assistant Professor (tenure-track)" or any TT position |
+| **Postdoc / Fellowship** | Postdoctoral positions, postdoc fellowships, named fellowships (Mellon, ACLS, etc.), research fellowships — fixed-term but research-focused |
+| **Visiting / Adjunct / Lecturer (Fixed-Term)** | Visiting Assistant Professor, Visiting Lecturer, Adjunct, Instructor, fixed-term Lecturer — teaching-focused with no path to permanence |
+| **Tenured / Continuing / Permanent** | Associate Professor (tenured), Full Professor, Senior Lecturer (permanent/continuing), any explicitly permanent or continuing non-tenure-track position |
+| **Other** | Department chairs with no faculty component, deans, purely administrative or non-academic positions |
+
+The Position Type Trends chart in the dashboard shows how the volume of each type has changed over time. Within each type, the chart also shows the AOS breakdown — for example, what proportion of tenure-track jobs in a given week were in Ethics vs. Metaphysics.
+
+---
+
+## Geographic Methodology
+
+### US vs. International determination
+
+A job is classified as **US** if its `state` field is set (a 2-letter state code). It is classified as **International** if `state` is null. The two dashboards (`index.html` and `international.html`) filter on this field.
+
+### State parsing
+
+The scraper first attempts to identify a US state from the raw location string using a lookup table of all 50 states, D.C., and common variants (e.g., "Washington D.C.", "Washington, DC"). If a match is found, the state code is set directly.
+
+For jobs where state could not be parsed from the location string (e.g., the location is just an institution name, or uses an unusual format), the Claude API is used as a secondary resolver. It is asked to return only a 2-letter state code or "INTERNATIONAL" based on its training knowledge of the institution's location. It is **not** given access to browse the web — it uses only what it already knows about the institution.
+
+### US Regions
+
+States are grouped into four regions for the Regional Trends chart:
+
+| Region | States |
+|--------|--------|
+| **West** | CA, OR, WA, AK, HI, NV, ID, MT, WY, UT, CO, AZ, NM |
+| **Northeast** | ME, NH, VT, MA, RI, CT, NY, NJ, PA, DC |
+| **South** | DE, MD, VA, WV, NC, SC, GA, FL, KY, TN, AL, MS, AR, LA, OK, TX |
+| **Midwest** | OH, IN, IL, MI, WI, MN, IA, MO, ND, SD, NE, KS |
+
+Note: Washington D.C. is grouped with the Northeast on cultural grounds.
+
+### West Coast city tracking
+
+For jobs in CA, OR, or WA, the scraper attempts to match the city field against a list of tracked West Coast cities. City matching is substring-based (case-insensitive). Tracked cities:
+
+- **Bay Area / NorCal:** Berkeley, Stanford, San Francisco, Oakland, San Jose, Santa Cruz, Davis
 - **SoCal:** Los Angeles, San Diego, Irvine, Claremont, Riverside
 - **Pacific Northwest:** Seattle, Portland, Eugene, Tacoma, Olympia
 
-**Map Behavior:**
-- Main US map: state-level choropleth (darker = more jobs)
-- Hover CA/OR/WA: Highlight as special region
-- Click CA/OR/WA: Show zoomed detail with city markers
-- All maps filter by selected category (e.g., click "Ethics" → maps show only Ethics jobs)
+Each city has associated latitude/longitude coordinates for potential map plotting.
 
-**Latin America:**
-- Separate country-level map
-- Track: Mexico, Brazil, Argentina, Chile, Colombia, Peru, Venezuela, Ecuador, Guatemala, Cuba, Bolivia, Haiti, Dominican Republic, Honduras, Paraguay, El Salvador, Nicaragua, Costa Rica, Panama, Puerto Rico, Uruguay
+### Hiring season
 
-### Visual Design
-
-- **Framework:** Tailwind CSS
-- **Charts:** Chart.js
-- **Color Scheme:**
-  - Ethics: `#ef4444` (red)
-  - Social & Political: `#3b82f6` (blue)
-  - History of Philosophy: `#8b5cf6` (purple)
-  - Non-Western: `#ec4899` (pink)
-  - M&E: `#10b981` (green)
-  - Science & Logic: `#f59e0b` (amber)
-  - Value Theory/Aesthetics: `#06b6d4` (cyan)
-  - Other: `#6b7280` (gray)
-
-- **Typography:** Inter font family
-- **Cards:** Hover effects, smooth transitions
-- **Gradient header:** Indigo to purple
-- **Modern, clean aesthetic** suitable for sharing with advisors/colleagues
+Philosophy has a well-defined hiring cycle. The scraper marks weeks falling between **September and January** (months 9, 10, 11, 12, 1) as "hiring season." These weeks are highlighted with background shading on trend charts.
 
 ---
 
-## Current Implementation Status
+## Dashboard Features
 
-### ✅ Working Features
+Both dashboards (`index.html` for US, `international.html` for International) contain the same set of charts and interactive elements.
 
-1. **Automated weekly scraping** - Runs every Monday via GitHub Actions
-2. **Full job detail extraction** - All fields captured from PhilJobs
-3. **Smart categorization** - Job types and institution types auto-detected
-4. **Location parsing** - US states, West Coast cities, Latin American countries
-5. **Deduplication** - Only new unique jobs counted each week
-6. **Trend tracking** - New jobs per week by category
-7. **Dashboard generation** - HTML file with interactive charts
-8. **Category drill-down** - Modal popups with detailed breakdowns
-9. **Job type charts** - Pie charts showing TT vs Postdoc distribution
-10. **Institution type charts** - Research vs Teaching breakdown
-11. **Seasonal indicators** - Hiring season markers on charts
-12. **Subcategory trends** - Individual trend lines for AI Ethics, Bioethics, etc.
+### Summary statistics bar
+- New jobs this week
+- Total unique jobs tracked
+- Most active AOS category this week
+- Number of weeks tracked
 
-### ❌ Missing/Broken Features
+### Market Overview chart
+- Line chart: one line per main AOS category + one "Total New Jobs" line
+- X-axis: weeks (ISO date)
+- Y-axis: count of new job classifications (jobs with multiple AOS count once per AOS)
+- Hiring season highlighted with background shading
+- Interactive: hover for exact values; click legend to show/hide categories
 
-1. **Interactive SVG maps** - Currently shows text lists instead of visual maps
-   - Need: US state choropleth map
-   - Need: West Coast zoom with city markers
-   - Need: Latin America country map
-   - Need: Maps integrated with category filtering
+### Category cards
+- One card per main AOS category
+- Shows: total jobs in that category, current-week count, week-over-week change indicator
+- Click any card to open the **drill-down modal**
 
-2. **Potential improvements for future:**
-   - Export to CSV functionality
-   - Multi-year comparison view
-   - Search/filter jobs by keyword
-   - Email notifications for specific specializations
-   - Salary data extraction (if available in descriptions)
+### Drill-down modal (per category)
+- Subcategory breakdown table with counts
+- Trend chart showing the parent category line plus all subcategory lines
+- Job type pie chart (how many in this category are TT vs. postdoc vs. visiting, etc.)
+- Institution type pie chart (research university vs. teaching college)
+- US states breakdown (top states by job count)
+- Key insights (auto-generated text summaries)
+
+### Position Type Trends chart
+- Separate from Market Overview — tracks the 5 position types over time
+- Each line = one position type; shows its volume per week
+- Click any line to see its AOS breakdown
+
+### AOS Co-occurrence matrix
+- Heatmap showing how often pairs of main AOS categories appear in the same job posting
+- Helps identify which specializations are commonly bundled together
+
+### Solo vs. Joint postings chart
+- For each main category: how many jobs listed it as their *only* AOS vs. alongside other categories
+- Reveals which specializations tend to appear as pure hires vs. cross-disciplinary
+
+### Cross-cutting areas chart
+- Trend lines for Feminist Philosophy, Philosophy of Race, Philosophy of Gender, Philosophy of Law
+- Shows their frequency over time and which main categories they appear with most often
+
+### US Geographic Overview (US dashboard only)
+- Interactive D3.js choropleth map of the US — states shaded by job count
+- Hover tooltip showing state name and count
+- Click a state to open a detail panel showing jobs in that state
+- Regional trend lines: West, Northeast, South, Midwest
+
+### West Coast detail chart
+- Bar chart showing city-level job counts for tracked West Coast cities
 
 ---
 
-## Technical Details
+## Data Files
+
+### `data/all_jobs.json`
+
+The master data file. Structure:
+
+```json
+{
+  "jobs": [ { ...job object... } ],
+  "weekly_snapshots": [
+    {
+      "date": "2026-03-17",
+      "total_jobs": 125,
+      "new_jobs": 12,
+      "new_job_ids": ["1234", "5678"]
+    }
+  ],
+  "weekly_trends": [
+    {
+      "date": "2026-03-17",
+      "new_jobs_count": 12,
+      "main_aos_counts": { "Ethics": 3, "Metaphysics & Epistemology": 2 },
+      "detail_aos_counts": { "Ethics::Biomedical Ethics / Bioethics": 1 },
+      "position_type_counts": { "Tenure-Track": 5, "Postdoc / Fellowship": 4 },
+      "position_type_by_aos": { "Ethics": { "Tenure-Track": 2 } },
+      "institution_type_counts": { "Research University": 8 },
+      "state_counts": { "NY": 2, "CA": 3 },
+      "country_counts": { "United States": 12 },
+      "west_coast_city_counts": { "Berkeley": 1 }
+    }
+  ]
+}
+```
+
+### `data/co_occurrence.json`
+
+Computed from all classified jobs. Contains:
+- `main_aos_matrix`: how many times each pair of main categories co-occurs in a single job
+- `main_aos_solo_vs_joint`: for each category, solo vs. multi-category postings
+- `detail_aos_by_context`: for each detail subcategory, what main categories it appeared in (solo vs. with others)
+- `cross_cutting_areas`: per-week counts and main-category breakdowns for the 4 cross-cutting areas
+
+### `data/snapshot_YYYY-MM-DD.json`
+
+One file per run. Contains all currently active jobs on PhilJobs at that moment and which ones were new. Useful for auditing.
+
+---
+
+## Setup & Configuration
+
+### First-time setup
+
+1. Fork or clone the repository
+2. Enable GitHub Pages: Settings → Pages → Source: `Deploy from a branch` → Branch: `main`, Folder: `/docs`
+3. Add the Anthropic API key as a repository secret:
+   - Settings → Secrets and variables → Actions → New repository secret
+   - Name: `CLAUDE`
+   - Value: your Anthropic API key
+4. Enable Actions write permissions: Settings → Actions → General → Workflow permissions → Read and write
 
 ### Dependencies
 
-**Python packages:**
-- `requests` - HTTP requests to PhilJobs
-- `beautifulsoup4` - HTML parsing
-- `json` - Data serialization
-- `datetime` - Date handling
-- `hashlib` - Deduplication hashing
-- `re` - Text parsing
+Python packages (installed automatically by GitHub Actions):
+- `requests` — HTTP requests to PhilJobs
+- `beautifulsoup4` — HTML parsing
+- `anthropic` — Claude API client
 
-**JavaScript libraries (CDN):**
-- Tailwind CSS - UI framework
-- Chart.js - Interactive charts
-- (Need to add: D3.js or similar for SVG maps)
+JavaScript (loaded from CDN, no installation needed):
+- [Tailwind CSS](https://tailwindcss.com) — utility-first CSS framework
+- [Chart.js](https://www.chartjs.org) — interactive line/bar/pie charts
+- [D3.js v7](https://d3js.org) — US choropleth map
+- [TopoJSON client](https://github.com/topojson/topojson-client) — geographic data format for maps
 
-### Key Functions
+---
 
-**`scrape_jobs()`** - Main scraping loop  
-**`scrape_job_details(job_id)`** - Extract full details from individual job page  
-**`normalize_specialization(raw_area)`** - Clean and categorize AOS/AOC text  
-**`categorize_job_type()`** - Detect TT vs Postdoc vs Adjunct  
-**`extract_location_data()`** - Parse location into state/country/city  
-**`calculate_weekly_trends(new_jobs, timestamp)`** - Aggregate new jobs by category  
-**`generate_trend_dashboard()`** - Create HTML dashboard with all visualizations  
+## Running Manually
 
-### Data Flow
+To run locally (useful for testing or forcing a reclassification):
 
-```
-PhilJobs.org 
-  → scraper.py scrapes all listings
-  → Extract full details for each job
-  → Normalize categories
-  → Compare with historical data (all_jobs.json)
-  → Identify new unique jobs
-  → Calculate weekly trends
-  → Generate dashboard HTML
-  → Commit to GitHub
+```bash
+# Install dependencies
+pip install requests beautifulsoup4 anthropic
+
+# Set your API key
+export ANTHROPIC_API_KEY=your_key_here
+# OR on Windows:
+# set ANTHROPIC_API_KEY=your_key_here
+
+# Run the scraper
+python scraper.py
 ```
 
----
+The scraper will:
+1. Scrape PhilJobs for all active jobs
+2. Identify new ones (not in `data/all_jobs.json`)
+3. Classify new jobs via Claude API
+4. Resolve any missing US states via Claude API
+5. Rebuild weekly trends if any jobs needed reclassification
+6. Generate `docs/index.html` and `docs/international.html`
 
-## Usage Instructions
-
-### First-Time Setup
-
-1. Repository created: `Claude-Phil-Jobs-Tracker`
-2. Files added:
-   - `scraper.py` - Main scraper script
-   - `.github/workflows/weekly-scrape.yml` - Automation
-   - `data/.gitkeep` - Placeholder for data folder
-3. GitHub Actions permissions set to "Read and write"
-
-### Weekly Workflow (Automated)
-
-Every Monday at 9 AM UTC:
-1. GitHub Actions triggers workflow
-2. Scraper runs, collects new jobs
-3. Data files updated in `data/` folder
-4. Changes automatically committed to repo
-
-### Manual Run
-
-Can be triggered anytime via GitHub Actions UI:
-1. Go to repository → Actions tab
-2. Click "Weekly PhilJobs Scraper"
-3. Click "Run workflow"
-
-### Viewing Results
-
-1. Navigate to `data/` folder
-2. Download `trends_dashboard.html`
-3. Open in web browser (Chrome, Safari, Firefox)
-4. Click category cards to drill down
-5. View reports in `.md` files for text summary
+Open either HTML file directly in a browser to preview the dashboard.
 
 ---
 
-## Future Enhancements (After Maps Are Fixed)
+## Known Issues & Roadmap
 
-1. **Export functionality** - Download data as CSV/Excel
-2. **Filters** - Filter by job type, location, institution type
-3. **Search** - Search job descriptions by keyword
-4. **Alerts** - Email/notification when West Coast + specific specialization appears
-5. **Comparative analytics** - Compare this year vs last year trends
-6. **Salary tracking** - Extract salary info from job descriptions
-7. **Application tracking** - Track which jobs you've applied to
+### Current known issues
 
----
+- **West Coast city detail in modal:** The category drill-down modal has a "West Coast Detail" section that is not yet wired up with data — it remains hidden. The underlying data (`westCoastData`) is collected and available; the JS to populate the display has not been implemented.
+- **Cross-cutting chart X-axis:** The cross-cutting areas chart derives its week labels from the cross-cutting data itself rather than the global `data.dates` array. If a cross-cutting area had no jobs in early weeks, its X-axis will appear to start later than other charts.
 
-## Critical Notes for Future Development
+### Roadmap
 
-### Map Implementation Requirements
+- **International dashboard:** A second page (`international.html`) for non-US jobs is in active development, including a world choropleth map and continent/region trend lines.
+- **US/International navigation:** Once the international dashboard is built, both pages will have navigation links between them.
+- **West Coast city modal wiring:** Populate `#westCoastCities` in the drill-down modal for West Coast-relevant categories.
+- **Cross-cutting chart alignment:** Standardize X-axis to use global `data.dates`.
+- **Accessibility improvements:** Add ARIA roles/labels to modals and chart canvas elements, ESC key handler for modals.
+- **Meta tags:** Add `<meta name="description">` and Open Graph tags for link sharing.
 
-When implementing the SVG maps, ensure:
+### Design decisions and rationale
 
-1. **Integration with category filtering**
-   - When user clicks "Ethics" category card → modal opens
-   - Maps in modal show ONLY Ethics jobs
-   - Click "AI Ethics" subcategory → maps update to show only AI Ethics
-   - This is critical - maps must stay in sync with selected category
+**Why weekly scrapes and not daily?** The philosophy job market is slow-moving; new postings appear in clusters, and weekly granularity is sufficient to track hiring season patterns. Weekly also keeps API costs and GitHub Actions minutes low.
 
-2. **West Coast priority**
-   - CA, OR, WA states should be visually distinct (different border, highlight)
-   - Clicking these states reveals city-level detail
-   - City markers sized by number of jobs
+**Why count new jobs, not active jobs?** The total active listing count fluctuates with expirations and removals. New job entries per week is a cleaner signal of actual market activity.
 
-3. **Data structure**
-   - Map data already collected in `state_counts`, `west_coast_city_counts`, `country_counts`
-   - Available in JavaScript as `data.stateData`, `data.westCoastData`, `data.latinData`
-   - Each is a dictionary: `{location: [count_week1, count_week2, ...]}`
+**Why Claude Haiku and not a more powerful model?** Haiku is fast, cheap, and sufficiently accurate for structured extraction tasks with a well-defined taxonomy. Temperature=0 ensures deterministic and consistent classification across runs.
 
-4. **Visual requirements**
-   - Use color intensity (choropleth) for state/country maps
-   - Tooltip on hover showing exact count
-   - Clickable for detail view
-   - Responsive design (works on mobile)
-
-### West Coast Cities Coordinates
-
-Already defined in Python (`WEST_COAST_CITIES` dict) with lat/lon for accurate mapping:
-- Berkeley, Stanford, SF, Oakland, San Jose, Santa Cruz, Davis
-- LA, San Diego, Irvine, Claremont, Riverside
-- Seattle, Portland, Eugene, Tacoma, Olympia
-
-### Seasonal Logic
-
-Hiring season = September through January (months 9, 10, 11, 12, 1)
-Should be visually indicated on trend charts with background shading or markers
-
----
-
-## Key User Requirements Summary
-
-**User Profile:**
-- PhD student, Philosophy (Sartre/Existentialism)
-- Marquette University
-- 3 years until job market
-- Target: West Coast (SF Bay Area or Pacific Northwest)
-
-**Primary Questions to Answer:**
-1. Which specializations consistently have the most jobs?
-2. Which are growing vs declining?
-3. Are there West Coast opportunities in my areas of interest?
-4. What's the TT vs Postdoc ratio in different fields?
-5. Should I pivot my research focus based on market demand?
-
-**Data Needs:**
-- Weekly new job counts (not total active)
-- 3-year longitudinal trends
-- Geographic distribution (especially West Coast)
-- Job type breakdown (TT critical)
-- Subcategory granularity (e.g., AI Ethics within Ethics)
-
-**Sharing:**
-Dashboard should look professional enough to share with:
-- Dissertation advisor
-- Department colleagues
-- Other grad students
-- Potential employers (showing market analysis skills)
+**Why separate US and International dashboards?** The US and international markets have different structures (e.g., UK REF cycles, European fellowship structures vs. US tenure track), different geographic visualizations, and potentially different user interests. Keeping them separate allows each to be developed independently.
 
 ---
 
 ## Contact & Maintenance
 
-**Repository:** https://github.com/[username]/Claude-Phil-Jobs-Tracker  
-**Primary maintainer:** User (PhD student)  
-**Created:** January 2026  
-**Last updated:** [Current date]
+**Repository:** `https://github.com/[your-username]/Claude-Phil-Jobs-Tracker`
+**Primary maintainer:** Owner (PhD student in Philosophy, Marquette University)
+**Last README update:** March 2026
 
-For questions or issues, refer to this specification document.
+For scrape failures, check the automatically-opened GitHub Issue in the Issues tab for a link to the failed run log.
