@@ -129,18 +129,20 @@ A 0.5-second delay is inserted between each individual job page request to avoid
 
 ## Deduplication Strategy
 
-A job is considered unique if its `institution + title` combination has not been seen before. The hash is:
+A job is considered unique based on its **PhilJobs numeric job ID**. The hash stored in `all_jobs.json` is:
 
 ```python
-hash = MD5(f"{institution}_{title}")
+hash = MD5(job_id)
 ```
 
 On each run, only jobs whose hash is **not** in the existing `all_jobs.json` are treated as new. This means:
 - The same posting appearing multiple weeks on PhilJobs is counted **only once** (when first seen)
-- A job re-posted under a meaningfully different title or institution name would be counted as new
+- Two genuinely separate openings at the same institution with identical titles are correctly counted as two distinct jobs (they have different PhilJobs IDs)
 - "New jobs this week" in the dashboard = genuinely new market entries, not total active listings
 
 Weekly trend data reflects new entries per week, not the total active job pool size.
+
+**Migration note:** Prior to March 2026, hashes were computed from `MD5(institution_title)`. The scraper automatically migrates all existing records to the new ID-based format on first run — this is a one-time, safe operation that does not alter any other job data.
 
 ---
 

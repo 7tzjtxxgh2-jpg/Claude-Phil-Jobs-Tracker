@@ -440,8 +440,10 @@ class PhilJobsScraper:
             else:
                 job['status'] = 'active'
 
-            unique_str = f"{job.get('institution', '')}_{job.get('title', '')}"
-            job['hash'] = hashlib.md5(unique_str.encode()).hexdigest()
+            # Use PhilJobs job ID as the deduplication key — more reliable than
+            # institution+title, which fails when titles have minor variations or
+            # when a school posts two identical-titled roles in the same cycle.
+            job['hash'] = hashlib.md5(job_id.encode()).hexdigest()
             job['scraped_date'] = datetime.now().isoformat()
 
             return job
@@ -478,6 +480,35 @@ class PhilJobsScraper:
                 data.setdefault('jobs', [])
                 return data
         return {'jobs': [], 'weekly_snapshots': [], 'weekly_trends': []}
+
+    def migrate_hashes_to_job_id(self, historical_data) -> int:
+        """One-time migration: recompute all existing job hashes using PhilJobs job ID.
+
+        Previously hashes were MD5(institution_title). Switching to MD5(job_id) is
+        more reliable. This runs on every scrape but is a no-op once all jobs have
+        been migrated (detected by checking whether the stored hash matches the
+        ID-based hash).
+        """
+        jobs = historical_data.get('jobs', [])
+        migrated = 0
+        for job in jobs:
+            job_id = job.get('id', '')
+            if not job_id:
+                continue
+            expected_hash = hashlib.md5(job_id.encode()).hexdigest()
+            if job.get('hash') != expected_hash:
+                job['hash'] = expected_hash
+                migrated += 1
+
+        if migrated:
+            print(f"  Migrated {migrated} job hashes to PhilJobs-ID-based deduplication")
+            all_data_file = self.data_dir / "all_jobs.json"
+            with open(all_data_file, 'w') as f:
+                json.dump(historical_data, f, indent=2)
+        else:
+            print("  Hash format already up to date — no migration needed")
+
+        return migrated
 
     def save_data(self, jobs, historical_data):
         """Save job data and update historical records."""
@@ -2913,6 +2944,10 @@ def main():
     # 2. Load historical data
     print("\nLoading historical data...")
     historical_data = scraper.load_historical_data()
+
+    # 2a. Migrate existing hashes to PhilJobs-ID-based format (one-time, safe to re-run)
+    print("Checking deduplication hash format...")
+    scraper.migrate_hashes_to_job_id(historical_data)
 
     # 3. Identify new jobs + save initial record
     print("Analyzing new jobs and saving...")
