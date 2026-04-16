@@ -1397,10 +1397,6 @@ class PhilJobsScraper:
                         <div class="bg-gray-50 rounded-lg p-4">
                             <div id="usStatesList" class="w-full"></div>
                         </div>
-                        <div id="westCoastDetail" class="hidden mt-4 bg-blue-50 rounded-lg p-4">
-                            <h5 class="text-sm font-medium text-blue-900 mb-2">West Coast Detail</h5>
-                            <div id="westCoastCities" class="text-sm"></div>
-                        </div>
                     </div>
                     <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
                         <h4 class="text-lg font-semibold text-blue-900 mb-2">📊 Key Insights</h4>
@@ -1776,16 +1772,20 @@ class PhilJobsScraper:
         // ===== CROSS-CUTTING CHART =====
         const ccColors = {{ 'Feminist Philosophy': '#ec4899', 'Philosophy of Race': '#f97316', 'Philosophy of Gender': '#8b5cf6', 'Philosophy of Law': '#0ea5e9' }};
         const ccAreas = Object.keys(data.crossCutting);
-        const ccWeeks = ccAreas.length > 0 ? Object.keys(data.crossCutting[ccAreas[0]]?.weekly || {{}}) : [];
+        // Align x-axis with all other charts: use data.dates, lookup counts from each area's trend list
         new Chart(document.getElementById('crossCuttingChart').getContext('2d'), {{
             type: 'line',
             data: {{
-                labels: ccWeeks,
-                datasets: ccAreas.map(area => ({{
-                    label: area, data: ccWeeks.map(w => data.crossCutting[area]?.weekly[w] || 0),
-                    borderColor: ccColors[area] || '#6b7280', backgroundColor: (ccColors[area] || '#6b7280') + '30',
-                    tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
-                }}))
+                labels: data.dates,
+                datasets: ccAreas.map(area => {{
+                    const trendMap = {{}};
+                    (data.crossCutting[area]?.trend || []).forEach(t => {{ trendMap[t.week] = t.count; }});
+                    return {{
+                        label: area, data: data.dates.map(d => trendMap[d] || 0),
+                        borderColor: ccColors[area] || '#6b7280', backgroundColor: (ccColors[area] || '#6b7280') + '30',
+                        tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
+                    }};
+                }})
             }},
             options: {{
                 responsive: true, maintainAspectRatio: false,
@@ -2659,16 +2659,20 @@ class PhilJobsScraper:
         // ===== CROSS-CUTTING CHART =====
         const ccColors = {{ 'Feminist Philosophy': '#ec4899', 'Philosophy of Race': '#f97316', 'Philosophy of Gender': '#8b5cf6', 'Philosophy of Law': '#0ea5e9' }};
         const ccAreas = Object.keys(data.crossCutting);
-        const ccWeeks = ccAreas.length > 0 ? Object.keys(data.crossCutting[ccAreas[0]]?.weekly || {{}}) : [];
+        // Align x-axis with all other charts: use data.dates, lookup counts from each area's trend list
         new Chart(document.getElementById('crossCuttingChart').getContext('2d'), {{
             type: 'line',
             data: {{
-                labels: ccWeeks,
-                datasets: ccAreas.map(area => ({{
-                    label: area, data: ccWeeks.map(w => data.crossCutting[area]?.weekly[w] || 0),
-                    borderColor: ccColors[area] || '#6b7280', backgroundColor: (ccColors[area] || '#6b7280') + '30',
-                    tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
-                }}))
+                labels: data.dates,
+                datasets: ccAreas.map(area => {{
+                    const trendMap = {{}};
+                    (data.crossCutting[area]?.trend || []).forEach(t => {{ trendMap[t.week] = t.count; }});
+                    return {{
+                        label: area, data: data.dates.map(d => trendMap[d] || 0),
+                        borderColor: ccColors[area] || '#6b7280', backgroundColor: (ccColors[area] || '#6b7280') + '30',
+                        tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
+                    }};
+                }})
             }},
             options: {{
                 responsive: true, maintainAspectRatio: false,

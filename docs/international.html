@@ -31,7 +31,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <h1 class="text-4xl font-bold mb-2">International Philosophy Job Market</h1>
             <p class="text-cyan-100">Real-time trends from PhilJobs — non-U.S. institutions</p>
-            <div class="mt-6 text-sm text-cyan-100">Last updated: April 13, 2026</div>
+            <div class="mt-6 text-sm text-cyan-100">Last updated: April 16, 2026</div>
         </div>
     </div>
 
@@ -532,16 +532,20 @@
         // ===== CROSS-CUTTING CHART =====
         const ccColors = { 'Feminist Philosophy': '#ec4899', 'Philosophy of Race': '#f97316', 'Philosophy of Gender': '#8b5cf6', 'Philosophy of Law': '#0ea5e9' };
         const ccAreas = Object.keys(data.crossCutting);
-        const ccWeeks = ccAreas.length > 0 ? Object.keys(data.crossCutting[ccAreas[0]]?.weekly || {}) : [];
+        // Align x-axis with all other charts: use data.dates, lookup counts from each area's trend list
         new Chart(document.getElementById('crossCuttingChart').getContext('2d'), {
             type: 'line',
             data: {
-                labels: ccWeeks,
-                datasets: ccAreas.map(area => ({
-                    label: area, data: ccWeeks.map(w => data.crossCutting[area]?.weekly[w] || 0),
-                    borderColor: ccColors[area] || '#6b7280', backgroundColor: (ccColors[area] || '#6b7280') + '30',
-                    tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
-                }))
+                labels: data.dates,
+                datasets: ccAreas.map(area => {
+                    const trendMap = {};
+                    (data.crossCutting[area]?.trend || []).forEach(t => { trendMap[t.week] = t.count; });
+                    return {
+                        label: area, data: data.dates.map(d => trendMap[d] || 0),
+                        borderColor: ccColors[area] || '#6b7280', backgroundColor: (ccColors[area] || '#6b7280') + '30',
+                        tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
+                    };
+                })
             },
             options: {
                 responsive: true, maintainAspectRatio: false,
