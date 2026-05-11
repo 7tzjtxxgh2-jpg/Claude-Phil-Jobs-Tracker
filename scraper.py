@@ -1117,9 +1117,12 @@ class PhilJobsScraper:
             for cat in MAIN_AOS_CATEGORIES
             for detail in DETAIL_AOS.get(cat, [])
         }
-        job_type_series = {pt: [] for pt in POSITION_TYPES}
+        # Per-week position-type counts, sliced by AOS-listing pattern
+        job_type_series = {
+            pt: {'all': [], 'solo': [], 'joint': []} for pt in POSITION_TYPES
+        }
         position_type_by_aos_weekly = {
-            aos: {pt: [] for pt in POSITION_TYPES}
+            aos: {pt: {'all': [], 'solo': [], 'joint': []} for pt in POSITION_TYPES}
             for aos in MAIN_AOS_CATEGORIES
         }
         inst_type_series = {'Research University': [], 'Teaching College': [], 'Other': []}
@@ -1132,8 +1135,9 @@ class PhilJobsScraper:
             main_counts = {m: defaultdict(int) for m in modes}
             detail_counts = {m: defaultdict(int) for m in modes}
             week_totals = {'all': 0, 'solo': 0, 'joint': 0}
-            pt_counts = defaultdict(int)
-            pt_by_aos = defaultdict(lambda: defaultdict(int))
+            # Per-week position-type counters, also three-way sliced
+            pt_counts = {m: defaultdict(int) for m in modes}
+            pt_by_aos = {m: defaultdict(lambda: defaultdict(int)) for m in modes}
             it_counts = defaultdict(int)
 
             for job in week_jobs:
@@ -1154,9 +1158,11 @@ class PhilJobsScraper:
                           or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
                           or job.get('job_type', 'Other'))
                 pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
-                pt_counts[pos_type] += 1
+                pt_counts['all'][pos_type] += 1
+                pt_counts[mode_key][pos_type] += 1
                 for main in main_list:
-                    pt_by_aos[main][pos_type] += 1
+                    pt_by_aos['all'][main][pos_type] += 1
+                    pt_by_aos[mode_key][main][pos_type] += 1
                 it = cls.get('institution_type') or job.get('institution_type', 'Other')
                 it_counts[it] += 1
 
@@ -1173,10 +1179,12 @@ class PhilJobsScraper:
                     subcategory_data[detail]['solo'].append(detail_counts['solo'].get(key, 0))
                     subcategory_data[detail]['joint'].append(detail_counts['joint'].get(key, 0))
             for pt in POSITION_TYPES:
-                job_type_series[pt].append(pt_counts.get(pt, 0))
+                for m in modes:
+                    job_type_series[pt][m].append(pt_counts[m].get(pt, 0))
             for aos in MAIN_AOS_CATEGORIES:
                 for pt in POSITION_TYPES:
-                    position_type_by_aos_weekly[aos][pt].append(pt_by_aos.get(aos, {}).get(pt, 0))
+                    for m in modes:
+                        position_type_by_aos_weekly[aos][pt][m].append(pt_by_aos[m].get(aos, {}).get(pt, 0))
             for it in ['Research University', 'Teaching College', 'Other']:
                 inst_type_series[it].append(it_counts.get(it, 0))
 
@@ -1307,18 +1315,22 @@ class PhilJobsScraper:
                         state_cat_map[s][main] += 1
         state_category_data = {k: dict(v) for k, v in state_cat_map.items()}
 
-        # ── Position type × AOS all-time ─────────────────────────────────
-        pos_type_x_aos_map = defaultdict(lambda: defaultdict(int))
+        # ── Position type × AOS all-time (with solo/joint slicing) ───────
+        pos_type_x_aos_map = {m: defaultdict(lambda: defaultdict(int)) for m in ('all', 'solo', 'joint')}
         for job in us_jobs:
             cls = job.get('classification')
-            if cls:
-                raw_pt = (cls.get('position_type')
-                          or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
-                          or job.get('job_type', 'Other'))
-                pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
-                for main in cls.get('main_aos', []):
-                    pos_type_x_aos_map[main][pos_type] += 1
-        pos_type_x_aos = {k: dict(v) for k, v in pos_type_x_aos_map.items()}
+            if not cls:
+                continue
+            raw_pt = (cls.get('position_type')
+                      or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
+                      or job.get('job_type', 'Other'))
+            pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
+            main_list = cls.get('main_aos', [])
+            mode_key = 'solo' if len(main_list) == 1 else 'joint'
+            for main in main_list:
+                pos_type_x_aos_map['all'][main][pos_type] += 1
+                pos_type_x_aos_map[mode_key][main][pos_type] += 1
+        pos_type_x_aos = {m: {k: dict(v) for k, v in pos_type_x_aos_map[m].items()} for m in ('all', 'solo', 'joint')}
 
         # ── Co-occurrence ─────────────────────────────────────────────────
         cooc = self._compute_cooc_from_jobs(us_jobs)
@@ -1500,15 +1512,23 @@ class PhilJobsScraper:
 
         <!-- Position Type Trends -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <div class="flex flex-wrap justify-between items-center mb-2 gap-4">
+            <div class="flex flex-wrap justify-between items-start mb-2 gap-4">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800">Position Type Trends</h2>
-                    <p class="text-sm text-gray-500 mt-1">New jobs per week by position type — filter by AOS to see hiring patterns within each area</p>
+                    <p class="text-sm text-gray-500 mt-1">New jobs per week by position type — filter by AOS to see hiring patterns within each area. Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
                 </div>
-                <div>
-                    <select id="posTypeAosFilter" onchange="updatePositionTypeChart()" class="text-sm border border-gray-300 rounded-lg px-3 py-2 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-400">
-                        <option value="__all__">All AOS</option>
-                    </select>
+                <div class="flex flex-col items-end gap-2">
+                    <div class="flex flex-wrap gap-2 justify-end">
+                        <select id="posTypeAosFilter" onchange="updatePositionTypeChart()" class="text-sm border border-gray-300 rounded-lg px-3 py-2 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                            <option value="__all__">All AOS</option>
+                        </select>
+                        <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 bg-white">
+                            <button id="posTypeModeAll" type="button" onclick="setPosTypeMode('all')" class="px-3 py-1.5 text-sm font-medium bg-indigo-600 text-white">All</button>
+                            <button id="posTypeModeSolo" type="button" onclick="setPosTypeMode('solo')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50">Solo</button>
+                            <button id="posTypeModeJoint" type="button" onclick="setPosTypeMode('joint')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50">Joint</button>
+                        </div>
+                    </div>
+                    <div id="posTypeModeNote" class="text-xs text-gray-500 italic"></div>
                 </div>
             </div>
             <div class="chart-container mb-6">
@@ -1914,7 +1934,9 @@ class PhilJobsScraper:
             if (jobTypeChart) jobTypeChart.destroy();
             const ptByAos = data.positionTypeByAosWeekly[key] || {{}};
             const ptCurrent = data.positionTypes.map(pt => {{
-                const arr = ptByAos[pt] || [];
+                // Inherit the Market Overview mode for consistency with modal title
+                const slot = ptByAos[pt] || {{}};
+                const arr = slot[marketMode] || [];
                 return arr[arr.length - 1] || 0;
             }});
             jobTypeChart = new Chart(jobTypeCtx, {{
@@ -2104,8 +2126,9 @@ class PhilJobsScraper:
             }}
         }});
 
-        // ===== POSITION TYPE CHART =====
+        // ===== POSITION TYPE CHART (with All/Solo/Joint toggle) =====
         let posTypeChart = null;
+        let posTypeMode = 'all';
         const posTypeSelect = document.getElementById('posTypeAosFilter');
         data.mainAosCategories.forEach(aos => {{
             const opt = document.createElement('option');
@@ -2114,17 +2137,21 @@ class PhilJobsScraper:
             posTypeSelect.appendChild(opt);
         }});
 
+        function ptSeriesFor(pt, aosFilter, mode) {{
+            mode = mode || posTypeMode;
+            if (aosFilter === '__all__') {{
+                return (data.jobTypeData[pt] || {{}})[mode] || Array(data.dates.length).fill(0);
+            }}
+            const aosSlot = data.positionTypeByAosWeekly[aosFilter] || {{}};
+            const ptSlot = aosSlot[pt] || {{}};
+            return ptSlot[mode] || Array(data.dates.length).fill(0);
+        }}
+
         function updatePositionTypeChart() {{
             const selected = posTypeSelect.value;
-            let ptData;
-            if (selected === '__all__') {{
-                ptData = data.jobTypeData;
-            }} else {{
-                ptData = data.positionTypeByAosWeekly[selected] || {{}};
-            }}
             const ptDatasets = data.positionTypes.map(pt => ({{
                 label: pt,
-                data: ptData[pt] || Array(data.dates.length).fill(0),
+                data: ptSeriesFor(pt, selected),
                 borderColor: data.positionTypeColors[pt] || '#6b7280',
                 backgroundColor: (data.positionTypeColors[pt] || '#6b7280') + '30',
                 tension: 0.4, fill: true, borderWidth: 2, pointRadius: 3
@@ -2142,7 +2169,8 @@ class PhilJobsScraper:
                 }}
             }});
 
-            // Summary table
+            // Summary table — uses all-time pos_type_x_aos sliced by current mode
+            const xAos = data.positionTypeXAos[posTypeMode] || {{}};
             const tableDiv = document.getElementById('posTypeTable');
             const aosRows = data.mainAosCategories;
             let html = '<table class="w-full border-collapse"><thead><tr>';
@@ -2153,7 +2181,7 @@ class PhilJobsScraper:
             }});
             html += '<th class="py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200 text-center text-sm">Total</th></tr></thead><tbody>';
             aosRows.forEach((aos, i) => {{
-                const row = data.positionTypeXAos[aos] || {{}};
+                const row = xAos[aos] || {{}};
                 const rowTotal = data.positionTypes.reduce((s, pt) => s + (row[pt] || 0), 0);
                 if (rowTotal === 0) return;
                 html += `<tr class="${{i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}}">`;
@@ -2168,7 +2196,27 @@ class PhilJobsScraper:
             html += '</tbody></table>';
             tableDiv.innerHTML = html;
         }}
+
+        function updatePosTypeControls() {{
+            const active = 'bg-indigo-600 text-white';
+            const inactive = 'text-gray-700 hover:bg-indigo-50';
+            document.getElementById('posTypeModeAll').className   = `px-3 py-1.5 text-sm font-medium ${{posTypeMode === 'all'   ? active : inactive}}`;
+            document.getElementById('posTypeModeSolo').className  = `px-3 py-1.5 text-sm font-medium ${{posTypeMode === 'solo'  ? active : inactive}}`;
+            document.getElementById('posTypeModeJoint').className = `px-3 py-1.5 text-sm font-medium ${{posTypeMode === 'joint' ? active : inactive}}`;
+            document.getElementById('posTypeModeNote').textContent =
+                posTypeMode === 'all'   ? 'All: every job counted (joint jobs add to multiple AOS rows in the table).' :
+                posTypeMode === 'solo'  ? 'Solo: only jobs with exactly one AOS category.' :
+                                          'Joint: only jobs listing multiple AOS categories.';
+        }}
+
+        function setPosTypeMode(mode) {{
+            posTypeMode = mode;
+            updatePositionTypeChart();
+            updatePosTypeControls();
+        }}
+
         updatePositionTypeChart();
+        updatePosTypeControls();
 
         // ===== WEST COAST SPOTLIGHT — stacked horizontal bars, AOS by city/metro =====
         let wcChart = null;
@@ -2528,18 +2576,22 @@ class PhilJobsScraper:
         numeric_to_country = {v: k for k, v in COUNTRY_NUMERIC.items()
                                if k not in ('UAE',)}  # avoid dup for UAE alias
 
-        # ── Position type × AOS all-time ─────────────────────────────────
-        pos_type_x_aos_map = defaultdict(lambda: defaultdict(int))
+        # ── Position type × AOS all-time (with solo/joint slicing) ───────
+        pos_type_x_aos_map = {m: defaultdict(lambda: defaultdict(int)) for m in ('all', 'solo', 'joint')}
         for job in intl_jobs:
             cls = job.get('classification')
-            if cls:
-                raw_pt = (cls.get('position_type')
-                          or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
-                          or job.get('job_type', 'Other'))
-                pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
-                for main in cls.get('main_aos', []):
-                    pos_type_x_aos_map[main][pos_type] += 1
-        pos_type_x_aos = {k: dict(v) for k, v in pos_type_x_aos_map.items()}
+            if not cls:
+                continue
+            raw_pt = (cls.get('position_type')
+                      or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
+                      or job.get('job_type', 'Other'))
+            pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
+            main_list = cls.get('main_aos', [])
+            mode_key = 'solo' if len(main_list) == 1 else 'joint'
+            for main in main_list:
+                pos_type_x_aos_map['all'][main][pos_type] += 1
+                pos_type_x_aos_map[mode_key][main][pos_type] += 1
+        pos_type_x_aos = {m: {k: dict(v) for k, v in pos_type_x_aos_map[m].items()} for m in ('all', 'solo', 'joint')}
 
         # ── Country → AOS breakdown ──────────────────────────────────────
         country_cat_map = defaultdict(lambda: defaultdict(int))
@@ -2732,15 +2784,23 @@ class PhilJobsScraper:
 
         <!-- Position Type Trends -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <div class="flex flex-wrap justify-between items-center mb-2 gap-4">
+            <div class="flex flex-wrap justify-between items-start mb-2 gap-4">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800">Position Type Trends</h2>
-                    <p class="text-sm text-gray-500 mt-1">New jobs per week by position type — filter by AOS to see hiring patterns within each area</p>
+                    <p class="text-sm text-gray-500 mt-1">New jobs per week by position type — filter by AOS to see hiring patterns within each area. Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
                 </div>
-                <div>
-                    <select id="posTypeAosFilter" onchange="updatePositionTypeChart()" class="text-sm border border-gray-300 rounded-lg px-3 py-2 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-400">
-                        <option value="__all__">All AOS</option>
-                    </select>
+                <div class="flex flex-col items-end gap-2">
+                    <div class="flex flex-wrap gap-2 justify-end">
+                        <select id="posTypeAosFilter" onchange="updatePositionTypeChart()" class="text-sm border border-gray-300 rounded-lg px-3 py-2 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                            <option value="__all__">All AOS</option>
+                        </select>
+                        <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 bg-white">
+                            <button id="posTypeModeAll" type="button" onclick="setPosTypeMode('all')" class="px-3 py-1.5 text-sm font-medium bg-cyan-600 text-white">All</button>
+                            <button id="posTypeModeSolo" type="button" onclick="setPosTypeMode('solo')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-cyan-50">Solo</button>
+                            <button id="posTypeModeJoint" type="button" onclick="setPosTypeMode('joint')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-cyan-50">Joint</button>
+                        </div>
+                    </div>
+                    <div id="posTypeModeNote" class="text-xs text-gray-500 italic"></div>
                 </div>
             </div>
             <div class="chart-container mb-6">
@@ -3067,7 +3127,9 @@ class PhilJobsScraper:
             if (jobTypeChart) jobTypeChart.destroy();
             const ptByAos = data.positionTypeByAosWeekly[key] || {{}};
             const ptCurrent = data.positionTypes.map(pt => {{
-                const arr = ptByAos[pt] || [];
+                // Inherit the Market Overview mode for consistency with modal title
+                const slot = ptByAos[pt] || {{}};
+                const arr = slot[marketMode] || [];
                 return arr[arr.length - 1] || 0;
             }});
             jobTypeChart = new Chart(jobTypeCtx, {{
@@ -3253,8 +3315,9 @@ class PhilJobsScraper:
             }}
         }});
 
-        // ===== POSITION TYPE CHART =====
+        // ===== POSITION TYPE CHART (with All/Solo/Joint toggle) =====
         let posTypeChart = null;
+        let posTypeMode = 'all';
         const posTypeSelect = document.getElementById('posTypeAosFilter');
         data.mainAosCategories.forEach(aos => {{
             const opt = document.createElement('option');
@@ -3263,12 +3326,21 @@ class PhilJobsScraper:
             posTypeSelect.appendChild(opt);
         }});
 
+        function ptSeriesFor(pt, aosFilter, mode) {{
+            mode = mode || posTypeMode;
+            if (aosFilter === '__all__') {{
+                return (data.jobTypeData[pt] || {{}})[mode] || Array(data.dates.length).fill(0);
+            }}
+            const aosSlot = data.positionTypeByAosWeekly[aosFilter] || {{}};
+            const ptSlot = aosSlot[pt] || {{}};
+            return ptSlot[mode] || Array(data.dates.length).fill(0);
+        }}
+
         function updatePositionTypeChart() {{
             const selected = posTypeSelect.value;
-            let ptData = selected === '__all__' ? data.jobTypeData : (data.positionTypeByAosWeekly[selected] || {{}});
             const ptDatasets = data.positionTypes.map(pt => ({{
                 label: pt,
-                data: ptData[pt] || Array(data.dates.length).fill(0),
+                data: ptSeriesFor(pt, selected),
                 borderColor: data.positionTypeColors[pt] || '#6b7280',
                 backgroundColor: (data.positionTypeColors[pt] || '#6b7280') + '30',
                 tension: 0.4, fill: true, borderWidth: 2, pointRadius: 3
@@ -3286,7 +3358,8 @@ class PhilJobsScraper:
                 }}
             }});
 
-            // Summary table
+            // Summary table — uses all-time pos_type_x_aos sliced by current mode
+            const xAos = data.positionTypeXAos[posTypeMode] || {{}};
             const tableDiv = document.getElementById('posTypeTable');
             const aosRows = data.mainAosCategories;
             let html = '<table class="w-full border-collapse"><thead><tr>';
@@ -3297,7 +3370,7 @@ class PhilJobsScraper:
             }});
             html += '<th class="py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200 text-center text-sm">Total</th></tr></thead><tbody>';
             aosRows.forEach((aos, i) => {{
-                const row = data.positionTypeXAos[aos] || {{}};
+                const row = xAos[aos] || {{}};
                 const rowTotal = data.positionTypes.reduce((s, pt) => s + (row[pt] || 0), 0);
                 if (rowTotal === 0) return;
                 html += `<tr class="${{i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}}">`;
@@ -3312,7 +3385,27 @@ class PhilJobsScraper:
             html += '</tbody></table>';
             tableDiv.innerHTML = html;
         }}
+
+        function updatePosTypeControls() {{
+            const active = 'bg-cyan-600 text-white';
+            const inactive = 'text-gray-700 hover:bg-cyan-50';
+            document.getElementById('posTypeModeAll').className   = `px-3 py-1.5 text-sm font-medium ${{posTypeMode === 'all'   ? active : inactive}}`;
+            document.getElementById('posTypeModeSolo').className  = `px-3 py-1.5 text-sm font-medium ${{posTypeMode === 'solo'  ? active : inactive}}`;
+            document.getElementById('posTypeModeJoint').className = `px-3 py-1.5 text-sm font-medium ${{posTypeMode === 'joint' ? active : inactive}}`;
+            document.getElementById('posTypeModeNote').textContent =
+                posTypeMode === 'all'   ? 'All: every job counted (joint jobs add to multiple AOS rows in the table).' :
+                posTypeMode === 'solo'  ? 'Solo: only jobs with exactly one AOS category.' :
+                                          'Joint: only jobs listing multiple AOS categories.';
+        }}
+
+        function setPosTypeMode(mode) {{
+            posTypeMode = mode;
+            updatePositionTypeChart();
+            updatePosTypeControls();
+        }}
+
         updatePositionTypeChart();
+        updatePosTypeControls();
 
         // ===== WORLD CHOROPLETH =====
         let currentMapMode = 'current', worldAtlasData = null;
