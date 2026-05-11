@@ -2,7 +2,7 @@
 
 An automated system that scrapes philosophy job postings from [PhilJobs.org](https://philjobs.org) every week, classifies them using the Claude AI API, and generates an interactive analytics dashboard hosted on GitHub Pages. The goal is to track multi-year trends in the academic philosophy job market to inform research specialization and career planning decisions.
 
-**Owner:** PhD student, Philosophy (Sartre / Existentialism), Marquette University
+**Owner:** PhD student, Philosophy 
 **Timeline:** 3-year longitudinal data collection (until job market entry)
 **Primary goal:** Understand which AOS categories and position types are growing or declining, with particular interest in West Coast institutions
 
