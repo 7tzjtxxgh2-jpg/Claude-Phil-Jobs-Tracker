@@ -142,14 +142,22 @@
             <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800 mb-1">🌊 West Coast Spotlight</h2>
-                    <p class="text-sm text-gray-500">Cumulative AOS breakdown for CA, OR, WA — toggle between metro areas and individual cities. Click any metro bar to drill into its cities.</p>
+                    <p class="text-sm text-gray-500">Cumulative AOS breakdown for CA, OR, WA. Toggle between metro areas and individual cities; filter by solo (single-AOS) vs. joint (multi-AOS) listings. Click any metro bar to drill into its cities.</p>
                 </div>
                 <div class="flex flex-col items-end gap-2">
-                    <div class="inline-flex rounded-lg overflow-hidden border border-blue-200 bg-white">
-                        <button id="wcViewMetro" type="button" onclick="setWcView('metro')" class="px-4 py-1.5 text-sm font-medium bg-blue-600 text-white">Metro</button>
-                        <button id="wcViewCity" type="button" onclick="setWcView('city')" class="px-4 py-1.5 text-sm font-medium text-gray-700 hover:bg-blue-50">City</button>
+                    <div class="flex gap-2 flex-wrap justify-end">
+                        <div class="inline-flex rounded-lg overflow-hidden border border-blue-200 bg-white">
+                            <button id="wcViewMetro" type="button" onclick="setWcView('metro')" class="px-4 py-1.5 text-sm font-medium bg-blue-600 text-white">Metro</button>
+                            <button id="wcViewCity" type="button" onclick="setWcView('city')" class="px-4 py-1.5 text-sm font-medium text-gray-700 hover:bg-blue-50">City</button>
+                        </div>
+                        <div class="inline-flex rounded-lg overflow-hidden border border-blue-200 bg-white">
+                            <button id="wcModeAll" type="button" onclick="setWcMode('all')" class="px-3 py-1.5 text-sm font-medium bg-blue-600 text-white">All</button>
+                            <button id="wcModeSolo" type="button" onclick="setWcMode('solo')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-blue-50">Solo</button>
+                            <button id="wcModeJoint" type="button" onclick="setWcMode('joint')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-blue-50">Joint</button>
+                        </div>
                     </div>
                     <div id="wcFilterIndicator" class="text-xs text-gray-600 hidden"></div>
+                    <div id="wcModeNote" class="text-xs text-gray-500 italic"></div>
                 </div>
             </div>
             <div class="chart-container" style="min-height: 380px;">
@@ -265,11 +273,9 @@
             jobTypeData: {"Tenure-Track": [10, 2, 1, 2, 1, 0, 1, 0, 0], "Postdoc / Fellowship": [16, 3, 1, 2, 3, 1, 3, 1, 1], "Visiting / Adjunct / Lecturer (Fixed-Term)": [24, 0, 5, 2, 3, 3, 7, 1, 1], "Tenured / Continuing / Permanent": [8, 0, 0, 0, 0, 0, 1, 0, 0], "Other": [7, 0, 1, 0, 1, 0, 0, 0, 0]},
             institutionTypeData: {"Research University": [44, 4, 6, 5, 7, 3, 8, 2, 2], "Teaching College": [17, 1, 1, 1, 0, 1, 4, 0, 0], "Other": [4, 0, 1, 0, 1, 0, 0, 0, 0]},
             stateData: {"AL": [1, 0, 0, 0, 1, 0, 0, 0, 0], "AK": [0, 0, 0, 0, 0, 0, 0, 0, 0], "AZ": [0, 0, 0, 0, 0, 0, 0, 0, 0], "AR": [0, 0, 0, 0, 0, 0, 0, 0, 0], "CA": [5, 1, 0, 1, 1, 0, 0, 0, 0], "CO": [2, 0, 0, 0, 0, 0, 0, 0, 0], "CT": [1, 0, 0, 0, 0, 0, 0, 0, 0], "DE": [0, 0, 1, 0, 0, 0, 0, 0, 0], "FL": [1, 1, 0, 1, 0, 0, 0, 0, 0], "GA": [3, 0, 1, 0, 0, 0, 1, 0, 0], "HI": [0, 0, 0, 0, 0, 0, 0, 0, 0], "ID": [0, 0, 0, 0, 0, 0, 0, 0, 0], "IL": [3, 0, 2, 0, 0, 0, 0, 0, 0], "IN": [3, 0, 0, 0, 0, 0, 1, 0, 1], "IA": [1, 0, 0, 0, 0, 0, 0, 0, 0], "KS": [0, 0, 0, 0, 1, 1, 0, 0, 0], "KY": [0, 0, 0, 0, 0, 0, 1, 0, 0], "LA": [0, 0, 0, 0, 0, 0, 0, 0, 0], "ME": [1, 0, 0, 0, 0, 0, 0, 0, 0], "MD": [2, 0, 0, 0, 0, 0, 0, 0, 0], "MA": [7, 0, 0, 0, 0, 0, 1, 0, 0], "MI": [1, 0, 0, 0, 0, 1, 0, 0, 0], "MN": [0, 0, 0, 0, 0, 0, 1, 0, 0], "MS": [1, 0, 0, 0, 0, 0, 0, 0, 0], "MO": [1, 0, 0, 0, 0, 0, 0, 0, 0], "MT": [0, 0, 0, 0, 0, 0, 0, 0, 0], "NE": [1, 0, 0, 1, 0, 0, 0, 0, 0], "NV": [0, 0, 0, 0, 0, 0, 0, 0, 0], "NH": [0, 0, 0, 0, 0, 0, 0, 0, 0], "NJ": [4, 0, 0, 0, 0, 0, 0, 0, 0], "NM": [0, 0, 0, 0, 0, 0, 0, 0, 0], "NY": [11, 1, 1, 1, 2, 0, 1, 0, 0], "NC": [4, 0, 0, 0, 0, 0, 0, 0, 0], "ND": [0, 0, 0, 0, 0, 0, 0, 0, 0], "OH": [0, 0, 0, 0, 1, 1, 1, 1, 0], "OK": [1, 0, 0, 0, 0, 0, 0, 0, 0], "OR": [0, 0, 0, 0, 0, 0, 0, 0, 0], "PA": [5, 1, 0, 0, 0, 1, 1, 0, 0], "RI": [0, 1, 1, 0, 0, 0, 0, 0, 0], "SC": [1, 0, 1, 0, 0, 0, 0, 0, 0], "SD": [0, 0, 0, 0, 0, 0, 1, 0, 0], "TN": [0, 0, 0, 0, 0, 0, 0, 0, 0], "TX": [5, 0, 1, 1, 2, 0, 0, 1, 1], "UT": [0, 0, 0, 1, 0, 0, 0, 0, 0], "VT": [0, 0, 0, 0, 0, 0, 0, 0, 0], "VA": [0, 0, 0, 0, 0, 0, 2, 0, 0], "WA": [0, 0, 0, 0, 0, 0, 0, 0, 0], "WV": [0, 0, 0, 0, 0, 0, 0, 0, 0], "WI": [0, 0, 0, 0, 0, 0, 1, 0, 0], "WY": [0, 0, 0, 0, 0, 0, 0, 0, 0], "DC": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-            westCoastCityAos: {"Stanford": {"Ethics": 1, "Open": 1}, "Pasadena": {"Ethics": 1, "Science, Logic, & Mathematics": 2, "History of Philosophy": 1}, "Claremont": {"History of Philosophy": 1}, "Fresno": {"Social & Political Philosophy": 1, "Metaphysics & Epistemology": 1}, "Orange": {"Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "Open": 1}, "La Jolla": {"Open": 1}, "Long Beach": {"Open": 1}},
-            westCoastMetroAos: {"SF Bay Area": {"Ethics": 1, "Open": 1}, "Greater Los Angeles": {"Ethics": 1, "Science, Logic, & Mathematics": 2, "History of Philosophy": 2, "Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "Open": 2}, "Other California": {"Social & Political Philosophy": 1, "Metaphysics & Epistemology": 1}, "San Diego": {"Open": 1}},
+            westCoastCityAos: {"all": {"Stanford": {"Ethics": 1, "Open": 1}, "Pasadena": {"Ethics": 1, "Science, Logic, & Mathematics": 2, "History of Philosophy": 1}, "Claremont": {"History of Philosophy": 1}, "Fresno": {"Social & Political Philosophy": 1, "Metaphysics & Epistemology": 1}, "Orange": {"Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "Open": 1}, "La Jolla": {"Open": 1}, "Long Beach": {"Open": 1}}, "solo": {"Claremont": {"History of Philosophy": 1}, "La Jolla": {"Open": 1}, "Long Beach": {"Open": 1}}, "joint": {"Stanford": {"Ethics": 1, "Open": 1}, "Pasadena": {"Ethics": 1, "Science, Logic, & Mathematics": 2, "History of Philosophy": 1}, "Fresno": {"Social & Political Philosophy": 1, "Metaphysics & Epistemology": 1}, "Orange": {"Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "Open": 1}}},
+            westCoastMetroAos: {"all": {"SF Bay Area": {"Ethics": 1, "Open": 1}, "Greater Los Angeles": {"Ethics": 1, "Science, Logic, & Mathematics": 2, "History of Philosophy": 2, "Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "Open": 2}, "Other California": {"Social & Political Philosophy": 1, "Metaphysics & Epistemology": 1}, "San Diego": {"Open": 1}}, "solo": {"Greater Los Angeles": {"History of Philosophy": 1, "Open": 1}, "San Diego": {"Open": 1}}, "joint": {"SF Bay Area": {"Ethics": 1, "Open": 1}, "Greater Los Angeles": {"Ethics": 1, "Science, Logic, & Mathematics": 2, "Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "Open": 1, "History of Philosophy": 1}, "Other California": {"Social & Political Philosophy": 1, "Metaphysics & Epistemology": 1}}},
             westCoastMetroCities: {"SF Bay Area": ["Stanford"], "Greater Los Angeles": ["Claremont", "Long Beach", "Orange", "Pasadena"], "Other California": ["Fresno"], "San Diego": ["La Jolla"]},
-            westCoastCityTotals: {"Stanford": 1, "Pasadena": 2, "Claremont": 1, "Fresno": 1, "Orange": 1, "La Jolla": 1, "Long Beach": 1},
-            westCoastMetroTotals: {"SF Bay Area": 1, "Greater Los Angeles": 5, "Other California": 1, "San Diego": 1},
             seasonalMarkers: [],
             regionData: {"West": [7, 1, 0, 2, 1, 0, 0, 0, 0], "Northeast": [29, 3, 2, 1, 2, 1, 3, 0, 0], "South": [19, 1, 4, 2, 3, 0, 4, 1, 1], "Midwest": [10, 0, 2, 1, 2, 3, 5, 1, 1]},
             stateAlltime: {"AL": 2, "CA": 8, "CO": 2, "CT": 1, "DE": 1, "FL": 3, "GA": 5, "IL": 5, "IN": 5, "IA": 1, "KS": 2, "KY": 1, "ME": 1, "MD": 2, "MA": 8, "MI": 2, "MN": 1, "MS": 1, "MO": 1, "NE": 2, "NJ": 4, "NY": 17, "NC": 4, "OH": 4, "OK": 1, "PA": 8, "RI": 2, "SC": 2, "SD": 1, "TX": 11, "UT": 1, "VA": 2, "WI": 1},
@@ -690,6 +696,7 @@
         // ===== WEST COAST SPOTLIGHT — stacked horizontal bars, AOS by city/metro =====
         let wcChart = null;
         let wcViewMode = 'metro';      // 'metro' or 'city'
+        let wcMode = 'all';            // 'all' | 'solo' | 'joint'
         let wcMetroFilter = null;      // when set in city view, only show cities from this metro
 
         function sumValues(obj) {
@@ -700,24 +707,36 @@
             const canvas = document.getElementById('westCoastChart');
             if (!canvas) return;
             const container = canvas.parentElement;
+            // If we previously fell back to an empty-state message, restore the canvas
+            if (!container.querySelector('canvas')) {
+                container.innerHTML = '<canvas id="westCoastChart"></canvas>';
+            }
 
-            // Pick data source based on current view
+            // Pick data source: metro vs. city × all/solo/joint
+            const metroSource = data.westCoastMetroAos[wcMode] || {};
+            const citySource = data.westCoastCityAos[wcMode] || {};
+
             let sourceData;
             if (wcViewMode === 'metro') {
-                sourceData = data.westCoastMetroAos;
+                sourceData = metroSource;
             } else if (wcMetroFilter) {
                 const allowedCities = new Set(data.westCoastMetroCities[wcMetroFilter] || []);
                 sourceData = Object.fromEntries(
-                    Object.entries(data.westCoastCityAos).filter(([c]) => allowedCities.has(c))
+                    Object.entries(citySource).filter(([c]) => allowedCities.has(c))
                 );
             } else {
-                sourceData = data.westCoastCityAos;
+                sourceData = citySource;
             }
 
-            const labels = Object.keys(sourceData).sort((a, b) => sumValues(sourceData[b]) - sumValues(sourceData[a]));
+            const labels = Object.keys(sourceData)
+                .filter(loc => sumValues(sourceData[loc]) > 0)
+                .sort((a, b) => sumValues(sourceData[b]) - sumValues(sourceData[a]));
 
             if (labels.length === 0) {
-                container.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">No West Coast data yet for this view.</div>';
+                const msg = wcMode === 'solo' ? 'No solo-AOS West Coast jobs yet.'
+                          : wcMode === 'joint' ? 'No multi-AOS West Coast jobs yet.'
+                          : 'No West Coast data yet for this view.';
+                container.innerHTML = `<div class="text-gray-400 text-center py-8 text-sm">${msg}</div>`;
                 return;
             }
 
@@ -730,9 +749,10 @@
                 borderWidth: 1,
             })).filter(ds => ds.data.some(v => v > 0));
 
+            const newCanvas = document.getElementById('westCoastChart');
             if (wcChart) { wcChart.destroy(); }
 
-            wcChart = new Chart(canvas.getContext('2d'), {
+            wcChart = new Chart(newCanvas.getContext('2d'), {
                 type: 'bar',
                 data: { labels, datasets },
                 options: {
@@ -747,7 +767,8 @@
                                     if (!items.length) return '';
                                     const label = items[0].label;
                                     const total = items.reduce((a, b) => a + b.parsed.x, 0);
-                                    return `${label} — ${total} job${total === 1 ? '' : 's'} total`;
+                                    const unit = wcMode === 'all' ? 'tag' : (wcMode === 'solo' ? 'job' : 'tag');
+                                    return `${label} — ${total} ${unit}${total === 1 ? '' : 's'}`;
                                 },
                                 label: (ctx) => {
                                     const v = ctx.parsed.x;
@@ -776,9 +797,15 @@
         function updateWcControls() {
             const metroBtn = document.getElementById('wcViewMetro');
             const cityBtn = document.getElementById('wcViewCity');
+            const allBtn = document.getElementById('wcModeAll');
+            const soloBtn = document.getElementById('wcModeSolo');
+            const jointBtn = document.getElementById('wcModeJoint');
             const indicator = document.getElementById('wcFilterIndicator');
+            const note = document.getElementById('wcModeNote');
             const active = 'bg-blue-600 text-white';
             const inactive = 'text-gray-700 hover:bg-blue-50';
+
+            // Metro/City toggle
             if (wcViewMode === 'metro') {
                 metroBtn.className = `px-4 py-1.5 text-sm font-medium ${active}`;
                 cityBtn.className = `px-4 py-1.5 text-sm font-medium ${inactive}`;
@@ -793,11 +820,28 @@
                     indicator.classList.add('hidden');
                 }
             }
+
+            // All/Solo/Joint toggle
+            allBtn.className = `px-3 py-1.5 text-sm font-medium ${wcMode === 'all' ? active : inactive}`;
+            soloBtn.className = `px-3 py-1.5 text-sm font-medium ${wcMode === 'solo' ? active : inactive}`;
+            jointBtn.className = `px-3 py-1.5 text-sm font-medium ${wcMode === 'joint' ? active : inactive}`;
+
+            note.textContent = wcMode === 'all'
+                ? 'All: every AOS tag counts (joint jobs add to multiple bars).'
+                : wcMode === 'solo'
+                ? 'Solo: only jobs with exactly one AOS category.'
+                : 'Joint: only jobs listing multiple AOS categories; each tag still counts.';
         }
 
         function setWcView(mode) {
             wcViewMode = mode;
             if (mode === 'metro') wcMetroFilter = null;
+            renderWestCoastChart();
+            updateWcControls();
+        }
+
+        function setWcMode(mode) {
+            wcMode = mode;
             renderWestCoastChart();
             updateWcControls();
         }

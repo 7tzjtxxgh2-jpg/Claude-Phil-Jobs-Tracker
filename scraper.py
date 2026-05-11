@@ -1210,12 +1210,19 @@ class PhilJobsScraper:
             for state_code in US_STATES.values():
                 state_data[state_code].append(sc.get(state_code, 0))
 
-        # West Coast Spotlight — cumulative AOS breakdown by city and by metro
-        west_coast_city_aos = defaultdict(lambda: defaultdict(int))
-        west_coast_metro_aos = defaultdict(lambda: defaultdict(int))
+        # West Coast Spotlight — cumulative AOS breakdown by city and by metro,
+        # tracked three ways so the chart can toggle between All / Solo / Joint.
+        #   _all   = every main_aos tag on every job contributes +1
+        #   _solo  = +1 only when a job has exactly one main_aos category
+        #   _joint = +1 for each main_aos category when the job has more than one
+        # By construction: solo + joint = all
+        wc_city_aos = {'all': defaultdict(lambda: defaultdict(int)),
+                       'solo': defaultdict(lambda: defaultdict(int)),
+                       'joint': defaultdict(lambda: defaultdict(int))}
+        wc_metro_aos = {'all': defaultdict(lambda: defaultdict(int)),
+                        'solo': defaultdict(lambda: defaultdict(int)),
+                        'joint': defaultdict(lambda: defaultdict(int))}
         west_coast_metro_cities = defaultdict(set)
-        west_coast_city_totals = defaultdict(int)
-        west_coast_metro_totals = defaultdict(int)
 
         for job in us_jobs:
             state = job.get('state')
@@ -1227,18 +1234,20 @@ class PhilJobsScraper:
                 continue
             classification = job.get('classification') or {}
             main_list = classification.get('main_aos', ['Open'])
+            mode_key = 'solo' if len(main_list) == 1 else 'joint'
             for main in main_list:
-                west_coast_city_aos[city][main] += 1
-                west_coast_metro_aos[metro][main] += 1
-            west_coast_city_totals[city] += 1
-            west_coast_metro_totals[metro] += 1
+                wc_city_aos['all'][city][main] += 1
+                wc_metro_aos['all'][metro][main] += 1
+                wc_city_aos[mode_key][city][main] += 1
+                wc_metro_aos[mode_key][metro][main] += 1
             west_coast_metro_cities[metro].add(city)
 
-        west_coast_city_aos = {k: dict(v) for k, v in west_coast_city_aos.items()}
-        west_coast_metro_aos = {k: dict(v) for k, v in west_coast_metro_aos.items()}
+        def _serialize_aos(d):
+            return {mode: {loc: dict(aos) for loc, aos in d[mode].items()} for mode in ('all', 'solo', 'joint')}
+
+        west_coast_city_aos = _serialize_aos(wc_city_aos)
+        west_coast_metro_aos = _serialize_aos(wc_metro_aos)
         west_coast_metro_cities = {k: sorted(list(v)) for k, v in west_coast_metro_cities.items()}
-        west_coast_city_totals = dict(west_coast_city_totals)
-        west_coast_metro_totals = dict(west_coast_metro_totals)
 
         region_data = {}
         for region, states in US_REGIONS.items():
@@ -1447,14 +1456,22 @@ class PhilJobsScraper:
             <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800 mb-1">🌊 West Coast Spotlight</h2>
-                    <p class="text-sm text-gray-500">Cumulative AOS breakdown for CA, OR, WA — toggle between metro areas and individual cities. Click any metro bar to drill into its cities.</p>
+                    <p class="text-sm text-gray-500">Cumulative AOS breakdown for CA, OR, WA. Toggle between metro areas and individual cities; filter by solo (single-AOS) vs. joint (multi-AOS) listings. Click any metro bar to drill into its cities.</p>
                 </div>
                 <div class="flex flex-col items-end gap-2">
-                    <div class="inline-flex rounded-lg overflow-hidden border border-blue-200 bg-white">
-                        <button id="wcViewMetro" type="button" onclick="setWcView('metro')" class="px-4 py-1.5 text-sm font-medium bg-blue-600 text-white">Metro</button>
-                        <button id="wcViewCity" type="button" onclick="setWcView('city')" class="px-4 py-1.5 text-sm font-medium text-gray-700 hover:bg-blue-50">City</button>
+                    <div class="flex gap-2 flex-wrap justify-end">
+                        <div class="inline-flex rounded-lg overflow-hidden border border-blue-200 bg-white">
+                            <button id="wcViewMetro" type="button" onclick="setWcView('metro')" class="px-4 py-1.5 text-sm font-medium bg-blue-600 text-white">Metro</button>
+                            <button id="wcViewCity" type="button" onclick="setWcView('city')" class="px-4 py-1.5 text-sm font-medium text-gray-700 hover:bg-blue-50">City</button>
+                        </div>
+                        <div class="inline-flex rounded-lg overflow-hidden border border-blue-200 bg-white">
+                            <button id="wcModeAll" type="button" onclick="setWcMode('all')" class="px-3 py-1.5 text-sm font-medium bg-blue-600 text-white">All</button>
+                            <button id="wcModeSolo" type="button" onclick="setWcMode('solo')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-blue-50">Solo</button>
+                            <button id="wcModeJoint" type="button" onclick="setWcMode('joint')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-blue-50">Joint</button>
+                        </div>
                     </div>
                     <div id="wcFilterIndicator" class="text-xs text-gray-600 hidden"></div>
+                    <div id="wcModeNote" class="text-xs text-gray-500 italic"></div>
                 </div>
             </div>
             <div class="chart-container" style="min-height: 380px;">
@@ -1573,8 +1590,6 @@ class PhilJobsScraper:
             westCoastCityAos: {json.dumps(west_coast_city_aos)},
             westCoastMetroAos: {json.dumps(west_coast_metro_aos)},
             westCoastMetroCities: {json.dumps(west_coast_metro_cities)},
-            westCoastCityTotals: {json.dumps(west_coast_city_totals)},
-            westCoastMetroTotals: {json.dumps(west_coast_metro_totals)},
             seasonalMarkers: {json.dumps(seasonal_markers)},
             regionData: {json.dumps(region_data)},
             stateAlltime: {json.dumps(state_alltime)},
@@ -1995,6 +2010,7 @@ class PhilJobsScraper:
         // ===== WEST COAST SPOTLIGHT — stacked horizontal bars, AOS by city/metro =====
         let wcChart = null;
         let wcViewMode = 'metro';      // 'metro' or 'city'
+        let wcMode = 'all';            // 'all' | 'solo' | 'joint'
         let wcMetroFilter = null;      // when set in city view, only show cities from this metro
 
         function sumValues(obj) {{
@@ -2005,24 +2021,36 @@ class PhilJobsScraper:
             const canvas = document.getElementById('westCoastChart');
             if (!canvas) return;
             const container = canvas.parentElement;
+            // If we previously fell back to an empty-state message, restore the canvas
+            if (!container.querySelector('canvas')) {{
+                container.innerHTML = '<canvas id="westCoastChart"></canvas>';
+            }}
 
-            // Pick data source based on current view
+            // Pick data source: metro vs. city × all/solo/joint
+            const metroSource = data.westCoastMetroAos[wcMode] || {{}};
+            const citySource = data.westCoastCityAos[wcMode] || {{}};
+
             let sourceData;
             if (wcViewMode === 'metro') {{
-                sourceData = data.westCoastMetroAos;
+                sourceData = metroSource;
             }} else if (wcMetroFilter) {{
                 const allowedCities = new Set(data.westCoastMetroCities[wcMetroFilter] || []);
                 sourceData = Object.fromEntries(
-                    Object.entries(data.westCoastCityAos).filter(([c]) => allowedCities.has(c))
+                    Object.entries(citySource).filter(([c]) => allowedCities.has(c))
                 );
             }} else {{
-                sourceData = data.westCoastCityAos;
+                sourceData = citySource;
             }}
 
-            const labels = Object.keys(sourceData).sort((a, b) => sumValues(sourceData[b]) - sumValues(sourceData[a]));
+            const labels = Object.keys(sourceData)
+                .filter(loc => sumValues(sourceData[loc]) > 0)
+                .sort((a, b) => sumValues(sourceData[b]) - sumValues(sourceData[a]));
 
             if (labels.length === 0) {{
-                container.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">No West Coast data yet for this view.</div>';
+                const msg = wcMode === 'solo' ? 'No solo-AOS West Coast jobs yet.'
+                          : wcMode === 'joint' ? 'No multi-AOS West Coast jobs yet.'
+                          : 'No West Coast data yet for this view.';
+                container.innerHTML = `<div class="text-gray-400 text-center py-8 text-sm">${{msg}}</div>`;
                 return;
             }}
 
@@ -2035,9 +2063,10 @@ class PhilJobsScraper:
                 borderWidth: 1,
             }})).filter(ds => ds.data.some(v => v > 0));
 
+            const newCanvas = document.getElementById('westCoastChart');
             if (wcChart) {{ wcChart.destroy(); }}
 
-            wcChart = new Chart(canvas.getContext('2d'), {{
+            wcChart = new Chart(newCanvas.getContext('2d'), {{
                 type: 'bar',
                 data: {{ labels, datasets }},
                 options: {{
@@ -2052,7 +2081,8 @@ class PhilJobsScraper:
                                     if (!items.length) return '';
                                     const label = items[0].label;
                                     const total = items.reduce((a, b) => a + b.parsed.x, 0);
-                                    return `${{label}} — ${{total}} job${{total === 1 ? '' : 's'}} total`;
+                                    const unit = wcMode === 'all' ? 'tag' : (wcMode === 'solo' ? 'job' : 'tag');
+                                    return `${{label}} — ${{total}} ${{unit}}${{total === 1 ? '' : 's'}}`;
                                 }},
                                 label: (ctx) => {{
                                     const v = ctx.parsed.x;
@@ -2081,9 +2111,15 @@ class PhilJobsScraper:
         function updateWcControls() {{
             const metroBtn = document.getElementById('wcViewMetro');
             const cityBtn = document.getElementById('wcViewCity');
+            const allBtn = document.getElementById('wcModeAll');
+            const soloBtn = document.getElementById('wcModeSolo');
+            const jointBtn = document.getElementById('wcModeJoint');
             const indicator = document.getElementById('wcFilterIndicator');
+            const note = document.getElementById('wcModeNote');
             const active = 'bg-blue-600 text-white';
             const inactive = 'text-gray-700 hover:bg-blue-50';
+
+            // Metro/City toggle
             if (wcViewMode === 'metro') {{
                 metroBtn.className = `px-4 py-1.5 text-sm font-medium ${{active}}`;
                 cityBtn.className = `px-4 py-1.5 text-sm font-medium ${{inactive}}`;
@@ -2098,11 +2134,28 @@ class PhilJobsScraper:
                     indicator.classList.add('hidden');
                 }}
             }}
+
+            // All/Solo/Joint toggle
+            allBtn.className = `px-3 py-1.5 text-sm font-medium ${{wcMode === 'all' ? active : inactive}}`;
+            soloBtn.className = `px-3 py-1.5 text-sm font-medium ${{wcMode === 'solo' ? active : inactive}}`;
+            jointBtn.className = `px-3 py-1.5 text-sm font-medium ${{wcMode === 'joint' ? active : inactive}}`;
+
+            note.textContent = wcMode === 'all'
+                ? 'All: every AOS tag counts (joint jobs add to multiple bars).'
+                : wcMode === 'solo'
+                ? 'Solo: only jobs with exactly one AOS category.'
+                : 'Joint: only jobs listing multiple AOS categories; each tag still counts.';
         }}
 
         function setWcView(mode) {{
             wcViewMode = mode;
             if (mode === 'metro') wcMetroFilter = null;
+            renderWestCoastChart();
+            updateWcControls();
+        }}
+
+        function setWcMode(mode) {{
+            wcMode = mode;
             renderWestCoastChart();
             updateWcControls();
         }}
