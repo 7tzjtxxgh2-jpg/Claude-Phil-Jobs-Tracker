@@ -2429,7 +2429,6 @@ class PhilJobsScraper:
             el.innerHTML = '';
             const values = getStateValues(currentMapMode);
             const maxVal = Math.max(...Object.values(values).filter(v => v > 0), 1);
-            const wc = new Set(['CA', 'OR', 'WA']);
             const width = el.clientWidth || 800, height = 400;
             const features = topojson.feature(usAtlasData, usAtlasData.objects.states);
             const projection = d3.geoAlbersUsa().fitSize([width, height], features);
@@ -2442,10 +2441,10 @@ class PhilJobsScraper:
                     const sc = fipsToState[String(d.id).padStart(2, '0')];
                     const v = values[sc] || 0;
                     if (v === 0) return '#e5e7eb';
-                    return wc.has(sc) ? d3.interpolate('#bfdbfe', '#1d4ed8')(v / maxVal) : d3.interpolate('#d1fae5', '#065f46')(v / maxVal);
+                    return d3.interpolate('#d1fae5', '#065f46')(v / maxVal);
                 }})
-                .attr('stroke', d => wc.has(fipsToState[String(d.id).padStart(2, '0')]) ? '#1d4ed8' : '#9ca3af')
-                .attr('stroke-width', d => wc.has(fipsToState[String(d.id).padStart(2, '0')]) ? 1.5 : 0.5)
+                .attr('stroke', '#9ca3af')
+                .attr('stroke-width', 0.5)
                 .style('cursor', 'pointer')
                 .on('mouseover', function(event, d) {{
                     const sc = fipsToState[String(d.id).padStart(2, '0')] || '';
@@ -2455,9 +2454,8 @@ class PhilJobsScraper:
                 }})
                 .on('mousemove', event => tip.style('left', (event.pageX + 12) + 'px').style('top', (event.pageY - 28) + 'px'))
                 .on('mouseout', function(event, d) {{
-                    const sc = fipsToState[String(d.id).padStart(2, '0')];
                     tip.style('display', 'none');
-                    d3.select(this).attr('stroke', wc.has(sc) ? '#1d4ed8' : '#9ca3af').attr('stroke-width', wc.has(sc) ? 1.5 : 0.5);
+                    d3.select(this).attr('stroke', '#9ca3af').attr('stroke-width', 0.5);
                 }})
                 .on('click', (event, d) => {{
                     const sc = fipsToState[String(d.id).padStart(2, '0')];
