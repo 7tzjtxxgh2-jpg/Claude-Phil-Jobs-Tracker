@@ -1275,13 +1275,24 @@ class PhilJobsScraper:
         west_coast_metro_aos = _serialize_aos(wc_metro_aos)
         west_coast_metro_cities = {k: sorted(list(v)) for k, v in west_coast_metro_cities.items()}
 
-        region_data = {}
-        for region, states in US_REGIONS.items():
-            series_r = []
-            for i in range(len(dates)):
-                total = sum(state_data.get(s, [0] * len(dates))[i] for s in states)
-                series_r.append(total)
-            region_data[region] = series_r
+        # Regional trends — three parallel slices (all/solo/joint) so the chart
+        # can filter by AOS-listing pattern just like Market Overview.
+        # Build state→region lookup for O(1) classification.
+        state_to_region = {s: r for r, states in US_REGIONS.items() for s in states}
+        region_data = {region: {'all': [0] * len(dates), 'solo': [0] * len(dates), 'joint': [0] * len(dates)}
+                       for region in US_REGIONS}
+        for i, date in enumerate(dates):
+            date_key = date[:10]
+            for job in jobs_by_date.get(date_key, []):
+                state = job.get('state')
+                region = state_to_region.get(state)
+                if not region:
+                    continue
+                cls = job.get('classification') or {}
+                main_list = cls.get('main_aos', ['Open'])
+                mode_key = 'solo' if len(main_list) == 1 else 'joint'
+                region_data[region]['all'][i] += 1
+                region_data[region][mode_key][i] += 1
 
         state_alltime = {s: sum(v) for s, v in state_data.items() if sum(v) > 0}
 
@@ -1426,8 +1437,20 @@ class PhilJobsScraper:
 
         <!-- Regional Trends -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-1">Regional Trends</h2>
-            <p class="text-sm text-gray-500 mb-4">New jobs per week by US region — West highlighted in blue</p>
+            <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-1">Regional Trends</h2>
+                    <p class="text-sm text-gray-500">New jobs per week by US region — West highlighted in blue. Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
+                </div>
+                <div class="flex flex-col items-end gap-2">
+                    <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 bg-white">
+                        <button id="regionModeAll" type="button" onclick="setRegionMode('all')" class="px-3 py-1.5 text-sm font-medium bg-indigo-600 text-white">All</button>
+                        <button id="regionModeSolo" type="button" onclick="setRegionMode('solo')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50">Solo</button>
+                        <button id="regionModeJoint" type="button" onclick="setRegionMode('joint')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50">Joint</button>
+                    </div>
+                    <div id="regionModeNote" class="text-xs text-gray-500 italic"></div>
+                </div>
+            </div>
             <div class="chart-container">
                 <canvas id="regionalChart"></canvas>
             </div>
@@ -1954,28 +1977,62 @@ class PhilJobsScraper:
             if (e.target === this) closeModal();
         }});
 
-        // ===== REGIONAL CHART =====
+        // ===== REGIONAL CHART (with All/Solo/Joint toggle) =====
         const regionColors = {{ 'West': '#2563eb', 'Northeast': '#7c3aed', 'South': '#dc2626', 'Midwest': '#d97706' }};
-        new Chart(document.getElementById('regionalChart').getContext('2d'), {{
-            type: 'line',
-            data: {{
-                labels: data.dates,
-                datasets: Object.entries(data.regionData).map(([region, counts]) => ({{
-                    label: region,
-                    data: counts,
-                    borderColor: regionColors[region] || '#6b7280',
-                    backgroundColor: (regionColors[region] || '#6b7280') + '20',
-                    tension: 0.4, fill: true, borderWidth: region === 'West' ? 3 : 1.5,
-                    pointRadius: 4
-                }}))
-            }},
-            options: {{
-                responsive: true, maintainAspectRatio: false,
-                interaction: {{ mode: 'index', intersect: false }},
-                plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15, font: {{ size: 12 }} }} }} }},
-                scales: {{ y: {{ beginAtZero: true }}, x: {{ grid: {{ display: false }} }} }}
-            }}
-        }});
+        let regionMode = 'all';
+        let regionalChart = null;
+
+        function regionDataFor(region, mode) {{
+            mode = mode || regionMode;
+            const slot = data.regionData[region] || {{}};
+            return slot[mode] || [];
+        }}
+
+        function renderRegionalChart() {{
+            const ctx = document.getElementById('regionalChart').getContext('2d');
+            if (regionalChart) regionalChart.destroy();
+            regionalChart = new Chart(ctx, {{
+                type: 'line',
+                data: {{
+                    labels: data.dates,
+                    datasets: Object.keys(data.regionData).map(region => ({{
+                        label: region,
+                        data: regionDataFor(region),
+                        borderColor: regionColors[region] || '#6b7280',
+                        backgroundColor: (regionColors[region] || '#6b7280') + '20',
+                        tension: 0.4, fill: true, borderWidth: region === 'West' ? 3 : 1.5,
+                        pointRadius: 4
+                    }}))
+                }},
+                options: {{
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: {{ mode: 'index', intersect: false }},
+                    plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15, font: {{ size: 12 }} }} }} }},
+                    scales: {{ y: {{ beginAtZero: true }}, x: {{ grid: {{ display: false }} }} }}
+                }}
+            }});
+        }}
+
+        function updateRegionControls() {{
+            const active = 'bg-indigo-600 text-white';
+            const inactive = 'text-gray-700 hover:bg-indigo-50';
+            document.getElementById('regionModeAll').className   = `px-3 py-1.5 text-sm font-medium ${{regionMode === 'all'   ? active : inactive}}`;
+            document.getElementById('regionModeSolo').className  = `px-3 py-1.5 text-sm font-medium ${{regionMode === 'solo'  ? active : inactive}}`;
+            document.getElementById('regionModeJoint').className = `px-3 py-1.5 text-sm font-medium ${{regionMode === 'joint' ? active : inactive}}`;
+            document.getElementById('regionModeNote').textContent =
+                regionMode === 'all'   ? 'All: counts every job in each region per week.' :
+                regionMode === 'solo'  ? 'Solo: only jobs with exactly one AOS category.' :
+                                         'Joint: only jobs listing multiple AOS categories.';
+        }}
+
+        function setRegionMode(mode) {{
+            regionMode = mode;
+            renderRegionalChart();
+            updateRegionControls();
+        }}
+
+        renderRegionalChart();
+        updateRegionControls();
 
         // ===== CO-OCCURRENCE MATRIX =====
         const matrixDiv = document.getElementById('coocMatrixTable');
@@ -2440,17 +2497,21 @@ class PhilJobsScraper:
         inst_type_series          = series['inst_type_series']
         total_new_jobs_weekly     = series['total_new_jobs_weekly']
 
-        # ── International region trend lines ─────────────────────────────
-        intl_region_data = {}
-        for region, countries in INTL_REGIONS.items():
-            country_set = set(countries)
-            series_r = []
-            for date in dates:
-                date_key = date[:10]
-                week_jobs = jobs_by_date.get(date_key, [])
-                count = sum(1 for j in week_jobs if j.get('country') in country_set)
-                series_r.append(count)
-            intl_region_data[region] = series_r
+        # ── International region trend lines (with solo/joint slicing) ───
+        country_to_region = {c: r for r, countries in INTL_REGIONS.items() for c in countries}
+        intl_region_data = {region: {'all': [0] * len(dates), 'solo': [0] * len(dates), 'joint': [0] * len(dates)}
+                            for region in INTL_REGIONS}
+        for i, date in enumerate(dates):
+            date_key = date[:10]
+            for job in jobs_by_date.get(date_key, []):
+                region = country_to_region.get(job.get('country'))
+                if not region:
+                    continue
+                cls = job.get('classification') or {}
+                main_list = cls.get('main_aos', ['Open'])
+                mode_key = 'solo' if len(main_list) == 1 else 'joint'
+                intl_region_data[region]['all'][i] += 1
+                intl_region_data[region][mode_key][i] += 1
 
         # ── Country-level all-time counts for world choropleth ───────────
         country_alltime = defaultdict(int)
@@ -2606,8 +2667,20 @@ class PhilJobsScraper:
 
         <!-- International Regional Trends -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-1">Regional Trends</h2>
-            <p class="text-sm text-gray-500 mb-4">New jobs per week by world region</p>
+            <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-1">Regional Trends</h2>
+                    <p class="text-sm text-gray-500">New jobs per week by world region. Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
+                </div>
+                <div class="flex flex-col items-end gap-2">
+                    <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 bg-white">
+                        <button id="regionModeAll" type="button" onclick="setRegionMode('all')" class="px-3 py-1.5 text-sm font-medium bg-cyan-600 text-white">All</button>
+                        <button id="regionModeSolo" type="button" onclick="setRegionMode('solo')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-cyan-50">Solo</button>
+                        <button id="regionModeJoint" type="button" onclick="setRegionMode('joint')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-cyan-50">Joint</button>
+                    </div>
+                    <div id="regionModeNote" class="text-xs text-gray-500 italic"></div>
+                </div>
+            </div>
             <div class="chart-container">
                 <canvas id="regionalChart"></canvas>
             </div>
@@ -3056,25 +3129,59 @@ class PhilJobsScraper:
             'Europe': '#2563eb', 'Canada': '#dc2626', 'Asia-Pacific': '#16a34a',
             'Latin America': '#d97706', 'Middle East & Africa': '#9333ea'
         }};
-        new Chart(document.getElementById('regionalChart').getContext('2d'), {{
-            type: 'line',
-            data: {{
-                labels: data.dates,
-                datasets: Object.entries(data.intlRegionData).map(([region, counts]) => ({{
-                    label: region,
-                    data: counts,
-                    borderColor: regionColors[region] || '#6b7280',
-                    backgroundColor: (regionColors[region] || '#6b7280') + '20',
-                    tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
-                }}))
-            }},
-            options: {{
-                responsive: true, maintainAspectRatio: false,
-                interaction: {{ mode: 'index', intersect: false }},
-                plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15, font: {{ size: 12 }} }} }} }},
-                scales: {{ y: {{ beginAtZero: true }}, x: {{ grid: {{ display: false }} }} }}
-            }}
-        }});
+        let regionMode = 'all';
+        let regionalChart = null;
+
+        function regionDataFor(region, mode) {{
+            mode = mode || regionMode;
+            const slot = data.intlRegionData[region] || {{}};
+            return slot[mode] || [];
+        }}
+
+        function renderRegionalChart() {{
+            const ctx = document.getElementById('regionalChart').getContext('2d');
+            if (regionalChart) regionalChart.destroy();
+            regionalChart = new Chart(ctx, {{
+                type: 'line',
+                data: {{
+                    labels: data.dates,
+                    datasets: Object.keys(data.intlRegionData).map(region => ({{
+                        label: region,
+                        data: regionDataFor(region),
+                        borderColor: regionColors[region] || '#6b7280',
+                        backgroundColor: (regionColors[region] || '#6b7280') + '20',
+                        tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
+                    }}))
+                }},
+                options: {{
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: {{ mode: 'index', intersect: false }},
+                    plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15, font: {{ size: 12 }} }} }} }},
+                    scales: {{ y: {{ beginAtZero: true }}, x: {{ grid: {{ display: false }} }} }}
+                }}
+            }});
+        }}
+
+        function updateRegionControls() {{
+            const active = 'bg-cyan-600 text-white';
+            const inactive = 'text-gray-700 hover:bg-cyan-50';
+            document.getElementById('regionModeAll').className   = `px-3 py-1.5 text-sm font-medium ${{regionMode === 'all'   ? active : inactive}}`;
+            document.getElementById('regionModeSolo').className  = `px-3 py-1.5 text-sm font-medium ${{regionMode === 'solo'  ? active : inactive}}`;
+            document.getElementById('regionModeJoint').className = `px-3 py-1.5 text-sm font-medium ${{regionMode === 'joint' ? active : inactive}}`;
+            document.getElementById('regionModeNote').textContent =
+                regionMode === 'all'   ? 'All: counts every job in each region per week.' :
+                regionMode === 'solo'  ? 'Solo: only jobs with exactly one AOS category.' :
+                                         'Joint: only jobs listing multiple AOS categories.';
+        }}
+
+        function setRegionMode(mode) {{
+            regionMode = mode;
+            renderRegionalChart();
+            updateRegionControls();
+        }}
+
+        renderRegionalChart();
+        updateRegionControls();
 
         // ===== CO-OCCURRENCE MATRIX =====
         const matrixDiv = document.getElementById('coocMatrixTable');

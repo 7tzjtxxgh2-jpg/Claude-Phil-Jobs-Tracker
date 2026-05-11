@@ -81,8 +81,20 @@
 
         <!-- Regional Trends -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-1">Regional Trends</h2>
-            <p class="text-sm text-gray-500 mb-4">New jobs per week by US region — West highlighted in blue</p>
+            <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-1">Regional Trends</h2>
+                    <p class="text-sm text-gray-500">New jobs per week by US region — West highlighted in blue. Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
+                </div>
+                <div class="flex flex-col items-end gap-2">
+                    <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 bg-white">
+                        <button id="regionModeAll" type="button" onclick="setRegionMode('all')" class="px-3 py-1.5 text-sm font-medium bg-indigo-600 text-white">All</button>
+                        <button id="regionModeSolo" type="button" onclick="setRegionMode('solo')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50">Solo</button>
+                        <button id="regionModeJoint" type="button" onclick="setRegionMode('joint')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50">Joint</button>
+                    </div>
+                    <div id="regionModeNote" class="text-xs text-gray-500 italic"></div>
+                </div>
+            </div>
             <div class="chart-container">
                 <canvas id="regionalChart"></canvas>
             </div>
@@ -289,7 +301,7 @@
             westCoastMetroAos: {"all": {"SF Bay Area": {"Ethics": 1, "Open": 1}, "Greater Los Angeles": {"Ethics": 1, "Science, Logic, & Mathematics": 2, "History of Philosophy": 2, "Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "Open": 2}, "Other California": {"Social & Political Philosophy": 1, "Metaphysics & Epistemology": 1}, "San Diego": {"Open": 1}}, "solo": {"Greater Los Angeles": {"History of Philosophy": 1, "Open": 1}, "San Diego": {"Open": 1}}, "joint": {"SF Bay Area": {"Ethics": 1, "Open": 1}, "Greater Los Angeles": {"Ethics": 1, "Science, Logic, & Mathematics": 2, "Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "Open": 1, "History of Philosophy": 1}, "Other California": {"Social & Political Philosophy": 1, "Metaphysics & Epistemology": 1}}},
             westCoastMetroCities: {"SF Bay Area": ["Stanford"], "Greater Los Angeles": ["Claremont", "Long Beach", "Orange", "Pasadena"], "Other California": ["Fresno"], "San Diego": ["La Jolla"]},
             seasonalMarkers: [],
-            regionData: {"West": [7, 1, 0, 2, 1, 0, 0, 0, 0], "Northeast": [29, 3, 2, 1, 2, 1, 3, 0, 0], "South": [19, 1, 4, 2, 3, 0, 4, 1, 1], "Midwest": [10, 0, 2, 1, 2, 3, 5, 1, 1]},
+            regionData: {"West": {"all": [7, 1, 0, 2, 1, 0, 0, 0, 0], "solo": [1, 0, 0, 1, 1, 0, 0, 0, 0], "joint": [6, 1, 0, 1, 0, 0, 0, 0, 0]}, "Northeast": {"all": [29, 3, 2, 1, 2, 1, 3, 0, 0], "solo": [12, 0, 0, 1, 1, 0, 3, 0, 0], "joint": [17, 3, 2, 0, 1, 1, 0, 0, 0]}, "South": {"all": [19, 1, 4, 2, 3, 0, 4, 1, 1], "solo": [5, 0, 2, 1, 2, 0, 4, 1, 1], "joint": [14, 1, 2, 1, 1, 0, 0, 0, 0]}, "Midwest": {"all": [10, 0, 2, 1, 2, 3, 5, 1, 1], "solo": [6, 0, 0, 1, 0, 2, 2, 0, 0], "joint": [4, 0, 2, 0, 2, 1, 3, 1, 1]}},
             stateAlltime: {"AL": 2, "CA": 8, "CO": 2, "CT": 1, "DE": 1, "FL": 3, "GA": 5, "IL": 5, "IN": 5, "IA": 1, "KS": 2, "KY": 1, "ME": 1, "MD": 2, "MA": 8, "MI": 2, "MN": 1, "MS": 1, "MO": 1, "NE": 2, "NJ": 4, "NY": 17, "NC": 4, "OH": 4, "OK": 1, "PA": 8, "RI": 2, "SC": 2, "SD": 1, "TX": 11, "UT": 1, "VA": 2, "WI": 1},
             stateCategoryData: {"TX": {"Open": 7, "History of Philosophy": 4, "Non-Western & Cross-Cultural Philosophy": 1, "Science, Logic, & Mathematics": 1, "Ethics": 3, "Metaphysics & Epistemology": 2, "Social & Political Philosophy": 4, "Value Theory / Aesthetics": 2}, "MA": {"Metaphysics & Epistemology": 3, "Science, Logic, & Mathematics": 4, "Ethics": 4, "Open": 2, "Social & Political Philosophy": 1}, "PA": {"Open": 3, "Ethics": 2, "Science, Logic, & Mathematics": 4, "Metaphysics & Epistemology": 1, "History of Philosophy": 2, "Social & Political Philosophy": 1}, "NY": {"Science, Logic, & Mathematics": 6, "Metaphysics & Epistemology": 4, "Open": 6, "Ethics": 6, "Non-Western & Cross-Cultural Philosophy": 2, "Social & Political Philosophy": 5, "History of Philosophy": 3}, "IL": {"History of Philosophy": 2, "Open": 3, "Metaphysics & Epistemology": 1, "Science, Logic, & Mathematics": 1, "Ethics": 1, "Social & Political Philosophy": 1}, "MO": {"Open": 1}, "NJ": {"Open": 4, "History of Philosophy": 1}, "ME": {"Ethics": 1, "Science, Logic, & Mathematics": 1, "History of Philosophy": 1}, "CA": {"Ethics": 2, "Open": 4, "Science, Logic, & Mathematics": 2, "History of Philosophy": 2, "Social & Political Philosophy": 2, "Metaphysics & Epistemology": 1, "Value Theory / Aesthetics": 1}, "SC": {"Social & Political Philosophy": 1, "Open": 1}, "GA": {"Ethics": 3, "Social & Political Philosophy": 1, "Open": 2, "Science, Logic, & Mathematics": 1, "Metaphysics & Epistemology": 2, "Non-Western & Cross-Cultural Philosophy": 1}, "NC": {"Science, Logic, & Mathematics": 1, "Metaphysics & Epistemology": 2, "History of Philosophy": 1, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 2, "Ethics": 2, "Social & Political Philosophy": 1}, "MD": {"Ethics": 2, "Social & Political Philosophy": 2, "Science, Logic, & Mathematics": 1}, "IA": {"Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1}, "CO": {"Metaphysics & Epistemology": 1, "Science, Logic, & Mathematics": 1, "Ethics": 1, "History of Philosophy": 1}, "NE": {"History of Philosophy": 1, "Ethics": 1}, "IN": {"Ethics": 4, "Open": 2, "Metaphysics & Epistemology": 1, "Social & Political Philosophy": 1, "Science, Logic, & Mathematics": 1}, "CT": {"Metaphysics & Epistemology": 1, "Social & Political Philosophy": 1}, "FL": {"History of Philosophy": 1, "Science, Logic, & Mathematics": 2, "Ethics": 1, "Metaphysics & Epistemology": 1}, "MI": {"Ethics": 1, "Social & Political Philosophy": 1, "Open": 1}, "MS": {"Ethics": 1, "Science, Logic, & Mathematics": 1}, "OK": {"Social & Political Philosophy": 1, "History of Philosophy": 1, "Open": 1}, "AL": {"Ethics": 1, "Value Theory / Aesthetics": 1}, "RI": {"Ethics": 1, "Social & Political Philosophy": 1, "Metaphysics & Epistemology": 1, "Science, Logic, & Mathematics": 1}, "DE": {"Open": 1}, "UT": {"Metaphysics & Epistemology": 1, "Ethics": 1}, "KS": {"Ethics": 2, "Social & Political Philosophy": 2, "Science, Logic, & Mathematics": 1}, "OH": {"Ethics": 2, "Science, Logic, & Mathematics": 2, "History of Philosophy": 1, "Open": 1}, "WI": {"Ethics": 1, "Science, Logic, & Mathematics": 1, "Social & Political Philosophy": 1}, "VA": {"Open": 1, "Value Theory / Aesthetics": 1}, "MN": {"Science, Logic, & Mathematics": 1, "Metaphysics & Epistemology": 1}, "SD": {"Ethics": 1}, "KY": {"Open": 1}},
             positionTypeByAosWeekly: {"Ethics": {"Tenure-Track": [6, 2, 0, 0, 0, 0, 1, 0, 0], "Postdoc / Fellowship": [6, 1, 0, 1, 1, 0, 0, 1, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [8, 0, 3, 1, 2, 1, 2, 0, 0], "Tenured / Continuing / Permanent": [5, 0, 0, 0, 0, 0, 1, 0, 0], "Other": [2, 0, 0, 0, 0, 0, 0, 0, 0]}, "Social & Political Philosophy": {"Tenure-Track": [2, 1, 1, 1, 0, 0, 0, 0, 0], "Postdoc / Fellowship": [8, 1, 0, 0, 0, 1, 0, 0, 1], "Visiting / Adjunct / Lecturer (Fixed-Term)": [2, 0, 2, 0, 2, 1, 1, 0, 0], "Tenured / Continuing / Permanent": [4, 0, 0, 0, 0, 0, 0, 0, 0], "Other": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "Value Theory / Aesthetics": {"Tenure-Track": [0, 0, 1, 1, 0, 0, 0, 0, 0], "Postdoc / Fellowship": [2, 0, 0, 0, 1, 0, 0, 0, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [0, 0, 0, 0, 0, 0, 1, 0, 0], "Tenured / Continuing / Permanent": [0, 0, 0, 0, 0, 0, 0, 0, 0], "Other": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "History of Philosophy": {"Tenure-Track": [4, 0, 1, 1, 1, 0, 0, 0, 0], "Postdoc / Fellowship": [1, 2, 0, 0, 0, 0, 0, 0, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [7, 0, 2, 0, 0, 1, 0, 0, 0], "Tenured / Continuing / Permanent": [1, 0, 0, 0, 0, 0, 0, 0, 0], "Other": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "Non-Western & Cross-Cultural Philosophy": {"Tenure-Track": [1, 0, 0, 0, 1, 0, 0, 0, 0], "Postdoc / Fellowship": [0, 0, 0, 0, 0, 0, 0, 0, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [2, 0, 1, 0, 0, 0, 0, 0, 0], "Tenured / Continuing / Permanent": [0, 0, 0, 0, 0, 0, 0, 0, 0], "Other": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "Metaphysics & Epistemology": {"Tenure-Track": [3, 0, 0, 0, 0, 0, 0, 0, 0], "Postdoc / Fellowship": [4, 0, 1, 2, 0, 0, 1, 0, 1], "Visiting / Adjunct / Lecturer (Fixed-Term)": [6, 0, 2, 0, 1, 0, 0, 0, 0], "Tenured / Continuing / Permanent": [1, 0, 0, 0, 0, 0, 0, 0, 0], "Other": [1, 0, 0, 0, 0, 0, 0, 0, 0]}, "Science, Logic, & Mathematics": {"Tenure-Track": [4, 1, 0, 0, 0, 0, 0, 0, 0], "Postdoc / Fellowship": [5, 2, 1, 0, 1, 1, 1, 1, 1], "Visiting / Adjunct / Lecturer (Fixed-Term)": [7, 0, 2, 0, 0, 1, 1, 0, 0], "Tenured / Continuing / Permanent": [4, 0, 0, 0, 0, 0, 0, 0, 0], "Other": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "Open": {"Tenure-Track": [1, 0, 1, 2, 1, 0, 0, 0, 0], "Postdoc / Fellowship": [4, 0, 0, 0, 1, 0, 2, 0, 0], "Visiting / Adjunct / Lecturer (Fixed-Term)": [11, 0, 1, 1, 2, 1, 5, 1, 1], "Tenured / Continuing / Permanent": [1, 0, 0, 0, 0, 0, 0, 0, 0], "Other": [5, 0, 1, 0, 1, 0, 0, 0, 0]}},
@@ -609,28 +621,62 @@
             if (e.target === this) closeModal();
         });
 
-        // ===== REGIONAL CHART =====
+        // ===== REGIONAL CHART (with All/Solo/Joint toggle) =====
         const regionColors = { 'West': '#2563eb', 'Northeast': '#7c3aed', 'South': '#dc2626', 'Midwest': '#d97706' };
-        new Chart(document.getElementById('regionalChart').getContext('2d'), {
-            type: 'line',
-            data: {
-                labels: data.dates,
-                datasets: Object.entries(data.regionData).map(([region, counts]) => ({
-                    label: region,
-                    data: counts,
-                    borderColor: regionColors[region] || '#6b7280',
-                    backgroundColor: (regionColors[region] || '#6b7280') + '20',
-                    tension: 0.4, fill: true, borderWidth: region === 'West' ? 3 : 1.5,
-                    pointRadius: 4
-                }))
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                interaction: { mode: 'index', intersect: false },
-                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15, font: { size: 12 } } } },
-                scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
-            }
-        });
+        let regionMode = 'all';
+        let regionalChart = null;
+
+        function regionDataFor(region, mode) {
+            mode = mode || regionMode;
+            const slot = data.regionData[region] || {};
+            return slot[mode] || [];
+        }
+
+        function renderRegionalChart() {
+            const ctx = document.getElementById('regionalChart').getContext('2d');
+            if (regionalChart) regionalChart.destroy();
+            regionalChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.dates,
+                    datasets: Object.keys(data.regionData).map(region => ({
+                        label: region,
+                        data: regionDataFor(region),
+                        borderColor: regionColors[region] || '#6b7280',
+                        backgroundColor: (regionColors[region] || '#6b7280') + '20',
+                        tension: 0.4, fill: true, borderWidth: region === 'West' ? 3 : 1.5,
+                        pointRadius: 4
+                    }))
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15, font: { size: 12 } } } },
+                    scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
+                }
+            });
+        }
+
+        function updateRegionControls() {
+            const active = 'bg-indigo-600 text-white';
+            const inactive = 'text-gray-700 hover:bg-indigo-50';
+            document.getElementById('regionModeAll').className   = `px-3 py-1.5 text-sm font-medium ${regionMode === 'all'   ? active : inactive}`;
+            document.getElementById('regionModeSolo').className  = `px-3 py-1.5 text-sm font-medium ${regionMode === 'solo'  ? active : inactive}`;
+            document.getElementById('regionModeJoint').className = `px-3 py-1.5 text-sm font-medium ${regionMode === 'joint' ? active : inactive}`;
+            document.getElementById('regionModeNote').textContent =
+                regionMode === 'all'   ? 'All: counts every job in each region per week.' :
+                regionMode === 'solo'  ? 'Solo: only jobs with exactly one AOS category.' :
+                                         'Joint: only jobs listing multiple AOS categories.';
+        }
+
+        function setRegionMode(mode) {
+            regionMode = mode;
+            renderRegionalChart();
+            updateRegionControls();
+        }
+
+        renderRegionalChart();
+        updateRegionControls();
 
         // ===== CO-OCCURRENCE MATRIX =====
         const matrixDiv = document.getElementById('coocMatrixTable');
