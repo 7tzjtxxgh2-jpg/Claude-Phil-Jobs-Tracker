@@ -1232,17 +1232,26 @@ class PhilJobsScraper:
         total_new_jobs_weekly = series['total_new_jobs_weekly']
 
         # ── Geographic data (US-specific) ────────────────────────────────
-        state_data = {state: [] for state in US_STATES.values()}
+        # State-level weekly counts sliced by AOS-listing pattern so the
+        # state-click popup can filter by All / Solo / Joint.
+        state_data = {state: {'all': [], 'solo': [], 'joint': []} for state in US_STATES.values()}
         for date in dates:
             date_key = date[:10]
             week_jobs = jobs_by_date.get(date_key, [])
-            sc = defaultdict(int)
+            sc = {m: defaultdict(int) for m in ('all', 'solo', 'joint')}
             for job in week_jobs:
                 s = job.get('state')
-                if s:
-                    sc[s] += 1
+                if not s:
+                    continue
+                cls = job.get('classification') or {}
+                main_list = cls.get('main_aos', ['Open'])
+                mode_key = 'solo' if len(main_list) == 1 else 'joint'
+                sc['all'][s] += 1
+                sc[mode_key][s] += 1
             for state_code in US_STATES.values():
-                state_data[state_code].append(sc.get(state_code, 0))
+                state_data[state_code]['all'].append(sc['all'].get(state_code, 0))
+                state_data[state_code]['solo'].append(sc['solo'].get(state_code, 0))
+                state_data[state_code]['joint'].append(sc['joint'].get(state_code, 0))
 
         # West Coast Spotlight — cumulative AOS breakdown by city and by metro,
         # tracked three ways so the chart can toggle between All / Solo / Joint.
@@ -1302,18 +1311,23 @@ class PhilJobsScraper:
                 region_data[region]['all'][i] += 1
                 region_data[region][mode_key][i] += 1
 
-        state_alltime = {s: sum(v) for s, v in state_data.items() if sum(v) > 0}
+        # state_alltime drives map color shading — use the 'all' slice for total
+        state_alltime = {s: sum(v['all']) for s, v in state_data.items() if sum(v['all']) > 0}
 
-        # ── State → AOS breakdown ────────────────────────────────────────
-        state_cat_map = defaultdict(lambda: defaultdict(int))
+        # ── State → AOS breakdown (with solo/joint slicing) ──────────────
+        state_cat_map = {m: defaultdict(lambda: defaultdict(int)) for m in ('all', 'solo', 'joint')}
         for job in us_jobs:
             s = job.get('state')
-            if s:
-                cls = job.get('classification')
-                if cls:
-                    for main in cls.get('main_aos', []):
-                        state_cat_map[s][main] += 1
-        state_category_data = {k: dict(v) for k, v in state_cat_map.items()}
+            cls = job.get('classification')
+            if not s or not cls:
+                continue
+            main_list = cls.get('main_aos', [])
+            mode_key = 'solo' if len(main_list) == 1 else 'joint'
+            for main in main_list:
+                state_cat_map['all'][s][main] += 1
+                state_cat_map[mode_key][s][main] += 1
+        state_category_data = {m: {k: dict(v) for k, v in state_cat_map[m].items()}
+                               for m in ('all', 'solo', 'joint')}
 
         # ── Position type × AOS all-time (with solo/joint slicing) ───────
         pos_type_x_aos_map = {m: defaultdict(lambda: defaultdict(int)) for m in ('all', 'solo', 'joint')}
@@ -1647,6 +1661,12 @@ class PhilJobsScraper:
                 <h3 id="statePanelTitle" class="text-xl font-bold text-gray-800"></h3>
                 <button onclick="closeStatePanel()" class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
             </div>
+            <div class="inline-flex w-full rounded-lg overflow-hidden border border-gray-300 bg-white mb-3">
+                <button id="stateModeAll" type="button" onclick="setStateMode('all')" class="flex-1 px-3 py-1.5 text-sm font-medium bg-indigo-600 text-white">All</button>
+                <button id="stateModeSolo" type="button" onclick="setStateMode('solo')" class="flex-1 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50">Solo</button>
+                <button id="stateModeJoint" type="button" onclick="setStateMode('joint')" class="flex-1 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50">Joint</button>
+            </div>
+            <div id="stateModeNote" class="text-xs text-gray-500 italic mb-3"></div>
             <div class="grid grid-cols-2 gap-3 mb-4">
                 <div class="bg-indigo-50 rounded-lg p-3 text-center">
                     <div class="text-2xl font-bold text-indigo-600" id="stateNewJobs">0</div>
@@ -1964,10 +1984,12 @@ class PhilJobsScraper:
                 options: {{ responsive: true, plugins: {{ legend: {{ position: 'right', labels: {{ font: {{ size: 11 }}, boxWidth: 12 }} }} }} }}
             }});
 
-            // US States list for this category
+            // US States list for this category — uses the Market Overview mode
+            // so the modal stays consistent with whatever filter is active.
             const statesDiv = document.getElementById('usStatesList');
             const stateCatData = {{}};
-            Object.entries(data.stateCategoryData).forEach(([state, cats]) => {{
+            const stateCatSlice = data.stateCategoryData[marketMode] || {{}};
+            Object.entries(stateCatSlice).forEach(([state, cats]) => {{
                 if (cats[key]) stateCatData[state] = cats[key];
             }});
             const sortedStates = Object.entries(stateCatData).sort((a, b) => b[1] - a[1]).slice(0, 10);
@@ -2386,8 +2408,12 @@ class PhilJobsScraper:
 
         function getStateValues(mode) {{
             if (mode === 'alltime') return data.stateAlltime;
+            // Current-week reading uses the 'all' slice of the per-state series
             const r = {{}};
-            Object.entries(data.stateData).forEach(([s, c]) => {{ r[s] = c[c.length - 1] || 0; }});
+            Object.entries(data.stateData).forEach(([s, slot]) => {{
+                const c = (slot && slot.all) ? slot.all : [];
+                r[s] = c[c.length - 1] || 0;
+            }});
             return r;
         }}
 
@@ -2451,13 +2477,19 @@ class PhilJobsScraper:
 
         // ===== STATE DETAIL PANEL =====
         let stateTrendChart = null;
+        let currentStateCode = null;
+        let stateMode = 'all';
         const catColors = {json.dumps(MAIN_AOS_COLORS)};
 
-        function showStateDetail(stateCode) {{
-            const weekly = data.stateData[stateCode] || [];
+        function renderStateDetail() {{
+            if (!currentStateCode) return;
+            const stateCode = currentStateCode;
+            const slot = data.stateData[stateCode] || {{}};
+            const weekly = slot[stateMode] || [];
             const current = weekly[weekly.length - 1] || 0;
-            const alltime = data.stateAlltime[stateCode] || 0;
-            const categories = data.stateCategoryData[stateCode] || {{}};
+            // All-time uses the appropriate slice
+            const alltime = weekly.reduce((a, b) => a + b, 0);
+            const catSlice = (data.stateCategoryData[stateMode] || {{}})[stateCode] || {{}};
             const isWC = ['CA', 'OR', 'WA'].includes(stateCode);
 
             document.getElementById('statePanelTitle').textContent = stateCode + (isWC ? ' 🌊' : '');
@@ -2478,10 +2510,10 @@ class PhilJobsScraper:
 
             const breakdown = document.getElementById('stateCategoryBreakdown');
             breakdown.innerHTML = '';
-            const sorted = Object.entries(categories).sort((a, b) => b[1] - a[1]);
+            const sorted = Object.entries(catSlice).sort((a, b) => b[1] - a[1]);
             const total = sorted.reduce((s, [, v]) => s + v, 0);
             if (sorted.length === 0) {{
-                breakdown.innerHTML = '<div class="text-gray-400 text-sm">No category data yet</div>';
+                breakdown.innerHTML = '<div class="text-gray-400 text-sm">No category data for this mode</div>';
             }} else {{
                 sorted.forEach(([cat, count]) => {{
                     const pct = total > 0 ? Math.round(count / total * 100) : 0;
@@ -2498,11 +2530,36 @@ class PhilJobsScraper:
                         </div>`;
                 }});
             }}
+        }}
+
+        function updateStateModeControls() {{
+            const active = 'flex-1 px-3 py-1.5 text-sm font-medium bg-indigo-600 text-white';
+            const inactive = 'flex-1 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50';
+            document.getElementById('stateModeAll').className   = stateMode === 'all'   ? active : inactive;
+            document.getElementById('stateModeSolo').className  = stateMode === 'solo'  ? active : inactive;
+            document.getElementById('stateModeJoint').className = stateMode === 'joint' ? active : inactive;
+            document.getElementById('stateModeNote').textContent =
+                stateMode === 'all'   ? 'All: every job counted regardless of AOS-listing pattern.' :
+                stateMode === 'solo'  ? 'Solo: only jobs with exactly one AOS category.' :
+                                        'Joint: only jobs listing multiple AOS categories.';
+        }}
+
+        function setStateMode(mode) {{
+            stateMode = mode;
+            updateStateModeControls();
+            renderStateDetail();
+        }}
+
+        function showStateDetail(stateCode) {{
+            currentStateCode = stateCode;
+            updateStateModeControls();
+            renderStateDetail();
             document.getElementById('stateDetailPanel').classList.remove('hidden');
         }}
 
         function closeStatePanel() {{
             document.getElementById('stateDetailPanel').classList.add('hidden');
+            currentStateCode = null;
             if (stateTrendChart) {{ stateTrendChart.destroy(); stateTrendChart = null; }}
         }}
     </script>
