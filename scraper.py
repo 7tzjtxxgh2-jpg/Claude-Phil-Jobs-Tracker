@@ -1094,13 +1094,26 @@ class PhilJobsScraper:
         }
 
     def _compute_weekly_series(self, jobs_by_date, dates):
-        """Compute per-week chart series from jobs grouped by date key (YYYY-MM-DD)."""
+        """Compute per-week chart series from jobs grouped by date key (YYYY-MM-DD).
+
+        AOS-based series carry three parallel slices so charts can filter by
+        AOS-listing pattern:
+            all   = every main_aos tag on every job contributes +1
+            solo  = +1 only when a job has exactly one main_aos category
+            joint = +1 for each main_aos tag when the job has >1 main_aos
+        By construction: solo + joint = all for any cell.
+        """
+        modes = ('all', 'solo', 'joint')
         parent_categories = {
-            cat: {'data': [], 'subcategories': DETAIL_AOS.get(cat, []), 'color': MAIN_AOS_COLORS.get(cat, '#6b7280')}
+            cat: {
+                'dataAll': [], 'dataSolo': [], 'dataJoint': [],
+                'subcategories': DETAIL_AOS.get(cat, []),
+                'color': MAIN_AOS_COLORS.get(cat, '#6b7280')
+            }
             for cat in MAIN_AOS_CATEGORIES
         }
         subcategory_data = {
-            detail: []
+            detail: {'all': [], 'solo': [], 'joint': []}
             for cat in MAIN_AOS_CATEGORIES
             for detail in DETAIL_AOS.get(cat, [])
         }
@@ -1110,15 +1123,15 @@ class PhilJobsScraper:
             for aos in MAIN_AOS_CATEGORIES
         }
         inst_type_series = {'Research University': [], 'Teaching College': [], 'Other': []}
-        total_new_jobs_weekly = []
+        total_new_jobs_weekly = {'all': [], 'solo': [], 'joint': []}
 
         for date in dates:
             date_key = date[:10]
             week_jobs = jobs_by_date.get(date_key, [])
-            total_new_jobs_weekly.append(len(week_jobs))
 
-            main_counts = defaultdict(int)
-            detail_counts = defaultdict(int)
+            main_counts = {m: defaultdict(int) for m in modes}
+            detail_counts = {m: defaultdict(int) for m in modes}
+            week_totals = {'all': 0, 'solo': 0, 'joint': 0}
             pt_counts = defaultdict(int)
             pt_by_aos = defaultdict(lambda: defaultdict(int))
             it_counts = defaultdict(int)
@@ -1126,11 +1139,17 @@ class PhilJobsScraper:
             for job in week_jobs:
                 cls = job.get('classification') or {}
                 main_list = cls.get('main_aos', ['Open'])
+                mode_key = 'solo' if len(main_list) == 1 else 'joint'
+                week_totals['all'] += 1
+                week_totals[mode_key] += 1
                 for main in main_list:
-                    main_counts[main] += 1
+                    main_counts['all'][main] += 1
+                    main_counts[mode_key][main] += 1
                 for main, details in cls.get('detail_aos', {}).items():
                     for detail in details:
-                        detail_counts[f"{main}::{detail}"] += 1
+                        key = f"{main}::{detail}"
+                        detail_counts['all'][key] += 1
+                        detail_counts[mode_key][key] += 1
                 raw_pt = (cls.get('position_type')
                           or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
                           or job.get('job_type', 'Other'))
@@ -1141,11 +1160,18 @@ class PhilJobsScraper:
                 it = cls.get('institution_type') or job.get('institution_type', 'Other')
                 it_counts[it] += 1
 
+            for m in modes:
+                total_new_jobs_weekly[m].append(week_totals[m])
             for cat in MAIN_AOS_CATEGORIES:
-                parent_categories[cat]['data'].append(main_counts.get(cat, 0))
+                parent_categories[cat]['dataAll'].append(main_counts['all'].get(cat, 0))
+                parent_categories[cat]['dataSolo'].append(main_counts['solo'].get(cat, 0))
+                parent_categories[cat]['dataJoint'].append(main_counts['joint'].get(cat, 0))
             for cat in MAIN_AOS_CATEGORIES:
                 for detail in DETAIL_AOS.get(cat, []):
-                    subcategory_data[detail].append(detail_counts.get(f"{cat}::{detail}", 0))
+                    key = f"{cat}::{detail}"
+                    subcategory_data[detail]['all'].append(detail_counts['all'].get(key, 0))
+                    subcategory_data[detail]['solo'].append(detail_counts['solo'].get(key, 0))
+                    subcategory_data[detail]['joint'].append(detail_counts['joint'].get(key, 0))
             for pt in POSITION_TYPES:
                 job_type_series[pt].append(pt_counts.get(pt, 0))
             for aos in MAIN_AOS_CATEGORIES:
@@ -1307,7 +1333,12 @@ class PhilJobsScraper:
 
         # ── Pre-serialise complex JS objects ─────────────────────────────
         categories_js = json.dumps({
-            k: {'name': k, 'data': v['data'], 'subcategories': v['subcategories'], 'color': v['color']}
+            k: {
+                'name': k,
+                'dataAll': v['dataAll'], 'dataSolo': v['dataSolo'], 'dataJoint': v['dataJoint'],
+                'subcategories': v['subcategories'],
+                'color': v['color']
+            }
             for k, v in parent_categories.items()
         })
 
@@ -1374,8 +1405,20 @@ class PhilJobsScraper:
 
         <!-- Market Overview -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">Market Overview</h2>
-            <p class="text-sm text-gray-500 mb-4">New US jobs per week by main AOS category — shaded areas = hiring season (Sept–Jan)</p>
+            <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-1">Market Overview</h2>
+                    <p class="text-sm text-gray-500">New US jobs per week by main AOS category — shaded areas = hiring season (Sept–Jan). Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
+                </div>
+                <div class="flex flex-col items-end gap-2">
+                    <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 bg-white">
+                        <button id="marketModeAll" type="button" onclick="setMarketMode('all')" class="px-3 py-1.5 text-sm font-medium bg-indigo-600 text-white">All</button>
+                        <button id="marketModeSolo" type="button" onclick="setMarketMode('solo')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50">Solo</button>
+                        <button id="marketModeJoint" type="button" onclick="setMarketMode('joint')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50">Joint</button>
+                    </div>
+                    <div id="marketModeNote" class="text-xs text-gray-500 italic"></div>
+                </div>
+            </div>
             <div class="chart-container">
                 <canvas id="mainChart"></canvas>
             </div>
@@ -1623,97 +1666,159 @@ class PhilJobsScraper:
             }}
         }};
 
+        // ===== MARKET OVERVIEW MODE STATE =====
+        // 'all' = every AOS tag counts; 'solo' = single-AOS jobs only;
+        // 'joint' = multi-AOS jobs only (each tag still counts).
+        let marketMode = 'all';
+        let mainChart = null;
+        let currentModalKey = null;
+
+        function catDataFor(cat, mode) {{
+            mode = mode || marketMode;
+            if (mode === 'solo') return cat.dataSolo;
+            if (mode === 'joint') return cat.dataJoint;
+            return cat.dataAll;
+        }}
+        function subDataFor(sub, mode) {{
+            mode = mode || marketMode;
+            const slot = data.subcategoryData[sub] || {{}};
+            return slot[mode] || [];
+        }}
+        function totalDataFor(mode) {{
+            mode = mode || marketMode;
+            return data.totalNewJobsWeekly[mode] || [];
+        }}
+
         // ===== MAIN CHART =====
-        const mainCtx = document.getElementById('mainChart').getContext('2d');
-        const totalDataset = {{
-            label: 'Total (All US)',
-            data: data.totalNewJobsWeekly,
-            borderColor: '#111827',
-            backgroundColor: 'transparent',
-            borderWidth: 2.5,
-            borderDash: [6, 3],
-            tension: 0.4,
-            fill: false,
-            pointRadius: 4,
-            pointBackgroundColor: '#111827',
-            order: 0
-        }};
-        const datasets = [totalDataset, ...Object.entries(data.categories).map(([key, cat]) => ({{
-            label: cat.name,
-            data: cat.data,
-            borderColor: cat.color,
-            backgroundColor: cat.color + '20',
-            tension: 0.4,
-            fill: true,
-            order: 1
-        }}))];
-        new Chart(mainCtx, {{
-            type: 'line',
-            data: {{ labels: data.dates, datasets: datasets }},
-            plugins: [seasonPlugin],
-            options: {{
-                responsive: true, maintainAspectRatio: false,
-                interaction: {{ mode: 'index', intersect: false }},
-                plugins: {{
-                    legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15, font: {{ size: 12 }} }} }},
-                    tooltip: {{
-                        backgroundColor: 'rgba(0,0,0,0.8)', padding: 12,
-                        callbacks: {{
-                            afterLabel: function(context) {{
-                                return data.seasonalMarkers.some(m => m.index === context.dataIndex) ? '🌟 Hiring Season' : '';
+        function renderMainChart() {{
+            const mainCtx = document.getElementById('mainChart').getContext('2d');
+            if (mainChart) mainChart.destroy();
+            const totalLabel = marketMode === 'all' ? 'Total (All US)'
+                             : marketMode === 'solo' ? 'Total (Solo-AOS)'
+                             : 'Total (Joint-AOS)';
+            const totalDataset = {{
+                label: totalLabel,
+                data: totalDataFor(),
+                borderColor: '#111827',
+                backgroundColor: 'transparent',
+                borderWidth: 2.5,
+                borderDash: [6, 3],
+                tension: 0.4,
+                fill: false,
+                pointRadius: 4,
+                pointBackgroundColor: '#111827',
+                order: 0
+            }};
+            const datasets = [totalDataset, ...Object.entries(data.categories).map(([key, cat]) => ({{
+                label: cat.name,
+                data: catDataFor(cat),
+                borderColor: cat.color,
+                backgroundColor: cat.color + '20',
+                tension: 0.4,
+                fill: true,
+                order: 1
+            }}))];
+            mainChart = new Chart(mainCtx, {{
+                type: 'line',
+                data: {{ labels: data.dates, datasets: datasets }},
+                plugins: [seasonPlugin],
+                options: {{
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: {{ mode: 'index', intersect: false }},
+                    plugins: {{
+                        legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15, font: {{ size: 12 }} }} }},
+                        tooltip: {{
+                            backgroundColor: 'rgba(0,0,0,0.8)', padding: 12,
+                            callbacks: {{
+                                afterLabel: function(context) {{
+                                    return data.seasonalMarkers.some(m => m.index === context.dataIndex) ? '🌟 Hiring Season' : '';
+                                }}
                             }}
                         }}
+                    }},
+                    scales: {{
+                        y: {{ beginAtZero: true, ticks: {{ font: {{ size: 12 }} }}, grid: {{ color: 'rgba(0,0,0,0.05)' }} }},
+                        x: {{ ticks: {{ font: {{ size: 12 }} }}, grid: {{ display: false }} }}
                     }}
-                }},
-                scales: {{
-                    y: {{ beginAtZero: true, ticks: {{ font: {{ size: 12 }} }}, grid: {{ color: 'rgba(0,0,0,0.05)' }} }},
-                    x: {{ ticks: {{ font: {{ size: 12 }} }}, grid: {{ display: false }} }}
                 }}
-            }}
-        }});
+            }});
+        }}
 
         // ===== CATEGORY CARDS =====
-        const categoryGrid = document.getElementById('categoryGrid');
-        Object.entries(data.categories).forEach(([key, cat]) => {{
-            const currentJobs = cat.data[cat.data.length - 1];
-            const previousJobs = cat.data[cat.data.length - 2] || 0;
-            const change = currentJobs - previousJobs;
-            const changePercent = previousJobs > 0 ? ((change / previousJobs) * 100).toFixed(1) : 0;
-            const card = document.createElement('div');
-            card.className = 'category-card bg-white rounded-lg shadow hover:shadow-lg cursor-pointer p-5 border-l-4';
-            card.style.borderLeftColor = cat.color;
-            card.onclick = () => openModal(key, cat);
-            card.innerHTML = `
-                <div class="flex justify-between items-start mb-3">
-                    <h3 class="font-semibold text-gray-800 text-lg">${{cat.name}}</h3>
-                    <div class="w-3 h-3 rounded-full" style="background-color:${{cat.color}}"></div>
-                </div>
-                <div class="flex items-end justify-between">
-                    <div>
-                        <div class="text-3xl font-bold text-gray-800">${{currentJobs}}</div>
-                        <div class="text-sm text-gray-500">new this week</div>
+        function renderCategoryCards() {{
+            const categoryGrid = document.getElementById('categoryGrid');
+            categoryGrid.innerHTML = '';
+            Object.entries(data.categories).forEach(([key, cat]) => {{
+                const series = catDataFor(cat);
+                const currentJobs = series[series.length - 1] || 0;
+                const previousJobs = series[series.length - 2] || 0;
+                const change = currentJobs - previousJobs;
+                const changePercent = previousJobs > 0 ? ((change / previousJobs) * 100).toFixed(1) : 0;
+                const card = document.createElement('div');
+                card.className = 'category-card bg-white rounded-lg shadow hover:shadow-lg cursor-pointer p-5 border-l-4';
+                card.style.borderLeftColor = cat.color;
+                card.onclick = () => openModal(key, cat);
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="font-semibold text-gray-800 text-lg">${{cat.name}}</h3>
+                        <div class="w-3 h-3 rounded-full" style="background-color:${{cat.color}}"></div>
                     </div>
-                    <div class="text-right">
-                        <div class="text-sm font-semibold ${{change >= 0 ? 'text-green-600' : 'text-red-600'}}">${{change >= 0 ? '↑' : '↓'}} ${{Math.abs(change)}}</div>
-                        <div class="text-xs text-gray-500">${{changePercent}}%</div>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <div class="text-3xl font-bold text-gray-800">${{currentJobs}}</div>
+                            <div class="text-sm text-gray-500">new this week</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold ${{change >= 0 ? 'text-green-600' : 'text-red-600'}}">${{change >= 0 ? '↑' : '↓'}} ${{Math.abs(change)}}</div>
+                            <div class="text-xs text-gray-500">${{changePercent}}%</div>
+                        </div>
                     </div>
-                </div>
-                ${{cat.subcategories.length > 0 ? `<div class="mt-3 pt-3 border-t border-gray-100"><div class="text-xs text-gray-500">${{cat.subcategories.length}} subcategories</div></div>` : ''}}
-            `;
-            categoryGrid.appendChild(card);
-        }});
+                    ${{cat.subcategories.length > 0 ? `<div class="mt-3 pt-3 border-t border-gray-100"><div class="text-xs text-gray-500">${{cat.subcategories.length}} subcategories</div></div>` : ''}}
+                `;
+                categoryGrid.appendChild(card);
+            }});
+        }}
+
+        function updateMarketControls() {{
+            const active = 'bg-indigo-600 text-white';
+            const inactive = 'text-gray-700 hover:bg-indigo-50';
+            document.getElementById('marketModeAll').className   = `px-3 py-1.5 text-sm font-medium ${{marketMode === 'all'   ? active : inactive}}`;
+            document.getElementById('marketModeSolo').className  = `px-3 py-1.5 text-sm font-medium ${{marketMode === 'solo'  ? active : inactive}}`;
+            document.getElementById('marketModeJoint').className = `px-3 py-1.5 text-sm font-medium ${{marketMode === 'joint' ? active : inactive}}`;
+            document.getElementById('marketModeNote').textContent =
+                marketMode === 'all'   ? 'All: every AOS tag counts (joint jobs add to multiple lines).' :
+                marketMode === 'solo'  ? 'Solo: only jobs with exactly one AOS category.' :
+                                         'Joint: only jobs listing multiple AOS categories; each tag still counts.';
+        }}
+
+        function setMarketMode(mode) {{
+            marketMode = mode;
+            renderMainChart();
+            renderCategoryCards();
+            updateMarketControls();
+            // If the modal is open, re-render its data for the new mode
+            if (currentModalKey && !document.getElementById('detailModal').classList.contains('hidden')) {{
+                openModal(currentModalKey, data.categories[currentModalKey]);
+            }}
+        }}
+
+        renderMainChart();
+        renderCategoryCards();
+        updateMarketControls();
 
         // ===== MODAL =====
         let detailChart = null, jobTypeChart = null, institutionChart = null;
 
         function openModal(key, category) {{
-            const currentJobs = category.data[category.data.length - 1];
-            const previousJobs = category.data[category.data.length - 2] || 0;
+            currentModalKey = key;
+            const catSeries = catDataFor(category);
+            const currentJobs = catSeries[catSeries.length - 1] || 0;
+            const previousJobs = catSeries[catSeries.length - 2] || 0;
             const change = currentJobs - previousJobs;
-            const average = (category.data.reduce((a, b) => a + b, 0) / category.data.length).toFixed(1);
-            const total = category.data.reduce((a, b) => a + b, 0);
+            const average = catSeries.length > 0 ? (catSeries.reduce((a, b) => a + b, 0) / catSeries.length).toFixed(1) : '0.0';
+            const total = catSeries.reduce((a, b) => a + b, 0);
 
-            document.getElementById('modalTitle').textContent = category.name;
+            document.getElementById('modalTitle').textContent = category.name + (marketMode === 'all' ? '' : ` — ${{marketMode}}`);
             document.getElementById('modalCurrentJobs').textContent = currentJobs;
             document.getElementById('modalChange').textContent = (change >= 0 ? '+' : '') + change;
             document.getElementById('modalChange').className = 'text-2xl font-bold ' + (change >= 0 ? 'text-green-600' : 'text-red-600');
@@ -1725,9 +1830,9 @@ class PhilJobsScraper:
             subcatGrid.innerHTML = '';
             document.getElementById('subcategorySection').style.display = category.subcategories.length > 0 ? 'block' : 'none';
             category.subcategories.forEach(sub => {{
-                const subData = data.subcategoryData[sub] || [];
-                const subTotal = subData.reduce((a, b) => a + b, 0);
-                const subCurrent = subData[subData.length - 1] || 0;
+                const subSeries = subDataFor(sub);
+                const subTotal = subSeries.reduce((a, b) => a + b, 0);
+                const subCurrent = subSeries[subSeries.length - 1] || 0;
                 const soloJointData = data.detailAosByContext[sub] || {{}};
                 const solo = Object.values(soloJointData.solo || {{}}).reduce((a, b) => a + b, 0);
                 const joint = Object.values(soloJointData.with_others || {{}}).reduce((a, b) => a + b, 0);
@@ -1746,7 +1851,7 @@ class PhilJobsScraper:
                 type: 'line',
                 data: {{
                     labels: data.dates,
-                    datasets: [{{ label: category.name, data: category.data, borderColor: category.color, backgroundColor: category.color + '30', tension: 0.4, fill: true }}]
+                    datasets: [{{ label: category.name, data: catSeries, borderColor: category.color, backgroundColor: category.color + '30', tension: 0.4, fill: true }}]
                 }},
                 plugins: [seasonPlugin],
                 options: {{
@@ -1840,6 +1945,7 @@ class PhilJobsScraper:
 
         function closeModal() {{
             document.getElementById('detailModal').classList.add('hidden');
+            currentModalKey = null;
             if (detailChart) {{ detailChart.destroy(); detailChart = null; }}
             if (jobTypeChart) {{ jobTypeChart.destroy(); jobTypeChart = null; }}
             if (institutionChart) {{ institutionChart.destroy(); institutionChart = null; }}
@@ -2408,7 +2514,12 @@ class PhilJobsScraper:
 
         # ── Pre-serialise JS objects ──────────────────────────────────────
         categories_js = json.dumps({
-            k: {'name': k, 'data': v['data'], 'subcategories': v['subcategories'], 'color': v['color']}
+            k: {
+                'name': k,
+                'dataAll': v['dataAll'], 'dataSolo': v['dataSolo'], 'dataJoint': v['dataJoint'],
+                'subcategories': v['subcategories'],
+                'color': v['color']
+            }
             for k, v in parent_categories.items()
         })
 
@@ -2474,8 +2585,20 @@ class PhilJobsScraper:
 
         <!-- Market Overview -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">Market Overview</h2>
-            <p class="text-sm text-gray-500 mb-4">New international jobs per week by main AOS category — shaded areas = hiring season (Sept–Jan)</p>
+            <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-1">Market Overview</h2>
+                    <p class="text-sm text-gray-500">New international jobs per week by main AOS category — shaded areas = hiring season (Sept–Jan). Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
+                </div>
+                <div class="flex flex-col items-end gap-2">
+                    <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 bg-white">
+                        <button id="marketModeAll" type="button" onclick="setMarketMode('all')" class="px-3 py-1.5 text-sm font-medium bg-cyan-600 text-white">All</button>
+                        <button id="marketModeSolo" type="button" onclick="setMarketMode('solo')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-cyan-50">Solo</button>
+                        <button id="marketModeJoint" type="button" onclick="setMarketMode('joint')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-cyan-50">Joint</button>
+                    </div>
+                    <div id="marketModeNote" class="text-xs text-gray-500 italic"></div>
+                </div>
+            </div>
             <div class="chart-container">
                 <canvas id="mainChart"></canvas>
             </div>
@@ -2672,84 +2795,136 @@ class PhilJobsScraper:
             }}
         }};
 
-        // ===== MAIN CHART =====
-        const totalDataset = {{
-            label: 'Total (All Intl)',
-            data: data.totalNewJobsWeekly,
-            borderColor: '#111827',
-            backgroundColor: 'transparent',
-            borderWidth: 2.5,
-            borderDash: [6, 3],
-            tension: 0.4,
-            fill: false,
-            pointRadius: 4,
-            pointBackgroundColor: '#111827',
-            order: 0
-        }};
-        const datasets = [totalDataset, ...Object.entries(data.categories).map(([key, cat]) => ({{
-            label: cat.name, data: cat.data, borderColor: cat.color,
-            backgroundColor: cat.color + '20', tension: 0.4, fill: true, order: 1
-        }}))];
-        new Chart(document.getElementById('mainChart').getContext('2d'), {{
-            type: 'line',
-            data: {{ labels: data.dates, datasets }},
-            plugins: [seasonPlugin],
-            options: {{
-                responsive: true, maintainAspectRatio: false,
-                interaction: {{ mode: 'index', intersect: false }},
-                plugins: {{
-                    legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15, font: {{ size: 12 }} }} }},
-                    tooltip: {{ backgroundColor: 'rgba(0,0,0,0.8)', padding: 12 }}
-                }},
-                scales: {{
-                    y: {{ beginAtZero: true, ticks: {{ font: {{ size: 12 }} }}, grid: {{ color: 'rgba(0,0,0,0.05)' }} }},
-                    x: {{ ticks: {{ font: {{ size: 12 }} }}, grid: {{ display: false }} }}
+        // ===== MARKET OVERVIEW MODE STATE (Intl) =====
+        let marketMode = 'all';
+        let mainChart = null;
+        let currentModalKey = null;
+
+        function catDataFor(cat, mode) {{
+            mode = mode || marketMode;
+            if (mode === 'solo') return cat.dataSolo;
+            if (mode === 'joint') return cat.dataJoint;
+            return cat.dataAll;
+        }}
+        function subDataFor(sub, mode) {{
+            mode = mode || marketMode;
+            const slot = data.subcategoryData[sub] || {{}};
+            return slot[mode] || [];
+        }}
+        function totalDataFor(mode) {{
+            mode = mode || marketMode;
+            return data.totalNewJobsWeekly[mode] || [];
+        }}
+
+        function renderMainChart() {{
+            const mainCtx = document.getElementById('mainChart').getContext('2d');
+            if (mainChart) mainChart.destroy();
+            const totalLabel = marketMode === 'all' ? 'Total (All Intl)'
+                             : marketMode === 'solo' ? 'Total (Solo-AOS)'
+                             : 'Total (Joint-AOS)';
+            const td = {{
+                label: totalLabel, data: totalDataFor(),
+                borderColor: '#111827', backgroundColor: 'transparent',
+                borderWidth: 2.5, borderDash: [6, 3], tension: 0.4,
+                fill: false, pointRadius: 4, pointBackgroundColor: '#111827', order: 0
+            }};
+            const ds = [td, ...Object.entries(data.categories).map(([key, cat]) => ({{
+                label: cat.name, data: catDataFor(cat), borderColor: cat.color,
+                backgroundColor: cat.color + '20', tension: 0.4, fill: true, order: 1
+            }}))];
+            mainChart = new Chart(mainCtx, {{
+                type: 'line',
+                data: {{ labels: data.dates, datasets: ds }},
+                plugins: [seasonPlugin],
+                options: {{
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: {{ mode: 'index', intersect: false }},
+                    plugins: {{
+                        legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15, font: {{ size: 12 }} }} }},
+                        tooltip: {{ backgroundColor: 'rgba(0,0,0,0.8)', padding: 12 }}
+                    }},
+                    scales: {{
+                        y: {{ beginAtZero: true, ticks: {{ font: {{ size: 12 }} }}, grid: {{ color: 'rgba(0,0,0,0.05)' }} }},
+                        x: {{ ticks: {{ font: {{ size: 12 }} }}, grid: {{ display: false }} }}
+                    }}
                 }}
-            }}
-        }});
+            }});
+        }}
 
         // ===== CATEGORY CARDS =====
-        const categoryGrid = document.getElementById('categoryGrid');
-        Object.entries(data.categories).forEach(([key, cat]) => {{
-            const currentJobs = cat.data[cat.data.length - 1];
-            const previousJobs = cat.data[cat.data.length - 2] || 0;
-            const change = currentJobs - previousJobs;
-            const changePercent = previousJobs > 0 ? ((change / previousJobs) * 100).toFixed(1) : 0;
-            const card = document.createElement('div');
-            card.className = 'category-card bg-white rounded-lg shadow hover:shadow-lg cursor-pointer p-5 border-l-4';
-            card.style.borderLeftColor = cat.color;
-            card.onclick = () => openModal(key, cat);
-            card.innerHTML = `
-                <div class="flex justify-between items-start mb-3">
-                    <h3 class="font-semibold text-gray-800 text-lg">${{cat.name}}</h3>
-                    <div class="w-3 h-3 rounded-full" style="background-color:${{cat.color}}"></div>
-                </div>
-                <div class="flex items-end justify-between">
-                    <div>
-                        <div class="text-3xl font-bold text-gray-800">${{currentJobs}}</div>
-                        <div class="text-sm text-gray-500">new this week</div>
+        function renderCategoryCards() {{
+            const categoryGrid = document.getElementById('categoryGrid');
+            categoryGrid.innerHTML = '';
+            Object.entries(data.categories).forEach(([key, cat]) => {{
+                const series = catDataFor(cat);
+                const currentJobs = series[series.length - 1] || 0;
+                const previousJobs = series[series.length - 2] || 0;
+                const change = currentJobs - previousJobs;
+                const changePercent = previousJobs > 0 ? ((change / previousJobs) * 100).toFixed(1) : 0;
+                const card = document.createElement('div');
+                card.className = 'category-card bg-white rounded-lg shadow hover:shadow-lg cursor-pointer p-5 border-l-4';
+                card.style.borderLeftColor = cat.color;
+                card.onclick = () => openModal(key, cat);
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="font-semibold text-gray-800 text-lg">${{cat.name}}</h3>
+                        <div class="w-3 h-3 rounded-full" style="background-color:${{cat.color}}"></div>
                     </div>
-                    <div class="text-right">
-                        <div class="text-sm font-semibold ${{change >= 0 ? 'text-green-600' : 'text-red-600'}}">${{change >= 0 ? '↑' : '↓'}} ${{Math.abs(change)}}</div>
-                        <div class="text-xs text-gray-500">${{changePercent}}%</div>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <div class="text-3xl font-bold text-gray-800">${{currentJobs}}</div>
+                            <div class="text-sm text-gray-500">new this week</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold ${{change >= 0 ? 'text-green-600' : 'text-red-600'}}">${{change >= 0 ? '↑' : '↓'}} ${{Math.abs(change)}}</div>
+                            <div class="text-xs text-gray-500">${{changePercent}}%</div>
+                        </div>
                     </div>
-                </div>
-                ${{cat.subcategories.length > 0 ? `<div class="mt-3 pt-3 border-t border-gray-100"><div class="text-xs text-gray-500">${{cat.subcategories.length}} subcategories</div></div>` : ''}}
-            `;
-            categoryGrid.appendChild(card);
-        }});
+                    ${{cat.subcategories.length > 0 ? `<div class="mt-3 pt-3 border-t border-gray-100"><div class="text-xs text-gray-500">${{cat.subcategories.length}} subcategories</div></div>` : ''}}
+                `;
+                categoryGrid.appendChild(card);
+            }});
+        }}
+
+        function updateMarketControls() {{
+            const active = 'bg-cyan-600 text-white';
+            const inactive = 'text-gray-700 hover:bg-cyan-50';
+            document.getElementById('marketModeAll').className   = `px-3 py-1.5 text-sm font-medium ${{marketMode === 'all'   ? active : inactive}}`;
+            document.getElementById('marketModeSolo').className  = `px-3 py-1.5 text-sm font-medium ${{marketMode === 'solo'  ? active : inactive}}`;
+            document.getElementById('marketModeJoint').className = `px-3 py-1.5 text-sm font-medium ${{marketMode === 'joint' ? active : inactive}}`;
+            document.getElementById('marketModeNote').textContent =
+                marketMode === 'all'   ? 'All: every AOS tag counts (joint jobs add to multiple lines).' :
+                marketMode === 'solo'  ? 'Solo: only jobs with exactly one AOS category.' :
+                                         'Joint: only jobs listing multiple AOS categories; each tag still counts.';
+        }}
+
+        function setMarketMode(mode) {{
+            marketMode = mode;
+            renderMainChart();
+            renderCategoryCards();
+            updateMarketControls();
+            if (currentModalKey && !document.getElementById('detailModal').classList.contains('hidden')) {{
+                openModal(currentModalKey, data.categories[currentModalKey]);
+            }}
+        }}
+
+        renderMainChart();
+        renderCategoryCards();
+        updateMarketControls();
 
         // ===== MODAL =====
         let detailChart = null, jobTypeChart = null, institutionChart = null;
 
         function openModal(key, category) {{
-            const currentJobs = category.data[category.data.length - 1];
-            const previousJobs = category.data[category.data.length - 2] || 0;
+            currentModalKey = key;
+            const catSeries = catDataFor(category);
+            const currentJobs = catSeries[catSeries.length - 1] || 0;
+            const previousJobs = catSeries[catSeries.length - 2] || 0;
             const change = currentJobs - previousJobs;
-            const average = (category.data.reduce((a, b) => a + b, 0) / category.data.length).toFixed(1);
-            const total = category.data.reduce((a, b) => a + b, 0);
+            const average = catSeries.length > 0 ? (catSeries.reduce((a, b) => a + b, 0) / catSeries.length).toFixed(1) : '0.0';
+            const total = catSeries.reduce((a, b) => a + b, 0);
 
-            document.getElementById('modalTitle').textContent = category.name;
+            document.getElementById('modalTitle').textContent = category.name + (marketMode === 'all' ? '' : ` — ${{marketMode}}`);
             document.getElementById('modalCurrentJobs').textContent = currentJobs;
             document.getElementById('modalChange').textContent = (change >= 0 ? '+' : '') + change;
             document.getElementById('modalChange').className = 'text-2xl font-bold ' + (change >= 0 ? 'text-green-600' : 'text-red-600');
@@ -2761,9 +2936,9 @@ class PhilJobsScraper:
             subcatGrid.innerHTML = '';
             document.getElementById('subcategorySection').style.display = category.subcategories.length > 0 ? 'block' : 'none';
             category.subcategories.forEach(sub => {{
-                const subData = data.subcategoryData[sub] || [];
-                const subTotal = subData.reduce((a, b) => a + b, 0);
-                const subCurrent = subData[subData.length - 1] || 0;
+                const subSeries = subDataFor(sub);
+                const subTotal = subSeries.reduce((a, b) => a + b, 0);
+                const subCurrent = subSeries[subSeries.length - 1] || 0;
                 const soloJointData = data.detailAosByContext[sub] || {{}};
                 const solo = Object.values(soloJointData.solo || {{}}).reduce((a, b) => a + b, 0);
                 const joint = Object.values(soloJointData.with_others || {{}}).reduce((a, b) => a + b, 0);
@@ -2780,7 +2955,7 @@ class PhilJobsScraper:
             if (detailChart) detailChart.destroy();
             detailChart = new Chart(ctx, {{
                 type: 'line',
-                data: {{ labels: data.dates, datasets: [{{ label: category.name, data: category.data, borderColor: category.color, backgroundColor: category.color + '30', tension: 0.4, fill: true }}] }},
+                data: {{ labels: data.dates, datasets: [{{ label: category.name, data: catSeries, borderColor: category.color, backgroundColor: category.color + '30', tension: 0.4, fill: true }}] }},
                 plugins: [seasonPlugin],
                 options: {{
                     responsive: true, maintainAspectRatio: false,
@@ -2867,6 +3042,7 @@ class PhilJobsScraper:
 
         function closeModal() {{
             document.getElementById('detailModal').classList.add('hidden');
+            currentModalKey = null;
             if (detailChart) {{ detailChart.destroy(); detailChart = null; }}
             if (jobTypeChart) {{ jobTypeChart.destroy(); jobTypeChart = null; }}
             if (institutionChart) {{ institutionChart.destroy(); institutionChart = null; }}

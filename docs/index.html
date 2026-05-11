@@ -60,8 +60,20 @@
 
         <!-- Market Overview -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">Market Overview</h2>
-            <p class="text-sm text-gray-500 mb-4">New US jobs per week by main AOS category — shaded areas = hiring season (Sept–Jan)</p>
+            <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-1">Market Overview</h2>
+                    <p class="text-sm text-gray-500">New US jobs per week by main AOS category — shaded areas = hiring season (Sept–Jan). Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
+                </div>
+                <div class="flex flex-col items-end gap-2">
+                    <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 bg-white">
+                        <button id="marketModeAll" type="button" onclick="setMarketMode('all')" class="px-3 py-1.5 text-sm font-medium bg-indigo-600 text-white">All</button>
+                        <button id="marketModeSolo" type="button" onclick="setMarketMode('solo')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50">Solo</button>
+                        <button id="marketModeJoint" type="button" onclick="setMarketMode('joint')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50">Joint</button>
+                    </div>
+                    <div id="marketModeNote" class="text-xs text-gray-500 italic"></div>
+                </div>
+            </div>
             <div class="chart-container">
                 <canvas id="mainChart"></canvas>
             </div>
@@ -267,9 +279,9 @@
     <script>
         const data = {
             dates: ["2026-03-10", "2026-03-16", "2026-03-21", "2026-03-30", "2026-04-06", "2026-04-13", "2026-04-27", "2026-05-04", "2026-05-11"],
-            totalNewJobsWeekly: [65, 5, 8, 6, 8, 4, 12, 2, 2],
-            categories: {"Ethics": {"name": "Ethics", "data": [27, 3, 3, 2, 3, 1, 4, 1, 0], "subcategories": ["Meta-Ethics", "Normative Ethics", "Biomedical Ethics / Bioethics", "Neuroethics", "AI, Technology, and Information Ethics", "Environmental Ethics", "Animal Ethics", "Food and Agricultural Ethics", "Business Ethics", "Ethics of Population, Future Generations, and Global Justice", "Ethics (General / Applied Ethics, Broadly Construed)"], "color": "#ef4444"}, "Social & Political Philosophy": {"name": "Social & Political Philosophy", "data": [16, 2, 3, 1, 2, 2, 1, 0, 1], "subcategories": ["Social and Political Philosophy (General / Political Theory)", "Philosophy of Law", "Philosophy of Race", "Philosophy of Gender", "Feminist Philosophy", "Philosophy of Sexuality and Queer Theory", "PPE (Politics, Philosophy, and Economics)", "Philosophy of Education", "Social & Political Philosophy (General)"], "color": "#3b82f6"}, "Value Theory / Aesthetics": {"name": "Value Theory / Aesthetics", "data": [2, 0, 1, 1, 1, 0, 1, 0, 0], "subcategories": ["Aesthetics (General)", "Philosophy of Art", "Philosophy of Music", "Philosophy of Film and Media", "Philosophy of Literature", "Value Theory / Axiology", "Value Theory / Aesthetics (General)"], "color": "#06b6d4"}, "History of Philosophy": {"name": "History of Philosophy", "data": [13, 2, 3, 1, 1, 1, 0, 0, 0], "subcategories": ["Ancient Greek and Roman Philosophy", "Medieval and Renaissance Philosophy", "Early Modern Philosophy (17th/18th Century)", "19th/20th Century Philosophy", "American Philosophy", "Continental Philosophy", "History of Philosophy (General)"], "color": "#8b5cf6"}, "Non-Western & Cross-Cultural Philosophy": {"name": "Non-Western & Cross-Cultural Philosophy", "data": [3, 0, 1, 0, 1, 0, 0, 0, 0], "subcategories": ["Asian Philosophy", "African/Africana Philosophy", "Arabic and Islamic Philosophy", "Latin American Philosophy", "Native American / Indigenous Philosophy", "Comparative Philosophy / Cross-Cultural", "Non-Western Philosophy (General)"], "color": "#ec4899"}, "Metaphysics & Epistemology": {"name": "Metaphysics & Epistemology", "data": [15, 0, 3, 2, 1, 0, 1, 0, 1], "subcategories": ["Metaphysics", "Epistemology", "Philosophy of Mind", "Philosophy of Language", "Philosophy of Action", "Philosophy of Religion", "Metaphysics & Epistemology (General)"], "color": "#10b981"}, "Science, Logic, & Mathematics": {"name": "Science, Logic, & Mathematics", "data": [20, 3, 3, 0, 1, 2, 2, 1, 1], "subcategories": ["Philosophy of Science (General)", "Philosophy of Biology", "Philosophy of Physics", "Philosophy of Cognitive Science", "Philosophy of Computing / Philosophy of AI", "Logic", "Philosophy of Mathematics", "Philosophy of Social Science", "Decision Theory", "Science, Logic, & Mathematics (General)"], "color": "#f59e0b"}, "Open": {"name": "Open", "data": [22, 0, 3, 3, 5, 1, 7, 1, 1], "subcategories": [], "color": "#6b7280"}},
-            subcategoryData: {"Meta-Ethics": [0, 0, 0, 0, 0, 0, 0, 0, 0], "Normative Ethics": [2, 1, 1, 0, 0, 1, 0, 0, 0], "Biomedical Ethics / Bioethics": [8, 0, 0, 0, 1, 1, 2, 0, 0], "Neuroethics": [2, 0, 0, 0, 0, 0, 0, 0, 0], "AI, Technology, and Information Ethics": [10, 1, 2, 1, 1, 1, 1, 1, 0], "Environmental Ethics": [6, 0, 0, 0, 0, 1, 1, 0, 0], "Animal Ethics": [0, 0, 0, 0, 0, 0, 0, 0, 0], "Food and Agricultural Ethics": [1, 0, 0, 0, 0, 0, 0, 0, 0], "Business Ethics": [2, 0, 2, 1, 0, 0, 1, 0, 0], "Ethics of Population, Future Generations, and Global Justice": [1, 0, 1, 0, 0, 0, 1, 0, 0], "Ethics (General / Applied Ethics, Broadly Construed)": [17, 1, 1, 1, 2, 1, 3, 0, 0], "Social and Political Philosophy (General / Political Theory)": [10, 1, 3, 1, 1, 1, 0, 0, 1], "Philosophy of Law": [5, 0, 1, 0, 0, 1, 0, 0, 0], "Philosophy of Race": [1, 0, 1, 0, 0, 0, 0, 0, 0], "Philosophy of Gender": [0, 0, 0, 0, 0, 0, 0, 0, 0], "Feminist Philosophy": [1, 0, 1, 0, 0, 0, 0, 0, 0], "Philosophy of Sexuality and Queer Theory": [0, 0, 0, 0, 0, 0, 0, 0, 0], "PPE (Politics, Philosophy, and Economics)": [4, 0, 0, 0, 0, 1, 1, 0, 0], "Philosophy of Education": [2, 0, 0, 0, 0, 0, 0, 0, 0], "Social & Political Philosophy (General)": [0, 0, 0, 0, 0, 0, 0, 0, 0], "Aesthetics (General)": [0, 0, 0, 0, 1, 0, 0, 0, 0], "Philosophy of Art": [0, 0, 0, 0, 0, 0, 0, 0, 0], "Philosophy of Music": [0, 0, 0, 0, 0, 0, 0, 0, 0], "Philosophy of Film and Media": [0, 0, 0, 0, 0, 0, 0, 0, 0], "Philosophy of Literature": [0, 0, 1, 1, 0, 0, 0, 0, 0], "Value Theory / Axiology": [1, 0, 0, 0, 0, 0, 1, 0, 0], "Value Theory / Aesthetics (General)": [0, 0, 1, 1, 0, 0, 1, 0, 0], "Ancient Greek and Roman Philosophy": [3, 0, 1, 0, 0, 1, 0, 0, 0], "Medieval and Renaissance Philosophy": [1, 0, 1, 0, 0, 1, 0, 0, 0], "Early Modern Philosophy (17th/18th Century)": [3, 0, 0, 0, 0, 0, 0, 0, 0], "19th/20th Century Philosophy": [3, 1, 0, 0, 0, 0, 0, 0, 0], "American Philosophy": [2, 0, 0, 0, 0, 0, 0, 0, 0], "Continental Philosophy": [1, 0, 0, 0, 0, 0, 0, 0, 0], "History of Philosophy (General)": [3, 1, 3, 1, 0, 1, 0, 0, 0], "Asian Philosophy": [0, 0, 0, 0, 0, 0, 0, 0, 0], "African/Africana Philosophy": [0, 0, 0, 0, 0, 0, 0, 0, 0], "Arabic and Islamic Philosophy": [0, 0, 0, 0, 1, 0, 0, 0, 0], "Latin American Philosophy": [0, 0, 0, 0, 0, 0, 0, 0, 0], "Native American / Indigenous Philosophy": [0, 0, 0, 0, 0, 0, 0, 0, 0], "Comparative Philosophy / Cross-Cultural": [3, 0, 1, 0, 1, 0, 0, 0, 0], "Non-Western Philosophy (General)": [1, 0, 0, 0, 1, 0, 0, 0, 0], "Metaphysics": [3, 0, 0, 1, 0, 0, 0, 0, 1], "Epistemology": [7, 0, 1, 2, 0, 0, 0, 0, 0], "Philosophy of Mind": [5, 0, 2, 1, 0, 0, 0, 0, 0], "Philosophy of Language": [3, 0, 1, 0, 0, 0, 0, 0, 0], "Philosophy of Action": [1, 0, 0, 0, 0, 0, 0, 0, 0], "Philosophy of Religion": [4, 0, 1, 0, 1, 0, 1, 0, 0], "Metaphysics & Epistemology (General)": [1, 0, 0, 0, 0, 0, 0, 0, 0], "Philosophy of Science (General)": [9, 2, 0, 0, 0, 0, 2, 0, 0], "Philosophy of Biology": [0, 0, 0, 0, 0, 0, 0, 0, 0], "Philosophy of Physics": [0, 1, 0, 0, 0, 0, 0, 0, 0], "Philosophy of Cognitive Science": [3, 0, 2, 0, 0, 0, 0, 0, 0], "Philosophy of Computing / Philosophy of AI": [10, 1, 1, 0, 1, 1, 0, 1, 0], "Logic": [4, 0, 1, 0, 0, 0, 1, 0, 0], "Philosophy of Mathematics": [2, 0, 1, 0, 0, 0, 0, 0, 0], "Philosophy of Social Science": [0, 0, 0, 0, 0, 1, 0, 0, 1], "Decision Theory": [0, 0, 0, 0, 0, 0, 0, 0, 0], "Science, Logic, & Mathematics (General)": [1, 0, 0, 0, 0, 0, 0, 0, 0]},
+            totalNewJobsWeekly: {"all": [65, 5, 8, 6, 8, 4, 12, 2, 2], "solo": [24, 0, 2, 4, 4, 2, 9, 1, 1], "joint": [41, 5, 6, 2, 4, 2, 3, 1, 1]},
+            categories: {"Ethics": {"name": "Ethics", "dataAll": [27, 3, 3, 2, 3, 1, 4, 1, 0], "dataSolo": [5, 0, 0, 1, 0, 0, 2, 0, 0], "dataJoint": [22, 3, 3, 1, 3, 1, 2, 1, 0], "subcategories": ["Meta-Ethics", "Normative Ethics", "Biomedical Ethics / Bioethics", "Neuroethics", "AI, Technology, and Information Ethics", "Environmental Ethics", "Animal Ethics", "Food and Agricultural Ethics", "Business Ethics", "Ethics of Population, Future Generations, and Global Justice", "Ethics (General / Applied Ethics, Broadly Construed)"], "color": "#ef4444"}, "Social & Political Philosophy": {"name": "Social & Political Philosophy", "dataAll": [16, 2, 3, 1, 2, 2, 1, 0, 1], "dataSolo": [2, 0, 0, 0, 0, 0, 0, 0, 0], "dataJoint": [14, 2, 3, 1, 2, 2, 1, 0, 1], "subcategories": ["Social and Political Philosophy (General / Political Theory)", "Philosophy of Law", "Philosophy of Race", "Philosophy of Gender", "Feminist Philosophy", "Philosophy of Sexuality and Queer Theory", "PPE (Politics, Philosophy, and Economics)", "Philosophy of Education", "Social & Political Philosophy (General)"], "color": "#3b82f6"}, "Value Theory / Aesthetics": {"name": "Value Theory / Aesthetics", "dataAll": [2, 0, 1, 1, 1, 0, 1, 0, 0], "dataSolo": [0, 0, 0, 0, 1, 0, 1, 0, 0], "dataJoint": [2, 0, 1, 1, 0, 0, 0, 0, 0], "subcategories": ["Aesthetics (General)", "Philosophy of Art", "Philosophy of Music", "Philosophy of Film and Media", "Philosophy of Literature", "Value Theory / Axiology", "Value Theory / Aesthetics (General)"], "color": "#06b6d4"}, "History of Philosophy": {"name": "History of Philosophy", "dataAll": [13, 2, 3, 1, 1, 1, 0, 0, 0], "dataSolo": [2, 0, 0, 0, 0, 1, 0, 0, 0], "dataJoint": [11, 2, 3, 1, 1, 0, 0, 0, 0], "subcategories": ["Ancient Greek and Roman Philosophy", "Medieval and Renaissance Philosophy", "Early Modern Philosophy (17th/18th Century)", "19th/20th Century Philosophy", "American Philosophy", "Continental Philosophy", "History of Philosophy (General)"], "color": "#8b5cf6"}, "Non-Western & Cross-Cultural Philosophy": {"name": "Non-Western & Cross-Cultural Philosophy", "dataAll": [3, 0, 1, 0, 1, 0, 0, 0, 0], "dataSolo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "dataJoint": [3, 0, 1, 0, 1, 0, 0, 0, 0], "subcategories": ["Asian Philosophy", "African/Africana Philosophy", "Arabic and Islamic Philosophy", "Latin American Philosophy", "Native American / Indigenous Philosophy", "Comparative Philosophy / Cross-Cultural", "Non-Western Philosophy (General)"], "color": "#ec4899"}, "Metaphysics & Epistemology": {"name": "Metaphysics & Epistemology", "dataAll": [15, 0, 3, 2, 1, 0, 1, 0, 1], "dataSolo": [1, 0, 0, 1, 0, 0, 0, 0, 0], "dataJoint": [14, 0, 3, 1, 1, 0, 1, 0, 1], "subcategories": ["Metaphysics", "Epistemology", "Philosophy of Mind", "Philosophy of Language", "Philosophy of Action", "Philosophy of Religion", "Metaphysics & Epistemology (General)"], "color": "#10b981"}, "Science, Logic, & Mathematics": {"name": "Science, Logic, & Mathematics", "dataAll": [20, 3, 3, 0, 1, 2, 2, 1, 1], "dataSolo": [1, 0, 0, 0, 0, 0, 0, 0, 0], "dataJoint": [19, 3, 3, 0, 1, 2, 2, 1, 1], "subcategories": ["Philosophy of Science (General)", "Philosophy of Biology", "Philosophy of Physics", "Philosophy of Cognitive Science", "Philosophy of Computing / Philosophy of AI", "Logic", "Philosophy of Mathematics", "Philosophy of Social Science", "Decision Theory", "Science, Logic, & Mathematics (General)"], "color": "#f59e0b"}, "Open": {"name": "Open", "dataAll": [22, 0, 3, 3, 5, 1, 7, 1, 1], "dataSolo": [13, 0, 2, 2, 3, 1, 6, 1, 1], "dataJoint": [9, 0, 1, 1, 2, 0, 1, 0, 0], "subcategories": [], "color": "#6b7280"}},
+            subcategoryData: {"Meta-Ethics": {"all": [0, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "Normative Ethics": {"all": [2, 1, 1, 0, 0, 1, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [2, 1, 1, 0, 0, 1, 0, 0, 0]}, "Biomedical Ethics / Bioethics": {"all": [8, 0, 0, 0, 1, 1, 2, 0, 0], "solo": [2, 0, 0, 0, 0, 0, 2, 0, 0], "joint": [6, 0, 0, 0, 1, 1, 0, 0, 0]}, "Neuroethics": {"all": [2, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [2, 0, 0, 0, 0, 0, 0, 0, 0]}, "AI, Technology, and Information Ethics": {"all": [10, 1, 2, 1, 1, 1, 1, 1, 0], "solo": [1, 0, 0, 0, 0, 0, 1, 0, 0], "joint": [9, 1, 2, 1, 1, 1, 0, 1, 0]}, "Environmental Ethics": {"all": [6, 0, 0, 0, 0, 1, 1, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 1, 0, 0], "joint": [6, 0, 0, 0, 0, 1, 0, 0, 0]}, "Animal Ethics": {"all": [0, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "Food and Agricultural Ethics": {"all": [1, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [1, 0, 0, 0, 0, 0, 0, 0, 0]}, "Business Ethics": {"all": [2, 0, 2, 1, 0, 0, 1, 0, 0], "solo": [1, 0, 0, 1, 0, 0, 1, 0, 0], "joint": [1, 0, 2, 0, 0, 0, 0, 0, 0]}, "Ethics of Population, Future Generations, and Global Justice": {"all": [1, 0, 1, 0, 0, 0, 1, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 1, 0, 0], "joint": [1, 0, 1, 0, 0, 0, 0, 0, 0]}, "Ethics (General / Applied Ethics, Broadly Construed)": {"all": [17, 1, 1, 1, 2, 1, 3, 0, 0], "solo": [4, 0, 0, 1, 0, 0, 1, 0, 0], "joint": [13, 1, 1, 0, 2, 1, 2, 0, 0]}, "Social and Political Philosophy (General / Political Theory)": {"all": [10, 1, 3, 1, 1, 1, 0, 0, 1], "solo": [1, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [9, 1, 3, 1, 1, 1, 0, 0, 1]}, "Philosophy of Law": {"all": [5, 0, 1, 0, 0, 1, 0, 0, 0], "solo": [1, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [4, 0, 1, 0, 0, 1, 0, 0, 0]}, "Philosophy of Race": {"all": [1, 0, 1, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [1, 0, 1, 0, 0, 0, 0, 0, 0]}, "Philosophy of Gender": {"all": [0, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "Feminist Philosophy": {"all": [1, 0, 1, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [1, 0, 1, 0, 0, 0, 0, 0, 0]}, "Philosophy of Sexuality and Queer Theory": {"all": [0, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "PPE (Politics, Philosophy, and Economics)": {"all": [4, 0, 0, 0, 0, 1, 1, 0, 0], "solo": [1, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [3, 0, 0, 0, 0, 1, 1, 0, 0]}, "Philosophy of Education": {"all": [2, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [1, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [1, 0, 0, 0, 0, 0, 0, 0, 0]}, "Social & Political Philosophy (General)": {"all": [0, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "Aesthetics (General)": {"all": [0, 0, 0, 0, 1, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 1, 0, 0, 0, 0], "joint": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "Philosophy of Art": {"all": [0, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "Philosophy of Music": {"all": [0, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "Philosophy of Film and Media": {"all": [0, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "Philosophy of Literature": {"all": [0, 0, 1, 1, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [0, 0, 1, 1, 0, 0, 0, 0, 0]}, "Value Theory / Axiology": {"all": [1, 0, 0, 0, 0, 0, 1, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 1, 0, 0], "joint": [1, 0, 0, 0, 0, 0, 0, 0, 0]}, "Value Theory / Aesthetics (General)": {"all": [0, 0, 1, 1, 0, 0, 1, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 1, 0, 0], "joint": [0, 0, 1, 1, 0, 0, 0, 0, 0]}, "Ancient Greek and Roman Philosophy": {"all": [3, 0, 1, 0, 0, 1, 0, 0, 0], "solo": [2, 0, 0, 0, 0, 1, 0, 0, 0], "joint": [1, 0, 1, 0, 0, 0, 0, 0, 0]}, "Medieval and Renaissance Philosophy": {"all": [1, 0, 1, 0, 0, 1, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 1, 0, 0, 0], "joint": [1, 0, 1, 0, 0, 0, 0, 0, 0]}, "Early Modern Philosophy (17th/18th Century)": {"all": [3, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [1, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [2, 0, 0, 0, 0, 0, 0, 0, 0]}, "19th/20th Century Philosophy": {"all": [3, 1, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [3, 1, 0, 0, 0, 0, 0, 0, 0]}, "American Philosophy": {"all": [2, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [2, 0, 0, 0, 0, 0, 0, 0, 0]}, "Continental Philosophy": {"all": [1, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [1, 0, 0, 0, 0, 0, 0, 0, 0]}, "History of Philosophy (General)": {"all": [3, 1, 3, 1, 0, 1, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 1, 0, 0, 0], "joint": [3, 1, 3, 1, 0, 0, 0, 0, 0]}, "Asian Philosophy": {"all": [0, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "African/Africana Philosophy": {"all": [0, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "Arabic and Islamic Philosophy": {"all": [0, 0, 0, 0, 1, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [0, 0, 0, 0, 1, 0, 0, 0, 0]}, "Latin American Philosophy": {"all": [0, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "Native American / Indigenous Philosophy": {"all": [0, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "Comparative Philosophy / Cross-Cultural": {"all": [3, 0, 1, 0, 1, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [3, 0, 1, 0, 1, 0, 0, 0, 0]}, "Non-Western Philosophy (General)": {"all": [1, 0, 0, 0, 1, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [1, 0, 0, 0, 1, 0, 0, 0, 0]}, "Metaphysics": {"all": [3, 0, 0, 1, 0, 0, 0, 0, 1], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [3, 0, 0, 1, 0, 0, 0, 0, 1]}, "Epistemology": {"all": [7, 0, 1, 2, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 1, 0, 0, 0, 0, 0], "joint": [7, 0, 1, 1, 0, 0, 0, 0, 0]}, "Philosophy of Mind": {"all": [5, 0, 2, 1, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 1, 0, 0, 0, 0, 0], "joint": [5, 0, 2, 0, 0, 0, 0, 0, 0]}, "Philosophy of Language": {"all": [3, 0, 1, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [3, 0, 1, 0, 0, 0, 0, 0, 0]}, "Philosophy of Action": {"all": [1, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [1, 0, 0, 0, 0, 0, 0, 0, 0]}, "Philosophy of Religion": {"all": [4, 0, 1, 0, 1, 0, 1, 0, 0], "solo": [1, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [3, 0, 1, 0, 1, 0, 1, 0, 0]}, "Metaphysics & Epistemology (General)": {"all": [1, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [1, 0, 0, 0, 0, 0, 0, 0, 0]}, "Philosophy of Science (General)": {"all": [9, 2, 0, 0, 0, 0, 2, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [9, 2, 0, 0, 0, 0, 2, 0, 0]}, "Philosophy of Biology": {"all": [0, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "Philosophy of Physics": {"all": [0, 1, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [0, 1, 0, 0, 0, 0, 0, 0, 0]}, "Philosophy of Cognitive Science": {"all": [3, 0, 2, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [3, 0, 2, 0, 0, 0, 0, 0, 0]}, "Philosophy of Computing / Philosophy of AI": {"all": [10, 1, 1, 0, 1, 1, 0, 1, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [10, 1, 1, 0, 1, 1, 0, 1, 0]}, "Logic": {"all": [4, 0, 1, 0, 0, 0, 1, 0, 0], "solo": [1, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [3, 0, 1, 0, 0, 0, 1, 0, 0]}, "Philosophy of Mathematics": {"all": [2, 0, 1, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [2, 0, 1, 0, 0, 0, 0, 0, 0]}, "Philosophy of Social Science": {"all": [0, 0, 0, 0, 0, 1, 0, 0, 1], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [0, 0, 0, 0, 0, 1, 0, 0, 1]}, "Decision Theory": {"all": [0, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [0, 0, 0, 0, 0, 0, 0, 0, 0]}, "Science, Logic, & Mathematics (General)": {"all": [1, 0, 0, 0, 0, 0, 0, 0, 0], "solo": [0, 0, 0, 0, 0, 0, 0, 0, 0], "joint": [1, 0, 0, 0, 0, 0, 0, 0, 0]}},
             jobTypeData: {"Tenure-Track": [10, 2, 1, 2, 1, 0, 1, 0, 0], "Postdoc / Fellowship": [16, 3, 1, 2, 3, 1, 3, 1, 1], "Visiting / Adjunct / Lecturer (Fixed-Term)": [24, 0, 5, 2, 3, 3, 7, 1, 1], "Tenured / Continuing / Permanent": [8, 0, 0, 0, 0, 0, 1, 0, 0], "Other": [7, 0, 1, 0, 1, 0, 0, 0, 0]},
             institutionTypeData: {"Research University": [44, 4, 6, 5, 7, 3, 8, 2, 2], "Teaching College": [17, 1, 1, 1, 0, 1, 4, 0, 0], "Other": [4, 0, 1, 0, 1, 0, 0, 0, 0]},
             stateData: {"AL": [1, 0, 0, 0, 1, 0, 0, 0, 0], "AK": [0, 0, 0, 0, 0, 0, 0, 0, 0], "AZ": [0, 0, 0, 0, 0, 0, 0, 0, 0], "AR": [0, 0, 0, 0, 0, 0, 0, 0, 0], "CA": [5, 1, 0, 1, 1, 0, 0, 0, 0], "CO": [2, 0, 0, 0, 0, 0, 0, 0, 0], "CT": [1, 0, 0, 0, 0, 0, 0, 0, 0], "DE": [0, 0, 1, 0, 0, 0, 0, 0, 0], "FL": [1, 1, 0, 1, 0, 0, 0, 0, 0], "GA": [3, 0, 1, 0, 0, 0, 1, 0, 0], "HI": [0, 0, 0, 0, 0, 0, 0, 0, 0], "ID": [0, 0, 0, 0, 0, 0, 0, 0, 0], "IL": [3, 0, 2, 0, 0, 0, 0, 0, 0], "IN": [3, 0, 0, 0, 0, 0, 1, 0, 1], "IA": [1, 0, 0, 0, 0, 0, 0, 0, 0], "KS": [0, 0, 0, 0, 1, 1, 0, 0, 0], "KY": [0, 0, 0, 0, 0, 0, 1, 0, 0], "LA": [0, 0, 0, 0, 0, 0, 0, 0, 0], "ME": [1, 0, 0, 0, 0, 0, 0, 0, 0], "MD": [2, 0, 0, 0, 0, 0, 0, 0, 0], "MA": [7, 0, 0, 0, 0, 0, 1, 0, 0], "MI": [1, 0, 0, 0, 0, 1, 0, 0, 0], "MN": [0, 0, 0, 0, 0, 0, 1, 0, 0], "MS": [1, 0, 0, 0, 0, 0, 0, 0, 0], "MO": [1, 0, 0, 0, 0, 0, 0, 0, 0], "MT": [0, 0, 0, 0, 0, 0, 0, 0, 0], "NE": [1, 0, 0, 1, 0, 0, 0, 0, 0], "NV": [0, 0, 0, 0, 0, 0, 0, 0, 0], "NH": [0, 0, 0, 0, 0, 0, 0, 0, 0], "NJ": [4, 0, 0, 0, 0, 0, 0, 0, 0], "NM": [0, 0, 0, 0, 0, 0, 0, 0, 0], "NY": [11, 1, 1, 1, 2, 0, 1, 0, 0], "NC": [4, 0, 0, 0, 0, 0, 0, 0, 0], "ND": [0, 0, 0, 0, 0, 0, 0, 0, 0], "OH": [0, 0, 0, 0, 1, 1, 1, 1, 0], "OK": [1, 0, 0, 0, 0, 0, 0, 0, 0], "OR": [0, 0, 0, 0, 0, 0, 0, 0, 0], "PA": [5, 1, 0, 0, 0, 1, 1, 0, 0], "RI": [0, 1, 1, 0, 0, 0, 0, 0, 0], "SC": [1, 0, 1, 0, 0, 0, 0, 0, 0], "SD": [0, 0, 0, 0, 0, 0, 1, 0, 0], "TN": [0, 0, 0, 0, 0, 0, 0, 0, 0], "TX": [5, 0, 1, 1, 2, 0, 0, 1, 1], "UT": [0, 0, 0, 1, 0, 0, 0, 0, 0], "VT": [0, 0, 0, 0, 0, 0, 0, 0, 0], "VA": [0, 0, 0, 0, 0, 0, 2, 0, 0], "WA": [0, 0, 0, 0, 0, 0, 0, 0, 0], "WV": [0, 0, 0, 0, 0, 0, 0, 0, 0], "WI": [0, 0, 0, 0, 0, 0, 1, 0, 0], "WY": [0, 0, 0, 0, 0, 0, 0, 0, 0], "DC": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
@@ -309,97 +321,159 @@
             }
         };
 
+        // ===== MARKET OVERVIEW MODE STATE =====
+        // 'all' = every AOS tag counts; 'solo' = single-AOS jobs only;
+        // 'joint' = multi-AOS jobs only (each tag still counts).
+        let marketMode = 'all';
+        let mainChart = null;
+        let currentModalKey = null;
+
+        function catDataFor(cat, mode) {
+            mode = mode || marketMode;
+            if (mode === 'solo') return cat.dataSolo;
+            if (mode === 'joint') return cat.dataJoint;
+            return cat.dataAll;
+        }
+        function subDataFor(sub, mode) {
+            mode = mode || marketMode;
+            const slot = data.subcategoryData[sub] || {};
+            return slot[mode] || [];
+        }
+        function totalDataFor(mode) {
+            mode = mode || marketMode;
+            return data.totalNewJobsWeekly[mode] || [];
+        }
+
         // ===== MAIN CHART =====
-        const mainCtx = document.getElementById('mainChart').getContext('2d');
-        const totalDataset = {
-            label: 'Total (All US)',
-            data: data.totalNewJobsWeekly,
-            borderColor: '#111827',
-            backgroundColor: 'transparent',
-            borderWidth: 2.5,
-            borderDash: [6, 3],
-            tension: 0.4,
-            fill: false,
-            pointRadius: 4,
-            pointBackgroundColor: '#111827',
-            order: 0
-        };
-        const datasets = [totalDataset, ...Object.entries(data.categories).map(([key, cat]) => ({
-            label: cat.name,
-            data: cat.data,
-            borderColor: cat.color,
-            backgroundColor: cat.color + '20',
-            tension: 0.4,
-            fill: true,
-            order: 1
-        }))];
-        new Chart(mainCtx, {
-            type: 'line',
-            data: { labels: data.dates, datasets: datasets },
-            plugins: [seasonPlugin],
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                interaction: { mode: 'index', intersect: false },
-                plugins: {
-                    legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15, font: { size: 12 } } },
-                    tooltip: {
-                        backgroundColor: 'rgba(0,0,0,0.8)', padding: 12,
-                        callbacks: {
-                            afterLabel: function(context) {
-                                return data.seasonalMarkers.some(m => m.index === context.dataIndex) ? '🌟 Hiring Season' : '';
+        function renderMainChart() {
+            const mainCtx = document.getElementById('mainChart').getContext('2d');
+            if (mainChart) mainChart.destroy();
+            const totalLabel = marketMode === 'all' ? 'Total (All US)'
+                             : marketMode === 'solo' ? 'Total (Solo-AOS)'
+                             : 'Total (Joint-AOS)';
+            const totalDataset = {
+                label: totalLabel,
+                data: totalDataFor(),
+                borderColor: '#111827',
+                backgroundColor: 'transparent',
+                borderWidth: 2.5,
+                borderDash: [6, 3],
+                tension: 0.4,
+                fill: false,
+                pointRadius: 4,
+                pointBackgroundColor: '#111827',
+                order: 0
+            };
+            const datasets = [totalDataset, ...Object.entries(data.categories).map(([key, cat]) => ({
+                label: cat.name,
+                data: catDataFor(cat),
+                borderColor: cat.color,
+                backgroundColor: cat.color + '20',
+                tension: 0.4,
+                fill: true,
+                order: 1
+            }))];
+            mainChart = new Chart(mainCtx, {
+                type: 'line',
+                data: { labels: data.dates, datasets: datasets },
+                plugins: [seasonPlugin],
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15, font: { size: 12 } } },
+                        tooltip: {
+                            backgroundColor: 'rgba(0,0,0,0.8)', padding: 12,
+                            callbacks: {
+                                afterLabel: function(context) {
+                                    return data.seasonalMarkers.some(m => m.index === context.dataIndex) ? '🌟 Hiring Season' : '';
+                                }
                             }
                         }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { font: { size: 12 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
+                        x: { ticks: { font: { size: 12 } }, grid: { display: false } }
                     }
-                },
-                scales: {
-                    y: { beginAtZero: true, ticks: { font: { size: 12 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
-                    x: { ticks: { font: { size: 12 } }, grid: { display: false } }
                 }
-            }
-        });
+            });
+        }
 
         // ===== CATEGORY CARDS =====
-        const categoryGrid = document.getElementById('categoryGrid');
-        Object.entries(data.categories).forEach(([key, cat]) => {
-            const currentJobs = cat.data[cat.data.length - 1];
-            const previousJobs = cat.data[cat.data.length - 2] || 0;
-            const change = currentJobs - previousJobs;
-            const changePercent = previousJobs > 0 ? ((change / previousJobs) * 100).toFixed(1) : 0;
-            const card = document.createElement('div');
-            card.className = 'category-card bg-white rounded-lg shadow hover:shadow-lg cursor-pointer p-5 border-l-4';
-            card.style.borderLeftColor = cat.color;
-            card.onclick = () => openModal(key, cat);
-            card.innerHTML = `
-                <div class="flex justify-between items-start mb-3">
-                    <h3 class="font-semibold text-gray-800 text-lg">${cat.name}</h3>
-                    <div class="w-3 h-3 rounded-full" style="background-color:${cat.color}"></div>
-                </div>
-                <div class="flex items-end justify-between">
-                    <div>
-                        <div class="text-3xl font-bold text-gray-800">${currentJobs}</div>
-                        <div class="text-sm text-gray-500">new this week</div>
+        function renderCategoryCards() {
+            const categoryGrid = document.getElementById('categoryGrid');
+            categoryGrid.innerHTML = '';
+            Object.entries(data.categories).forEach(([key, cat]) => {
+                const series = catDataFor(cat);
+                const currentJobs = series[series.length - 1] || 0;
+                const previousJobs = series[series.length - 2] || 0;
+                const change = currentJobs - previousJobs;
+                const changePercent = previousJobs > 0 ? ((change / previousJobs) * 100).toFixed(1) : 0;
+                const card = document.createElement('div');
+                card.className = 'category-card bg-white rounded-lg shadow hover:shadow-lg cursor-pointer p-5 border-l-4';
+                card.style.borderLeftColor = cat.color;
+                card.onclick = () => openModal(key, cat);
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="font-semibold text-gray-800 text-lg">${cat.name}</h3>
+                        <div class="w-3 h-3 rounded-full" style="background-color:${cat.color}"></div>
                     </div>
-                    <div class="text-right">
-                        <div class="text-sm font-semibold ${change >= 0 ? 'text-green-600' : 'text-red-600'}">${change >= 0 ? '↑' : '↓'} ${Math.abs(change)}</div>
-                        <div class="text-xs text-gray-500">${changePercent}%</div>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <div class="text-3xl font-bold text-gray-800">${currentJobs}</div>
+                            <div class="text-sm text-gray-500">new this week</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold ${change >= 0 ? 'text-green-600' : 'text-red-600'}">${change >= 0 ? '↑' : '↓'} ${Math.abs(change)}</div>
+                            <div class="text-xs text-gray-500">${changePercent}%</div>
+                        </div>
                     </div>
-                </div>
-                ${cat.subcategories.length > 0 ? `<div class="mt-3 pt-3 border-t border-gray-100"><div class="text-xs text-gray-500">${cat.subcategories.length} subcategories</div></div>` : ''}
-            `;
-            categoryGrid.appendChild(card);
-        });
+                    ${cat.subcategories.length > 0 ? `<div class="mt-3 pt-3 border-t border-gray-100"><div class="text-xs text-gray-500">${cat.subcategories.length} subcategories</div></div>` : ''}
+                `;
+                categoryGrid.appendChild(card);
+            });
+        }
+
+        function updateMarketControls() {
+            const active = 'bg-indigo-600 text-white';
+            const inactive = 'text-gray-700 hover:bg-indigo-50';
+            document.getElementById('marketModeAll').className   = `px-3 py-1.5 text-sm font-medium ${marketMode === 'all'   ? active : inactive}`;
+            document.getElementById('marketModeSolo').className  = `px-3 py-1.5 text-sm font-medium ${marketMode === 'solo'  ? active : inactive}`;
+            document.getElementById('marketModeJoint').className = `px-3 py-1.5 text-sm font-medium ${marketMode === 'joint' ? active : inactive}`;
+            document.getElementById('marketModeNote').textContent =
+                marketMode === 'all'   ? 'All: every AOS tag counts (joint jobs add to multiple lines).' :
+                marketMode === 'solo'  ? 'Solo: only jobs with exactly one AOS category.' :
+                                         'Joint: only jobs listing multiple AOS categories; each tag still counts.';
+        }
+
+        function setMarketMode(mode) {
+            marketMode = mode;
+            renderMainChart();
+            renderCategoryCards();
+            updateMarketControls();
+            // If the modal is open, re-render its data for the new mode
+            if (currentModalKey && !document.getElementById('detailModal').classList.contains('hidden')) {
+                openModal(currentModalKey, data.categories[currentModalKey]);
+            }
+        }
+
+        renderMainChart();
+        renderCategoryCards();
+        updateMarketControls();
 
         // ===== MODAL =====
         let detailChart = null, jobTypeChart = null, institutionChart = null;
 
         function openModal(key, category) {
-            const currentJobs = category.data[category.data.length - 1];
-            const previousJobs = category.data[category.data.length - 2] || 0;
+            currentModalKey = key;
+            const catSeries = catDataFor(category);
+            const currentJobs = catSeries[catSeries.length - 1] || 0;
+            const previousJobs = catSeries[catSeries.length - 2] || 0;
             const change = currentJobs - previousJobs;
-            const average = (category.data.reduce((a, b) => a + b, 0) / category.data.length).toFixed(1);
-            const total = category.data.reduce((a, b) => a + b, 0);
+            const average = catSeries.length > 0 ? (catSeries.reduce((a, b) => a + b, 0) / catSeries.length).toFixed(1) : '0.0';
+            const total = catSeries.reduce((a, b) => a + b, 0);
 
-            document.getElementById('modalTitle').textContent = category.name;
+            document.getElementById('modalTitle').textContent = category.name + (marketMode === 'all' ? '' : ` — ${marketMode}`);
             document.getElementById('modalCurrentJobs').textContent = currentJobs;
             document.getElementById('modalChange').textContent = (change >= 0 ? '+' : '') + change;
             document.getElementById('modalChange').className = 'text-2xl font-bold ' + (change >= 0 ? 'text-green-600' : 'text-red-600');
@@ -411,9 +485,9 @@
             subcatGrid.innerHTML = '';
             document.getElementById('subcategorySection').style.display = category.subcategories.length > 0 ? 'block' : 'none';
             category.subcategories.forEach(sub => {
-                const subData = data.subcategoryData[sub] || [];
-                const subTotal = subData.reduce((a, b) => a + b, 0);
-                const subCurrent = subData[subData.length - 1] || 0;
+                const subSeries = subDataFor(sub);
+                const subTotal = subSeries.reduce((a, b) => a + b, 0);
+                const subCurrent = subSeries[subSeries.length - 1] || 0;
                 const soloJointData = data.detailAosByContext[sub] || {};
                 const solo = Object.values(soloJointData.solo || {}).reduce((a, b) => a + b, 0);
                 const joint = Object.values(soloJointData.with_others || {}).reduce((a, b) => a + b, 0);
@@ -432,7 +506,7 @@
                 type: 'line',
                 data: {
                     labels: data.dates,
-                    datasets: [{ label: category.name, data: category.data, borderColor: category.color, backgroundColor: category.color + '30', tension: 0.4, fill: true }]
+                    datasets: [{ label: category.name, data: catSeries, borderColor: category.color, backgroundColor: category.color + '30', tension: 0.4, fill: true }]
                 },
                 plugins: [seasonPlugin],
                 options: {
@@ -526,6 +600,7 @@
 
         function closeModal() {
             document.getElementById('detailModal').classList.add('hidden');
+            currentModalKey = null;
             if (detailChart) { detailChart.destroy(); detailChart = null; }
             if (jobTypeChart) { jobTypeChart.destroy(); jobTypeChart = null; }
             if (institutionChart) { institutionChart.destroy(); institutionChart = null; }
