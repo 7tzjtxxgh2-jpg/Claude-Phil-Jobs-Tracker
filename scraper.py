@@ -54,6 +54,69 @@ WEST_COAST_CITIES = {
     'Olympia': {'lat': 47.0379, 'lon': -122.9007, 'state': 'WA'},
 }
 
+# West Coast Metro Areas — maps individual cities to their metro grouping.
+# Used by the West Coast Spotlight chart for cumulative AOS-by-metro breakdowns.
+# Based loosely on OMB Combined Statistical Areas; Davis is grouped with SF Bay
+# Area (academically) rather than Sacramento (geographically) per user pref.
+WEST_COAST_METROS = {
+    # San Francisco Bay Area
+    'San Francisco': 'SF Bay Area', 'Oakland': 'SF Bay Area', 'Berkeley': 'SF Bay Area',
+    'Stanford': 'SF Bay Area', 'Palo Alto': 'SF Bay Area', 'San Jose': 'SF Bay Area',
+    'Santa Clara': 'SF Bay Area', 'Santa Cruz': 'SF Bay Area', 'San Mateo': 'SF Bay Area',
+    'Mountain View': 'SF Bay Area', 'Davis': 'SF Bay Area', 'Hayward': 'SF Bay Area',
+    'Fremont': 'SF Bay Area', 'Redwood City': 'SF Bay Area', 'San Rafael': 'SF Bay Area',
+    'Moraga': 'SF Bay Area', 'Sonoma': 'SF Bay Area', 'Napa': 'SF Bay Area',
+    # Greater Los Angeles (includes Inland Empire & Orange County)
+    'Los Angeles': 'Greater Los Angeles', 'Long Beach': 'Greater Los Angeles',
+    'Pasadena': 'Greater Los Angeles', 'Claremont': 'Greater Los Angeles',
+    'Irvine': 'Greater Los Angeles', 'Riverside': 'Greater Los Angeles',
+    'San Bernardino': 'Greater Los Angeles', 'Anaheim': 'Greater Los Angeles',
+    'Orange': 'Greater Los Angeles', 'Santa Ana': 'Greater Los Angeles',
+    'Fullerton': 'Greater Los Angeles', 'Northridge': 'Greater Los Angeles',
+    'Malibu': 'Greater Los Angeles', 'Santa Monica': 'Greater Los Angeles',
+    'Westwood': 'Greater Los Angeles', 'Pomona': 'Greater Los Angeles',
+    'Redlands': 'Greater Los Angeles', 'Glendale': 'Greater Los Angeles',
+    'Burbank': 'Greater Los Angeles', 'Thousand Oaks': 'Greater Los Angeles',
+    'Whittier': 'Greater Los Angeles',
+    # San Diego
+    'San Diego': 'San Diego', 'La Jolla': 'San Diego', 'Carlsbad': 'San Diego',
+    'Oceanside': 'San Diego', 'Escondido': 'San Diego', 'Chula Vista': 'San Diego',
+    # Sacramento
+    'Sacramento': 'Sacramento', 'Roseville': 'Sacramento',
+    # Seattle-Tacoma
+    'Seattle': 'Seattle-Tacoma', 'Tacoma': 'Seattle-Tacoma', 'Bellevue': 'Seattle-Tacoma',
+    'Everett': 'Seattle-Tacoma', 'Olympia': 'Seattle-Tacoma', 'Bellingham': 'Seattle-Tacoma',
+    # Portland
+    'Portland': 'Portland', 'Beaverton': 'Portland', 'Hillsboro': 'Portland',
+    'Salem': 'Portland', 'Vancouver': 'Portland',
+}
+
+# For West Coast cities not in WEST_COAST_METROS, group by state.
+WEST_COAST_FALLBACK_METRO = {
+    'CA': 'Other California',
+    'OR': 'Other Oregon',
+    'WA': 'Other Washington',
+}
+
+
+def get_west_coast_metro(city, state):
+    """Map a (city, state) tuple to its West Coast metro area. Returns None if not on West Coast."""
+    if state not in WEST_COAST_FALLBACK_METRO:
+        return None
+    if not city:
+        return WEST_COAST_FALLBACK_METRO[state]
+    city_lower = city.lower().strip()
+    # Try exact match first
+    for known_city, metro in WEST_COAST_METROS.items():
+        if known_city.lower() == city_lower:
+            return metro
+    # Then substring match (handles "San Francisco, CA" or "South San Francisco")
+    for known_city, metro in WEST_COAST_METROS.items():
+        if known_city.lower() in city_lower:
+            return metro
+    return WEST_COAST_FALLBACK_METRO[state]
+
+
 US_REGIONS = {
     'West': ['CA', 'OR', 'WA', 'AK', 'HI', 'NV', 'ID', 'MT', 'WY', 'UT', 'CO', 'AZ', 'NM'],
     'Northeast': ['ME', 'NH', 'VT', 'MA', 'RI', 'CT', 'NY', 'NJ', 'PA', 'DC'],
@@ -281,9 +344,14 @@ class PhilJobsScraper:
         if not location_string:
             return None, None, None
 
+        # Always extract city from the first comma-separated part if available.
+        # Previously this only ran when a full state name matched, which missed
+        # cases like "Stanford, Ca, United States" (uses 'Ca' not 'California').
+        parts = [p.strip() for p in location_string.split(',')]
+        city = parts[0] if len(parts) > 1 and parts[0] else None
+
         for state_name, state_code in US_STATES.items():
             if re.search(r'\b' + re.escape(state_name) + r'\b', location_string):
-                city = location_string.split(',')[0].strip() if ',' in location_string else None
                 return state_code, 'United States', city
 
         latin_american_countries = [
@@ -296,7 +364,6 @@ class PhilJobsScraper:
             if country in location_string:
                 return None, country, None
 
-        parts = [p.strip() for p in location_string.split(',')]
         country_name = parts[-1] if parts and parts[-1] else 'Other International'
         return None, country_name, None
 
@@ -509,6 +576,36 @@ class PhilJobsScraper:
             print("  Hash format already up to date — no migration needed")
 
         return migrated
+
+    def backfill_city_field(self, historical_data) -> int:
+        """Re-parse city from location for jobs that have a location string but no city.
+
+        The original extract_location_data() only populated 'city' when a full
+        state NAME was matched in the location string. Jobs whose location used
+        a 2-letter state code (e.g. "Stanford, Ca, United States") got city=None
+        even though state was later resolved by Claude. This backfill re-derives
+        city from the first comma-separated segment of the location string.
+        """
+        fixed = 0
+        for job in historical_data.get('jobs', []):
+            if job.get('city'):
+                continue
+            location = job.get('location', '')
+            if not location:
+                continue
+            parts = [p.strip() for p in location.split(',')]
+            if len(parts) > 1 and parts[0]:
+                job['city'] = parts[0]
+                fixed += 1
+
+        if fixed:
+            all_data_file = self.data_dir / "all_jobs.json"
+            with open(all_data_file, 'w') as f:
+                json.dump(historical_data, f, indent=2)
+            print(f"  Backfilled city field for {fixed} jobs")
+        else:
+            print("  No city fields needed backfilling")
+        return fixed
 
     def save_data(self, jobs, historical_data):
         """Save job data and update historical records."""
@@ -816,11 +913,11 @@ class PhilJobsScraper:
 
             if state:
                 state_counts[state] += 1
+                # Capture every CA/OR/WA city that appears in our data — not just
+                # a hardcoded allowlist. This lets the West Coast Spotlight chart
+                # include Pasadena, La Jolla, Long Beach, etc. automatically.
                 if state in ['CA', 'OR', 'WA'] and city:
-                    for wc_city in WEST_COAST_CITIES:
-                        if wc_city.lower() in city.lower():
-                            west_coast_city_counts[wc_city] += 1
-                            break
+                    west_coast_city_counts[city] += 1
 
             if country:
                 country_counts[country] += 1
@@ -1102,26 +1199,46 @@ class PhilJobsScraper:
 
         # ── Geographic data (US-specific) ────────────────────────────────
         state_data = {state: [] for state in US_STATES.values()}
-        west_coast_data = {city: [] for city in WEST_COAST_CITIES}
         for date in dates:
             date_key = date[:10]
             week_jobs = jobs_by_date.get(date_key, [])
             sc = defaultdict(int)
-            wc = defaultdict(int)
             for job in week_jobs:
                 s = job.get('state')
                 if s:
                     sc[s] += 1
-                    city = job.get('city', '')
-                    if s in ['CA', 'OR', 'WA'] and city:
-                        for wc_city in WEST_COAST_CITIES:
-                            if wc_city.lower() in city.lower():
-                                wc[wc_city] += 1
-                                break
             for state_code in US_STATES.values():
                 state_data[state_code].append(sc.get(state_code, 0))
-            for city in WEST_COAST_CITIES:
-                west_coast_data[city].append(wc.get(city, 0))
+
+        # West Coast Spotlight — cumulative AOS breakdown by city and by metro
+        west_coast_city_aos = defaultdict(lambda: defaultdict(int))
+        west_coast_metro_aos = defaultdict(lambda: defaultdict(int))
+        west_coast_metro_cities = defaultdict(set)
+        west_coast_city_totals = defaultdict(int)
+        west_coast_metro_totals = defaultdict(int)
+
+        for job in us_jobs:
+            state = job.get('state')
+            city = job.get('city')
+            if state not in ('CA', 'OR', 'WA') or not city:
+                continue
+            metro = get_west_coast_metro(city, state)
+            if not metro:
+                continue
+            classification = job.get('classification') or {}
+            main_list = classification.get('main_aos', ['Open'])
+            for main in main_list:
+                west_coast_city_aos[city][main] += 1
+                west_coast_metro_aos[metro][main] += 1
+            west_coast_city_totals[city] += 1
+            west_coast_metro_totals[metro] += 1
+            west_coast_metro_cities[metro].add(city)
+
+        west_coast_city_aos = {k: dict(v) for k, v in west_coast_city_aos.items()}
+        west_coast_metro_aos = {k: dict(v) for k, v in west_coast_metro_aos.items()}
+        west_coast_metro_cities = {k: sorted(list(v)) for k, v in west_coast_metro_cities.items()}
+        west_coast_city_totals = dict(west_coast_city_totals)
+        west_coast_metro_totals = dict(west_coast_metro_totals)
 
         region_data = {}
         for region, states in US_REGIONS.items():
@@ -1327,9 +1444,20 @@ class PhilJobsScraper:
 
         <!-- West Coast Spotlight -->
         <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-lg p-6 mb-8 border border-blue-100">
-            <h2 class="text-2xl font-bold text-gray-800 mb-1">🌊 West Coast Spotlight</h2>
-            <p class="text-sm text-gray-500 mb-4">City-level weekly new-job trends — CA, OR, WA</p>
-            <div class="chart-container">
+            <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-1">🌊 West Coast Spotlight</h2>
+                    <p class="text-sm text-gray-500">Cumulative AOS breakdown for CA, OR, WA — toggle between metro areas and individual cities. Click any metro bar to drill into its cities.</p>
+                </div>
+                <div class="flex flex-col items-end gap-2">
+                    <div class="inline-flex rounded-lg overflow-hidden border border-blue-200 bg-white">
+                        <button id="wcViewMetro" type="button" onclick="setWcView('metro')" class="px-4 py-1.5 text-sm font-medium bg-blue-600 text-white">Metro</button>
+                        <button id="wcViewCity" type="button" onclick="setWcView('city')" class="px-4 py-1.5 text-sm font-medium text-gray-700 hover:bg-blue-50">City</button>
+                    </div>
+                    <div id="wcFilterIndicator" class="text-xs text-gray-600 hidden"></div>
+                </div>
+            </div>
+            <div class="chart-container" style="min-height: 380px;">
                 <canvas id="westCoastChart"></canvas>
             </div>
         </div>
@@ -1442,8 +1570,11 @@ class PhilJobsScraper:
             jobTypeData: {json.dumps(job_type_series)},
             institutionTypeData: {json.dumps(inst_type_series)},
             stateData: {json.dumps(state_data)},
-            westCoastData: {json.dumps(west_coast_data)},
-            westCoastCities: {json.dumps(WEST_COAST_CITIES)},
+            westCoastCityAos: {json.dumps(west_coast_city_aos)},
+            westCoastMetroAos: {json.dumps(west_coast_metro_aos)},
+            westCoastMetroCities: {json.dumps(west_coast_metro_cities)},
+            westCoastCityTotals: {json.dumps(west_coast_city_totals)},
+            westCoastMetroTotals: {json.dumps(west_coast_metro_totals)},
             seasonalMarkers: {json.dumps(seasonal_markers)},
             regionData: {json.dumps(region_data)},
             stateAlltime: {json.dumps(state_alltime)},
@@ -1861,25 +1992,129 @@ class PhilJobsScraper:
         }}
         updatePositionTypeChart();
 
-        // ===== WEST COAST CHART =====
-        const wcColors = ['#1d4ed8','#2563eb','#3b82f6','#60a5fa','#93c5fd','#1e40af','#0369a1','#0284c7','#0ea5e9','#38bdf8','#7dd3fc','#bae6fd','#047857','#065f46','#064e3b'];
-        const wcDatasets = Object.entries(data.westCoastData).filter(([city, counts]) => counts.some(c => c > 0)).map(([city, counts], idx) => ({{
-            label: city, data: counts, borderColor: wcColors[idx % wcColors.length], backgroundColor: wcColors[idx % wcColors.length] + '30',
-            tension: 0.4, fill: false, borderWidth: 2, pointRadius: 4
-        }}));
-        if (wcDatasets.length > 0) {{
-            new Chart(document.getElementById('westCoastChart').getContext('2d'), {{
-                type: 'line', data: {{ labels: data.dates, datasets: wcDatasets }},
+        // ===== WEST COAST SPOTLIGHT — stacked horizontal bars, AOS by city/metro =====
+        let wcChart = null;
+        let wcViewMode = 'metro';      // 'metro' or 'city'
+        let wcMetroFilter = null;      // when set in city view, only show cities from this metro
+
+        function sumValues(obj) {{
+            return Object.values(obj || {{}}).reduce((a, b) => a + b, 0);
+        }}
+
+        function renderWestCoastChart() {{
+            const canvas = document.getElementById('westCoastChart');
+            if (!canvas) return;
+            const container = canvas.parentElement;
+
+            // Pick data source based on current view
+            let sourceData;
+            if (wcViewMode === 'metro') {{
+                sourceData = data.westCoastMetroAos;
+            }} else if (wcMetroFilter) {{
+                const allowedCities = new Set(data.westCoastMetroCities[wcMetroFilter] || []);
+                sourceData = Object.fromEntries(
+                    Object.entries(data.westCoastCityAos).filter(([c]) => allowedCities.has(c))
+                );
+            }} else {{
+                sourceData = data.westCoastCityAos;
+            }}
+
+            const labels = Object.keys(sourceData).sort((a, b) => sumValues(sourceData[b]) - sumValues(sourceData[a]));
+
+            if (labels.length === 0) {{
+                container.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">No West Coast data yet for this view.</div>';
+                return;
+            }}
+
+            // Build one stacked dataset per main AOS category, in canonical order
+            const datasets = data.mainAosCategories.map(cat => ({{
+                label: cat,
+                data: labels.map(loc => sourceData[loc]?.[cat] || 0),
+                backgroundColor: data.mainAosColors[cat] || '#9ca3af',
+                borderColor: '#ffffff',
+                borderWidth: 1,
+            }})).filter(ds => ds.data.some(v => v > 0));
+
+            if (wcChart) {{ wcChart.destroy(); }}
+
+            wcChart = new Chart(canvas.getContext('2d'), {{
+                type: 'bar',
+                data: {{ labels, datasets }},
                 options: {{
-                    responsive: true, maintainAspectRatio: false,
-                    interaction: {{ mode: 'index', intersect: false }},
-                    plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 10, font: {{ size: 11 }} }} }} }},
-                    scales: {{ y: {{ beginAtZero: true, ticks: {{ precision: 0 }} }}, x: {{ grid: {{ display: false }} }} }}
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 10, font: {{ size: 11 }} }} }},
+                        tooltip: {{
+                            callbacks: {{
+                                title: (items) => {{
+                                    if (!items.length) return '';
+                                    const label = items[0].label;
+                                    const total = items.reduce((a, b) => a + b.parsed.x, 0);
+                                    return `${{label}} — ${{total}} job${{total === 1 ? '' : 's'}} total`;
+                                }},
+                                label: (ctx) => {{
+                                    const v = ctx.parsed.x;
+                                    return v > 0 ? ` ${{ctx.dataset.label}}: ${{v}}` : null;
+                                }}
+                            }}
+                        }}
+                    }},
+                    scales: {{
+                        x: {{ stacked: true, beginAtZero: true, ticks: {{ precision: 0 }} }},
+                        y: {{ stacked: true, grid: {{ display: false }} }}
+                    }},
+                    onClick: (evt, elements) => {{
+                        if (wcViewMode !== 'metro' || elements.length === 0) return;
+                        const idx = elements[0].index;
+                        const metroClicked = labels[idx];
+                        wcMetroFilter = metroClicked;
+                        wcViewMode = 'city';
+                        renderWestCoastChart();
+                        updateWcControls();
+                    }}
                 }}
             }});
-        }} else {{
-            document.getElementById('westCoastChart').parentElement.innerHTML = '<div class="text-gray-400 text-center py-8 text-sm">No West Coast city data yet.</div>';
         }}
+
+        function updateWcControls() {{
+            const metroBtn = document.getElementById('wcViewMetro');
+            const cityBtn = document.getElementById('wcViewCity');
+            const indicator = document.getElementById('wcFilterIndicator');
+            const active = 'bg-blue-600 text-white';
+            const inactive = 'text-gray-700 hover:bg-blue-50';
+            if (wcViewMode === 'metro') {{
+                metroBtn.className = `px-4 py-1.5 text-sm font-medium ${{active}}`;
+                cityBtn.className = `px-4 py-1.5 text-sm font-medium ${{inactive}}`;
+                indicator.classList.add('hidden');
+            }} else {{
+                metroBtn.className = `px-4 py-1.5 text-sm font-medium ${{inactive}}`;
+                cityBtn.className = `px-4 py-1.5 text-sm font-medium ${{active}}`;
+                if (wcMetroFilter) {{
+                    indicator.innerHTML = `Filtered to <span class="font-semibold">${{wcMetroFilter}}</span> &nbsp;<button onclick="clearWcFilter()" class="text-blue-600 hover:underline">clear</button>`;
+                    indicator.classList.remove('hidden');
+                }} else {{
+                    indicator.classList.add('hidden');
+                }}
+            }}
+        }}
+
+        function setWcView(mode) {{
+            wcViewMode = mode;
+            if (mode === 'metro') wcMetroFilter = null;
+            renderWestCoastChart();
+            updateWcControls();
+        }}
+
+        function clearWcFilter() {{
+            wcMetroFilter = null;
+            renderWestCoastChart();
+            updateWcControls();
+        }}
+
+        renderWestCoastChart();
+        updateWcControls();
 
         // ===== D3 US CHOROPLETH =====
         let currentMapMode = 'current', usAtlasData = null;
