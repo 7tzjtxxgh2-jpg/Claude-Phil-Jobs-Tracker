@@ -1026,15 +1026,21 @@ class PhilJobsScraper:
     # ── Dashboard helpers ──────────────────────────────────────────────────
 
     def _compute_cooc_from_jobs(self, jobs):
-        """Compute co-occurrence data from a filtered list of jobs (no file I/O)."""
+        """Compute co-occurrence data from a filtered list of jobs (no file I/O).
+
+        Cross-cutting data is tracked three ways (all / solo / joint) based on
+        whether the job's main_aos list has exactly one entry (solo) or more
+        than one (joint). Solo + Joint = All for every cell.
+        """
+        modes = ('all', 'solo', 'joint')
         main_aos_matrix = defaultdict(lambda: defaultdict(int))
         main_aos_solo_vs_joint = defaultdict(lambda: {'solo': 0, 'joint': 0})
         detail_aos_by_context = defaultdict(
             lambda: {'solo': defaultdict(int), 'with_others': defaultdict(int), 'total': 0}
         )
-        cc_totals = {area: 0 for area in CROSS_CUTTING_AREAS}
-        cc_by_main = {area: defaultdict(int) for area in CROSS_CUTTING_AREAS}
-        cc_weekly = {area: defaultdict(int) for area in CROSS_CUTTING_AREAS}
+        cc_totals = {m: {area: 0 for area in CROSS_CUTTING_AREAS} for m in modes}
+        cc_by_main = {m: {area: defaultdict(int) for area in CROSS_CUTTING_AREAS} for m in modes}
+        cc_weekly = {m: {area: defaultdict(int) for area in CROSS_CUTTING_AREAS} for m in modes}
 
         for job in jobs:
             classification = job.get('classification')
@@ -1043,6 +1049,7 @@ class PhilJobsScraper:
             main_list = classification.get('main_aos', [])
             detail_dict = classification.get('detail_aos', {})
             week = job.get('scraped_date', '')[:10]
+            job_mode = 'solo' if len(main_list) == 1 else 'joint'
 
             for m1 in main_list:
                 for m2 in main_list:
@@ -1069,18 +1076,25 @@ class PhilJobsScraper:
             for main, details in detail_dict.items():
                 for detail in details:
                     if detail in CROSS_CUTTING_AREAS:
-                        cc_totals[detail] += 1
-                        cc_weekly[detail][week] += 1
+                        cc_totals['all'][detail] += 1
+                        cc_totals[job_mode][detail] += 1
+                        cc_weekly['all'][detail][week] += 1
+                        cc_weekly[job_mode][detail][week] += 1
                         for other_main in main_list:
-                            cc_by_main[detail][other_main] += 1
+                            cc_by_main['all'][detail][other_main] += 1
+                            cc_by_main[job_mode][detail][other_main] += 1
 
-        all_weeks = sorted({w for area in CROSS_CUTTING_AREAS for w in cc_weekly[area]})
+        # Use the union of all weeks seen, regardless of mode
+        all_weeks = sorted({w for m in modes for area in CROSS_CUTTING_AREAS for w in cc_weekly[m][area]})
         cross_cutting_final = {}
         for area in CROSS_CUTTING_AREAS:
             cross_cutting_final[area] = {
-                'total': cc_totals[area],
-                'by_main': dict(cc_by_main[area]),
-                'weekly': {w: cc_weekly[area].get(w, 0) for w in all_weeks},
+                m: {
+                    'total': cc_totals[m][area],
+                    'by_main': dict(cc_by_main[m][area]),
+                    'weekly': {w: cc_weekly[m][area].get(w, 0) for w in all_weeks},
+                }
+                for m in modes
             }
 
         return {
@@ -1500,8 +1514,20 @@ class PhilJobsScraper:
 
         <!-- Cross-Cutting Areas -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-1">Cross-Cutting Areas</h2>
-            <p class="text-sm text-gray-500 mb-4">Weekly trend for areas that span multiple AOS categories: Feminist Philosophy, Philosophy of Race, Philosophy of Gender, Philosophy of Law</p>
+            <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-1">Cross-Cutting Areas</h2>
+                    <p class="text-sm text-gray-500">Weekly trend for areas that span multiple AOS categories: Feminist Philosophy, Philosophy of Race, Philosophy of Gender, Philosophy of Law. Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
+                </div>
+                <div class="flex flex-col items-end gap-2">
+                    <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 bg-white">
+                        <button id="ccModeAll" type="button" onclick="setCcMode('all')" class="px-3 py-1.5 text-sm font-medium bg-indigo-600 text-white">All</button>
+                        <button id="ccModeSolo" type="button" onclick="setCcMode('solo')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50">Solo</button>
+                        <button id="ccModeJoint" type="button" onclick="setCcMode('joint')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50">Joint</button>
+                    </div>
+                    <div id="ccModeNote" class="text-xs text-gray-500 italic"></div>
+                </div>
+            </div>
             <div class="chart-container">
                 <canvas id="crossCuttingChart"></canvas>
             </div>
@@ -2122,31 +2148,61 @@ class PhilJobsScraper:
             }}
         }});
 
-        // ===== CROSS-CUTTING CHART =====
+        // ===== CROSS-CUTTING CHART (with All/Solo/Joint toggle) =====
         const ccColors = {{ 'Feminist Philosophy': '#ec4899', 'Philosophy of Race': '#f97316', 'Philosophy of Gender': '#8b5cf6', 'Philosophy of Law': '#0ea5e9' }};
         const ccAreas = Object.keys(data.crossCutting);
-        // Align x-axis with all other charts: use data.dates, lookup counts from each area's trend list
-        new Chart(document.getElementById('crossCuttingChart').getContext('2d'), {{
-            type: 'line',
-            data: {{
-                labels: data.dates,
-                datasets: ccAreas.map(area => {{
-                    const trendMap = {{}};
-                    (data.crossCutting[area]?.trend || []).forEach(t => {{ trendMap[t.week] = t.count; }});
-                    return {{
-                        label: area, data: data.dates.map(d => trendMap[d] || 0),
-                        borderColor: ccColors[area] || '#6b7280', backgroundColor: (ccColors[area] || '#6b7280') + '30',
-                        tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
-                    }};
-                }})
-            }},
-            options: {{
-                responsive: true, maintainAspectRatio: false,
-                interaction: {{ mode: 'index', intersect: false }},
-                plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15 }} }} }},
-                scales: {{ y: {{ beginAtZero: true }}, x: {{ grid: {{ display: false }} }} }}
-            }}
-        }});
+        let ccChart = null;
+        let ccMode = 'all';
+
+        function renderCrossCuttingChart() {{
+            const ctx = document.getElementById('crossCuttingChart').getContext('2d');
+            if (ccChart) ccChart.destroy();
+            ccChart = new Chart(ctx, {{
+                type: 'line',
+                data: {{
+                    labels: data.dates,
+                    datasets: ccAreas.map(area => {{
+                        const slice = (data.crossCutting[area] || {{}})[ccMode] || {{}};
+                        const weeklyMap = slice.weekly || {{}};
+                        return {{
+                            label: area + ` (${{slice.total || 0}})`,
+                            data: data.dates.map(d => weeklyMap[d] || 0),
+                            borderColor: ccColors[area] || '#6b7280',
+                            backgroundColor: (ccColors[area] || '#6b7280') + '30',
+                            tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
+                        }};
+                    }})
+                }},
+                options: {{
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: {{ mode: 'index', intersect: false }},
+                    plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15 }} }} }},
+                    scales: {{ y: {{ beginAtZero: true, ticks: {{ precision: 0 }} }}, x: {{ grid: {{ display: false }} }} }}
+                }}
+            }});
+        }}
+
+        function updateCcControls() {{
+            const ccTheme = document.getElementById('ccModeAll').classList.contains('bg-cyan-600') || document.getElementById('ccModeAll').className.includes('bg-cyan') ? 'cyan' : 'indigo';
+            const active = `bg-${{ccTheme}}-600 text-white`;
+            const inactive = `text-gray-700 hover:bg-${{ccTheme}}-50`;
+            document.getElementById('ccModeAll').className   = `px-3 py-1.5 text-sm font-medium ${{ccMode === 'all'   ? active : inactive}}`;
+            document.getElementById('ccModeSolo').className  = `px-3 py-1.5 text-sm font-medium ${{ccMode === 'solo'  ? active : inactive}}`;
+            document.getElementById('ccModeJoint').className = `px-3 py-1.5 text-sm font-medium ${{ccMode === 'joint' ? active : inactive}}`;
+            document.getElementById('ccModeNote').textContent =
+                ccMode === 'all'   ? 'All: every cross-cutting tag counts.' :
+                ccMode === 'solo'  ? 'Solo: only jobs with exactly one main AOS category.' :
+                                     'Joint: only jobs listing multiple main AOS categories.';
+        }}
+
+        function setCcMode(mode) {{
+            ccMode = mode;
+            renderCrossCuttingChart();
+            updateCcControls();
+        }}
+
+        renderCrossCuttingChart();
+        updateCcControls();
 
         // ===== POSITION TYPE CHART (with All/Solo/Joint toggle) =====
         let posTypeChart = null;
@@ -2811,8 +2867,20 @@ class PhilJobsScraper:
 
         <!-- Cross-Cutting Areas -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-1">Cross-Cutting Areas</h2>
-            <p class="text-sm text-gray-500 mb-4">Weekly trend for areas that span multiple AOS categories: Feminist Philosophy, Philosophy of Race, Philosophy of Gender, Philosophy of Law</p>
+            <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-1">Cross-Cutting Areas</h2>
+                    <p class="text-sm text-gray-500">Weekly trend for areas that span multiple AOS categories: Feminist Philosophy, Philosophy of Race, Philosophy of Gender, Philosophy of Law. Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
+                </div>
+                <div class="flex flex-col items-end gap-2">
+                    <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 bg-white">
+                        <button id="ccModeAll" type="button" onclick="setCcMode('all')" class="px-3 py-1.5 text-sm font-medium bg-cyan-600 text-white">All</button>
+                        <button id="ccModeSolo" type="button" onclick="setCcMode('solo')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-cyan-50">Solo</button>
+                        <button id="ccModeJoint" type="button" onclick="setCcMode('joint')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-cyan-50">Joint</button>
+                    </div>
+                    <div id="ccModeNote" class="text-xs text-gray-500 italic"></div>
+                </div>
+            </div>
             <div class="chart-container">
                 <canvas id="crossCuttingChart"></canvas>
             </div>
@@ -3344,31 +3412,61 @@ class PhilJobsScraper:
             }}
         }});
 
-        // ===== CROSS-CUTTING CHART =====
+        // ===== CROSS-CUTTING CHART (with All/Solo/Joint toggle) =====
         const ccColors = {{ 'Feminist Philosophy': '#ec4899', 'Philosophy of Race': '#f97316', 'Philosophy of Gender': '#8b5cf6', 'Philosophy of Law': '#0ea5e9' }};
         const ccAreas = Object.keys(data.crossCutting);
-        // Align x-axis with all other charts: use data.dates, lookup counts from each area's trend list
-        new Chart(document.getElementById('crossCuttingChart').getContext('2d'), {{
-            type: 'line',
-            data: {{
-                labels: data.dates,
-                datasets: ccAreas.map(area => {{
-                    const trendMap = {{}};
-                    (data.crossCutting[area]?.trend || []).forEach(t => {{ trendMap[t.week] = t.count; }});
-                    return {{
-                        label: area, data: data.dates.map(d => trendMap[d] || 0),
-                        borderColor: ccColors[area] || '#6b7280', backgroundColor: (ccColors[area] || '#6b7280') + '30',
-                        tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
-                    }};
-                }})
-            }},
-            options: {{
-                responsive: true, maintainAspectRatio: false,
-                interaction: {{ mode: 'index', intersect: false }},
-                plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15 }} }} }},
-                scales: {{ y: {{ beginAtZero: true }}, x: {{ grid: {{ display: false }} }} }}
-            }}
-        }});
+        let ccChart = null;
+        let ccMode = 'all';
+
+        function renderCrossCuttingChart() {{
+            const ctx = document.getElementById('crossCuttingChart').getContext('2d');
+            if (ccChart) ccChart.destroy();
+            ccChart = new Chart(ctx, {{
+                type: 'line',
+                data: {{
+                    labels: data.dates,
+                    datasets: ccAreas.map(area => {{
+                        const slice = (data.crossCutting[area] || {{}})[ccMode] || {{}};
+                        const weeklyMap = slice.weekly || {{}};
+                        return {{
+                            label: area + ` (${{slice.total || 0}})`,
+                            data: data.dates.map(d => weeklyMap[d] || 0),
+                            borderColor: ccColors[area] || '#6b7280',
+                            backgroundColor: (ccColors[area] || '#6b7280') + '30',
+                            tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
+                        }};
+                    }})
+                }},
+                options: {{
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: {{ mode: 'index', intersect: false }},
+                    plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15 }} }} }},
+                    scales: {{ y: {{ beginAtZero: true, ticks: {{ precision: 0 }} }}, x: {{ grid: {{ display: false }} }} }}
+                }}
+            }});
+        }}
+
+        function updateCcControls() {{
+            const ccTheme = document.getElementById('ccModeAll').classList.contains('bg-cyan-600') || document.getElementById('ccModeAll').className.includes('bg-cyan') ? 'cyan' : 'indigo';
+            const active = `bg-${{ccTheme}}-600 text-white`;
+            const inactive = `text-gray-700 hover:bg-${{ccTheme}}-50`;
+            document.getElementById('ccModeAll').className   = `px-3 py-1.5 text-sm font-medium ${{ccMode === 'all'   ? active : inactive}}`;
+            document.getElementById('ccModeSolo').className  = `px-3 py-1.5 text-sm font-medium ${{ccMode === 'solo'  ? active : inactive}}`;
+            document.getElementById('ccModeJoint').className = `px-3 py-1.5 text-sm font-medium ${{ccMode === 'joint' ? active : inactive}}`;
+            document.getElementById('ccModeNote').textContent =
+                ccMode === 'all'   ? 'All: every cross-cutting tag counts.' :
+                ccMode === 'solo'  ? 'Solo: only jobs with exactly one main AOS category.' :
+                                     'Joint: only jobs listing multiple main AOS categories.';
+        }}
+
+        function setCcMode(mode) {{
+            ccMode = mode;
+            renderCrossCuttingChart();
+            updateCcControls();
+        }}
+
+        renderCrossCuttingChart();
+        updateCcControls();
 
         // ===== POSITION TYPE CHART (with All/Solo/Joint toggle) =====
         let posTypeChart = null;

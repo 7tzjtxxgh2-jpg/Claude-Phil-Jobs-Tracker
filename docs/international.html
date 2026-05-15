@@ -31,7 +31,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <h1 class="text-4xl font-bold mb-2">International Philosophy Job Market</h1>
             <p class="text-cyan-100">Real-time trends from PhilJobs — non-U.S. institutions</p>
-            <div class="mt-6 text-sm text-cyan-100">Last updated: May 11, 2026</div>
+            <div class="mt-6 text-sm text-cyan-100">Last updated: May 15, 2026</div>
         </div>
     </div>
 
@@ -117,8 +117,20 @@
 
         <!-- Cross-Cutting Areas -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-1">Cross-Cutting Areas</h2>
-            <p class="text-sm text-gray-500 mb-4">Weekly trend for areas that span multiple AOS categories: Feminist Philosophy, Philosophy of Race, Philosophy of Gender, Philosophy of Law</p>
+            <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-1">Cross-Cutting Areas</h2>
+                    <p class="text-sm text-gray-500">Weekly trend for areas that span multiple AOS categories: Feminist Philosophy, Philosophy of Race, Philosophy of Gender, Philosophy of Law. Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
+                </div>
+                <div class="flex flex-col items-end gap-2">
+                    <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 bg-white">
+                        <button id="ccModeAll" type="button" onclick="setCcMode('all')" class="px-3 py-1.5 text-sm font-medium bg-cyan-600 text-white">All</button>
+                        <button id="ccModeSolo" type="button" onclick="setCcMode('solo')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-cyan-50">Solo</button>
+                        <button id="ccModeJoint" type="button" onclick="setCcMode('joint')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-cyan-50">Joint</button>
+                    </div>
+                    <div id="ccModeNote" class="text-xs text-gray-500 italic"></div>
+                </div>
+            </div>
             <div class="chart-container">
                 <canvas id="crossCuttingChart"></canvas>
             </div>
@@ -268,7 +280,7 @@
             mainAosCategories: ["Ethics", "Social & Political Philosophy", "Value Theory / Aesthetics", "History of Philosophy", "Non-Western & Cross-Cultural Philosophy", "Metaphysics & Epistemology", "Science, Logic, & Mathematics", "Open"],
             coocMatrix: {"Ethics": {"Social & Political Philosophy": 8, "Value Theory / Aesthetics": 4, "History of Philosophy": 4, "Metaphysics & Epistemology": 7, "Science, Logic, & Mathematics": 12, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 1}, "Social & Political Philosophy": {"Ethics": 8, "Value Theory / Aesthetics": 2, "History of Philosophy": 2, "Metaphysics & Epistemology": 5, "Science, Logic, & Mathematics": 5, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 1}, "Value Theory / Aesthetics": {"Ethics": 4, "Social & Political Philosophy": 2, "History of Philosophy": 2, "Metaphysics & Epistemology": 4, "Science, Logic, & Mathematics": 1, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 1}, "History of Philosophy": {"Ethics": 4, "Social & Political Philosophy": 2, "Value Theory / Aesthetics": 2, "Metaphysics & Epistemology": 5, "Science, Logic, & Mathematics": 6, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 2}, "Metaphysics & Epistemology": {"Ethics": 7, "Social & Political Philosophy": 5, "Value Theory / Aesthetics": 4, "History of Philosophy": 5, "Science, Logic, & Mathematics": 23, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 3}, "Science, Logic, & Mathematics": {"Ethics": 12, "Social & Political Philosophy": 5, "Value Theory / Aesthetics": 1, "Metaphysics & Epistemology": 23, "Non-Western & Cross-Cultural Philosophy": 1, "History of Philosophy": 6, "Open": 1}, "Non-Western & Cross-Cultural Philosophy": {"Ethics": 1, "Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "Metaphysics & Epistemology": 1, "Science, Logic, & Mathematics": 1, "History of Philosophy": 1, "Open": 1}, "Open": {"Ethics": 1, "Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "Metaphysics & Epistemology": 3, "Science, Logic, & Mathematics": 1, "Non-Western & Cross-Cultural Philosophy": 1, "History of Philosophy": 2}},
             soloVsJoint: {"Ethics": {"solo": 2, "joint": 22}, "Social & Political Philosophy": {"solo": 2, "joint": 12}, "Value Theory / Aesthetics": {"solo": 0, "joint": 5}, "History of Philosophy": {"solo": 3, "joint": 10}, "Metaphysics & Epistemology": {"solo": 2, "joint": 32}, "Science, Logic, & Mathematics": {"solo": 7, "joint": 37}, "Non-Western & Cross-Cultural Philosophy": {"solo": 0, "joint": 1}, "Open": {"solo": 12, "joint": 3}},
-            crossCutting: {"Feminist Philosophy": {"total": 0, "by_main": {}, "weekly": {"2026-03-10": 0, "2026-03-21": 0}}, "Philosophy of Race": {"total": 0, "by_main": {}, "weekly": {"2026-03-10": 0, "2026-03-21": 0}}, "Philosophy of Gender": {"total": 0, "by_main": {}, "weekly": {"2026-03-10": 0, "2026-03-21": 0}}, "Philosophy of Law": {"total": 3, "by_main": {"Ethics": 2, "Social & Political Philosophy": 3, "Value Theory / Aesthetics": 1, "History of Philosophy": 1, "Metaphysics & Epistemology": 3}, "weekly": {"2026-03-10": 2, "2026-03-21": 1}}},
+            crossCutting: {"Feminist Philosophy": {"all": {"total": 0, "by_main": {}, "weekly": {"2026-03-10": 0, "2026-03-21": 0}}, "solo": {"total": 0, "by_main": {}, "weekly": {"2026-03-10": 0, "2026-03-21": 0}}, "joint": {"total": 0, "by_main": {}, "weekly": {"2026-03-10": 0, "2026-03-21": 0}}}, "Philosophy of Race": {"all": {"total": 0, "by_main": {}, "weekly": {"2026-03-10": 0, "2026-03-21": 0}}, "solo": {"total": 0, "by_main": {}, "weekly": {"2026-03-10": 0, "2026-03-21": 0}}, "joint": {"total": 0, "by_main": {}, "weekly": {"2026-03-10": 0, "2026-03-21": 0}}}, "Philosophy of Gender": {"all": {"total": 0, "by_main": {}, "weekly": {"2026-03-10": 0, "2026-03-21": 0}}, "solo": {"total": 0, "by_main": {}, "weekly": {"2026-03-10": 0, "2026-03-21": 0}}, "joint": {"total": 0, "by_main": {}, "weekly": {"2026-03-10": 0, "2026-03-21": 0}}}, "Philosophy of Law": {"all": {"total": 3, "by_main": {"Ethics": 2, "Social & Political Philosophy": 3, "Value Theory / Aesthetics": 1, "History of Philosophy": 1, "Metaphysics & Epistemology": 3}, "weekly": {"2026-03-10": 2, "2026-03-21": 1}}, "solo": {"total": 0, "by_main": {}, "weekly": {"2026-03-10": 0, "2026-03-21": 0}}, "joint": {"total": 3, "by_main": {"Ethics": 2, "Social & Political Philosophy": 3, "Value Theory / Aesthetics": 1, "History of Philosophy": 1, "Metaphysics & Epistemology": 3}, "weekly": {"2026-03-10": 2, "2026-03-21": 1}}}},
             detailAosByContext: {"Normative Ethics": {"solo": {"Ethics": 1}, "with_others": {"Social & Political Philosophy": 4, "Value Theory / Aesthetics": 2, "History of Philosophy": 2, "Metaphysics & Epistemology": 2, "Science, Logic, & Mathematics": 1, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 1}, "total": 5}, "Ethics (General / Applied Ethics, Broadly Construed)": {"solo": {}, "with_others": {"Social & Political Philosophy": 7, "Value Theory / Aesthetics": 3, "History of Philosophy": 4, "Metaphysics & Epistemology": 3, "Science, Logic, & Mathematics": 4, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 1}, "total": 11}, "Social and Political Philosophy (General / Political Theory)": {"solo": {"Social & Political Philosophy": 2}, "with_others": {"Ethics": 7, "Value Theory / Aesthetics": 2, "History of Philosophy": 2, "Metaphysics & Epistemology": 5, "Science, Logic, & Mathematics": 4, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 1}, "total": 12}, "Philosophy of Law": {"solo": {}, "with_others": {"Ethics": 2, "Value Theory / Aesthetics": 1, "History of Philosophy": 1, "Metaphysics & Epistemology": 3}, "total": 3}, "Aesthetics (General)": {"solo": {}, "with_others": {"Ethics": 2, "Social & Political Philosophy": 2, "History of Philosophy": 2, "Metaphysics & Epistemology": 2, "Science, Logic, & Mathematics": 1, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 1}, "total": 2}, "Value Theory / Axiology": {"solo": {}, "with_others": {"Ethics": 3, "Social & Political Philosophy": 1, "History of Philosophy": 1, "Metaphysics & Epistemology": 3}, "total": 4}, "Value Theory / Aesthetics (General)": {"solo": {}, "with_others": {"Ethics": 3, "Social & Political Philosophy": 2, "History of Philosophy": 2, "Metaphysics & Epistemology": 2, "Science, Logic, & Mathematics": 1, "Non-Western & Cross-Cultural Philosophy": 1, "Open": 1}, "total": 3}, "History of Philosophy (General)": {"solo": {"History of Philosophy": 1}, "with_others": {"Ethics": 2, "Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "Metaphysics & Epistemology": 3, "Science, Logic, & Mathematics": 4, "Open": 1}, "total": 8}, "Philosophy of Mind": {"solo": {"Metaphysics & Epistemology": 1}, "with_others": {"Ethics": 4, "Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "History of Philosophy": 2, "Science, Logic, & Mathematics": 5, "Open": 1}, "total": 9}, "Philosophy of Action": {"solo": {}, "with_others": {"Ethics": 3, "Social & Political Philosophy": 2, "Value Theory / Aesthetics": 1, "History of Philosophy": 1, "Science, Logic, & Mathematics": 2}, "total": 4}, "Philosophy of Religion": {"solo": {}, "with_others": {"Ethics": 1, "Social & Political Philosophy": 2, "Value Theory / Aesthetics": 1, "Science, Logic, & Mathematics": 1, "Non-Western & Cross-Cultural Philosophy": 1, "History of Philosophy": 1, "Open": 1}, "total": 2}, "Metaphysics & Epistemology (General)": {"solo": {}, "with_others": {"Ethics": 1, "Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "Science, Logic, & Mathematics": 1, "Non-Western & Cross-Cultural Philosophy": 1, "History of Philosophy": 2, "Open": 1}, "total": 2}, "Logic": {"solo": {"Science, Logic, & Mathematics": 2}, "with_others": {"Ethics": 2, "Social & Political Philosophy": 2, "Value Theory / Aesthetics": 1, "Metaphysics & Epistemology": 8, "Non-Western & Cross-Cultural Philosophy": 1, "History of Philosophy": 2, "Open": 1}, "total": 11}, "Philosophy of Science (General)": {"solo": {"Science, Logic, & Mathematics": 3}, "with_others": {"Ethics": 4, "Social & Political Philosophy": 3, "Value Theory / Aesthetics": 1, "Metaphysics & Epistemology": 14, "Non-Western & Cross-Cultural Philosophy": 1, "History of Philosophy": 6, "Open": 1}, "total": 24}, "Asian Philosophy": {"solo": {}, "with_others": {"Ethics": 1, "Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "Metaphysics & Epistemology": 1, "Science, Logic, & Mathematics": 1, "History of Philosophy": 1, "Open": 1}, "total": 1}, "Comparative Philosophy / Cross-Cultural": {"solo": {}, "with_others": {"Ethics": 1, "Social & Political Philosophy": 1, "Value Theory / Aesthetics": 1, "Metaphysics & Epistemology": 1, "Science, Logic, & Mathematics": 1, "History of Philosophy": 1, "Open": 1}, "total": 1}, "Philosophy of Mathematics": {"solo": {"Science, Logic, & Mathematics": 1}, "with_others": {"Metaphysics & Epistemology": 1}, "total": 2}, "Philosophy of Computing / Philosophy of AI": {"solo": {}, "with_others": {"Metaphysics & Epistemology": 6, "Ethics": 8, "Social & Political Philosophy": 1, "History of Philosophy": 1}, "total": 13}, "Epistemology": {"solo": {}, "with_others": {"Science, Logic, & Mathematics": 11, "History of Philosophy": 2, "Social & Political Philosophy": 1, "Open": 1, "Ethics": 1}, "total": 13}, "Philosophy of Physics": {"solo": {"Science, Logic, & Mathematics": 4}, "with_others": {"Metaphysics & Epistemology": 5}, "total": 9}, "Neuroethics": {"solo": {}, "with_others": {"Metaphysics & Epistemology": 1}, "total": 1}, "Philosophy of Education": {"solo": {}, "with_others": {"Ethics": 2, "Science, Logic, & Mathematics": 2}, "total": 3}, "Early Modern Philosophy (17th/18th Century)": {"solo": {"History of Philosophy": 1}, "with_others": {"Science, Logic, & Mathematics": 1, "Metaphysics & Epistemology": 2}, "total": 3}, "19th/20th Century Philosophy": {"solo": {"History of Philosophy": 1}, "with_others": {"Science, Logic, & Mathematics": 1, "Metaphysics & Epistemology": 3, "Open": 1}, "total": 4}, "Meta-Ethics": {"solo": {"Ethics": 1}, "with_others": {"Metaphysics & Epistemology": 2, "Science, Logic, & Mathematics": 2, "Value Theory / Aesthetics": 1}, "total": 4}, "Philosophy of Language": {"solo": {}, "with_others": {"Science, Logic, & Mathematics": 6, "Open": 1, "Ethics": 2, "Value Theory / Aesthetics": 2}, "total": 9}, "AI, Technology, and Information Ethics": {"solo": {"Ethics": 1}, "with_others": {"Science, Logic, & Mathematics": 9, "Social & Political Philosophy": 1, "History of Philosophy": 1, "Metaphysics & Epistemology": 1}, "total": 10}, "Philosophy of Cognitive Science": {"solo": {}, "with_others": {"Metaphysics & Epistemology": 3, "Ethics": 1, "History of Philosophy": 1}, "total": 3}, "Philosophy of Biology": {"solo": {}, "with_others": {"Metaphysics & Epistemology": 1, "History of Philosophy": 2}, "total": 2}, "Decision Theory": {"solo": {}, "with_others": {"Metaphysics & Epistemology": 2, "Social & Political Philosophy": 2, "Ethics": 1}, "total": 4}, "PPE (Politics, Philosophy, and Economics)": {"solo": {}, "with_others": {"Science, Logic, & Mathematics": 1}, "total": 1}, "Philosophy of Social Science": {"solo": {}, "with_others": {"Social & Political Philosophy": 3, "Ethics": 1}, "total": 3}, "Biomedical Ethics / Bioethics": {"solo": {}, "with_others": {"Science, Logic, & Mathematics": 2, "History of Philosophy": 1, "Value Theory / Aesthetics": 1}, "total": 3}, "Ancient Greek and Roman Philosophy": {"solo": {"History of Philosophy": 1}, "with_others": {"Ethics": 1}, "total": 2}, "Ethics of Population, Future Generations, and Global Justice": {"solo": {}, "with_others": {"Social & Political Philosophy": 1}, "total": 1}, "Business Ethics": {"solo": {}, "with_others": {"Social & Political Philosophy": 1, "Science, Logic, & Mathematics": 1}, "total": 1}, "Metaphysics": {"solo": {"Metaphysics & Epistemology": 1}, "with_others": {"Science, Logic, & Mathematics": 4}, "total": 5}, "Continental Philosophy": {"solo": {}, "with_others": {"Metaphysics & Epistemology": 1, "Open": 1}, "total": 1}}
         };
 
@@ -650,31 +662,61 @@
             }
         });
 
-        // ===== CROSS-CUTTING CHART =====
+        // ===== CROSS-CUTTING CHART (with All/Solo/Joint toggle) =====
         const ccColors = { 'Feminist Philosophy': '#ec4899', 'Philosophy of Race': '#f97316', 'Philosophy of Gender': '#8b5cf6', 'Philosophy of Law': '#0ea5e9' };
         const ccAreas = Object.keys(data.crossCutting);
-        // Align x-axis with all other charts: use data.dates, lookup counts from each area's trend list
-        new Chart(document.getElementById('crossCuttingChart').getContext('2d'), {
-            type: 'line',
-            data: {
-                labels: data.dates,
-                datasets: ccAreas.map(area => {
-                    const trendMap = {};
-                    (data.crossCutting[area]?.trend || []).forEach(t => { trendMap[t.week] = t.count; });
-                    return {
-                        label: area, data: data.dates.map(d => trendMap[d] || 0),
-                        borderColor: ccColors[area] || '#6b7280', backgroundColor: (ccColors[area] || '#6b7280') + '30',
-                        tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
-                    };
-                })
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                interaction: { mode: 'index', intersect: false },
-                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15 } } },
-                scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
-            }
-        });
+        let ccChart = null;
+        let ccMode = 'all';
+
+        function renderCrossCuttingChart() {
+            const ctx = document.getElementById('crossCuttingChart').getContext('2d');
+            if (ccChart) ccChart.destroy();
+            ccChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.dates,
+                    datasets: ccAreas.map(area => {
+                        const slice = (data.crossCutting[area] || {})[ccMode] || {};
+                        const weeklyMap = slice.weekly || {};
+                        return {
+                            label: area + ` (${slice.total || 0})`,
+                            data: data.dates.map(d => weeklyMap[d] || 0),
+                            borderColor: ccColors[area] || '#6b7280',
+                            backgroundColor: (ccColors[area] || '#6b7280') + '30',
+                            tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
+                        };
+                    })
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15 } } },
+                    scales: { y: { beginAtZero: true, ticks: { precision: 0 } }, x: { grid: { display: false } } }
+                }
+            });
+        }
+
+        function updateCcControls() {
+            const ccTheme = document.getElementById('ccModeAll').classList.contains('bg-cyan-600') || document.getElementById('ccModeAll').className.includes('bg-cyan') ? 'cyan' : 'indigo';
+            const active = `bg-${ccTheme}-600 text-white`;
+            const inactive = `text-gray-700 hover:bg-${ccTheme}-50`;
+            document.getElementById('ccModeAll').className   = `px-3 py-1.5 text-sm font-medium ${ccMode === 'all'   ? active : inactive}`;
+            document.getElementById('ccModeSolo').className  = `px-3 py-1.5 text-sm font-medium ${ccMode === 'solo'  ? active : inactive}`;
+            document.getElementById('ccModeJoint').className = `px-3 py-1.5 text-sm font-medium ${ccMode === 'joint' ? active : inactive}`;
+            document.getElementById('ccModeNote').textContent =
+                ccMode === 'all'   ? 'All: every cross-cutting tag counts.' :
+                ccMode === 'solo'  ? 'Solo: only jobs with exactly one main AOS category.' :
+                                     'Joint: only jobs listing multiple main AOS categories.';
+        }
+
+        function setCcMode(mode) {
+            ccMode = mode;
+            renderCrossCuttingChart();
+            updateCcControls();
+        }
+
+        renderCrossCuttingChart();
+        updateCcControls();
 
         // ===== POSITION TYPE CHART (with All/Solo/Joint toggle) =====
         let posTypeChart = null;
