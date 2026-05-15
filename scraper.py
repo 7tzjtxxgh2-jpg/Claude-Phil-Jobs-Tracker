@@ -240,11 +240,19 @@ DETAIL_AOS = {
     "Open": [],
 }
 
-# Bump this when DETAIL_AOS changes. The scraper detects a version mismatch
-# and forces re-classification of all stored jobs under the new taxonomy.
-# Prior classifications get preserved on each job under `classification_v1`
-# (or `classification_v<N>`) so we can audit how labels shifted.
-TAXONOMY_VERSION = "2026-05-16"
+# Bump this whenever anything that affects classification changes:
+# DETAIL_AOS, the CLASSIFICATION_PROMPT, or the CLAUDE_MODEL used. The
+# scraper detects a version mismatch and forces re-classification of all
+# stored jobs. Prior classifications get preserved on each job under
+# `classification_v1` (or `classification_v<N>`) so we can audit how labels
+# shifted between revisions.
+TAXONOMY_VERSION = "2026-05-16-sonnet"
+
+# Single source of truth for the Claude model used across all API calls
+# (classification, state resolution, synonym map). Changing this should
+# also bump TAXONOMY_VERSION so existing data gets re-classified under the
+# new model. Each classification stores `_model` for per-job audit.
+CLAUDE_MODEL = "claude-sonnet-4-5"
 
 CROSS_CUTTING_AREAS = [
     "Feminist Philosophy",
@@ -722,11 +730,14 @@ class PhilJobsScraper:
             "detail_aos": {"Open": []},
             "position_type": "Other",
             "institution_type": "Other",
-            "reasoning": "classification_failed"
+            "reasoning": "classification_failed",
+            "_model": "fallback",
+            "_classified_at": datetime.now().isoformat(),
         }
 
     def classify_job_with_claude(self, job) -> dict:
-        """Classify a single job using Claude Haiku. Returns classification dict."""
+        """Classify a single job using the configured Claude model. Returns
+        classification dict tagged with `_model` and `_classified_at` for audit."""
         api_key = os.environ.get('ANTHROPIC_API_KEY')
         if not api_key:
             return self._classification_fallback()
@@ -751,7 +762,7 @@ class PhilJobsScraper:
         for attempt in range(3):
             try:
                 response = client.messages.create(
-                    model="claude-haiku-4-5-20251001",
+                    model=CLAUDE_MODEL,
                     max_tokens=1000,
                     temperature=0,
                     messages=[{"role": "user", "content": prompt_text}]
@@ -793,6 +804,10 @@ class PhilJobsScraper:
                     result['state_us'] = raw_state
                 else:
                     result['state_us'] = 'INTERNATIONAL'
+
+                # Audit metadata
+                result['_model'] = CLAUDE_MODEL
+                result['_classified_at'] = datetime.now().isoformat()
 
                 time.sleep(0.5)
                 return result
@@ -897,7 +912,7 @@ class PhilJobsScraper:
             for attempt in range(3):
                 try:
                     response = client.messages.create(
-                        model="claude-haiku-4-5-20251001",
+                        model=CLAUDE_MODEL,
                         max_tokens=10,
                         temperature=0,
                         messages=[{"role": "user", "content": prompt}]
@@ -1369,7 +1384,7 @@ class PhilJobsScraper:
             for attempt in range(3):
                 try:
                     response = client.messages.create(
-                        model="claude-haiku-4-5-20251001",
+                        model=CLAUDE_MODEL,
                         max_tokens=2000,
                         temperature=0,
                         messages=[{"role": "user", "content": prompt}]
@@ -1619,10 +1634,10 @@ class PhilJobsScraper:
             '`_keyword_stem`; the JS implementation in `kwStem` — they are kept',
             'in lockstep.',
             '',
-            '### 4. Synonym Expansion (Claude Haiku)',
+            '### 4. Synonym Expansion (Claude)',
             '',
-            'Each Monday, the top 150 most frequent corpus terms are sent to Claude',
-            'Haiku (`claude-haiku-4-5-20251001`, temperature=0) in batches of 25.',
+            f'Each Monday, the top 150 most frequent corpus terms are sent to',
+            f'`{CLAUDE_MODEL}` (temperature=0) in batches of 25.',
             'The prompt explicitly asks for FIELD-DEFINING terms only — alternative',
             'names the academic discipline uses for the same subfield — and not',
             'broadly related or co-occurring concepts:',
@@ -1736,6 +1751,16 @@ class PhilJobsScraper:
             '',
             '## Change Log',
             '',
+            f'- **{date_str}**: Switched Claude model from `claude-haiku-4-5-20251001`',
+            f'  to `claude-sonnet-4-5` across all API calls (classification, state',
+            '  resolution, synonym generation). Sonnet is ~3× more expensive per',
+            '  token but markedly better on edge-case classification (subtle multi-',
+            '  AOS jobs, novel position framings, interdisciplinary postings). Total',
+            '  weekly cost remains under $1. Each classification now carries `_model`',
+            '  and `_classified_at` metadata fields for per-job audit so we can',
+            '  always verify which model produced any given label. TAXONOMY_VERSION',
+            '  bumped to `2026-05-16-sonnet`; existing jobs reclassified under',
+            '  Sonnet with prior Haiku labels preserved under `classification_v2`.',
             f'- **{date_str}**: Taxonomy revised to add four subcategories from a',
             '  cross-source review against PhilPapers and APA submission tracks:',
             '  Virtue Ethics (under Ethics), Philosophy of Disability and Public',

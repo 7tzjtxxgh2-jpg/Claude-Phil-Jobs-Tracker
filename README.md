@@ -150,11 +150,11 @@ Weekly trend data reflects new entries per week, not the total active job pool s
 
 ### Why Claude API?
 
-Raw PhilJobs data includes free-text AOS descriptions (e.g., "Ethics, broadly construed; Philosophy of Mind") that are too varied for simple keyword matching. Claude Haiku is used to normalize these into a controlled taxonomy, classify position types from job titles and descriptions, and identify institution types — tasks that benefit from linguistic understanding.
+Raw PhilJobs data includes free-text AOS descriptions (e.g., "Ethics, broadly construed; Philosophy of Mind") that are too varied for simple keyword matching. The Claude API is used to normalize these into a controlled taxonomy, classify position types from job titles and descriptions, and identify institution types — tasks that benefit from linguistic understanding.
 
 ### Model and settings
 
-- **Model:** `claude-haiku-4-5-20251001`
+- **Model:** `claude-sonnet-4-5` *(switched from `claude-haiku-4-5-20251001` on 2026-05-16 for better edge-case accuracy on multi-AOS and interdisciplinary postings; each classification stores `_model` and `_classified_at` for per-job audit)*
 - **Temperature:** `0` (deterministic — same input always produces same output)
 - **Max tokens:** `1000`
 - **Retries:** 3 attempts per job on API failure, with 1-second backoff
@@ -579,7 +579,7 @@ Open either HTML file directly in a browser to preview the dashboard.
 
 **Why count new jobs, not active jobs?** The total active listing count fluctuates with expirations and removals. New job entries per week is a cleaner signal of actual market activity.
 
-**Why Claude Haiku and not a more powerful model?** Haiku is fast, cheap, and sufficiently accurate for structured extraction tasks with a well-defined taxonomy. Temperature=0 ensures deterministic and consistent classification across runs.
+**Why Claude Sonnet and not the cheaper Haiku?** The project initially used `claude-haiku-4-5-20251001`. After ~200 jobs of data accumulated, the dashboard switched to `claude-sonnet-4-5` (3× more expensive per token, but still under $1/week total — see methodology change log) because Sonnet is markedly better at edge-case classification: subtle multi-AOS jobs, interdisciplinary postings, and novel position framings. Temperature=0 across both models ensures deterministic classification. Every job's classification records which model produced it under `_model` for audit.
 
 **Why separate US and International dashboards?** The US and international markets have different structures (e.g., UK REF cycles, European fellowship structures vs. US tenure track), different geographic visualizations, and potentially different user interests. Keeping them separate allows each to be developed independently.
 
