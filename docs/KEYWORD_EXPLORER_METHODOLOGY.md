@@ -117,10 +117,10 @@ search time, for query expansion). The Python implementation lives in
 `_keyword_stem`; the JS implementation in `kwStem` — they are kept
 in lockstep.
 
-### 4. Synonym Expansion (Claude Haiku)
+### 4. Synonym Expansion (Claude)
 
-Each Monday, the top 150 most frequent corpus terms are sent to Claude
-Haiku (`claude-haiku-4-5-20251001`, temperature=0) in batches of 25.
+Each Monday, the top 150 most frequent corpus terms are sent to
+`claude-sonnet-4-5` (temperature=0) in batches of 25.
 The prompt explicitly asks for FIELD-DEFINING terms only — alternative
 names the academic discipline uses for the same subfield — and not
 broadly related or co-occurring concepts:
@@ -234,6 +234,16 @@ season.
 
 ## Change Log
 
+- **2026-05-15**: Switched Claude model from `claude-haiku-4-5-20251001`
+  to `claude-sonnet-4-5` across all API calls (classification, state
+  resolution, synonym generation). Sonnet is ~3× more expensive per
+  token but markedly better on edge-case classification (subtle multi-
+  AOS jobs, novel position framings, interdisciplinary postings). Total
+  weekly cost remains under $1. Each classification now carries `_model`
+  and `_classified_at` metadata fields for per-job audit so we can
+  always verify which model produced any given label. TAXONOMY_VERSION
+  bumped to `2026-05-16-sonnet`; existing jobs reclassified under
+  Sonnet with prior Haiku labels preserved under `classification_v2`.
 - **2026-05-15**: Taxonomy revised to add four subcategories from a
   cross-source review against PhilPapers and APA submission tracks:
   Virtue Ethics (under Ethics), Philosophy of Disability and Public

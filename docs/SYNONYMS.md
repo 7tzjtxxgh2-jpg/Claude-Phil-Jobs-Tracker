@@ -25,123 +25,60 @@ used, see [KEYWORD_EXPLORER_METHODOLOGY.md](KEYWORD_EXPLORER_METHODOLOGY.md).
 
 ## Synonym Groups (Alphabetical)
 
-- **access** → accessibility, accessible, open access, equity of access
-- **active** → active
-- **activities** → work, research, scholarship, teaching
-- **addition** → additionally, furthermore, also
-- **additional** → supplementary, further, extra
-- **applied** → application, applied ethics, practical
-- **arts** → humanities, liberal arts, fine arts
-- **associate** → assistant, junior, affiliated, collaborative
-- **background** → training, preparation, credentials, qualifications
-- **center** → institute, lab, laboratory, research center, program, hub
-- **chair** → department chair, chairperson, department head, chair position
-- **city** → urban, urbanism
-- **collaboration** → collaborative, interdisciplinary, cross-disciplinary, teamwork
-- **commitment** → commitments, committed
-- **committed** → commitment, commitments
-- **competence** → competence, competency, expertise
-- **consideration** → considered, consider
-- **considered** → consideration, consider
-- **continue** → ongoing, continuing, sustained
-- **contribute** → contribution, contributions, contributor
-- **core** → foundational, central, essential
-- **creative** → creativity
-- **critical** → critical theory, critique, critical analysis
-- **curriculum** → course design, program, syllabus, coursework
-- **description** → description, job description
-- **development** → developmental
-- **discipline** → discipline, field, subdiscipline, specialization
-- **diverse** → diversity, diversification
-- **education** → pedagogy, teaching, instruction, learning, educational, academic
-- **educational** → education, pedagogy, teaching
-- **eligible** → qualified, eligible, eligible
-- **employees** → employment, labor
-- **engage** → engagement, engaged
-- **engagement** → engaged, community engagement, public engagement
-- **environment** → environmental, ecology, ecological
-- **ethical** → ethics, moral, normative
-- **ethics** → moral philosophy, normative ethics, applied ethics, ethical theory
-- **evidence** → empirical
-- **expertise** → specialization, competence, knowledge, proficiency, research focus
-- **first** → inaugural
-- **focus** → focal, focused
-- **funding** → grant, financial support, endowment, fellowship, scholarship
-- **general** → generalist, broad, interdisciplinary
-- **health** → healthcare, medical
-- **higher** → higher education, academic
-- **highly** → highly
-- **history** → historical, historian
-- **humanities** → humanistic, liberal arts, letters, human sciences
-- **includes** → encompasses, comprises, covers, spans
-- **innovative** → innovation
-- **intellectual** → intellectual
-- **interdisciplinary** → interdisciplinarity, cross-disciplinary, multidisciplinary
-- **interest** → interests, interested
-- **interested** → interested in, focused on, working in
-- **interests** → interest-based
-- **introductory** → intro, survey, foundational
-- **knowledge** → knowledge, expertise, specialization
-- **leadership** → leader, leading
-- **leading** → prominent, preeminent
-- **learning** → pedagogy, pedagogical, teaching
-- **least** → minimum, minimal
-- **liberal** → liberal arts, general education
-- **limited** → restricted, constrained, finite
-- **located** → located
-- **logic** → logical, formal logic, symbolic logic
-- **major** → primary, principal
-- **member** → membership, affiliation
-- **members** → membership
-- **mission** → mandate, vision, purpose, goals, objectives
-- **names** → names
-- **needs** → requires, demands, seeks
-- **online** → digital, virtual, distance
-- **opportunities** → positions, openings, appointments, roles
-- **participate** → participation, participatory
-- **person** → personal, personhood
+- **access** → accessible, accessibility
+- **active** → actively, activity
+- **activities** → activity
+- **addition** → additional
+- **applied** → applied ethics, applied philosophy, practical ethics
+- **associate** → associated, association
+- **background** → backgrounds
+- **competence** → competent, competency
+- **continue** → continuing
+- **critical** → critical theory, critical thinking, frankfurt school
+- **discipline** → disciplinary, disciplines
+- **eligible** → eligibility
+- **environment** → environmental, ecology, ecological, environmental philosophy, environmental ethics
+- **ethical** → ethics, metaethics, meta-ethics, normative ethics, applied ethics, moral philosophy, moral
+- **ethics** → ethical, metaethics, meta-ethics, normative ethics, moral philosophy, moral theory
+- **general** → generalist
+- **health** → healthcare, medical, biomedical, medicine, public health, health care
+- **higher** → higher education
+- **history** → historical, history of philosophy
+- **includes** → include, including
+- **intellectual** → intellectuals
+- **interdisciplinary** → multidisciplinary, cross-disciplinary, transdisciplinary
+- **introductory** → introduction, intro, survey
+- **knowledge** → knowledgeable
+- **liberal** → liberal arts
+- **located** → location, locate
+- **logic** → logical, formal logic, symbolic logic, mathematical logic, philosophical logic
+- **names** → name, named
+- **opportunities** → opportunity
 - **philosophical** → philosophy, philosophic
-- **plan** → planning
-- **policy** → policies, governance, institutional policy
-- **political** → political philosophy, political theory, politics
-- **postdoctoral** → postdoc, postdoctorate
-- **prior** → previous, prior
-- **process** → methodology, method, procedural, procedures
-- **professional** → professionalism
-- **projects** → project-based, research projects
-- **public** → public philosophy, public intellectual
-- **received** → received
-- **recommendation** → reference, letter of recommendation, referral
-- **relevant** → pertinent, applicable, germane
-- **renewable** → sustainability, sustainable
-- **renewal** → renewal, reappointment
-- **research** → empirical, inquiry, investigation, scholarship, academic research, research methods
-- **role** → position, appointment
-- **scholars** → scholars, academics, researchers
-- **science** → scientific, natural science, empirical science, stem
-- **sciences** → natural sciences, scientific disciplines, stem
-- **seeks** → seeking
-- **semester** → term, academic year
-- **serve** → support, advance, promote
-- **skills** → skill-based
-- **social** → social philosophy, social theory, sociology
-- **specialization** → specialty, subspecialty, area of focus, research area, subfield
-- **staff** → staffing
-- **state** → status, condition
-- **studies** → studies, research area, subfield
-- **subject** → discipline, field, area
-- **submitted** → submitted
-- **success** → successful
-- **syllabi** → syllabus, course materials, curricula
-- **system** → system
-- **technology** → technological, digital, computational
-- **term** → term, appointment term
-- **thinking** → thought, intellectual
-- **training** → pedagogy, instruction, teaching, curriculum, educational development
-- **visit** → visiting, visiting position, visiting appointment, sabbatical, temporary appointment
-- **visiting** → visiting, temporary, short-term
+- **policy** → policies
+- **political** → politics, political philosophy, political theory
+- **postdoctoral** → postdoc, postdoctorate, post-doctoral, post-doc
+- **potential** → potentiality, potency, dunamis
+- **process** → process philosophy, processual, whitehead, whiteheadian
+- **received** → receive, receiving
+- **recommendation** → recommendations
+- **relevant** → relevance
+- **renewal** → renewable, renewed, renew
+- **scholars** → scholar, scholarly, scholarship
+- **science** → sciences, scientific, philosophy of science
+- **sciences** → science, scientific, philosophy of science
+- **serve** → service, serving
+- **specialization** → specializations, specialize, specialty, specialties
+- **studies** → study
+- **submitted** → submit, submission, submitting
+- **syllabi** → syllabus
+- **system** → systems, systematic, systemic
+- **technology** → technologies, technological, philosophy of technology
+- **term** → terms
+- **training** → trained
+- **visit** → visiting
+- **visiting** → visitor, visit
 - **vitae** → cv, curriculum vitae
-- **world** → global, international, worldwide
 
 ---
 
