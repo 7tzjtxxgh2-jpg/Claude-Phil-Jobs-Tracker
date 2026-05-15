@@ -3,7 +3,7 @@
 **Last updated:** 2026-05-15
 **Corpus size at this writing:** 192 jobs
 **Vocabulary size eligible for synonym lookup:** 2132 terms
-**Synonym groups in current map:** 0
+**Synonym groups in current map:** 150
 
 ---
 
@@ -234,6 +234,16 @@ season.
 
 ## Change Log
 
+- **2026-05-15**: Taxonomy revised to add four subcategories from a
+  cross-source review against PhilPapers and APA submission tracks:
+  Virtue Ethics (under Ethics), Philosophy of Disability and Public
+  Philosophy (under Social & Political), and Phenomenology (under
+  History of Philosophy). One redundant duplicate removed: "Social
+  & Political Philosophy (General)" — the unified "Social and
+  Political Philosophy (General / Political Theory)" remains as the
+  catchall. All existing jobs were reclassified under the new
+  taxonomy; prior classifications preserved on each job under
+  `classification_v1`. Taxonomy version bumped to `2026-05-16`.
 - **2026-05-15**: Bubble chart rewritten to source from the Claude-
   generated synonym map (field-defining alternatives) rather than from
   corpus co-occurrence. Each bubble is now sized by per-term corpus
