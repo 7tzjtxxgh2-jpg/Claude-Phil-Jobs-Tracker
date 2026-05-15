@@ -1,0 +1,76 @@
+name: Reclassify Existing Jobs (no fresh scrape)
+
+# One-off workflow: re-runs Claude classification on every existing job
+# under the current taxonomy without scraping PhilJobs for new jobs.
+# Use this after a taxonomy revision so we don't create an off-day data point.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  reclassify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4 anthropic
+
+      - name: Run reclassification (no scrape)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.CLAUDE }}
+        run: |
+          python << 'PYEOF'
+          import sys
+          sys.path.insert(0, '.')
+          from scraper import PhilJobsScraper
+
+          scraper = PhilJobsScraper()
+          historical_data = scraper.load_historical_data()
+
+          # 1. Apply taxonomy migration (clears classifications if version changed)
+          print("Checking taxonomy version...")
+          scraper.migrate_to_current_taxonomy(historical_data)
+
+          # 2. Reclassify all jobs whose classification is now None
+          print("Reclassifying jobs under current taxonomy...")
+          scraper.reclassify_all_jobs(historical_data)
+
+          # 3. Resolve missing states via Claude (in case any were lost)
+          scraper.resolve_missing_states(historical_data)
+
+          # 4. Rebuild weekly trends from new classifications
+          print("Rebuilding weekly trends...")
+          scraper.rebuild_weekly_trends(historical_data)
+
+          # 5. Recompute co-occurrence + regenerate dashboards
+          print("Regenerating dashboards...")
+          scraper.generate_trend_dashboard(historical_data)
+          scraper.generate_intl_dashboard(historical_data)
+          scraper.write_keyword_docs(historical_data)
+          scraper.export_csv(historical_data)
+
+          print("\nDone. Existing data reclassified under the current taxonomy.")
+          PYEOF
+
+      - name: Commit reclassified data + regenerated dashboards
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/ docs/
+          git diff --staged --quiet || git commit -m "Reclassify existing jobs under taxonomy revision"
+          git push

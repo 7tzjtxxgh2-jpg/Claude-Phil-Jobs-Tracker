@@ -193,7 +193,8 @@ MAIN_AOS_CATEGORIES = [
 
 DETAIL_AOS = {
     "Ethics": [
-        "Meta-Ethics", "Normative Ethics", "Biomedical Ethics / Bioethics",
+        "Meta-Ethics", "Normative Ethics", "Virtue Ethics",
+        "Biomedical Ethics / Bioethics",
         "Neuroethics", "AI, Technology, and Information Ethics",
         "Environmental Ethics", "Animal Ethics", "Food and Agricultural Ethics",
         "Business Ethics", "Ethics of Population, Future Generations, and Global Justice",
@@ -202,9 +203,10 @@ DETAIL_AOS = {
     "Social & Political Philosophy": [
         "Social and Political Philosophy (General / Political Theory)",
         "Philosophy of Law", "Philosophy of Race", "Philosophy of Gender",
+        "Philosophy of Disability",
         "Feminist Philosophy", "Philosophy of Sexuality and Queer Theory",
         "PPE (Politics, Philosophy, and Economics)", "Philosophy of Education",
-        "Social & Political Philosophy (General)",
+        "Public Philosophy",
     ],
     "Value Theory / Aesthetics": [
         "Aesthetics (General)", "Philosophy of Art", "Philosophy of Music",
@@ -214,7 +216,8 @@ DETAIL_AOS = {
     "History of Philosophy": [
         "Ancient Greek and Roman Philosophy", "Medieval and Renaissance Philosophy",
         "Early Modern Philosophy (17th/18th Century)", "19th/20th Century Philosophy",
-        "American Philosophy", "Continental Philosophy", "History of Philosophy (General)",
+        "American Philosophy", "Continental Philosophy", "Phenomenology",
+        "History of Philosophy (General)",
     ],
     "Non-Western & Cross-Cultural Philosophy": [
         "Asian Philosophy", "African/Africana Philosophy",
@@ -236,6 +239,12 @@ DETAIL_AOS = {
     ],
     "Open": [],
 }
+
+# Bump this when DETAIL_AOS changes. The scraper detects a version mismatch
+# and forces re-classification of all stored jobs under the new taxonomy.
+# Prior classifications get preserved on each job under `classification_v1`
+# (or `classification_v<N>`) so we can audit how labels shifted.
+TAXONOMY_VERSION = "2026-05-16"
 
 CROSS_CUTTING_AREAS = [
     "Feminist Philosophy",
@@ -323,10 +332,10 @@ MAIN AOS CATEGORIES (8 total):
 Ethics, Social & Political Philosophy, Value Theory / Aesthetics, History of Philosophy, Non-Western & Cross-Cultural Philosophy, Metaphysics & Epistemology, Science, Logic, & Mathematics, Open
 
 DETAIL AOS SUBCATEGORIES (by main category):
-Ethics: Meta-Ethics, Normative Ethics, Biomedical Ethics / Bioethics, Neuroethics, AI, Technology, and Information Ethics, Environmental Ethics, Animal Ethics, Food and Agricultural Ethics, Business Ethics, Ethics of Population, Future Generations, and Global Justice, Ethics (General / Applied Ethics, Broadly Construed)
-Social & Political Philosophy: Social and Political Philosophy (General / Political Theory), Philosophy of Law, Philosophy of Race, Philosophy of Gender, Feminist Philosophy, Philosophy of Sexuality and Queer Theory, PPE (Politics, Philosophy, and Economics), Philosophy of Education, Social & Political Philosophy (General)
+Ethics: Meta-Ethics, Normative Ethics, Virtue Ethics, Biomedical Ethics / Bioethics, Neuroethics, AI, Technology, and Information Ethics, Environmental Ethics, Animal Ethics, Food and Agricultural Ethics, Business Ethics, Ethics of Population, Future Generations, and Global Justice, Ethics (General / Applied Ethics, Broadly Construed)
+Social & Political Philosophy: Social and Political Philosophy (General / Political Theory), Philosophy of Law, Philosophy of Race, Philosophy of Gender, Philosophy of Disability, Feminist Philosophy, Philosophy of Sexuality and Queer Theory, PPE (Politics, Philosophy, and Economics), Philosophy of Education, Public Philosophy
 Value Theory / Aesthetics: Aesthetics (General), Philosophy of Art, Philosophy of Music, Philosophy of Film and Media, Philosophy of Literature, Value Theory / Axiology, Value Theory / Aesthetics (General)
-History of Philosophy: Ancient Greek and Roman Philosophy, Medieval and Renaissance Philosophy, Early Modern Philosophy (17th/18th Century), 19th/20th Century Philosophy, American Philosophy, Continental Philosophy, History of Philosophy (General)
+History of Philosophy: Ancient Greek and Roman Philosophy, Medieval and Renaissance Philosophy, Early Modern Philosophy (17th/18th Century), 19th/20th Century Philosophy, American Philosophy, Continental Philosophy, Phenomenology, History of Philosophy (General)
 Non-Western & Cross-Cultural Philosophy: Asian Philosophy, African/Africana Philosophy, Arabic and Islamic Philosophy, Latin American Philosophy, Native American / Indigenous Philosophy, Comparative Philosophy / Cross-Cultural, Non-Western Philosophy (General)
 Metaphysics & Epistemology: Metaphysics, Epistemology, Philosophy of Mind, Philosophy of Language, Philosophy of Action, Philosophy of Religion, Metaphysics & Epistemology (General)
 Science, Logic, & Mathematics: Philosophy of Science (General), Philosophy of Biology, Philosophy of Physics, Philosophy of Cognitive Science, Philosophy of Computing / Philosophy of AI, Logic, Philosophy of Mathematics, Philosophy of Social Science, Decision Theory, Science, Logic, & Mathematics (General)
@@ -613,6 +622,39 @@ class PhilJobsScraper:
             print("  Hash format already up to date — no migration needed")
 
         return migrated
+
+    def migrate_to_current_taxonomy(self, historical_data) -> int:
+        """If the stored taxonomy_version differs from the current TAXONOMY_VERSION,
+        clear classifications on all jobs so they get re-classified under the new
+        subcategory structure. Preserves prior labels under `classification_v1`
+        (or v2, v3, etc.) so we can audit how labels shifted between revisions.
+
+        Idempotent: safe to call on every scrape. No-op when versions match.
+        """
+        stored = historical_data.get('taxonomy_version')
+        if stored == TAXONOMY_VERSION:
+            return 0
+
+        print(f"  Taxonomy version change detected: '{stored}' → '{TAXONOMY_VERSION}'")
+        cleared = 0
+        for job in historical_data.get('jobs', []):
+            cls = job.get('classification')
+            if not cls:
+                continue
+            # Pick the next available `classification_vN` slot so re-runs don't overwrite
+            n = 1
+            while f'classification_v{n}' in job:
+                n += 1
+            job[f'classification_v{n}'] = cls
+            job['classification'] = None  # forces re-classification on next pass
+            cleared += 1
+
+        historical_data['taxonomy_version'] = TAXONOMY_VERSION
+        all_data_file = self.data_dir / "all_jobs.json"
+        with open(all_data_file, 'w') as f:
+            json.dump(historical_data, f, indent=2)
+        print(f"  Cleared classification on {cleared} jobs; prior labels preserved under classification_v* keys")
+        return cleared
 
     def backfill_city_field(self, historical_data) -> int:
         """Re-parse city from location for jobs that have a location string but no city.
@@ -1694,6 +1736,16 @@ class PhilJobsScraper:
             '',
             '## Change Log',
             '',
+            f'- **{date_str}**: Taxonomy revised to add four subcategories from a',
+            '  cross-source review against PhilPapers and APA submission tracks:',
+            '  Virtue Ethics (under Ethics), Philosophy of Disability and Public',
+            '  Philosophy (under Social & Political), and Phenomenology (under',
+            '  History of Philosophy). One redundant duplicate removed: "Social',
+            '  & Political Philosophy (General)" — the unified "Social and',
+            '  Political Philosophy (General / Political Theory)" remains as the',
+            '  catchall. All existing jobs were reclassified under the new',
+            '  taxonomy; prior classifications preserved on each job under',
+            '  `classification_v1`. Taxonomy version bumped to `2026-05-16`.',
             f'- **{date_str}**: Bubble chart rewritten to source from the Claude-',
             '  generated synonym map (field-defining alternatives) rather than from',
             '  corpus co-occurrence. Each bubble is now sized by per-term corpus',
@@ -4946,6 +4998,10 @@ def main():
     # 2a. Migrate existing hashes to PhilJobs-ID-based format (one-time, safe to re-run)
     print("Checking deduplication hash format...")
     scraper.migrate_hashes_to_job_id(historical_data)
+
+    # 2b. Detect taxonomy revisions and flag all jobs for re-classification
+    print("Checking taxonomy version...")
+    scraper.migrate_to_current_taxonomy(historical_data)
 
     # 3. Identify new jobs + save initial record
     print("Analyzing new jobs and saving...")

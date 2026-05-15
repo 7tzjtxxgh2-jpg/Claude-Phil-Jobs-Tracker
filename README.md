@@ -234,11 +234,14 @@ The taxonomy has two levels: 8 **main categories** and fine-grained **subcategor
 
 ### Subcategories
 
+**Taxonomy version:** `2026-05-16` — revised from the original to add Virtue Ethics, Philosophy of Disability, Public Philosophy, and Phenomenology, and to remove a redundant "Social & Political Philosophy (General)" duplicate. When this version changes, the scraper backs up the prior classification on each job under `classification_v1` / `_v2` / etc. and re-classifies under the new taxonomy.
+
 <details>
-<summary>Ethics (11 subcategories)</summary>
+<summary>Ethics (12 subcategories)</summary>
 
 - Meta-Ethics
 - Normative Ethics
+- **Virtue Ethics** *(added 2026-05-16)*
 - Biomedical Ethics / Bioethics
 - Neuroethics
 - AI, Technology, and Information Ethics
@@ -251,17 +254,18 @@ The taxonomy has two levels: 8 **main categories** and fine-grained **subcategor
 </details>
 
 <details>
-<summary>Social & Political Philosophy (9 subcategories)</summary>
+<summary>Social & Political Philosophy (10 subcategories)</summary>
 
 - Social and Political Philosophy (General / Political Theory)
 - Philosophy of Law
 - Philosophy of Race
 - Philosophy of Gender
+- **Philosophy of Disability** *(added 2026-05-16)*
 - Feminist Philosophy
 - Philosophy of Sexuality and Queer Theory
 - PPE (Politics, Philosophy, and Economics)
 - Philosophy of Education
-- Social & Political Philosophy (General)
+- **Public Philosophy** *(added 2026-05-16)*
 </details>
 
 <details>
@@ -277,7 +281,7 @@ The taxonomy has two levels: 8 **main categories** and fine-grained **subcategor
 </details>
 
 <details>
-<summary>History of Philosophy (7 subcategories)</summary>
+<summary>History of Philosophy (8 subcategories)</summary>
 
 - Ancient Greek and Roman Philosophy
 - Medieval and Renaissance Philosophy
@@ -285,6 +289,7 @@ The taxonomy has two levels: 8 **main categories** and fine-grained **subcategor
 - 19th/20th Century Philosophy
 - American Philosophy
 - Continental Philosophy
+- **Phenomenology** *(added 2026-05-16)*
 - History of Philosophy (General)
 </details>
 
