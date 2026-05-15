@@ -263,6 +263,43 @@ POSITION_TYPES = [
     "Other",
 ]
 
+# Stopwords for the Keyword Explorer description-text search. Words that appear
+# in nearly every philosophy job description ("philosophy", "professor", etc.)
+# get filtered out by a corpus-frequency check at build time; this list handles
+# generic English noise.
+KEYWORD_STOPWORDS = set("""
+about above after again against all also although among and another any are around as
+because been before being below both but came come could doing during each either
+every few from further had has have having here hers herself him himself his how
+into itself just like make many may might more most much must never new now off
+once only other our ours ourselves out over own people please pleas same shall
+should some such take than that the their theirs them themselves then there these
+they this those through too under unt until upon used using very was way well were
+what when where which while who whom whose why will with within without would year
+years your yours yourself yourselves you youre weve theyre theyve wont wouldnt
+position positions university department job apply application applications applicant
+applicants candidate candidates required preferred include including encourage encouraged
+must will please send submit letter cover review begin will should review reviews
+who can have any questions any letter writing also include they each other position
+the are this for and our but with all you have can will any our its
+academic college institution school faculty professor professors instructor lecturer
+hire hiring opportunity employer employment equal qualified qualifications experience
+seeking seek invite invites invited search appointment full part time work works working
+salary range commensurate competitive benefits package complete completed information
+contact email phone office address mail materials material reference references provide
+provided support supports supported program programs offering offers offer accept accepts
+accepted appointed available beginning starts start august september fall spring summer
+course courses teach teaches teaching graduate undergraduate level levels load loads
+service committee committees diversity inclusion inclusive welcomes welcome valuing values
+ph dissertation degree academic year evaluation evaluations performance based duties
+responsibilities responsibility requirement requirements aim aims must minimum maximum
+ensure ensures ensured rank professorial tenure track preferred area areas successful
+candidates candidate must following provide statement statements writing sample samples
+detail details detailed details classes class effective effectively related similar
+broadly broad scholarly scholarship recognized national international community communities
+field fields university universities student students department departments
+""".split())
+
 POSITION_TYPE_COLORS = {
     "Tenure-Track": "#10b981",
     "Postdoc / Fellowship": "#3b82f6",
@@ -1107,6 +1144,206 @@ class PhilJobsScraper:
             'cross_cutting_areas': cross_cutting_final,
         }
 
+    # ── Keyword Explorer helpers ──────────────────────────────────────────
+
+    @staticmethod
+    def _keyword_stem(word):
+        """Conservative morphological stemmer. Mirrors the JS kwStem function so
+        Python-side and browser-side stemming stay in lockstep."""
+        if len(word) <= 3:
+            return word
+        if word.endswith('ies'):
+            return word[:-3] + 'y'
+        if word.endswith('ism'):
+            return word[:-3]
+        if word.endswith('ist'):
+            return word[:-3]
+        if word.endswith('ing'):
+            return word[:-3]
+        if word.endswith('ed'):
+            return word[:-2]
+        if word.endswith('es'):
+            return word[:-2]
+        if word.endswith('s'):
+            return word[:-1]
+        return word
+
+    @staticmethod
+    def _strip_eeo_boilerplate(text):
+        """Remove sentences that are EEO / equal-opportunity-employer statements.
+
+        Almost every academic job description ends with a paragraph like:
+            "The University is an equal opportunity employer and considers
+            applicants without regard to race, color, religion, national
+            origin, age, sex, gender identity, sexual orientation, veteran
+            status, or disability."
+        These sentences flood the keyword search with terms ("race",
+        "religion", "veterans") that aren't substantively about those topics.
+
+        Heuristic: any sentence with 2+ EEO trigger words is stripped.
+        Some real content may be lost; the trade-off is meaningful philosophy
+        terms not getting drowned in legal boilerplate.
+        """
+        if not text:
+            return text
+        triggers = {
+            'equal', 'opportunity', 'opportunities', 'employer', 'affirmative',
+            'regardless', 'protected', 'veterans', 'veteran', 'disabilities',
+            'disability', 'ancestry', 'ethnicity', 'origin', 'orientation',
+            'nondiscrimination', 'discriminate', 'discrimination', 'harassment',
+            'pregnancy', 'citizenship', 'genetic', 'creed', 'nationality',
+        }
+        sentences = re.split(r'(?<=[.!?])\s+', text)
+        kept = []
+        for s in sentences:
+            words = set(re.findall(r'[a-z]+', s.lower()))
+            if len(words & triggers) >= 2:
+                continue
+            kept.append(s)
+        return ' '.join(kept)
+
+    def _extract_description_terms(self, text):
+        """Tokenize a job description into a deduplicated list of substantive
+        raw words. Strips EEO boilerplate sentences first, then filters
+        stopwords and short words. JS-side handles stemming at search time.
+        """
+        if not text:
+            return []
+        text = self._strip_eeo_boilerplate(text)
+        text = text.lower()
+        text = re.sub(r"[^a-z]", ' ', text)
+        words = text.split()
+        terms = set()
+        for w in words:
+            if len(w) < 4 or w in KEYWORD_STOPWORDS:
+                continue
+            terms.add(w)
+        return sorted(terms)
+
+    def build_keyword_index(self, jobs):
+        """Build the per-job keyword index for the Keyword Explorer.
+
+        Returns (index, vocab, bubble_stopwords):
+          - index:           list of {terms, scraped_date} per job. Includes
+                             ALL terms (boilerplate included) so search remains
+                             permissive — a search for "ethics" still hits all
+                             jobs that mention ethics, even if "ethics" is in
+                             many descriptions.
+          - vocab:           top corpus terms for synonym generation
+          - bubble_stopwords: terms appearing in >80% of descriptions. Filtered
+                             out of the bubble chart display only (where they'd
+                             be noise) but NOT out of search.
+        """
+        term_doc_freq = defaultdict(int)
+        per_job_terms = []
+        for job in jobs:
+            description = job.get('description', '') or ''
+            terms = self._extract_description_terms(description)
+            per_job_terms.append((job, terms))
+            for t in set(terms):
+                term_doc_freq[t] += 1
+
+        total_jobs = max(len(jobs), 1)
+        bubble_stopwords = sorted({
+            t for t, n in term_doc_freq.items() if n / total_jobs > 0.80
+        })
+        if bubble_stopwords:
+            print(f"  Bubble stopwords ({len(bubble_stopwords)} terms in >80% of descriptions): {bubble_stopwords[:10]}")
+
+        index = []
+        for job, terms in per_job_terms:
+            scraped = (job.get('scraped_date') or '')[:10]
+            index.append({'terms': terms, 'scraped_date': scraped})
+
+        vocab = sorted(
+            [t for t, n in term_doc_freq.items()
+             if n >= 3 and len(t) >= 4 and t not in set(bubble_stopwords)],
+            key=lambda t: -term_doc_freq[t]
+        )
+        return index, vocab, bubble_stopwords
+
+    def generate_synonym_map(self, vocab, max_terms=150):
+        """Use Claude Haiku to generate synonyms / related terms for the top
+        `max_terms` corpus vocabulary. Returns dict {term: [synonyms]}. Fails
+        gracefully — if the API or package is unavailable, returns {} and the
+        client-side search still works (just without synonym expansion).
+
+        Cached for the lifetime of the scraper instance, so calling once from
+        the US dashboard and once from the Intl dashboard only hits the API
+        once. Synonym mappings are universal — they don't depend on whether
+        the vocab came from US or Intl jobs.
+        """
+        if not vocab:
+            return {}
+        if hasattr(self, '_synonym_map_cache'):
+            print(f"  Using cached synonym map ({len(self._synonym_map_cache)} terms)")
+            return self._synonym_map_cache
+
+        api_key = os.environ.get('ANTHROPIC_API_KEY')
+        if not api_key:
+            print("  No ANTHROPIC_API_KEY — synonym map will be empty")
+            return {}
+        try:
+            import anthropic
+            client = anthropic.Anthropic(api_key=api_key)
+        except ImportError:
+            return {}
+
+        terms_to_expand = vocab[:max_terms]
+        synonym_map = {}
+        batch_size = 25
+
+        prompt_template = (
+            "You're helping build a search tool for an academic philosophy job board. "
+            "For each keyword below, list 4-10 closely related search terms that "
+            "someone interested in this concept might also want to find. Include "
+            "morphological variants (feminism/feminist), synonyms, and semantically "
+            "related concepts used in academic philosophy (e.g. \"gay\" → \"queer\", "
+            "\"LGBTQ\", \"sexuality\").\n\n"
+            "Output ONLY valid JSON — no prose, no markdown — as an object mapping "
+            "each input keyword to an array of related terms. Keep all output "
+            "lowercase. Example:\n"
+            '{{"feminism": ["feminist", "feminists", "patriarchy", "gender", "intersectional"]}}\n\n'
+            "Keywords to expand: {keywords}"
+        )
+
+        for i in range(0, len(terms_to_expand), batch_size):
+            batch = terms_to_expand[i:i + batch_size]
+            prompt = prompt_template.format(keywords=", ".join(batch))
+            for attempt in range(3):
+                try:
+                    response = client.messages.create(
+                        model="claude-haiku-4-5-20251001",
+                        max_tokens=2000,
+                        temperature=0,
+                        messages=[{"role": "user", "content": prompt}]
+                    )
+                    text = response.content[0].text.strip()
+                    text = re.sub(r'^```(?:json)?\s*', '', text)
+                    text = re.sub(r'\s*```\s*$', '', text)
+                    parsed = json.loads(text)
+                    if isinstance(parsed, dict):
+                        for k, v in parsed.items():
+                            if isinstance(v, list):
+                                synonym_map[k.lower().strip()] = [
+                                    s.lower().strip() for s in v
+                                    if isinstance(s, str) and s.strip()
+                                ]
+                    time.sleep(0.4)
+                    break
+                except Exception as e:
+                    print(f"  Synonym batch {i // batch_size + 1} attempt {attempt + 1} failed: {e}")
+                    if attempt < 2:
+                        time.sleep(1)
+
+        # Cache to disk so we can inspect / debug, and in memory for cross-dashboard reuse
+        out_file = self.data_dir / 'synonym_map.json'
+        with open(out_file, 'w') as f:
+            json.dump(synonym_map, f, indent=2, sort_keys=True)
+        print(f"  Synonym map written: {len(synonym_map)} terms → {out_file}")
+        self._synonym_map_cache = synonym_map
+        return synonym_map
+
     def _compute_weekly_series(self, jobs_by_date, dates):
         """Compute per-week chart series from jobs grouped by date key (YYYY-MM-DD).
 
@@ -1363,6 +1600,11 @@ class PhilJobsScraper:
         # ── Co-occurrence ─────────────────────────────────────────────────
         cooc = self._compute_cooc_from_jobs(us_jobs)
 
+        # ── Keyword Explorer index + synonym map (US) ────────────────────
+        print("Building US keyword index + synonym map...")
+        keyword_index, kw_vocab, bubble_stopwords = self.build_keyword_index(us_jobs)
+        synonym_map = self.generate_synonym_map(kw_vocab)
+
         # ── Summary stats ─────────────────────────────────────────────────
         last_date_key = dates[-1][:10] if dates else ''
         last_week_jobs = jobs_by_date.get(last_date_key, [])
@@ -1512,24 +1754,39 @@ class PhilJobsScraper:
             </div>
         </div>
 
-        <!-- Cross-Cutting Areas -->
+        <!-- Keyword Explorer -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-1">Cross-Cutting Areas</h2>
-                    <p class="text-sm text-gray-500">Weekly trend for areas that span multiple AOS categories: Feminist Philosophy, Philosophy of Race, Philosophy of Gender, Philosophy of Law. Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
-                </div>
-                <div class="flex flex-col items-end gap-2">
-                    <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 bg-white">
-                        <button id="ccModeAll" type="button" onclick="setCcMode('all')" class="px-3 py-1.5 text-sm font-medium bg-indigo-600 text-white">All</button>
-                        <button id="ccModeSolo" type="button" onclick="setCcMode('solo')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50">Solo</button>
-                        <button id="ccModeJoint" type="button" onclick="setCcMode('joint')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50">Joint</button>
-                    </div>
-                    <div id="ccModeNote" class="text-xs text-gray-500 italic"></div>
+            <div class="flex items-start justify-between mb-2 flex-wrap gap-3">
+                <div class="flex items-center gap-2">
+                    <h2 class="text-2xl font-bold text-gray-800">Keyword Explorer</h2>
+                    <span class="relative inline-block group" tabindex="0">
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-gray-200 text-gray-600 text-xs font-bold cursor-help">i</span>
+                        <span class="invisible group-hover:visible group-focus-within:visible absolute left-7 top-0 z-30 w-72 bg-gray-900 text-white text-xs rounded-lg p-3 shadow-lg leading-relaxed">
+                            <strong>What this searches:</strong> the full job description text only. AOS / AOC labels and titles are <em>not</em> searched. This is intentional — it measures what jobs describe themselves as doing, not how they're labeled, which can diverge under political and institutional pressure.
+                        </span>
+                    </span>
                 </div>
             </div>
-            <div class="chart-container">
-                <canvas id="crossCuttingChart"></canvas>
+            <p class="text-sm text-gray-500 mb-4">Search any term to see (1) related vocabulary used in matching jobs, and (2) how often that area appears in postings over time. Synonyms expand automatically (e.g. "feminism" matches "feminist").</p>
+            <div class="flex items-center gap-3 mb-4 flex-wrap">
+                <input id="kwInput" type="text" placeholder="Try: feminism, queer, AI, race, environmental, history..." class="flex-1 min-w-[200px] px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                <button id="kwSearchBtn" type="button" class="px-5 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700">Search</button>
+                <div id="kwMatchCount" class="text-sm text-gray-600"></div>
+            </div>
+            <div id="kwEmptyState" class="text-center py-12 text-gray-400 text-sm">
+                Type a term above to begin. Click any bubble to explore related searches.
+            </div>
+            <div id="kwResults" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">Vocabulary Neighborhood</h3>
+                    <p class="text-xs text-gray-500 mb-2">Terms commonly appearing in matching descriptions. Click any bubble to search that term.</p>
+                    <div id="kwBubble" style="height:340px;"></div>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">Trend Over Time</h3>
+                    <p class="text-xs text-gray-500 mb-2">Matching jobs per week. Shaded areas = hiring season.</p>
+                    <div style="height:340px;"><canvas id="kwTrendChart"></canvas></div>
+                </div>
             </div>
         </div>
 
@@ -1559,7 +1816,7 @@ class PhilJobsScraper:
                 </div>
                 <div class="flex flex-col items-end gap-2">
                     <div class="flex flex-wrap gap-2 justify-end">
-                        <select id="posTypeAosFilter" onchange="updatePositionTypeChart()" class="text-sm border border-gray-300 rounded-lg px-3 py-2 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                        <select id="posTypeAosFilter" onchange="updatePositionTypeChart()" class="text-sm border border-gray-300 rounded-lg px-3 py-2 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-400">
                             <option value="__all__">All AOS</option>
                         </select>
                         <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 bg-white">
@@ -1735,7 +1992,10 @@ class PhilJobsScraper:
             coocMatrix: {json.dumps(cooc.get('main_aos_matrix', {}))},
             soloVsJoint: {json.dumps(cooc.get('main_aos_solo_vs_joint', {}))},
             crossCutting: {json.dumps(cooc.get('cross_cutting_areas', {}))},
-            detailAosByContext: {json.dumps(cooc.get('detail_aos_by_context', {}))}
+            detailAosByContext: {json.dumps(cooc.get('detail_aos_by_context', {}))},
+            jobsForKeyword: {json.dumps(keyword_index)},
+            synonymMap: {json.dumps(synonym_map)},
+            bubbleStopwords: {json.dumps(bubble_stopwords)}
         }};
 
         // ===== SEASON PLUGIN =====
@@ -2148,61 +2408,216 @@ class PhilJobsScraper:
             }}
         }});
 
-        // ===== CROSS-CUTTING CHART (with All/Solo/Joint toggle) =====
-        const ccColors = {{ 'Feminist Philosophy': '#ec4899', 'Philosophy of Race': '#f97316', 'Philosophy of Gender': '#8b5cf6', 'Philosophy of Law': '#0ea5e9' }};
-        const ccAreas = Object.keys(data.crossCutting);
-        let ccChart = null;
-        let ccMode = 'all';
+        // ===== KEYWORD EXPLORER =====
+        // Searches job description text only. Synonyms come from a synonym map
+        // generated weekly by Claude at scrape time and embedded as data.synonymMap.
+        let kwTrendChart = null;
 
-        function renderCrossCuttingChart() {{
-            const ctx = document.getElementById('crossCuttingChart').getContext('2d');
-            if (ccChart) ccChart.destroy();
-            ccChart = new Chart(ctx, {{
+        // Simple morphological stemmer — handles plural -s, -es, -ies → -y, -ing, -ed,
+        // -ism → -ist (or root), -ist → root. Conservative; we want to match more, not less.
+        function kwStem(word) {{
+            word = word.toLowerCase().replace(/[^a-z]/g, '');
+            if (word.length <= 3) return word;
+            if (word.endsWith('ies'))  return word.slice(0, -3) + 'y';
+            if (word.endsWith('ism'))  return word.slice(0, -3);
+            if (word.endsWith('ist'))  return word.slice(0, -3);
+            if (word.endsWith('ing'))  return word.slice(0, -3);
+            if (word.endsWith('ed'))   return word.slice(0, -2);
+            if (word.endsWith('es'))   return word.slice(0, -2);
+            if (word.endsWith('s'))    return word.slice(0, -1);
+            return word;
+        }}
+
+        // Expand a query into a set of related terms via the synonym map + stemming
+        function kwExpand(query) {{
+            const q = query.toLowerCase().trim();
+            if (!q) return new Set();
+            const stem = kwStem(q);
+            const terms = new Set([q, stem]);
+            // Synonym map lookup (Claude-generated)
+            const syns = data.synonymMap[q] || data.synonymMap[stem] || [];
+            syns.forEach(s => {{
+                terms.add(s.toLowerCase());
+                terms.add(kwStem(s));
+            }});
+            return terms;
+        }}
+
+        // Test whether a job's description-term set matches any of the expanded terms.
+        // Stems both sides so morphological variants ("feminist" vs "feminism") match.
+        function kwJobMatches(jobStemSet, expandedTerms) {{
+            for (const t of expandedTerms) {{
+                if (jobStemSet.has(kwStem(t))) return true;
+            }}
+            return false;
+        }}
+
+        function kwSearch() {{
+            const raw = document.getElementById('kwInput').value;
+            const q = raw.trim();
+            if (!q) {{
+                document.getElementById('kwEmptyState').classList.remove('hidden');
+                document.getElementById('kwResults').classList.add('hidden');
+                document.getElementById('kwMatchCount').textContent = '';
+                return;
+            }}
+
+            const expanded = kwExpand(q);
+            const matchingJobs = [];
+            data.jobsForKeyword.forEach((j) => {{
+                // Build a set of stems for this job (cached per search is fine for now)
+                if (!j._stemSet) {{
+                    j._stemSet = new Set();
+                    for (const t of j.terms) j._stemSet.add(kwStem(t));
+                }}
+                if (kwJobMatches(j._stemSet, expanded)) matchingJobs.push(j);
+            }});
+
+            const matchCount = matchingJobs.length;
+            const expansionStr = Array.from(expanded).filter(t => t !== q.toLowerCase()).slice(0, 8).join(', ');
+            document.getElementById('kwMatchCount').innerHTML =
+                `<strong>${{matchCount}}</strong> job${{matchCount === 1 ? '' : 's'}} match` +
+                (expansionStr ? ` &middot; <span class="text-gray-500">expanded to: ${{expansionStr}}</span>` : '');
+
+            if (matchCount === 0) {{
+                document.getElementById('kwEmptyState').classList.remove('hidden');
+                document.getElementById('kwEmptyState').textContent = `No jobs found containing "${{q}}" or related terms. Try a broader term or check the bubble suggestions from another search.`;
+                document.getElementById('kwResults').classList.add('hidden');
+                return;
+            }}
+
+            document.getElementById('kwEmptyState').classList.add('hidden');
+            document.getElementById('kwResults').classList.remove('hidden');
+
+            // Build bubble chart by GROUPING raw words by stem.
+            // For each job, count each stem at most once. Display label = longest raw word with that stem.
+            // Skip terms that appear in too many descriptions to be informative (data.bubbleStopwords).
+            const bubbleStops = new Set(data.bubbleStopwords || []);
+            const stemGroups = new Map();
+            matchingJobs.forEach(j => {{
+                const seenStemsThisJob = new Set();
+                j.terms.forEach(t => {{
+                    if (t.length < 4) return;
+                    if (bubbleStops.has(t)) return;
+                    const s = kwStem(t);
+                    if (seenStemsThisJob.has(s)) return;
+                    seenStemsThisJob.add(s);
+                    const existing = stemGroups.get(s);
+                    if (!existing) {{
+                        stemGroups.set(s, {{ count: 1, label: t }});
+                    }} else {{
+                        existing.count += 1;
+                        if (t.length > existing.label.length) existing.label = t;
+                    }}
+                }});
+            }});
+            // Don't include the query stem in the orbit
+            const queryStem = kwStem(q.toLowerCase());
+            const sortedGroups = Array.from(stemGroups.entries())
+                .filter(([stem]) => stem !== queryStem)
+                .sort((a, b) => b[1].count - a[1].count)
+                .slice(0, 25)
+                .map(([stem, g]) => [g.label, g.count]);
+            renderBubbleChart(q, sortedGroups, matchCount);
+
+            // Trend chart: matching-job count per week
+            const weekCounts = {{}};
+            data.dates.forEach(d => {{ weekCounts[d] = 0; }});
+            matchingJobs.forEach(j => {{
+                if (weekCounts[j.scraped_date] !== undefined) weekCounts[j.scraped_date]++;
+            }});
+            renderKwTrend(data.dates.map(d => weekCounts[d]), q);
+        }}
+
+        function renderBubbleChart(query, termsWithCounts, totalMatches) {{
+            const container = document.getElementById('kwBubble');
+            container.innerHTML = '';
+            const width = container.clientWidth || 400;
+            const height = 340;
+
+            // Center node = the query (sized large)
+            const nodes = [{{ id: query, count: totalMatches, isQuery: true, fixed: true }}];
+            termsWithCounts.forEach(([t, c]) => nodes.push({{ id: t, count: c, isQuery: false }}));
+
+            const maxCount = Math.max(...nodes.map(n => n.count));
+            const minR = 14, maxR = 50;
+            nodes.forEach(n => {{
+                n.r = minR + (maxR - minR) * Math.sqrt(n.count / maxCount);
+            }});
+
+            const svg = d3.select(container).append('svg')
+                .attr('width', '100%').attr('height', height)
+                .attr('viewBox', `0 0 ${{width}} ${{height}}`);
+
+            const simulation = d3.forceSimulation(nodes)
+                .force('charge', d3.forceManyBody().strength(5))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('collide', d3.forceCollide(d => d.r + 2))
+                .force('x', d3.forceX(width / 2).strength(0.05))
+                .force('y', d3.forceY(height / 2).strength(0.05));
+
+            const node = svg.selectAll('g').data(nodes).enter().append('g')
+                .style('cursor', d => d.isQuery ? 'default' : 'pointer')
+                .on('click', (event, d) => {{
+                    if (d.isQuery) return;
+                    document.getElementById('kwInput').value = d.id;
+                    kwSearch();
+                }});
+
+            node.append('circle')
+                .attr('r', d => d.r)
+                .attr('fill', d => d.isQuery ? '#4f46e5' : '#a5b4fc')
+                .attr('fill-opacity', d => d.isQuery ? 0.95 : 0.7)
+                .attr('stroke', d => d.isQuery ? '#3730a3' : '#6366f1')
+                .attr('stroke-width', 1.5);
+
+            node.append('text')
+                .text(d => d.id)
+                .attr('text-anchor', 'middle')
+                .attr('dominant-baseline', 'middle')
+                .attr('fill', d => d.isQuery ? 'white' : '#1e1b4b')
+                .attr('font-size', d => Math.max(10, Math.min(d.r * 0.45, 16)) + 'px')
+                .attr('font-weight', d => d.isQuery ? '700' : '500')
+                .style('pointer-events', 'none');
+
+            node.append('title').text(d => `${{d.id}}: ${{d.count}} job${{d.count === 1 ? '' : 's'}}`);
+
+            simulation.on('tick', () => {{
+                node.attr('transform', d => `translate(${{d.x}}, ${{d.y}})`);
+            }});
+        }}
+
+        function renderKwTrend(weekData, query) {{
+            const ctx = document.getElementById('kwTrendChart').getContext('2d');
+            if (kwTrendChart) kwTrendChart.destroy();
+            kwTrendChart = new Chart(ctx, {{
                 type: 'line',
                 data: {{
                     labels: data.dates,
-                    datasets: ccAreas.map(area => {{
-                        const slice = (data.crossCutting[area] || {{}})[ccMode] || {{}};
-                        const weeklyMap = slice.weekly || {{}};
-                        return {{
-                            label: area + ` (${{slice.total || 0}})`,
-                            data: data.dates.map(d => weeklyMap[d] || 0),
-                            borderColor: ccColors[area] || '#6b7280',
-                            backgroundColor: (ccColors[area] || '#6b7280') + '30',
-                            tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
-                        }};
-                    }})
+                    datasets: [{{
+                        label: `Jobs matching "${{query}}"`,
+                        data: weekData,
+                        borderColor: '#4f46e5',
+                        backgroundColor: '#a5b4fc40',
+                        tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
+                    }}]
                 }},
+                plugins: [seasonPlugin],
                 options: {{
                     responsive: true, maintainAspectRatio: false,
-                    interaction: {{ mode: 'index', intersect: false }},
-                    plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15 }} }} }},
-                    scales: {{ y: {{ beginAtZero: true, ticks: {{ precision: 0 }} }}, x: {{ grid: {{ display: false }} }} }}
+                    plugins: {{ legend: {{ display: false }} }},
+                    scales: {{
+                        y: {{ beginAtZero: true, ticks: {{ precision: 0 }} }},
+                        x: {{ grid: {{ display: false }}, ticks: {{ maxTicksLimit: 8 }} }}
+                    }}
                 }}
             }});
         }}
 
-        function updateCcControls() {{
-            const ccTheme = document.getElementById('ccModeAll').classList.contains('bg-cyan-600') || document.getElementById('ccModeAll').className.includes('bg-cyan') ? 'cyan' : 'indigo';
-            const active = `bg-${{ccTheme}}-600 text-white`;
-            const inactive = `text-gray-700 hover:bg-${{ccTheme}}-50`;
-            document.getElementById('ccModeAll').className   = `px-3 py-1.5 text-sm font-medium ${{ccMode === 'all'   ? active : inactive}}`;
-            document.getElementById('ccModeSolo').className  = `px-3 py-1.5 text-sm font-medium ${{ccMode === 'solo'  ? active : inactive}}`;
-            document.getElementById('ccModeJoint').className = `px-3 py-1.5 text-sm font-medium ${{ccMode === 'joint' ? active : inactive}}`;
-            document.getElementById('ccModeNote').textContent =
-                ccMode === 'all'   ? 'All: every cross-cutting tag counts.' :
-                ccMode === 'solo'  ? 'Solo: only jobs with exactly one main AOS category.' :
-                                     'Joint: only jobs listing multiple main AOS categories.';
-        }}
-
-        function setCcMode(mode) {{
-            ccMode = mode;
-            renderCrossCuttingChart();
-            updateCcControls();
-        }}
-
-        renderCrossCuttingChart();
-        updateCcControls();
+        document.getElementById('kwSearchBtn').addEventListener('click', kwSearch);
+        document.getElementById('kwInput').addEventListener('keydown', e => {{
+            if (e.key === 'Enter') kwSearch();
+        }});
 
         // ===== POSITION TYPE CHART (with All/Solo/Joint toggle) =====
         let posTypeChart = null;
@@ -2718,6 +3133,11 @@ class PhilJobsScraper:
         # ── Co-occurrence ─────────────────────────────────────────────────
         cooc = self._compute_cooc_from_jobs(intl_jobs)
 
+        # ── Keyword Explorer index + synonym map (Intl) ──────────────────
+        print("Building Intl keyword index + synonym map...")
+        keyword_index, kw_vocab, bubble_stopwords = self.build_keyword_index(intl_jobs)
+        synonym_map = self.generate_synonym_map(kw_vocab)
+
         # ── Summary stats ─────────────────────────────────────────────────
         last_week_jobs = jobs_by_date.get(last_date_key, [])
         current_week_new_jobs = len(last_week_jobs)
@@ -3031,7 +3451,10 @@ class PhilJobsScraper:
             coocMatrix: {json.dumps(cooc.get('main_aos_matrix', {}))},
             soloVsJoint: {json.dumps(cooc.get('main_aos_solo_vs_joint', {}))},
             crossCutting: {json.dumps(cooc.get('cross_cutting_areas', {}))},
-            detailAosByContext: {json.dumps(cooc.get('detail_aos_by_context', {}))}
+            detailAosByContext: {json.dumps(cooc.get('detail_aos_by_context', {}))},
+            jobsForKeyword: {json.dumps(keyword_index)},
+            synonymMap: {json.dumps(synonym_map)},
+            bubbleStopwords: {json.dumps(bubble_stopwords)}
         }};
 
         // ===== SEASON PLUGIN =====
@@ -3412,61 +3835,216 @@ class PhilJobsScraper:
             }}
         }});
 
-        // ===== CROSS-CUTTING CHART (with All/Solo/Joint toggle) =====
-        const ccColors = {{ 'Feminist Philosophy': '#ec4899', 'Philosophy of Race': '#f97316', 'Philosophy of Gender': '#8b5cf6', 'Philosophy of Law': '#0ea5e9' }};
-        const ccAreas = Object.keys(data.crossCutting);
-        let ccChart = null;
-        let ccMode = 'all';
+        // ===== KEYWORD EXPLORER =====
+        // Searches job description text only. Synonyms come from a synonym map
+        // generated weekly by Claude at scrape time and embedded as data.synonymMap.
+        let kwTrendChart = null;
 
-        function renderCrossCuttingChart() {{
-            const ctx = document.getElementById('crossCuttingChart').getContext('2d');
-            if (ccChart) ccChart.destroy();
-            ccChart = new Chart(ctx, {{
+        // Simple morphological stemmer — handles plural -s, -es, -ies → -y, -ing, -ed,
+        // -ism → -ist (or root), -ist → root. Conservative; we want to match more, not less.
+        function kwStem(word) {{
+            word = word.toLowerCase().replace(/[^a-z]/g, '');
+            if (word.length <= 3) return word;
+            if (word.endsWith('ies'))  return word.slice(0, -3) + 'y';
+            if (word.endsWith('ism'))  return word.slice(0, -3);
+            if (word.endsWith('ist'))  return word.slice(0, -3);
+            if (word.endsWith('ing'))  return word.slice(0, -3);
+            if (word.endsWith('ed'))   return word.slice(0, -2);
+            if (word.endsWith('es'))   return word.slice(0, -2);
+            if (word.endsWith('s'))    return word.slice(0, -1);
+            return word;
+        }}
+
+        // Expand a query into a set of related terms via the synonym map + stemming
+        function kwExpand(query) {{
+            const q = query.toLowerCase().trim();
+            if (!q) return new Set();
+            const stem = kwStem(q);
+            const terms = new Set([q, stem]);
+            // Synonym map lookup (Claude-generated)
+            const syns = data.synonymMap[q] || data.synonymMap[stem] || [];
+            syns.forEach(s => {{
+                terms.add(s.toLowerCase());
+                terms.add(kwStem(s));
+            }});
+            return terms;
+        }}
+
+        // Test whether a job's description-term set matches any of the expanded terms.
+        // Stems both sides so morphological variants ("feminist" vs "feminism") match.
+        function kwJobMatches(jobStemSet, expandedTerms) {{
+            for (const t of expandedTerms) {{
+                if (jobStemSet.has(kwStem(t))) return true;
+            }}
+            return false;
+        }}
+
+        function kwSearch() {{
+            const raw = document.getElementById('kwInput').value;
+            const q = raw.trim();
+            if (!q) {{
+                document.getElementById('kwEmptyState').classList.remove('hidden');
+                document.getElementById('kwResults').classList.add('hidden');
+                document.getElementById('kwMatchCount').textContent = '';
+                return;
+            }}
+
+            const expanded = kwExpand(q);
+            const matchingJobs = [];
+            data.jobsForKeyword.forEach((j) => {{
+                // Build a set of stems for this job (cached per search is fine for now)
+                if (!j._stemSet) {{
+                    j._stemSet = new Set();
+                    for (const t of j.terms) j._stemSet.add(kwStem(t));
+                }}
+                if (kwJobMatches(j._stemSet, expanded)) matchingJobs.push(j);
+            }});
+
+            const matchCount = matchingJobs.length;
+            const expansionStr = Array.from(expanded).filter(t => t !== q.toLowerCase()).slice(0, 8).join(', ');
+            document.getElementById('kwMatchCount').innerHTML =
+                `<strong>${{matchCount}}</strong> job${{matchCount === 1 ? '' : 's'}} match` +
+                (expansionStr ? ` &middot; <span class="text-gray-500">expanded to: ${{expansionStr}}</span>` : '');
+
+            if (matchCount === 0) {{
+                document.getElementById('kwEmptyState').classList.remove('hidden');
+                document.getElementById('kwEmptyState').textContent = `No jobs found containing "${{q}}" or related terms. Try a broader term or check the bubble suggestions from another search.`;
+                document.getElementById('kwResults').classList.add('hidden');
+                return;
+            }}
+
+            document.getElementById('kwEmptyState').classList.add('hidden');
+            document.getElementById('kwResults').classList.remove('hidden');
+
+            // Build bubble chart by GROUPING raw words by stem.
+            // For each job, count each stem at most once. Display label = longest raw word with that stem.
+            // Skip terms that appear in too many descriptions to be informative (data.bubbleStopwords).
+            const bubbleStops = new Set(data.bubbleStopwords || []);
+            const stemGroups = new Map();
+            matchingJobs.forEach(j => {{
+                const seenStemsThisJob = new Set();
+                j.terms.forEach(t => {{
+                    if (t.length < 4) return;
+                    if (bubbleStops.has(t)) return;
+                    const s = kwStem(t);
+                    if (seenStemsThisJob.has(s)) return;
+                    seenStemsThisJob.add(s);
+                    const existing = stemGroups.get(s);
+                    if (!existing) {{
+                        stemGroups.set(s, {{ count: 1, label: t }});
+                    }} else {{
+                        existing.count += 1;
+                        if (t.length > existing.label.length) existing.label = t;
+                    }}
+                }});
+            }});
+            // Don't include the query stem in the orbit
+            const queryStem = kwStem(q.toLowerCase());
+            const sortedGroups = Array.from(stemGroups.entries())
+                .filter(([stem]) => stem !== queryStem)
+                .sort((a, b) => b[1].count - a[1].count)
+                .slice(0, 25)
+                .map(([stem, g]) => [g.label, g.count]);
+            renderBubbleChart(q, sortedGroups, matchCount);
+
+            // Trend chart: matching-job count per week
+            const weekCounts = {{}};
+            data.dates.forEach(d => {{ weekCounts[d] = 0; }});
+            matchingJobs.forEach(j => {{
+                if (weekCounts[j.scraped_date] !== undefined) weekCounts[j.scraped_date]++;
+            }});
+            renderKwTrend(data.dates.map(d => weekCounts[d]), q);
+        }}
+
+        function renderBubbleChart(query, termsWithCounts, totalMatches) {{
+            const container = document.getElementById('kwBubble');
+            container.innerHTML = '';
+            const width = container.clientWidth || 400;
+            const height = 340;
+
+            // Center node = the query (sized large)
+            const nodes = [{{ id: query, count: totalMatches, isQuery: true, fixed: true }}];
+            termsWithCounts.forEach(([t, c]) => nodes.push({{ id: t, count: c, isQuery: false }}));
+
+            const maxCount = Math.max(...nodes.map(n => n.count));
+            const minR = 14, maxR = 50;
+            nodes.forEach(n => {{
+                n.r = minR + (maxR - minR) * Math.sqrt(n.count / maxCount);
+            }});
+
+            const svg = d3.select(container).append('svg')
+                .attr('width', '100%').attr('height', height)
+                .attr('viewBox', `0 0 ${{width}} ${{height}}`);
+
+            const simulation = d3.forceSimulation(nodes)
+                .force('charge', d3.forceManyBody().strength(5))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('collide', d3.forceCollide(d => d.r + 2))
+                .force('x', d3.forceX(width / 2).strength(0.05))
+                .force('y', d3.forceY(height / 2).strength(0.05));
+
+            const node = svg.selectAll('g').data(nodes).enter().append('g')
+                .style('cursor', d => d.isQuery ? 'default' : 'pointer')
+                .on('click', (event, d) => {{
+                    if (d.isQuery) return;
+                    document.getElementById('kwInput').value = d.id;
+                    kwSearch();
+                }});
+
+            node.append('circle')
+                .attr('r', d => d.r)
+                .attr('fill', d => d.isQuery ? '#4f46e5' : '#a5b4fc')
+                .attr('fill-opacity', d => d.isQuery ? 0.95 : 0.7)
+                .attr('stroke', d => d.isQuery ? '#3730a3' : '#6366f1')
+                .attr('stroke-width', 1.5);
+
+            node.append('text')
+                .text(d => d.id)
+                .attr('text-anchor', 'middle')
+                .attr('dominant-baseline', 'middle')
+                .attr('fill', d => d.isQuery ? 'white' : '#1e1b4b')
+                .attr('font-size', d => Math.max(10, Math.min(d.r * 0.45, 16)) + 'px')
+                .attr('font-weight', d => d.isQuery ? '700' : '500')
+                .style('pointer-events', 'none');
+
+            node.append('title').text(d => `${{d.id}}: ${{d.count}} job${{d.count === 1 ? '' : 's'}}`);
+
+            simulation.on('tick', () => {{
+                node.attr('transform', d => `translate(${{d.x}}, ${{d.y}})`);
+            }});
+        }}
+
+        function renderKwTrend(weekData, query) {{
+            const ctx = document.getElementById('kwTrendChart').getContext('2d');
+            if (kwTrendChart) kwTrendChart.destroy();
+            kwTrendChart = new Chart(ctx, {{
                 type: 'line',
                 data: {{
                     labels: data.dates,
-                    datasets: ccAreas.map(area => {{
-                        const slice = (data.crossCutting[area] || {{}})[ccMode] || {{}};
-                        const weeklyMap = slice.weekly || {{}};
-                        return {{
-                            label: area + ` (${{slice.total || 0}})`,
-                            data: data.dates.map(d => weeklyMap[d] || 0),
-                            borderColor: ccColors[area] || '#6b7280',
-                            backgroundColor: (ccColors[area] || '#6b7280') + '30',
-                            tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
-                        }};
-                    }})
+                    datasets: [{{
+                        label: `Jobs matching "${{query}}"`,
+                        data: weekData,
+                        borderColor: '#4f46e5',
+                        backgroundColor: '#a5b4fc40',
+                        tension: 0.4, fill: true, borderWidth: 2, pointRadius: 4
+                    }}]
                 }},
+                plugins: [seasonPlugin],
                 options: {{
                     responsive: true, maintainAspectRatio: false,
-                    interaction: {{ mode: 'index', intersect: false }},
-                    plugins: {{ legend: {{ position: 'bottom', labels: {{ usePointStyle: true, padding: 15 }} }} }},
-                    scales: {{ y: {{ beginAtZero: true, ticks: {{ precision: 0 }} }}, x: {{ grid: {{ display: false }} }} }}
+                    plugins: {{ legend: {{ display: false }} }},
+                    scales: {{
+                        y: {{ beginAtZero: true, ticks: {{ precision: 0 }} }},
+                        x: {{ grid: {{ display: false }}, ticks: {{ maxTicksLimit: 8 }} }}
+                    }}
                 }}
             }});
         }}
 
-        function updateCcControls() {{
-            const ccTheme = document.getElementById('ccModeAll').classList.contains('bg-cyan-600') || document.getElementById('ccModeAll').className.includes('bg-cyan') ? 'cyan' : 'indigo';
-            const active = `bg-${{ccTheme}}-600 text-white`;
-            const inactive = `text-gray-700 hover:bg-${{ccTheme}}-50`;
-            document.getElementById('ccModeAll').className   = `px-3 py-1.5 text-sm font-medium ${{ccMode === 'all'   ? active : inactive}}`;
-            document.getElementById('ccModeSolo').className  = `px-3 py-1.5 text-sm font-medium ${{ccMode === 'solo'  ? active : inactive}}`;
-            document.getElementById('ccModeJoint').className = `px-3 py-1.5 text-sm font-medium ${{ccMode === 'joint' ? active : inactive}}`;
-            document.getElementById('ccModeNote').textContent =
-                ccMode === 'all'   ? 'All: every cross-cutting tag counts.' :
-                ccMode === 'solo'  ? 'Solo: only jobs with exactly one main AOS category.' :
-                                     'Joint: only jobs listing multiple main AOS categories.';
-        }}
-
-        function setCcMode(mode) {{
-            ccMode = mode;
-            renderCrossCuttingChart();
-            updateCcControls();
-        }}
-
-        renderCrossCuttingChart();
-        updateCcControls();
+        document.getElementById('kwSearchBtn').addEventListener('click', kwSearch);
+        document.getElementById('kwInput').addEventListener('keydown', e => {{
+            if (e.key === 'Enter') kwSearch();
+        }});
 
         // ===== POSITION TYPE CHART (with All/Solo/Joint toggle) =====
         let posTypeChart = null;
