@@ -1950,6 +1950,43 @@ class PhilJobsScraper:
         state_category_data = {m: {k: dict(v) for k, v in state_cat_map[m].items()}
                                for m in ('all', 'solo', 'joint')}
 
+        # ── Subcategory → job IDs + full job details (for PDF download) ──
+        # Per-subcategory list of matching jobs and an id-keyed dict with all
+        # the fields the download report needs. Used by the Browse by Category
+        # modal's "Download report" button per subcategory.
+        subcategory_job_ids = defaultdict(list)
+        job_details_map = {}
+        for job in us_jobs:
+            jid = job.get('id')
+            if not jid:
+                continue
+            cls = job.get('classification') or {}
+            for main, details in cls.get('detail_aos', {}).items():
+                for detail in details:
+                    if jid not in subcategory_job_ids[detail]:
+                        subcategory_job_ids[detail].append(jid)
+            job_details_map[jid] = {
+                'id': jid,
+                'url': job.get('url', ''),
+                'institution': job.get('institution', ''),
+                'title': job.get('title', ''),
+                'job_category': job.get('job_category', ''),
+                'aos': job.get('aos', ''),
+                'aoc': job.get('aoc', ''),
+                'location': job.get('location', ''),
+                'workload': job.get('workload', ''),
+                'vacancies': job.get('vacancies', ''),
+                'deadline': job.get('deadline', ''),
+                'start_date': job.get('start_date', ''),
+                'posted_date': job.get('posted_date', ''),
+                'application_type': job.get('application_type', ''),
+                'application_url': job.get('application_url', ''),
+                'contact_email': job.get('contact_email', ''),
+                'description': job.get('description', ''),
+                'job_type': job.get('job_type', ''),
+            }
+        subcategory_job_ids = {k: list(v) for k, v in subcategory_job_ids.items()}
+
         # ── Position type × AOS all-time (with solo/joint slicing) ───────
         pos_type_x_aos_map = {m: defaultdict(lambda: defaultdict(int)) for m in ('all', 'solo', 'joint')}
         for job in us_jobs:
@@ -2016,6 +2053,7 @@ class PhilJobsScraper:
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body {{ font-family: 'Inter', sans-serif; }}
@@ -2285,25 +2323,9 @@ class PhilJobsScraper:
                         <h4 class="text-lg font-semibold text-gray-700 mb-3">Solo vs. Joint by Subcategory</h4>
                         <div id="lassiterChart" class="overflow-x-auto text-sm"></div>
                     </div>
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <h4 class="text-lg font-semibold text-gray-700 mb-4">Job Types</h4>
-                            <canvas id="jobTypeChart"></canvas>
-                        </div>
-                        <div>
-                            <h4 class="text-lg font-semibold text-gray-700 mb-4">Institution Types</h4>
-                            <canvas id="institutionChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="mb-6">
-                        <h4 class="text-lg font-semibold text-gray-700 mb-4">Geographic Distribution (US States)</h4>
-                        <div class="bg-gray-50 rounded-lg p-4">
-                            <div id="usStatesList" class="w-full"></div>
-                        </div>
-                    </div>
-                    <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
-                        <h4 class="text-lg font-semibold text-blue-900 mb-2">📊 Key Insights</h4>
-                        <div id="insights" class="text-sm text-blue-800"></div>
+                    <div class="mb-6 max-w-md">
+                        <h4 class="text-lg font-semibold text-gray-700 mb-4">Institution Types</h4>
+                        <canvas id="institutionChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -2370,7 +2392,9 @@ class PhilJobsScraper:
             detailAosByContext: {json.dumps(cooc.get('detail_aos_by_context', {}))},
             jobsForKeyword: {json.dumps(keyword_index)},
             synonymMap: {json.dumps(synonym_map)},
-            bubbleStopwords: {json.dumps(bubble_stopwords)}
+            bubbleStopwords: {json.dumps(bubble_stopwords)},
+            subcategoryJobIds: {json.dumps(subcategory_job_ids)},
+            jobDetails: {json.dumps(job_details_map)}
         }};
 
         // ===== SEASON PLUGIN =====
@@ -2531,7 +2555,7 @@ class PhilJobsScraper:
         updateMarketControls();
 
         // ===== MODAL =====
-        let detailChart = null, jobTypeChart = null, institutionChart = null;
+        let detailChart = null, institutionChart = null;
 
         function openModal(key, category) {{
             currentModalKey = key;
@@ -2549,10 +2573,12 @@ class PhilJobsScraper:
             document.getElementById('modalAverage').textContent = average;
             document.getElementById('modalTotal').textContent = total;
 
-            // Subcategories
+            // Subcategories — each card includes a "Download report" button
+            // that generates a multi-page PDF with the full posting for each
+            // job tagged with that subcategory.
             const subcatGrid = document.getElementById('subcategoryGrid');
-            subcatGrid.innerHTML = '';
             document.getElementById('subcategorySection').style.display = category.subcategories.length > 0 ? 'block' : 'none';
+            let subcatHtml = '';
             category.subcategories.forEach(sub => {{
                 const subSeries = subDataFor(sub);
                 const subTotal = subSeries.reduce((a, b) => a + b, 0);
@@ -2560,12 +2586,25 @@ class PhilJobsScraper:
                 const soloJointData = data.detailAosByContext[sub] || {{}};
                 const solo = Object.values(soloJointData.solo || {{}}).reduce((a, b) => a + b, 0);
                 const joint = Object.values(soloJointData.with_others || {{}}).reduce((a, b) => a + b, 0);
-                subcatGrid.innerHTML += `
-                    <div class="bg-gray-50 rounded-lg p-3">
+                const jobIds = data.subcategoryJobIds[sub] || [];
+                const jobCount = jobIds.length;
+                const escapedSub = sub.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                const downloadBtn = jobCount > 0
+                    ? `<button data-download-sub="${{escapedSub}}" class="mt-2 w-full text-xs px-2 py-1.5 bg-indigo-600 text-white rounded hover:bg-indigo-700 font-medium">📄 Download report (${{jobCount}} job${{jobCount === 1 ? '' : 's'}})</button>`
+                    : `<div class="mt-2 text-xs text-gray-400 text-center">No jobs yet</div>`;
+                subcatHtml += `
+                    <div class="bg-gray-50 rounded-lg p-3 flex flex-col">
                         <div class="font-medium text-gray-800 text-sm mb-1">${{sub}}</div>
                         <div class="text-xs text-gray-500">${{subTotal}} total · ${{subCurrent}} this week</div>
                         ${{(solo + joint) > 0 ? `<div class="text-xs text-indigo-600 mt-1">Solo: ${{solo}} · Joint: ${{joint}}</div>` : ''}}
+                        ${{downloadBtn}}
                     </div>`;
+            }});
+            subcatGrid.innerHTML = subcatHtml;
+            subcatGrid.querySelectorAll('button[data-download-sub]').forEach(btn => {{
+                btn.addEventListener('click', e => {{
+                    downloadSubcategoryReport(e.currentTarget.dataset.downloadSub);
+                }});
             }});
 
             // Trend chart
@@ -2610,25 +2649,6 @@ class PhilJobsScraper:
                 lassiterSection.style.display = 'none';
             }}
 
-            // Job Types
-            const jobTypeCtx = document.getElementById('jobTypeChart').getContext('2d');
-            if (jobTypeChart) jobTypeChart.destroy();
-            const ptByAos = data.positionTypeByAosWeekly[key] || {{}};
-            const ptCurrent = data.positionTypes.map(pt => {{
-                // Inherit the Market Overview mode for consistency with modal title
-                const slot = ptByAos[pt] || {{}};
-                const arr = slot[marketMode] || [];
-                return arr[arr.length - 1] || 0;
-            }});
-            jobTypeChart = new Chart(jobTypeCtx, {{
-                type: 'doughnut',
-                data: {{
-                    labels: data.positionTypes,
-                    datasets: [{{ data: ptCurrent, backgroundColor: data.positionTypes.map(pt => data.positionTypeColors[pt] || '#6b7280') }}]
-                }},
-                options: {{ responsive: true, plugins: {{ legend: {{ position: 'right', labels: {{ font: {{ size: 11 }}, boxWidth: 12 }} }} }} }}
-            }});
-
             // Institution Types
             const instCtx = document.getElementById('institutionChart').getContext('2d');
             if (institutionChart) institutionChart.destroy();
@@ -2645,29 +2665,6 @@ class PhilJobsScraper:
                 options: {{ responsive: true, plugins: {{ legend: {{ position: 'right', labels: {{ font: {{ size: 11 }}, boxWidth: 12 }} }} }} }}
             }});
 
-            // US States list for this category — uses the Market Overview mode
-            // so the modal stays consistent with whatever filter is active.
-            const statesDiv = document.getElementById('usStatesList');
-            const stateCatData = {{}};
-            const stateCatSlice = data.stateCategoryData[marketMode] || {{}};
-            Object.entries(stateCatSlice).forEach(([state, cats]) => {{
-                if (cats[key]) stateCatData[state] = cats[key];
-            }});
-            const sortedStates = Object.entries(stateCatData).sort((a, b) => b[1] - a[1]).slice(0, 10);
-            if (sortedStates.length > 0) {{
-                statesDiv.innerHTML = sortedStates.map(([s, c]) => `<div class="flex justify-between py-1 text-sm"><span class="text-gray-700">${{s}}</span><span class="font-bold">${{c}}</span></div>`).join('');
-            }} else {{
-                statesDiv.innerHTML = '<div class="text-gray-400 text-sm">No state data yet</div>';
-            }}
-
-            // Insights
-            const insightsEl = document.getElementById('insights');
-            const insights = [];
-            if (total > 0) insights.push(`${{total}} total US jobs in this category since tracking began.`);
-            if (change > 0) insights.push(`Up ${{change}} from last week.`);
-            else if (change < 0) insights.push(`Down ${{Math.abs(change)}} from last week.`);
-            insightsEl.innerHTML = insights.map(i => `<div class="mb-1">• ${{i}}</div>`).join('');
-
             document.getElementById('detailModal').classList.remove('hidden');
         }}
 
@@ -2675,12 +2672,100 @@ class PhilJobsScraper:
             document.getElementById('detailModal').classList.add('hidden');
             currentModalKey = null;
             if (detailChart) {{ detailChart.destroy(); detailChart = null; }}
-            if (jobTypeChart) {{ jobTypeChart.destroy(); jobTypeChart = null; }}
             if (institutionChart) {{ institutionChart.destroy(); institutionChart = null; }}
         }}
         document.getElementById('detailModal').addEventListener('click', function(e) {{
             if (e.target === this) closeModal();
         }});
+
+        // ===== SUBCATEGORY DOWNLOAD REPORT (PDF) =====
+        // Generates a multi-page PDF where each page is the full job posting
+        // for a job tagged with the given subcategory. Uses jsPDF (UMD CDN).
+        function downloadSubcategoryReport(subcategoryName) {{
+            const jobIds = data.subcategoryJobIds[subcategoryName] || [];
+            if (jobIds.length === 0) {{
+                alert('No jobs available for "' + subcategoryName + '" yet.');
+                return;
+            }}
+            if (!window.jspdf) {{
+                alert('PDF library failed to load — try reloading the page.');
+                return;
+            }}
+            const {{ jsPDF }} = window.jspdf;
+            const doc = new jsPDF({{ unit: 'pt', format: 'letter' }});
+            const margin = 50;
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const contentWidth = pageWidth - 2 * margin;
+            const bottomLimit = pageHeight - margin;
+
+            // jsPDF's default Helvetica handles Latin-1. Strip combining marks
+            // for any text outside that range so it doesn't render as "?" boxes.
+            const ascii = s => (s || '').toString().normalize('NFKD').replace(/[\\u0300-\\u036f]/g, '');
+
+            jobIds.forEach((jid, idx) => {{
+                const job = data.jobDetails[jid];
+                if (!job) return;
+                if (idx > 0) doc.addPage();
+                let y = margin;
+
+                const writeBlock = (text, fontSize, bold, color) => {{
+                    if (!text) return;
+                    doc.setFontSize(fontSize);
+                    doc.setFont('helvetica', bold ? 'bold' : 'normal');
+                    doc.setTextColor(color || 0);
+                    const lines = doc.splitTextToSize(ascii(text), contentWidth);
+                    lines.forEach(line => {{
+                        if (y > bottomLimit) {{
+                            doc.addPage();
+                            y = margin;
+                        }}
+                        doc.text(line, margin, y);
+                        y += fontSize * 1.25;
+                    }});
+                }};
+
+                writeBlock(job.title || 'Untitled position', 14, true);
+                writeBlock(job.institution || '', 11, false);
+                y += 6;
+                doc.setDrawColor(200);
+                doc.line(margin, y, pageWidth - margin, y);
+                y += 14;
+
+                // Header strip — subcategory + position in batch
+                writeBlock(`Subcategory: ${{subcategoryName}}  ·  Job ${{idx + 1}} of ${{jobIds.length}}`, 9, false, 120);
+                y += 4;
+
+                // Metadata
+                const meta = [
+                    ['Location', job.location],
+                    ['Posted',   job.posted_date],
+                    ['Deadline', job.deadline],
+                    ['Start date', job.start_date],
+                    ['Job category', job.job_category],
+                    ['AOS', job.aos],
+                    ['AOC', job.aoc],
+                    ['Workload', job.workload],
+                    ['Vacancies', job.vacancies],
+                    ['Application type', job.application_type],
+                    ['Application URL', job.application_url],
+                    ['Contact', job.contact_email],
+                    ['PhilJobs URL', job.url],
+                ];
+                meta.forEach(([k, v]) => {{
+                    if (!v) return;
+                    writeBlock(`${{k}}: ${{v}}`, 9, false);
+                }});
+                y += 10;
+
+                writeBlock('Description', 11, true);
+                writeBlock(job.description || 'No description recorded for this posting.', 10, false);
+            }});
+
+            const safeName = subcategoryName.replace(/[^a-z0-9]+/gi, '_').toLowerCase();
+            const dateStr = new Date().toISOString().slice(0, 10);
+            doc.save(`philjobs_${{safeName}}_${{dateStr}}.pdf`);
+        }}
 
         // ===== REGIONAL CHART (with All/Solo/Joint toggle) =====
         const regionColors = {{ 'West': '#2563eb', 'Northeast': '#7c3aed', 'South': '#dc2626', 'Midwest': '#d97706' }};
@@ -3531,6 +3616,40 @@ class PhilJobsScraper:
                         country_cat_map[c][main] += 1
         country_category_data = {k: dict(v) for k, v in country_cat_map.items()}
 
+        # ── Subcategory → job IDs + full job details (for PDF download) ──
+        subcategory_job_ids = defaultdict(list)
+        job_details_map = {}
+        for job in intl_jobs:
+            jid = job.get('id')
+            if not jid:
+                continue
+            cls = job.get('classification') or {}
+            for main, details in cls.get('detail_aos', {}).items():
+                for detail in details:
+                    if jid not in subcategory_job_ids[detail]:
+                        subcategory_job_ids[detail].append(jid)
+            job_details_map[jid] = {
+                'id': jid,
+                'url': job.get('url', ''),
+                'institution': job.get('institution', ''),
+                'title': job.get('title', ''),
+                'job_category': job.get('job_category', ''),
+                'aos': job.get('aos', ''),
+                'aoc': job.get('aoc', ''),
+                'location': job.get('location', ''),
+                'workload': job.get('workload', ''),
+                'vacancies': job.get('vacancies', ''),
+                'deadline': job.get('deadline', ''),
+                'start_date': job.get('start_date', ''),
+                'posted_date': job.get('posted_date', ''),
+                'application_type': job.get('application_type', ''),
+                'application_url': job.get('application_url', ''),
+                'contact_email': job.get('contact_email', ''),
+                'description': job.get('description', ''),
+                'job_type': job.get('job_type', ''),
+            }
+        subcategory_job_ids = {k: list(v) for k, v in subcategory_job_ids.items()}
+
         # ── Co-occurrence ─────────────────────────────────────────────────
         cooc = self._compute_cooc_from_jobs(intl_jobs)
 
@@ -3579,6 +3698,7 @@ class PhilJobsScraper:
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body {{ font-family: 'Inter', sans-serif; }}
@@ -3801,25 +3921,9 @@ class PhilJobsScraper:
                         <h4 class="text-lg font-semibold text-gray-700 mb-3">Solo vs. Joint by Subcategory</h4>
                         <div id="lassiterChart" class="overflow-x-auto text-sm"></div>
                     </div>
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <h4 class="text-lg font-semibold text-gray-700 mb-4">Job Types</h4>
-                            <canvas id="jobTypeChart"></canvas>
-                        </div>
-                        <div>
-                            <h4 class="text-lg font-semibold text-gray-700 mb-4">Institution Types</h4>
-                            <canvas id="institutionChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="mb-6">
-                        <h4 class="text-lg font-semibold text-gray-700 mb-4">Top Countries</h4>
-                        <div class="bg-gray-50 rounded-lg p-4">
-                            <div id="topCountriesModal" class="w-full"></div>
-                        </div>
-                    </div>
-                    <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
-                        <h4 class="text-lg font-semibold text-blue-900 mb-2">📊 Key Insights</h4>
-                        <div id="insights" class="text-sm text-blue-800"></div>
+                    <div class="mb-6 max-w-md">
+                        <h4 class="text-lg font-semibold text-gray-700 mb-4">Institution Types</h4>
+                        <canvas id="institutionChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -3855,7 +3959,9 @@ class PhilJobsScraper:
             detailAosByContext: {json.dumps(cooc.get('detail_aos_by_context', {}))},
             jobsForKeyword: {json.dumps(keyword_index)},
             synonymMap: {json.dumps(synonym_map)},
-            bubbleStopwords: {json.dumps(bubble_stopwords)}
+            bubbleStopwords: {json.dumps(bubble_stopwords)},
+            subcategoryJobIds: {json.dumps(subcategory_job_ids)},
+            jobDetails: {json.dumps(job_details_map)}
         }};
 
         // ===== SEASON PLUGIN =====
@@ -3993,7 +4099,7 @@ class PhilJobsScraper:
         updateMarketControls();
 
         // ===== MODAL =====
-        let detailChart = null, jobTypeChart = null, institutionChart = null;
+        let detailChart = null, institutionChart = null;
 
         function openModal(key, category) {{
             currentModalKey = key;
@@ -4011,10 +4117,12 @@ class PhilJobsScraper:
             document.getElementById('modalAverage').textContent = average;
             document.getElementById('modalTotal').textContent = total;
 
-            // Subcategories
+            // Subcategories — each card includes a "Download report" button
+            // that generates a multi-page PDF with the full posting for each
+            // job tagged with that subcategory.
             const subcatGrid = document.getElementById('subcategoryGrid');
-            subcatGrid.innerHTML = '';
             document.getElementById('subcategorySection').style.display = category.subcategories.length > 0 ? 'block' : 'none';
+            let subcatHtml = '';
             category.subcategories.forEach(sub => {{
                 const subSeries = subDataFor(sub);
                 const subTotal = subSeries.reduce((a, b) => a + b, 0);
@@ -4022,12 +4130,25 @@ class PhilJobsScraper:
                 const soloJointData = data.detailAosByContext[sub] || {{}};
                 const solo = Object.values(soloJointData.solo || {{}}).reduce((a, b) => a + b, 0);
                 const joint = Object.values(soloJointData.with_others || {{}}).reduce((a, b) => a + b, 0);
-                subcatGrid.innerHTML += `
-                    <div class="bg-gray-50 rounded-lg p-3">
+                const jobIds = data.subcategoryJobIds[sub] || [];
+                const jobCount = jobIds.length;
+                const escapedSub = sub.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                const downloadBtn = jobCount > 0
+                    ? `<button data-download-sub="${{escapedSub}}" class="mt-2 w-full text-xs px-2 py-1.5 bg-cyan-600 text-white rounded hover:bg-cyan-700 font-medium">📄 Download report (${{jobCount}} job${{jobCount === 1 ? '' : 's'}})</button>`
+                    : `<div class="mt-2 text-xs text-gray-400 text-center">No jobs yet</div>`;
+                subcatHtml += `
+                    <div class="bg-gray-50 rounded-lg p-3 flex flex-col">
                         <div class="font-medium text-gray-800 text-sm mb-1">${{sub}}</div>
                         <div class="text-xs text-gray-500">${{subTotal}} total · ${{subCurrent}} this week</div>
                         ${{(solo + joint) > 0 ? `<div class="text-xs text-indigo-600 mt-1">Solo: ${{solo}} · Joint: ${{joint}}</div>` : ''}}
+                        ${{downloadBtn}}
                     </div>`;
+            }});
+            subcatGrid.innerHTML = subcatHtml;
+            subcatGrid.querySelectorAll('button[data-download-sub]').forEach(btn => {{
+                btn.addEventListener('click', e => {{
+                    downloadSubcategoryReport(e.currentTarget.dataset.downloadSub);
+                }});
             }});
 
             // Trend chart
@@ -4069,22 +4190,6 @@ class PhilJobsScraper:
                 lassiterSection.style.display = 'none';
             }}
 
-            // Job Types
-            const jobTypeCtx = document.getElementById('jobTypeChart').getContext('2d');
-            if (jobTypeChart) jobTypeChart.destroy();
-            const ptByAos = data.positionTypeByAosWeekly[key] || {{}};
-            const ptCurrent = data.positionTypes.map(pt => {{
-                // Inherit the Market Overview mode for consistency with modal title
-                const slot = ptByAos[pt] || {{}};
-                const arr = slot[marketMode] || [];
-                return arr[arr.length - 1] || 0;
-            }});
-            jobTypeChart = new Chart(jobTypeCtx, {{
-                type: 'doughnut',
-                data: {{ labels: data.positionTypes, datasets: [{{ data: ptCurrent, backgroundColor: data.positionTypes.map(pt => data.positionTypeColors[pt] || '#6b7280') }}] }},
-                options: {{ responsive: true, plugins: {{ legend: {{ position: 'right', labels: {{ font: {{ size: 11 }}, boxWidth: 12 }} }} }} }}
-            }});
-
             // Institution Types
             const instCtx = document.getElementById('institutionChart').getContext('2d');
             if (institutionChart) institutionChart.destroy();
@@ -4098,27 +4203,6 @@ class PhilJobsScraper:
                 options: {{ responsive: true, plugins: {{ legend: {{ position: 'right', labels: {{ font: {{ size: 11 }}, boxWidth: 12 }} }} }} }}
             }});
 
-            // Top countries for this category
-            const countryDiv = document.getElementById('topCountriesModal');
-            const catCountries = {{}};
-            Object.entries(data.countryCategoryData).forEach(([country, cats]) => {{
-                if (cats[key]) catCountries[country] = cats[key];
-            }});
-            const sortedCountries = Object.entries(catCountries).sort((a, b) => b[1] - a[1]).slice(0, 10);
-            if (sortedCountries.length > 0) {{
-                countryDiv.innerHTML = sortedCountries.map(([c, n]) => `<div class="flex justify-between py-1 text-sm"><span class="text-gray-700">${{c}}</span><span class="font-bold">${{n}}</span></div>`).join('');
-            }} else {{
-                countryDiv.innerHTML = '<div class="text-gray-400 text-sm">No country data yet</div>';
-            }}
-
-            // Insights
-            const insightsEl = document.getElementById('insights');
-            const insights = [];
-            if (total > 0) insights.push(`${{total}} total international jobs in this category since tracking began.`);
-            if (change > 0) insights.push(`Up ${{change}} from last week.`);
-            else if (change < 0) insights.push(`Down ${{Math.abs(change)}} from last week.`);
-            insightsEl.innerHTML = insights.map(i => `<div class="mb-1">• ${{i}}</div>`).join('');
-
             document.getElementById('detailModal').classList.remove('hidden');
         }}
 
@@ -4126,12 +4210,100 @@ class PhilJobsScraper:
             document.getElementById('detailModal').classList.add('hidden');
             currentModalKey = null;
             if (detailChart) {{ detailChart.destroy(); detailChart = null; }}
-            if (jobTypeChart) {{ jobTypeChart.destroy(); jobTypeChart = null; }}
             if (institutionChart) {{ institutionChart.destroy(); institutionChart = null; }}
         }}
         document.getElementById('detailModal').addEventListener('click', function(e) {{
             if (e.target === this) closeModal();
         }});
+
+        // ===== SUBCATEGORY DOWNLOAD REPORT (PDF) =====
+        // Generates a multi-page PDF where each page is the full job posting
+        // for a job tagged with the given subcategory. Uses jsPDF (UMD CDN).
+        function downloadSubcategoryReport(subcategoryName) {{
+            const jobIds = data.subcategoryJobIds[subcategoryName] || [];
+            if (jobIds.length === 0) {{
+                alert('No jobs available for "' + subcategoryName + '" yet.');
+                return;
+            }}
+            if (!window.jspdf) {{
+                alert('PDF library failed to load — try reloading the page.');
+                return;
+            }}
+            const {{ jsPDF }} = window.jspdf;
+            const doc = new jsPDF({{ unit: 'pt', format: 'letter' }});
+            const margin = 50;
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const contentWidth = pageWidth - 2 * margin;
+            const bottomLimit = pageHeight - margin;
+
+            // jsPDF's default Helvetica handles Latin-1. Strip combining marks
+            // for any text outside that range so it doesn't render as "?" boxes.
+            const ascii = s => (s || '').toString().normalize('NFKD').replace(/[\\u0300-\\u036f]/g, '');
+
+            jobIds.forEach((jid, idx) => {{
+                const job = data.jobDetails[jid];
+                if (!job) return;
+                if (idx > 0) doc.addPage();
+                let y = margin;
+
+                const writeBlock = (text, fontSize, bold, color) => {{
+                    if (!text) return;
+                    doc.setFontSize(fontSize);
+                    doc.setFont('helvetica', bold ? 'bold' : 'normal');
+                    doc.setTextColor(color || 0);
+                    const lines = doc.splitTextToSize(ascii(text), contentWidth);
+                    lines.forEach(line => {{
+                        if (y > bottomLimit) {{
+                            doc.addPage();
+                            y = margin;
+                        }}
+                        doc.text(line, margin, y);
+                        y += fontSize * 1.25;
+                    }});
+                }};
+
+                writeBlock(job.title || 'Untitled position', 14, true);
+                writeBlock(job.institution || '', 11, false);
+                y += 6;
+                doc.setDrawColor(200);
+                doc.line(margin, y, pageWidth - margin, y);
+                y += 14;
+
+                // Header strip — subcategory + position in batch
+                writeBlock(`Subcategory: ${{subcategoryName}}  ·  Job ${{idx + 1}} of ${{jobIds.length}}`, 9, false, 120);
+                y += 4;
+
+                // Metadata
+                const meta = [
+                    ['Location', job.location],
+                    ['Posted',   job.posted_date],
+                    ['Deadline', job.deadline],
+                    ['Start date', job.start_date],
+                    ['Job category', job.job_category],
+                    ['AOS', job.aos],
+                    ['AOC', job.aoc],
+                    ['Workload', job.workload],
+                    ['Vacancies', job.vacancies],
+                    ['Application type', job.application_type],
+                    ['Application URL', job.application_url],
+                    ['Contact', job.contact_email],
+                    ['PhilJobs URL', job.url],
+                ];
+                meta.forEach(([k, v]) => {{
+                    if (!v) return;
+                    writeBlock(`${{k}}: ${{v}}`, 9, false);
+                }});
+                y += 10;
+
+                writeBlock('Description', 11, true);
+                writeBlock(job.description || 'No description recorded for this posting.', 10, false);
+            }});
+
+            const safeName = subcategoryName.replace(/[^a-z0-9]+/gi, '_').toLowerCase();
+            const dateStr = new Date().toISOString().slice(0, 10);
+            doc.save(`philjobs_${{safeName}}_${{dateStr}}.pdf`);
+        }}
 
         // ===== REGIONAL CHART =====
         const regionColors = {{
