@@ -780,18 +780,22 @@
         // generated weekly by Claude at scrape time and embedded as data.synonymMap.
         let kwTrendChart = null;
 
-        // Simple morphological stemmer — handles plural -s, -es, -ies → -y, -ing, -ed,
-        // -ism → -ist (or root), -ist → root. Conservative; we want to match more, not less.
+        // Recursive morphological stemmer. Applies suffix rules until stable
+        // so "feminists" → "feminist" → "femin" all collapse to one stem.
+        // Mirrors the Python _keyword_stem method.
         function kwStem(word) {
             word = word.toLowerCase().replace(/[^a-z]/g, '');
-            if (word.length <= 3) return word;
-            if (word.endsWith('ies'))  return word.slice(0, -3) + 'y';
-            if (word.endsWith('ism'))  return word.slice(0, -3);
-            if (word.endsWith('ist'))  return word.slice(0, -3);
-            if (word.endsWith('ing'))  return word.slice(0, -3);
-            if (word.endsWith('ed'))   return word.slice(0, -2);
-            if (word.endsWith('es'))   return word.slice(0, -2);
-            if (word.endsWith('s'))    return word.slice(0, -1);
+            let prev = null;
+            while (prev !== word && word.length > 3) {
+                prev = word;
+                if (word.endsWith('ies'))      word = word.slice(0, -3) + 'y';
+                else if (word.endsWith('ism')) word = word.slice(0, -3);
+                else if (word.endsWith('ist')) word = word.slice(0, -3);
+                else if (word.endsWith('ing')) word = word.slice(0, -3);
+                else if (word.endsWith('ed'))  word = word.slice(0, -2);
+                else if (word.endsWith('es'))  word = word.slice(0, -2);
+                else if (word.endsWith('s'))   word = word.slice(0, -1);
+            }
             return word;
         }
 
@@ -856,36 +860,47 @@
             document.getElementById('kwEmptyState').classList.add('hidden');
             document.getElementById('kwResults').classList.remove('hidden');
 
-            // Build bubble chart by GROUPING raw words by stem.
-            // For each job, count each stem at most once. Display label = longest raw word with that stem.
-            // Skip terms that appear in too many descriptions to be informative (data.bubbleStopwords).
-            const bubbleStops = new Set(data.bubbleStopwords || []);
-            const stemGroups = new Map();
-            matchingJobs.forEach(j => {
-                const seenStemsThisJob = new Set();
-                j.terms.forEach(t => {
-                    if (t.length < 4) return;
-                    if (bubbleStops.has(t)) return;
-                    const s = kwStem(t);
-                    if (seenStemsThisJob.has(s)) return;
-                    seenStemsThisJob.add(s);
-                    const existing = stemGroups.get(s);
-                    if (!existing) {
-                        stemGroups.set(s, { count: 1, label: t });
-                    } else {
-                        existing.count += 1;
-                        if (t.length > existing.label.length) existing.label = t;
-                    }
-                });
+            // Build bubble chart from the synonym map (field-defining alternatives),
+            // NOT from corpus co-occurrence. Each bubble = a synonym, sized by how
+            // many jobs in the corpus contain that specific term (via stem matching).
+            // This surfaces "what are the other names the field uses for this
+            // concept" rather than "what words show up alongside this in postings".
+            const qLower = q.toLowerCase();
+            const queryStem = kwStem(qLower);
+            const synonymList = data.synonymMap[qLower] || data.synonymMap[queryStem] || [];
+            // Build the candidate set: query + synonyms, deduped by stem
+            const stemToBubble = new Map();
+            const addBubble = (rawTerm, isQuery) => {
+                const s = kwStem(rawTerm.toLowerCase());
+                if (!s) return;
+                if (stemToBubble.has(s)) {
+                    // Keep longest label
+                    const existing = stemToBubble.get(s);
+                    if (rawTerm.length > existing.label.length) existing.label = rawTerm;
+                    if (isQuery) existing.isQuery = true;
+                } else {
+                    stemToBubble.set(s, { label: rawTerm, isQuery: !!isQuery, stem: s });
+                }
+            };
+            addBubble(qLower, true);
+            synonymList.forEach(syn => addBubble(syn, false));
+
+            // For each candidate stem, count how many jobs in the corpus contain it
+            const bubbles = [];
+            for (const [stem, entry] of stemToBubble) {
+                let count = 0;
+                for (const j of data.jobsForKeyword) {
+                    if (j._stemSet.has(stem)) count++;
+                }
+                bubbles.push({ label: entry.label, count, isQuery: entry.isQuery });
+            }
+            // Sort: query first, then by count desc
+            bubbles.sort((a, b) => {
+                if (a.isQuery && !b.isQuery) return -1;
+                if (!a.isQuery && b.isQuery) return 1;
+                return b.count - a.count;
             });
-            // Don't include the query stem in the orbit
-            const queryStem = kwStem(q.toLowerCase());
-            const sortedGroups = Array.from(stemGroups.entries())
-                .filter(([stem]) => stem !== queryStem)
-                .sort((a, b) => b[1].count - a[1].count)
-                .slice(0, 25)
-                .map(([stem, g]) => [g.label, g.count]);
-            renderBubbleChart(q, sortedGroups, matchCount);
+            renderBubbleChart(q, bubbles, matchCount);
 
             // Trend chart: matching-job count per week
             const weekCounts = {};
@@ -896,20 +911,31 @@
             renderKwTrend(data.dates.map(d => weekCounts[d]), q);
         }
 
-        function renderBubbleChart(query, termsWithCounts, totalMatches) {
+        function renderBubbleChart(query, bubbles, totalMatches) {
             const container = document.getElementById('kwBubble');
             container.innerHTML = '';
             const width = container.clientWidth || 400;
             const height = 340;
 
-            // Center node = the query (sized large)
-            const nodes = [{ id: query, count: totalMatches, isQuery: true, fixed: true }];
-            termsWithCounts.forEach(([t, c]) => nodes.push({ id: t, count: c, isQuery: false }));
+            // If we have no synonyms AND the query has no matches, show a helpful empty state
+            if (bubbles.length === 0) {
+                container.innerHTML = '<div class="text-gray-400 text-center py-12 text-sm">No field-defining synonyms found for this term in our map. The map covers the top 150 most frequent corpus terms — your term may be rare or use vocabulary the field doesn\'t yet emphasize.</div>';
+                return;
+            }
 
-            const maxCount = Math.max(...nodes.map(n => n.count));
-            const minR = 14, maxR = 50;
+            // Convert bubble entries to D3 node format
+            const nodes = bubbles.map(b => ({
+                id: b.label,
+                count: b.count,
+                isQuery: b.isQuery
+            }));
+            const maxCount = Math.max(1, ...nodes.map(n => n.count));
+            const minR = 18, maxR = 55;
             nodes.forEach(n => {
-                n.r = minR + (maxR - minR) * Math.sqrt(n.count / maxCount);
+                // Minimum size for query bubble even when 0 matches
+                const safeCount = (n.isQuery && n.count === 0) ? 0.5 : n.count;
+                n.r = minR + (maxR - minR) * Math.sqrt(Math.max(safeCount, 0) / maxCount);
+                if (n.r < minR) n.r = minR;
             });
 
             const svg = d3.select(container).append('svg')

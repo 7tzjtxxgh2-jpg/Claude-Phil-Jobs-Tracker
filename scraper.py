@@ -1148,24 +1148,27 @@ class PhilJobsScraper:
 
     @staticmethod
     def _keyword_stem(word):
-        """Conservative morphological stemmer. Mirrors the JS kwStem function so
-        Python-side and browser-side stemming stay in lockstep."""
-        if len(word) <= 3:
-            return word
-        if word.endswith('ies'):
-            return word[:-3] + 'y'
-        if word.endswith('ism'):
-            return word[:-3]
-        if word.endswith('ist'):
-            return word[:-3]
-        if word.endswith('ing'):
-            return word[:-3]
-        if word.endswith('ed'):
-            return word[:-2]
-        if word.endswith('es'):
-            return word[:-2]
-        if word.endswith('s'):
-            return word[:-1]
+        """Recursive morphological stemmer. Mirrors the JS kwStem function so
+        Python-side and browser-side stemming stay in lockstep. Applies suffix
+        rules repeatedly until the word stops changing, which lets "feminists"
+        → "feminist" → "femin" all collapse to a single stem."""
+        prev = None
+        while prev != word and len(word) > 3:
+            prev = word
+            if word.endswith('ies'):
+                word = word[:-3] + 'y'
+            elif word.endswith('ism'):
+                word = word[:-3]
+            elif word.endswith('ist'):
+                word = word[:-3]
+            elif word.endswith('ing'):
+                word = word[:-3]
+            elif word.endswith('ed'):
+                word = word[:-2]
+            elif word.endswith('es'):
+                word = word[:-2]
+            elif word.endswith('s'):
+                word = word[:-1]
         return word
 
     @staticmethod
@@ -1295,15 +1298,26 @@ class PhilJobsScraper:
 
         prompt_template = (
             "You're helping build a search tool for an academic philosophy job board. "
-            "For each keyword below, list 4-10 closely related search terms that "
-            "someone interested in this concept might also want to find. Include "
-            "morphological variants (feminism/feminist), synonyms, and semantically "
-            "related concepts used in academic philosophy (e.g. \"gay\" → \"queer\", "
-            "\"LGBTQ\", \"sexuality\").\n\n"
+            "For each keyword below, list 4-10 FIELD-DEFINING synonyms — alternative "
+            "names the academic discipline uses for the same subfield, research area, "
+            "or concept.\n\n"
+            "INCLUDE:\n"
+            "- Morphological variants (feminism / feminist / feminists; race / racial / racism)\n"
+            "- Alternative names for the same subfield (gay / queer / LGBTQ; AI / artificial intelligence / machine learning; environmental / ecology)\n"
+            "- Standard academic terminology that NAMES this area (queer theory, critical race theory)\n\n"
+            "EXCLUDE:\n"
+            "- Broadly related concepts that aren't field names (e.g. 'patriarchy' or "
+            "'intersectional' for feminism — these are concepts WITHIN feminism, not "
+            "names FOR it)\n"
+            "- Co-occurring topics (e.g. 'ethics' for race, 'social' for feminism — "
+            "they often appear in the same job posting but aren't synonyms)\n"
+            "- Generic adjectives or institutional jargon\n\n"
             "Output ONLY valid JSON — no prose, no markdown — as an object mapping "
             "each input keyword to an array of related terms. Keep all output "
             "lowercase. Example:\n"
-            '{{"feminism": ["feminist", "feminists", "patriarchy", "gender", "intersectional"]}}\n\n'
+            '{{"feminism": ["feminist", "feminists", "womens studies"], '
+            '"race": ["racial", "racism", "antiracism", "ethnicity", "critical race theory"], '
+            '"gay": ["queer", "lgbtq", "homosexuality", "sexuality"]}}\n\n'
             "Keywords to expand: {keywords}"
         )
 
@@ -1540,10 +1554,12 @@ class PhilJobsScraper:
             '   job descriptions get filtered from the bubble chart display (but',
             f'   remain searchable). In the current corpus: {bubble_stop_sample}.',
             '',
-            '### 3. Stemming',
+            '### 3. Stemming (Recursive)',
             '',
-            'A conservative rule-based stemmer handles common English morphological',
-            'variants:',
+            'A rule-based stemmer applies suffix rules repeatedly until the word',
+            'stops changing. This lets "feminists" → "feminist" → "femin" all',
+            'collapse to a single stem, which keeps morphological variants from',
+            'fragmenting bubble groups.',
             '',
             '| Suffix | Replacement | Example |',
             '|--------|-------------|---------|',
@@ -1564,42 +1580,67 @@ class PhilJobsScraper:
             '### 4. Synonym Expansion (Claude Haiku)',
             '',
             'Each Monday, the top 150 most frequent corpus terms are sent to Claude',
-            'Haiku (`claude-haiku-4-5-20251001`, temperature=0) in batches of 25,',
-            'with the following prompt:',
+            'Haiku (`claude-haiku-4-5-20251001`, temperature=0) in batches of 25.',
+            'The prompt explicitly asks for FIELD-DEFINING terms only — alternative',
+            'names the academic discipline uses for the same subfield — and not',
+            'broadly related or co-occurring concepts:',
             '',
-            '> You\'re helping build a search tool for an academic philosophy job',
-            '> board. For each keyword below, list 4-10 closely related search',
-            '> terms that someone interested in this concept might also want to',
-            '> find. Include morphological variants (feminism/feminist), synonyms,',
-            '> and semantically related concepts used in academic philosophy (e.g.',
-            '> "gay" → "queer", "LGBTQ", "sexuality"). Output ONLY valid JSON —',
-            '> no prose, no markdown — as an object mapping each input keyword to',
-            '> an array of related terms.',
+            '> For each keyword below, list 4-10 FIELD-DEFINING synonyms —',
+            '> alternative names the academic discipline uses for the same',
+            '> subfield, research area, or concept.',
+            '>',
+            '> INCLUDE: morphological variants (feminism / feminist); alternative',
+            '> names for the same subfield (gay / queer / LGBTQ; AI / artificial',
+            '> intelligence / machine learning); standard academic terminology',
+            '> that NAMES this area.',
+            '>',
+            "> EXCLUDE: broadly related concepts that aren't field names (e.g.",
+            "> 'patriarchy' or 'intersectional' for feminism — these are concepts",
+            "> WITHIN feminism, not names FOR it); co-occurring topics (e.g.",
+            "> 'ethics' for race — they appear in the same postings but aren't",
+            "> synonyms); generic adjectives or institutional jargon.",
+            '',
+            'This selective framing matters because the synonym map is the *only*',
+            'source for the bubble chart (see Section 5). Loosely-related terms',
+            'would produce noisy bubbles.',
             '',
             'The response is parsed, validated (must be valid JSON; non-list values',
             'are dropped), and cached to `data/synonym_map.json` and re-embedded',
             'in the dashboard. If the API call fails or the API key is missing,',
-            'the dashboard still works — search falls back to stemming only, just',
-            'without semantic expansion.',
+            'the dashboard still works — search falls back to stemming only.',
             '',
             'The current synonym map is documented in human-readable form at',
             '[SYNONYMS.md](SYNONYMS.md).',
             '',
             '### 5. Bubble Chart Construction',
             '',
-            'When a user searches for a term:',
+            'When a user searches for a term, the bubble chart displays **the',
+            'field-defining synonyms from the map (Section 4)**, each sized by how',
+            'many jobs in the corpus contain that specific term. The bubble chart',
+            'is NOT a co-occurrence visualization.',
             '',
-            '1. Find all matching jobs (via stemming + synonym expansion).',
-            '2. For each matching job, walk its term list.',
-            '3. Group terms by stem — count each stem at most once per job.',
-            '4. Display label = the LONGEST raw word seen for that stem (so',
-            '   "feminism" and "feminist" become one bubble labeled with whichever',
-            '   raw form is longer).',
-            '5. Sort by frequency, take top 25, render as a D3 force-directed',
-            '   simulation.',
+            '1. Look up the search term in the synonym map to get its field-defining',
+            '   alternatives.',
+            '2. For each candidate (the query plus each synonym), stem it and count',
+            '   jobs in the corpus whose stem set contains that stem.',
+            '3. Display each as a bubble: the search term at the center, synonyms',
+            '   around it. Bubble size is proportional to per-term job count.',
+            '4. Render as a D3 force-directed simulation. Each bubble is clickable',
+            '   to re-search with that term.',
             '',
-            'Each bubble is clickable and re-runs the search with that term as',
-            'the new query, enabling exploration of the field\'s vocabulary.',
+            '**Why synonyms, not co-occurrence?** The purpose of the chart is to',
+            'help users discover the field\'s vocabulary — "what other words does',
+            'the discipline use for this concept?" — not to surface every word that',
+            'happens to appear in the same job descriptions. A prior co-occurrence',
+            'design produced noisy bubbles ("three" from "three letters of',
+            'reference"; "online" from teaching modality; "ethics" merely because',
+            'philosophy of race jobs often mention ethics). Sourcing strictly from',
+            'the synonym map gives a clean signal about field-defining alternatives.',
+            '',
+            '**Bubble sizes are per-synonym corpus counts**, not match-set',
+            "co-occurrence counts. This answers the question \"how many jobs in",
+            'the corpus list this specific word?" which is what the user typically',
+            'wants when assessing a field\'s market presence.',
             '',
             '### 6. Trend Chart Construction',
             '',
@@ -1653,6 +1694,19 @@ class PhilJobsScraper:
             '',
             '## Change Log',
             '',
+            f'- **{date_str}**: Bubble chart rewritten to source from the Claude-',
+            '  generated synonym map (field-defining alternatives) rather than from',
+            '  corpus co-occurrence. Each bubble is now sized by per-term corpus',
+            '  count. The Claude synonym prompt was tightened to ask only for',
+            '  field-defining names (gay/queer/LGBTQ) and exclude broadly related',
+            '  concepts (patriarchy/intersectional for feminism). Stemmer changed',
+            '  from single-pass to recursive so morphological variants collapse',
+            '  to a single stem ("feminists" → "feminist" → "femin"). Rationale:',
+            '  the prior co-occurrence approach surfaced noise like "three" (from',
+            '  "three letters of reference") and "ethics" merely because race-',
+            '  related jobs often also discuss ethics. The new approach answers a',
+            '  more focused question — "what are the field\'s alternative names',
+            '  for this concept, and how many jobs use each?"',
             f'- **{date_str}**: Initial documented version of the methodology.',
             '',
         ]
@@ -2734,18 +2788,22 @@ class PhilJobsScraper:
         // generated weekly by Claude at scrape time and embedded as data.synonymMap.
         let kwTrendChart = null;
 
-        // Simple morphological stemmer — handles plural -s, -es, -ies → -y, -ing, -ed,
-        // -ism → -ist (or root), -ist → root. Conservative; we want to match more, not less.
+        // Recursive morphological stemmer. Applies suffix rules until stable
+        // so "feminists" → "feminist" → "femin" all collapse to one stem.
+        // Mirrors the Python _keyword_stem method.
         function kwStem(word) {{
             word = word.toLowerCase().replace(/[^a-z]/g, '');
-            if (word.length <= 3) return word;
-            if (word.endsWith('ies'))  return word.slice(0, -3) + 'y';
-            if (word.endsWith('ism'))  return word.slice(0, -3);
-            if (word.endsWith('ist'))  return word.slice(0, -3);
-            if (word.endsWith('ing'))  return word.slice(0, -3);
-            if (word.endsWith('ed'))   return word.slice(0, -2);
-            if (word.endsWith('es'))   return word.slice(0, -2);
-            if (word.endsWith('s'))    return word.slice(0, -1);
+            let prev = null;
+            while (prev !== word && word.length > 3) {{
+                prev = word;
+                if (word.endsWith('ies'))      word = word.slice(0, -3) + 'y';
+                else if (word.endsWith('ism')) word = word.slice(0, -3);
+                else if (word.endsWith('ist')) word = word.slice(0, -3);
+                else if (word.endsWith('ing')) word = word.slice(0, -3);
+                else if (word.endsWith('ed'))  word = word.slice(0, -2);
+                else if (word.endsWith('es'))  word = word.slice(0, -2);
+                else if (word.endsWith('s'))   word = word.slice(0, -1);
+            }}
             return word;
         }}
 
@@ -2810,36 +2868,47 @@ class PhilJobsScraper:
             document.getElementById('kwEmptyState').classList.add('hidden');
             document.getElementById('kwResults').classList.remove('hidden');
 
-            // Build bubble chart by GROUPING raw words by stem.
-            // For each job, count each stem at most once. Display label = longest raw word with that stem.
-            // Skip terms that appear in too many descriptions to be informative (data.bubbleStopwords).
-            const bubbleStops = new Set(data.bubbleStopwords || []);
-            const stemGroups = new Map();
-            matchingJobs.forEach(j => {{
-                const seenStemsThisJob = new Set();
-                j.terms.forEach(t => {{
-                    if (t.length < 4) return;
-                    if (bubbleStops.has(t)) return;
-                    const s = kwStem(t);
-                    if (seenStemsThisJob.has(s)) return;
-                    seenStemsThisJob.add(s);
-                    const existing = stemGroups.get(s);
-                    if (!existing) {{
-                        stemGroups.set(s, {{ count: 1, label: t }});
-                    }} else {{
-                        existing.count += 1;
-                        if (t.length > existing.label.length) existing.label = t;
-                    }}
-                }});
+            // Build bubble chart from the synonym map (field-defining alternatives),
+            // NOT from corpus co-occurrence. Each bubble = a synonym, sized by how
+            // many jobs in the corpus contain that specific term (via stem matching).
+            // This surfaces "what are the other names the field uses for this
+            // concept" rather than "what words show up alongside this in postings".
+            const qLower = q.toLowerCase();
+            const queryStem = kwStem(qLower);
+            const synonymList = data.synonymMap[qLower] || data.synonymMap[queryStem] || [];
+            // Build the candidate set: query + synonyms, deduped by stem
+            const stemToBubble = new Map();
+            const addBubble = (rawTerm, isQuery) => {{
+                const s = kwStem(rawTerm.toLowerCase());
+                if (!s) return;
+                if (stemToBubble.has(s)) {{
+                    // Keep longest label
+                    const existing = stemToBubble.get(s);
+                    if (rawTerm.length > existing.label.length) existing.label = rawTerm;
+                    if (isQuery) existing.isQuery = true;
+                }} else {{
+                    stemToBubble.set(s, {{ label: rawTerm, isQuery: !!isQuery, stem: s }});
+                }}
+            }};
+            addBubble(qLower, true);
+            synonymList.forEach(syn => addBubble(syn, false));
+
+            // For each candidate stem, count how many jobs in the corpus contain it
+            const bubbles = [];
+            for (const [stem, entry] of stemToBubble) {{
+                let count = 0;
+                for (const j of data.jobsForKeyword) {{
+                    if (j._stemSet.has(stem)) count++;
+                }}
+                bubbles.push({{ label: entry.label, count, isQuery: entry.isQuery }});
+            }}
+            // Sort: query first, then by count desc
+            bubbles.sort((a, b) => {{
+                if (a.isQuery && !b.isQuery) return -1;
+                if (!a.isQuery && b.isQuery) return 1;
+                return b.count - a.count;
             }});
-            // Don't include the query stem in the orbit
-            const queryStem = kwStem(q.toLowerCase());
-            const sortedGroups = Array.from(stemGroups.entries())
-                .filter(([stem]) => stem !== queryStem)
-                .sort((a, b) => b[1].count - a[1].count)
-                .slice(0, 25)
-                .map(([stem, g]) => [g.label, g.count]);
-            renderBubbleChart(q, sortedGroups, matchCount);
+            renderBubbleChart(q, bubbles, matchCount);
 
             // Trend chart: matching-job count per week
             const weekCounts = {{}};
@@ -2850,20 +2919,31 @@ class PhilJobsScraper:
             renderKwTrend(data.dates.map(d => weekCounts[d]), q);
         }}
 
-        function renderBubbleChart(query, termsWithCounts, totalMatches) {{
+        function renderBubbleChart(query, bubbles, totalMatches) {{
             const container = document.getElementById('kwBubble');
             container.innerHTML = '';
             const width = container.clientWidth || 400;
             const height = 340;
 
-            // Center node = the query (sized large)
-            const nodes = [{{ id: query, count: totalMatches, isQuery: true, fixed: true }}];
-            termsWithCounts.forEach(([t, c]) => nodes.push({{ id: t, count: c, isQuery: false }}));
+            // If we have no synonyms AND the query has no matches, show a helpful empty state
+            if (bubbles.length === 0) {{
+                container.innerHTML = '<div class="text-gray-400 text-center py-12 text-sm">No field-defining synonyms found for this term in our map. The map covers the top 150 most frequent corpus terms — your term may be rare or use vocabulary the field doesn\\'t yet emphasize.</div>';
+                return;
+            }}
 
-            const maxCount = Math.max(...nodes.map(n => n.count));
-            const minR = 14, maxR = 50;
+            // Convert bubble entries to D3 node format
+            const nodes = bubbles.map(b => ({{
+                id: b.label,
+                count: b.count,
+                isQuery: b.isQuery
+            }}));
+            const maxCount = Math.max(1, ...nodes.map(n => n.count));
+            const minR = 18, maxR = 55;
             nodes.forEach(n => {{
-                n.r = minR + (maxR - minR) * Math.sqrt(n.count / maxCount);
+                // Minimum size for query bubble even when 0 matches
+                const safeCount = (n.isQuery && n.count === 0) ? 0.5 : n.count;
+                n.r = minR + (maxR - minR) * Math.sqrt(Math.max(safeCount, 0) / maxCount);
+                if (n.r < minR) n.r = minR;
             }});
 
             const svg = d3.select(container).append('svg')
@@ -4161,18 +4241,22 @@ class PhilJobsScraper:
         // generated weekly by Claude at scrape time and embedded as data.synonymMap.
         let kwTrendChart = null;
 
-        // Simple morphological stemmer — handles plural -s, -es, -ies → -y, -ing, -ed,
-        // -ism → -ist (or root), -ist → root. Conservative; we want to match more, not less.
+        // Recursive morphological stemmer. Applies suffix rules until stable
+        // so "feminists" → "feminist" → "femin" all collapse to one stem.
+        // Mirrors the Python _keyword_stem method.
         function kwStem(word) {{
             word = word.toLowerCase().replace(/[^a-z]/g, '');
-            if (word.length <= 3) return word;
-            if (word.endsWith('ies'))  return word.slice(0, -3) + 'y';
-            if (word.endsWith('ism'))  return word.slice(0, -3);
-            if (word.endsWith('ist'))  return word.slice(0, -3);
-            if (word.endsWith('ing'))  return word.slice(0, -3);
-            if (word.endsWith('ed'))   return word.slice(0, -2);
-            if (word.endsWith('es'))   return word.slice(0, -2);
-            if (word.endsWith('s'))    return word.slice(0, -1);
+            let prev = null;
+            while (prev !== word && word.length > 3) {{
+                prev = word;
+                if (word.endsWith('ies'))      word = word.slice(0, -3) + 'y';
+                else if (word.endsWith('ism')) word = word.slice(0, -3);
+                else if (word.endsWith('ist')) word = word.slice(0, -3);
+                else if (word.endsWith('ing')) word = word.slice(0, -3);
+                else if (word.endsWith('ed'))  word = word.slice(0, -2);
+                else if (word.endsWith('es'))  word = word.slice(0, -2);
+                else if (word.endsWith('s'))   word = word.slice(0, -1);
+            }}
             return word;
         }}
 
@@ -4237,36 +4321,47 @@ class PhilJobsScraper:
             document.getElementById('kwEmptyState').classList.add('hidden');
             document.getElementById('kwResults').classList.remove('hidden');
 
-            // Build bubble chart by GROUPING raw words by stem.
-            // For each job, count each stem at most once. Display label = longest raw word with that stem.
-            // Skip terms that appear in too many descriptions to be informative (data.bubbleStopwords).
-            const bubbleStops = new Set(data.bubbleStopwords || []);
-            const stemGroups = new Map();
-            matchingJobs.forEach(j => {{
-                const seenStemsThisJob = new Set();
-                j.terms.forEach(t => {{
-                    if (t.length < 4) return;
-                    if (bubbleStops.has(t)) return;
-                    const s = kwStem(t);
-                    if (seenStemsThisJob.has(s)) return;
-                    seenStemsThisJob.add(s);
-                    const existing = stemGroups.get(s);
-                    if (!existing) {{
-                        stemGroups.set(s, {{ count: 1, label: t }});
-                    }} else {{
-                        existing.count += 1;
-                        if (t.length > existing.label.length) existing.label = t;
-                    }}
-                }});
+            // Build bubble chart from the synonym map (field-defining alternatives),
+            // NOT from corpus co-occurrence. Each bubble = a synonym, sized by how
+            // many jobs in the corpus contain that specific term (via stem matching).
+            // This surfaces "what are the other names the field uses for this
+            // concept" rather than "what words show up alongside this in postings".
+            const qLower = q.toLowerCase();
+            const queryStem = kwStem(qLower);
+            const synonymList = data.synonymMap[qLower] || data.synonymMap[queryStem] || [];
+            // Build the candidate set: query + synonyms, deduped by stem
+            const stemToBubble = new Map();
+            const addBubble = (rawTerm, isQuery) => {{
+                const s = kwStem(rawTerm.toLowerCase());
+                if (!s) return;
+                if (stemToBubble.has(s)) {{
+                    // Keep longest label
+                    const existing = stemToBubble.get(s);
+                    if (rawTerm.length > existing.label.length) existing.label = rawTerm;
+                    if (isQuery) existing.isQuery = true;
+                }} else {{
+                    stemToBubble.set(s, {{ label: rawTerm, isQuery: !!isQuery, stem: s }});
+                }}
+            }};
+            addBubble(qLower, true);
+            synonymList.forEach(syn => addBubble(syn, false));
+
+            // For each candidate stem, count how many jobs in the corpus contain it
+            const bubbles = [];
+            for (const [stem, entry] of stemToBubble) {{
+                let count = 0;
+                for (const j of data.jobsForKeyword) {{
+                    if (j._stemSet.has(stem)) count++;
+                }}
+                bubbles.push({{ label: entry.label, count, isQuery: entry.isQuery }});
+            }}
+            // Sort: query first, then by count desc
+            bubbles.sort((a, b) => {{
+                if (a.isQuery && !b.isQuery) return -1;
+                if (!a.isQuery && b.isQuery) return 1;
+                return b.count - a.count;
             }});
-            // Don't include the query stem in the orbit
-            const queryStem = kwStem(q.toLowerCase());
-            const sortedGroups = Array.from(stemGroups.entries())
-                .filter(([stem]) => stem !== queryStem)
-                .sort((a, b) => b[1].count - a[1].count)
-                .slice(0, 25)
-                .map(([stem, g]) => [g.label, g.count]);
-            renderBubbleChart(q, sortedGroups, matchCount);
+            renderBubbleChart(q, bubbles, matchCount);
 
             // Trend chart: matching-job count per week
             const weekCounts = {{}};
@@ -4277,20 +4372,31 @@ class PhilJobsScraper:
             renderKwTrend(data.dates.map(d => weekCounts[d]), q);
         }}
 
-        function renderBubbleChart(query, termsWithCounts, totalMatches) {{
+        function renderBubbleChart(query, bubbles, totalMatches) {{
             const container = document.getElementById('kwBubble');
             container.innerHTML = '';
             const width = container.clientWidth || 400;
             const height = 340;
 
-            // Center node = the query (sized large)
-            const nodes = [{{ id: query, count: totalMatches, isQuery: true, fixed: true }}];
-            termsWithCounts.forEach(([t, c]) => nodes.push({{ id: t, count: c, isQuery: false }}));
+            // If we have no synonyms AND the query has no matches, show a helpful empty state
+            if (bubbles.length === 0) {{
+                container.innerHTML = '<div class="text-gray-400 text-center py-12 text-sm">No field-defining synonyms found for this term in our map. The map covers the top 150 most frequent corpus terms — your term may be rare or use vocabulary the field doesn\\'t yet emphasize.</div>';
+                return;
+            }}
 
-            const maxCount = Math.max(...nodes.map(n => n.count));
-            const minR = 14, maxR = 50;
+            // Convert bubble entries to D3 node format
+            const nodes = bubbles.map(b => ({{
+                id: b.label,
+                count: b.count,
+                isQuery: b.isQuery
+            }}));
+            const maxCount = Math.max(1, ...nodes.map(n => n.count));
+            const minR = 18, maxR = 55;
             nodes.forEach(n => {{
-                n.r = minR + (maxR - minR) * Math.sqrt(n.count / maxCount);
+                // Minimum size for query bubble even when 0 matches
+                const safeCount = (n.isQuery && n.count === 0) ? 0.5 : n.count;
+                n.r = minR + (maxR - minR) * Math.sqrt(Math.max(safeCount, 0) / maxCount);
+                if (n.r < minR) n.r = minR;
             }});
 
             const svg = d3.select(container).append('svg')
