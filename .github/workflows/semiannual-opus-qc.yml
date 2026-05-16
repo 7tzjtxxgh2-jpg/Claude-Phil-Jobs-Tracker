@@ -1,16 +1,19 @@
-name: Bimonthly Opus QC Check
+name: Semi-Annual Opus QC Check
 
-# Runs every 2 months (on the 15th at 14:00 UTC) to verify the live
-# Sonnet classifications against an independent Opus reclassification.
+# Runs twice a year (January 15 and July 15 at 14:00 UTC) to verify the
+# live Sonnet classifications against an independent Opus reclassification.
 # Sonnet labels remain authoritative on the dashboard; Opus output is
-# saved separately for comparison.
+# saved separately for comparison. The dashboard owner reviews the report
+# manually after each run and applies any corrections deemed warranted.
 #
 # Schedule reasoning: the 15th avoids clashing with the Monday weekly
 # scrape and keeps cadence regular regardless of which day of the week
-# the 15th falls on.
+# the 15th falls on. Twice a year is enough to catch any meaningful drift
+# without overspending — at corpus growth rates around ~10-20 jobs/week,
+# meaningful agreement-rate shifts happen on the order of months, not weeks.
 on:
   schedule:
-    - cron: '0 14 15 */2 *'  # Jan/Mar/May/Jul/Sep/Nov 15th at 14:00 UTC
+    - cron: '0 14 15 1,7 *'  # Jan 15 + Jul 15 at 14:00 UTC
   workflow_dispatch:
 
 permissions:
