@@ -246,7 +246,7 @@ DETAIL_AOS = {
 # stored jobs. Prior classifications get preserved on each job under
 # `classification_v1` (or `classification_v<N>`) so we can audit how labels
 # shifted between revisions.
-TAXONOMY_VERSION = "2026-05-16-sonnet"
+TAXONOMY_VERSION = "2026-05-16-sonnet-v2"
 
 # Single source of truth for the Claude model used across all API calls
 # (classification, state resolution, synonym map). Changing this should
@@ -357,7 +357,7 @@ Science, Logic, & Mathematics: Philosophy of Science (General), Philosophy of Bi
 
 INSTRUCTIONS:
 Return ONLY a JSON object with these fields:
-- main_aos: array of main category names that apply (at least one; use ["Open"] if open/unclear)
+- main_aos: array of main category names that apply (at least one; can be multiple — see Rule 1. Use ["Open"] only if there is no stated preference at all — see Rule 2)
 - detail_aos: object mapping each main_aos entry to array of applicable detail subcategories (use [] if none clearly apply)
 - position_type: exactly one of the five values below — read the title, job category, and description carefully
 - institution_type: one of "Research University", "Teaching College", "Other"
@@ -372,12 +372,17 @@ POSITION TYPE — pick exactly one:
 - "Other": department chairs with no faculty component, deans, purely administrative positions, non-academic positions, anything that does not fit the above
 
 Rules:
-1. A job can belong to multiple main AOS categories
-2. Open means any area of philosophy is acceptable; use ["Open"] only if the posting has no specific AOS requirements
-3. Base AOS classification primarily on the AOS field; use title and description as context
-4. For detail_aos, only include subcategories clearly mentioned or strongly implied
-5. For position_type, prioritize explicit wording in the title and job category over inferred meaning
-6. Return only valid JSON — no markdown, no code fences
+1. A job can — and often should — belong to MULTIPLE main AOS categories. If the AOS field, title, or description mentions content from more than one main category, include ALL of them.
+   Examples:
+   - "Philosophy and Ethics of AI" → ["Ethics", "Science, Logic, & Mathematics"] (AI is under Philosophy of Computing / Philosophy of AI in Science, Logic, & Mathematics)
+   - "Applied Ethics and Philosophy of Technology" → ["Ethics", "Science, Logic, & Mathematics"]
+   - "Ethics, civic engagement, and general education" → ["Ethics", "Social & Political Philosophy"]
+   - "Philosophy of attention, intellectual virtue" → ["Metaphysics & Epistemology", "Ethics"]
+2. Use ["Open"] ONLY when the posting genuinely has no stated preference for any specific area. If the AOS field says anything like "Open, with preference for X", "Open but X preferred", "Open to all areas but X", "Open, although X is welcome" — do NOT use "Open". Use the preferred area(s) instead. The presence of any stated preference, even a soft one, disqualifies "Open".
+3. Base AOS classification on the AOS field, title, AOC field, and description together. Do not ignore the description — preferences are often stated there even when the AOS field says "Open".
+4. For detail_aos, only include subcategories clearly mentioned or strongly implied.
+5. For position_type, prioritize explicit wording in the title and job category over inferred meaning.
+6. Return only valid JSON — no markdown, no code fences.
 
 JOB POSTING:
 Institution: {institution}
@@ -763,7 +768,7 @@ class PhilJobsScraper:
             aos_text=job.get('aos', ''),
             aoc_text=job.get('aoc', ''),
             location=job.get('location', ''),
-            description=(job.get('description', '') or '')[:500]
+            description=self._strip_eeo_boilerplate(job.get('description', '') or '')
         )
 
         for attempt in range(3):
@@ -1065,12 +1070,13 @@ class PhilJobsScraper:
                     if m1 != m2:
                         main_aos_matrix[m1][m2] += 1
 
-            # Solo vs. joint
-            if len(main_list) == 1:
-                main_aos_solo_vs_joint[main_list[0]]['solo'] += 1
-            elif len(main_list) > 1:
-                for m in main_list:
-                    main_aos_solo_vs_joint[m]['joint'] += 1
+            # Solo vs. joint — faculty positions only (excludes position_type "Other")
+            if classification.get('position_type') != 'Other':
+                if len(main_list) == 1:
+                    main_aos_solo_vs_joint[main_list[0]]['solo'] += 1
+                elif len(main_list) > 1:
+                    for m in main_list:
+                        main_aos_solo_vs_joint[m]['joint'] += 1
 
             # Detail AOS by context
             for main, details in detail_dict.items():
@@ -1151,17 +1157,19 @@ class PhilJobsScraper:
             detail_dict = classification.get('detail_aos', {})
             week = job.get('scraped_date', '')[:10]
             job_mode = 'solo' if len(main_list) == 1 else 'joint'
+            is_faculty = classification.get('position_type') != 'Other'
 
             for m1 in main_list:
                 for m2 in main_list:
                     if m1 != m2:
                         main_aos_matrix[m1][m2] += 1
 
-            if len(main_list) == 1:
-                main_aos_solo_vs_joint[main_list[0]]['solo'] += 1
-            elif len(main_list) > 1:
-                for m in main_list:
-                    main_aos_solo_vs_joint[m]['joint'] += 1
+            if is_faculty:
+                if len(main_list) == 1:
+                    main_aos_solo_vs_joint[main_list[0]]['solo'] += 1
+                elif len(main_list) > 1:
+                    for m in main_list:
+                        main_aos_solo_vs_joint[m]['joint'] += 1
 
             for main, details in detail_dict.items():
                 for detail in details:
@@ -1471,7 +1479,7 @@ class PhilJobsScraper:
                 aos_text=job.get('aos', ''),
                 aoc_text=job.get('aoc', ''),
                 location=job.get('location', ''),
-                description=(job.get('description', '') or '')[:500],
+                description=self._strip_eeo_boilerplate(job.get('description', '') or ''),
             )
             if i % 25 == 0:
                 print(f"  [{i}/{len(target_jobs)}] {job.get('institution', '?')[:50]}")
@@ -2522,8 +2530,8 @@ class PhilJobsScraper:
 
         <!-- Solo vs. Joint -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-1">Solo vs. Joint Hiring</h2>
-            <p class="text-sm text-gray-500 mb-4">For each main AOS, jobs listing it as the <em>only</em> area (solo) versus alongside other areas (joint) — after Lassiter (2023)</p>
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">Faculty vs. Joint Hiring</h2>
+            <p class="text-sm text-gray-500 mb-4">For each main AOS, jobs listing it as the <em>only</em> area (solo) versus alongside other areas (joint) — after Lassiter (2023). <span class="italic">Non-faculty postings (e.g., editors, administrators) are excluded here; see the Position Type Trends section below for those.</span></p>
             <div style="min-height:300px;">
                 <canvas id="soloJointChart"></canvas>
             </div>
@@ -3493,10 +3501,12 @@ class PhilJobsScraper:
             return ptSlot[mode] || Array(data.dates.length).fill(0);
         }}
 
+        function displayPt(pt) {{ return pt === 'Other' ? 'Non-faculty' : pt; }}
+
         function updatePositionTypeChart() {{
             const selected = posTypeSelect.value;
             const ptDatasets = data.positionTypes.map(pt => ({{
-                label: pt,
+                label: displayPt(pt),
                 data: ptSeriesFor(pt, selected),
                 borderColor: data.positionTypeColors[pt] || '#6b7280',
                 backgroundColor: (data.positionTypeColors[pt] || '#6b7280') + '30',
@@ -3522,8 +3532,8 @@ class PhilJobsScraper:
             let html = '<table class="w-full border-collapse"><thead><tr>';
             html += '<th class="text-left py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200 text-sm">AOS Category</th>';
             data.positionTypes.forEach(pt => {{
-                const short = pt.replace('Visiting / Adjunct / Lecturer (Fixed-Term)', 'Visiting/Adj/Lect').replace('Tenured / Continuing / Permanent', 'Tenured/Perm').replace('Postdoc / Fellowship', 'Postdoc/Fellow');
-                html += `<th class="py-2 px-2 bg-gray-50 font-semibold border border-gray-200 text-center text-xs" style="color:${{data.positionTypeColors[pt] || '#6b7280'}}" title="${{pt}}">${{short}}</th>`;
+                const short = displayPt(pt).replace('Visiting / Adjunct / Lecturer (Fixed-Term)', 'Visiting/Adj/Lect').replace('Tenured / Continuing / Permanent', 'Tenured/Perm').replace('Postdoc / Fellowship', 'Postdoc/Fellow');
+                html += `<th class="py-2 px-2 bg-gray-50 font-semibold border border-gray-200 text-center text-xs" style="color:${{data.positionTypeColors[pt] || '#6b7280'}}" title="${{displayPt(pt)}}">${{short}}</th>`;
             }});
             html += '<th class="py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200 text-center text-sm">Total</th></tr></thead><tbody>';
             aosRows.forEach((aos, i) => {{
@@ -4166,8 +4176,8 @@ class PhilJobsScraper:
 
         <!-- Solo vs. Joint -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-1">Solo vs. Joint Hiring</h2>
-            <p class="text-sm text-gray-500 mb-4">For each main AOS, jobs listing it as the <em>only</em> area (solo) versus alongside other areas (joint)</p>
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">Faculty vs. Joint Hiring</h2>
+            <p class="text-sm text-gray-500 mb-4">For each main AOS, jobs listing it as the <em>only</em> area (solo) versus alongside other areas (joint). <span class="italic">Non-faculty postings (e.g., editors, administrators) are excluded here; see the Position Type Trends section below for those.</span></p>
             <div style="min-height:300px;">
                 <canvas id="soloJointChart"></canvas>
             </div>
@@ -5033,10 +5043,12 @@ class PhilJobsScraper:
             return ptSlot[mode] || Array(data.dates.length).fill(0);
         }}
 
+        function displayPt(pt) {{ return pt === 'Other' ? 'Non-faculty' : pt; }}
+
         function updatePositionTypeChart() {{
             const selected = posTypeSelect.value;
             const ptDatasets = data.positionTypes.map(pt => ({{
-                label: pt,
+                label: displayPt(pt),
                 data: ptSeriesFor(pt, selected),
                 borderColor: data.positionTypeColors[pt] || '#6b7280',
                 backgroundColor: (data.positionTypeColors[pt] || '#6b7280') + '30',
@@ -5062,8 +5074,8 @@ class PhilJobsScraper:
             let html = '<table class="w-full border-collapse"><thead><tr>';
             html += '<th class="text-left py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200 text-sm">AOS Category</th>';
             data.positionTypes.forEach(pt => {{
-                const short = pt.replace('Visiting / Adjunct / Lecturer (Fixed-Term)', 'Visiting/Adj/Lect').replace('Tenured / Continuing / Permanent', 'Tenured/Perm').replace('Postdoc / Fellowship', 'Postdoc/Fellow');
-                html += `<th class="py-2 px-2 bg-gray-50 font-semibold border border-gray-200 text-center text-xs" style="color:${{data.positionTypeColors[pt] || '#6b7280'}}" title="${{pt}}">${{short}}</th>`;
+                const short = displayPt(pt).replace('Visiting / Adjunct / Lecturer (Fixed-Term)', 'Visiting/Adj/Lect').replace('Tenured / Continuing / Permanent', 'Tenured/Perm').replace('Postdoc / Fellowship', 'Postdoc/Fellow');
+                html += `<th class="py-2 px-2 bg-gray-50 font-semibold border border-gray-200 text-center text-xs" style="color:${{data.positionTypeColors[pt] || '#6b7280'}}" title="${{displayPt(pt)}}">${{short}}</th>`;
             }});
             html += '<th class="py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200 text-center text-sm">Total</th></tr></thead><tbody>';
             aosRows.forEach((aos, i) => {{
