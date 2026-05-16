@@ -1,10 +1,7 @@
 {
   "ability": [],
   "able": [],
-  "access": [
-    "accessible",
-    "accessibility"
-  ],
+  "access": [],
   "across": [],
   "active": [
     "actively",
@@ -19,14 +16,14 @@
   "additional": [],
   "applied": [
     "applied ethics",
-    "applied philosophy",
-    "practical ethics"
+    "applied philosophy"
   ],
   "arts": [],
   "assistant": [],
   "associate": [
-    "associated",
-    "association"
+    "assistant",
+    "adjunct",
+    "lecturer"
   ],
   "background": [
     "backgrounds"
@@ -41,8 +38,9 @@
   "commitment": [],
   "committed": [],
   "competence": [
-    "competent",
-    "competency"
+    "competency",
+    "competencies",
+    "competent"
   ],
   "comprehensive": [],
   "consideration": [],
@@ -55,7 +53,7 @@
   "critical": [
     "critical theory",
     "critical thinking",
-    "frankfurt school"
+    "critique"
   ],
   "current": [],
   "curriculum": [],
@@ -63,25 +61,33 @@
   "dedicated": [],
   "demonstrate": [],
   "demonstrated": [],
-  "description": [],
+  "description": [
+    "describe",
+    "described",
+    "describing"
+  ],
   "development": [],
   "discipline": [
     "disciplinary",
-    "disciplines"
+    "disciplines",
+    "field"
   ],
   "diverse": [],
   "education": [],
-  "educational": [],
+  "educational": [
+    "education",
+    "philosophy of education"
+  ],
   "eligible": [
-    "eligibility"
+    "eligibility",
+    "qualified",
+    "qualification"
   ],
   "employees": [],
   "engage": [],
   "engagement": [],
   "environment": [
     "environmental",
-    "ecology",
-    "ecological",
     "environmental philosophy",
     "environmental ethics"
   ],
@@ -93,7 +99,7 @@
     "normative ethics",
     "applied ethics",
     "moral philosophy",
-    "moral"
+    "moral theory"
   ],
   "ethics": [
     "ethical",
@@ -111,27 +117,27 @@
   "first": [],
   "focus": [],
   "funding": [],
-  "general": [
-    "generalist"
-  ],
+  "general": [],
   "health": [
     "healthcare",
     "medical",
     "biomedical",
     "medicine",
     "public health",
-    "health care"
+    "health ethics"
   ],
   "high": [],
-  "higher": [
-    "higher education"
+  "higher": [],
+  "highly": [
+    "high",
+    "strong",
+    "strongly",
+    "excellent"
   ],
-  "highly": [],
   "history": [
     "historical",
     "history of philosophy"
   ],
-  "home": [],
   "hours": [],
   "https": [],
   "humanities": [],
@@ -141,7 +147,8 @@
   ],
   "innovative": [],
   "intellectual": [
-    "intellectuals"
+    "scholarly",
+    "academic"
   ],
   "interdisciplinary": [
     "multidisciplinary",
@@ -151,11 +158,7 @@
   "interest": [],
   "interested": [],
   "interests": [],
-  "introductory": [
-    "introduction",
-    "intro",
-    "survey"
-  ],
+  "introductory": [],
   "july": [],
   "knowledge": [
     "knowledgeable"
@@ -172,24 +175,32 @@
   "limited": [],
   "located": [
     "location",
-    "locate"
+    "based"
   ],
   "logic": [
     "logical",
     "formal logic",
+    "philosophical logic",
     "symbolic logic",
-    "mathematical logic",
-    "philosophical logic"
+    "mathematical logic"
   ],
   "major": [],
   "march": [],
+  "medical": [
+    "medicine",
+    "biomedical",
+    "bioethics",
+    "medical ethics",
+    "clinical ethics",
+    "healthcare ethics"
+  ],
   "member": [],
   "members": [],
   "mission": [],
   "month": [],
   "names": [
-    "name",
-    "named"
+    "named",
+    "naming"
   ],
   "needs": [],
   "online": [],
@@ -198,7 +209,10 @@
     "opportunity"
   ],
   "participate": [],
-  "person": [],
+  "person": [
+    "personal identity",
+    "personhood"
+  ],
   "philosophical": [
     "philosophy",
     "philosophic"
@@ -214,29 +228,24 @@
   ],
   "postdoctoral": [
     "postdoc",
-    "postdoctorate",
     "post-doctoral",
     "post-doc"
   ],
-  "potential": [
-    "potentiality",
-    "potency",
-    "dunamis"
+  "potential": [],
+  "prior": [
+    "previous",
+    "earlier",
+    "formerly"
   ],
-  "prior": [],
-  "process": [
-    "process philosophy",
-    "processual",
-    "whitehead",
-    "whiteheadian"
-  ],
+  "process": [],
   "professional": [],
   "projects": [],
   "protected": [],
   "public": [],
   "received": [
     "receive",
-    "receiving"
+    "receiving",
+    "obtained"
   ],
   "recommendation": [
     "recommendations"
@@ -248,16 +257,15 @@
   "renewable": [],
   "renewal": [
     "renewable",
-    "renewed",
-    "renew"
+    "reappointment"
   ],
   "research": [],
   "retirement": [],
   "role": [],
   "scholars": [
     "scholar",
-    "scholarly",
-    "scholarship"
+    "scholarship",
+    "scholarly"
   ],
   "science": [
     "sciences",
@@ -297,12 +305,12 @@
   ],
   "success": [],
   "syllabi": [
-    "syllabus"
+    "syllabus",
+    "syllabuses"
   ],
   "system": [
     "systems",
-    "systematic",
-    "systemic"
+    "systematic"
   ],
   "technology": [
     "technologies",
@@ -310,12 +318,16 @@
     "philosophy of technology"
   ],
   "term": [
-    "terms"
+    "terms",
+    "temporary",
+    "fixed-term"
   ],
   "thinking": [],
   "three": [],
   "training": [
-    "trained"
+    "trained",
+    "preparation",
+    "formation"
   ],
   "vision": [],
   "visit": [
@@ -323,7 +335,7 @@
   ],
   "visiting": [
     "visitor",
-    "visit"
+    "guest"
   ],
   "vitae": [
     "cv",
