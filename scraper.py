@@ -2530,7 +2530,7 @@ class PhilJobsScraper:
 
         <!-- Solo vs. Joint -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-1">Faculty vs. Joint Hiring</h2>
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">Faculty Solo vs. Joint Hiring</h2>
             <p class="text-sm text-gray-500 mb-4">For each main AOS, jobs listing it as the <em>only</em> area (solo) versus alongside other areas (joint) — after Lassiter (2023). <span class="italic">Non-faculty postings (e.g., editors, administrators) are excluded here; see the Position Type Trends section below for those.</span></p>
             <div style="min-height:300px;">
                 <canvas id="soloJointChart"></canvas>
@@ -4176,7 +4176,7 @@ class PhilJobsScraper:
 
         <!-- Solo vs. Joint -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-1">Faculty vs. Joint Hiring</h2>
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">Faculty Solo vs. Joint Hiring</h2>
             <p class="text-sm text-gray-500 mb-4">For each main AOS, jobs listing it as the <em>only</em> area (solo) versus alongside other areas (joint). <span class="italic">Non-faculty postings (e.g., editors, administrators) are excluded here; see the Position Type Trends section below for those.</span></p>
             <div style="min-height:300px;">
                 <canvas id="soloJointChart"></canvas>
