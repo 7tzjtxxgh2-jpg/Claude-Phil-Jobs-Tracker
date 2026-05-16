@@ -1,0 +1,82 @@
+name: Bimonthly Opus QC Check
+
+# Runs every 2 months (on the 15th at 14:00 UTC) to verify the live
+# Sonnet classifications against an independent Opus reclassification.
+# Sonnet labels remain authoritative on the dashboard; Opus output is
+# saved separately for comparison.
+#
+# Schedule reasoning: the 15th avoids clashing with the Monday weekly
+# scrape and keeps cadence regular regardless of which day of the week
+# the 15th falls on.
+on:
+  schedule:
+    - cron: '0 14 15 */2 *'  # Jan/Mar/May/Jul/Sep/Nov 15th at 14:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  opus-qc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4 anthropic
+
+      - name: Run Opus QC
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.CLAUDE }}
+        run: |
+          python << 'PYEOF'
+          import sys
+          sys.path.insert(0, '.')
+          from scraper import PhilJobsScraper
+
+          scraper = PhilJobsScraper()
+          historical_data = scraper.load_historical_data()
+          # For corpora over 500 jobs, downsample to keep cost bounded.
+          # Below that threshold, classify every job.
+          n_jobs = len([j for j in historical_data.get('jobs', []) if j.get('classification')])
+          sample = 200 if n_jobs > 500 else None
+          scraper.run_opus_qc(historical_data, sample_size=sample)
+          PYEOF
+
+      - name: Commit Opus QC outputs
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/qc_opus_*.json docs/QC_REPORT.md
+          git diff --staged --quiet || git commit -m "Bimonthly Opus QC: $(date +'%Y-%m-%d')"
+          git push
+
+      - name: Post summary as GitHub Issue
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const date = new Date().toISOString().split('T')[0];
+            const reportPath = 'docs/QC_REPORT.md';
+            const report = fs.existsSync(reportPath) ? fs.readFileSync(reportPath, 'utf8').slice(0, 4500) : 'Report file not found.';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🧪 Opus QC report — ${date}`,
+              body: `Bimonthly QC check comparing live Sonnet classifications against Opus.\n\n[View run](${runUrl}) · [Full report](../blob/main/docs/QC_REPORT.md)\n\n---\n\n${report}`,
+              labels: ['opus-qc'],
+            });

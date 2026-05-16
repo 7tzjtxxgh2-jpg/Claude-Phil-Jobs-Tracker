@@ -254,6 +254,13 @@ TAXONOMY_VERSION = "2026-05-16-sonnet"
 # new model. Each classification stores `_model` for per-job audit.
 CLAUDE_MODEL = "claude-sonnet-4-5"
 
+# Higher-capability model used only for the periodic QC check (run every
+# ~2 months via .github/workflows/quarterly-opus-qc.yml). Opus classifies
+# every job in parallel; results are saved to data/qc_opus_<date>.json and
+# summarized in docs/QC_REPORT.md. Does NOT replace the live CLAUDE_MODEL
+# labels — the QC produces an independent reference set for comparison.
+OPUS_MODEL = "claude-opus-4-5"
+
 CROSS_CUTTING_AREAS = [
     "Feminist Philosophy",
     "Philosophy of Race",
@@ -1415,6 +1422,273 @@ class PhilJobsScraper:
         self._synonym_map_cache = synonym_map
         return synonym_map
 
+    # ── Periodic Opus QC ─────────────────────────────────────────────────
+
+    def run_opus_qc(self, historical_data, sample_size=None):
+        """Run a quality-control reclassification pass using Opus.
+
+        For each job, Opus generates a parallel classification using the same
+        prompt and taxonomy as the live Sonnet pipeline. Results do NOT
+        replace the current `classification` field — they're saved to
+        data/qc_opus_<date>.json for comparison.
+
+        Then writes docs/QC_REPORT.md with the agreement summary and a list of
+        every job where Sonnet's main_aos differed from Opus's.
+
+        If `sample_size` is set, randomly sample that many jobs instead of
+        classifying every one (cost control for large corpora).
+        """
+        api_key = os.environ.get('ANTHROPIC_API_KEY')
+        if not api_key:
+            print("  No ANTHROPIC_API_KEY — skipping Opus QC")
+            return None
+        try:
+            import anthropic
+            client = anthropic.Anthropic(api_key=api_key)
+        except ImportError:
+            print("  anthropic package not installed — skipping Opus QC")
+            return None
+
+        all_jobs = [j for j in historical_data.get('jobs', []) if j.get('classification')]
+        if sample_size and len(all_jobs) > sample_size:
+            import random
+            random.seed(42)  # reproducible sample within a run
+            target_jobs = random.sample(all_jobs, sample_size)
+            print(f"Opus QC: sampling {sample_size} of {len(all_jobs)} jobs")
+        else:
+            target_jobs = all_jobs
+            print(f"Opus QC: classifying all {len(target_jobs)} jobs")
+
+        opus_results = {}
+        for i, job in enumerate(target_jobs, 1):
+            jid = job.get('id')
+            if not jid:
+                continue
+            prompt_text = CLASSIFICATION_PROMPT.format(
+                institution=job.get('institution', ''),
+                title=job.get('title', ''),
+                job_category=job.get('job_category', ''),
+                aos_text=job.get('aos', ''),
+                aoc_text=job.get('aoc', ''),
+                location=job.get('location', ''),
+                description=(job.get('description', '') or '')[:500],
+            )
+            if i % 25 == 0:
+                print(f"  [{i}/{len(target_jobs)}] {job.get('institution', '?')[:50]}")
+            result = None
+            for attempt in range(3):
+                try:
+                    response = client.messages.create(
+                        model=OPUS_MODEL,
+                        max_tokens=1000,
+                        temperature=0,
+                        messages=[{"role": "user", "content": prompt_text}],
+                    )
+                    text = response.content[0].text.strip()
+                    text = re.sub(r'^```(?:json)?\s*\n?', '', text)
+                    text = re.sub(r'\n?```\s*$', '', text)
+                    result = json.loads(text)
+                    # Same validation pass as classify_job_with_claude
+                    valid_main = [m for m in result.get('main_aos', []) if m in MAIN_AOS_CATEGORIES]
+                    if not valid_main:
+                        valid_main = ['Open']
+                    result['main_aos'] = valid_main
+                    if not isinstance(result.get('detail_aos'), dict):
+                        result['detail_aos'] = {m: [] for m in valid_main}
+                    for main, details in result['detail_aos'].items():
+                        result['detail_aos'][main] = [
+                            d for d in (details or []) if d in DETAIL_AOS.get(main, [])
+                        ]
+                    raw_pt = result.get('position_type') or result.get('job_type', 'Other')
+                    if raw_pt in POSITION_TYPES:
+                        result['position_type'] = raw_pt
+                    elif raw_pt in JOB_TYPE_MIGRATION:
+                        result['position_type'] = JOB_TYPE_MIGRATION[raw_pt]
+                    else:
+                        result['position_type'] = 'Other'
+                    result.pop('job_type', None)
+                    result['_model'] = OPUS_MODEL
+                    result['_classified_at'] = datetime.now().isoformat()
+                    time.sleep(0.5)
+                    break
+                except Exception as e:
+                    print(f"  Opus QC attempt {attempt + 1} on job {jid} failed: {e}")
+                    if attempt < 2:
+                        time.sleep(2)
+            if result is not None:
+                opus_results[jid] = result
+
+        # Save raw Opus output
+        date_str = datetime.now().strftime('%Y-%m-%d')
+        raw_file = self.data_dir / f'qc_opus_{date_str}.json'
+        with open(raw_file, 'w') as f:
+            json.dump({
+                'date': date_str,
+                'reference_model': CLAUDE_MODEL,
+                'qc_model': OPUS_MODEL,
+                'sample_size': sample_size,
+                'jobs_evaluated': len(opus_results),
+                'classifications': opus_results,
+            }, f, indent=2, sort_keys=True)
+        print(f"\nOpus QC raw output → {raw_file}")
+
+        # Generate the human-readable report
+        self._write_qc_report(historical_data, opus_results, date_str)
+        return opus_results
+
+    def _write_qc_report(self, historical_data, opus_results, date_str):
+        """Write a markdown QC report comparing Sonnet vs Opus classifications."""
+        docs_dir = Path('docs')
+        docs_dir.mkdir(exist_ok=True)
+
+        jobs_by_id = {j.get('id'): j for j in historical_data.get('jobs', []) if j.get('id')}
+
+        # Tally agreement metrics
+        n = 0
+        main_match = 0
+        pos_match = 0
+        inst_match = 0
+        per_cat_total = defaultdict(int)
+        per_cat_match = defaultdict(int)
+        disagreements = []
+
+        for jid, opus_cls in opus_results.items():
+            job = jobs_by_id.get(jid)
+            if not job:
+                continue
+            sonnet_cls = job.get('classification') or {}
+            n += 1
+            sonnet_main = set(sonnet_cls.get('main_aos', []))
+            opus_main = set(opus_cls.get('main_aos', []))
+            exact_main = sonnet_main == opus_main
+            if exact_main:
+                main_match += 1
+            sonnet_pt = sonnet_cls.get('position_type', 'Other')
+            opus_pt = opus_cls.get('position_type', 'Other')
+            if sonnet_pt == opus_pt:
+                pos_match += 1
+            sonnet_it = sonnet_cls.get('institution_type', 'Other')
+            opus_it = opus_cls.get('institution_type', 'Other')
+            if sonnet_it == opus_it:
+                inst_match += 1
+            for cat in sonnet_main | opus_main:
+                per_cat_total[cat] += 1
+                if cat in sonnet_main and cat in opus_main:
+                    per_cat_match[cat] += 1
+            if not exact_main or sonnet_pt != opus_pt:
+                disagreements.append({
+                    'id': jid,
+                    'institution': job.get('institution', ''),
+                    'title': job.get('title', ''),
+                    'sonnet_main_aos': sorted(sonnet_main),
+                    'opus_main_aos': sorted(opus_main),
+                    'sonnet_position': sonnet_pt,
+                    'opus_position': opus_pt,
+                    'sonnet_reasoning': sonnet_cls.get('reasoning', ''),
+                    'opus_reasoning': opus_cls.get('reasoning', ''),
+                })
+
+        pct = lambda num, denom: f"{(num / denom * 100):.1f}%" if denom else "n/a"
+
+        lines = [
+            '# Quarterly Opus QC Report',
+            '',
+            f'**Generated:** {date_str}',
+            f'**Reference model (live dashboard):** `{CLAUDE_MODEL}`',
+            f'**QC model:** `{OPUS_MODEL}`',
+            f'**Jobs evaluated:** {n}',
+            '',
+            '---',
+            '',
+            '## Purpose',
+            '',
+            'Every ~2 months, the more capable Opus model independently re-classifies',
+            'the corpus using the same prompt and taxonomy as the live Sonnet pipeline.',
+            'This report compares Opus against the live Sonnet labels to:',
+            '',
+            '1. Quantify how often the two models agree (a sanity check on Sonnet quality)',
+            '2. Surface specific jobs where they disagree (for spot-review)',
+            '3. Create a defensible audit trail: "we periodically verify with the',
+            '   most capable available model"',
+            '',
+            'Sonnet labels remain authoritative on the dashboard. This QC does not',
+            'change any live classifications. Raw Opus output is saved to',
+            f'`data/qc_opus_{date_str}.json` for full reproducibility.',
+            '',
+            '---',
+            '',
+            '## Agreement Summary',
+            '',
+            '| Field | Agreement rate |',
+            '|---|---|',
+            f'| `main_aos` (exact set match) | **{pct(main_match, n)}** ({main_match}/{n}) |',
+            f'| `position_type` | {pct(pos_match, n)} ({pos_match}/{n}) |',
+            f'| `institution_type` | {pct(inst_match, n)} ({inst_match}/{n}) |',
+            '',
+            '## Per-Main-Category Agreement',
+            '',
+            '"Match" means both models tagged the job with this category.',
+            '',
+            '| Category | Match / Total | Rate |',
+            '|---|---|---|',
+        ]
+        for cat in MAIN_AOS_CATEGORIES:
+            total = per_cat_total.get(cat, 0)
+            match = per_cat_match.get(cat, 0)
+            if total > 0:
+                lines.append(f'| {cat} | {match} / {total} | {pct(match, total)} |')
+
+        lines.extend([
+            '',
+            f'## Disagreements ({len(disagreements)} jobs)',
+            '',
+            "Jobs where Sonnet's `main_aos` or `position_type` differs from Opus's.",
+            'Inspect each manually if needed — Opus output is stored in',
+            f'`data/qc_opus_{date_str}.json`.',
+            '',
+        ])
+
+        for d in disagreements[:50]:  # cap at 50 for readability; full data in raw file
+            lines.extend([
+                f"### {d['institution'][:80]} — {d['title'][:80]}",
+                f"- **Sonnet main_aos:** {', '.join(d['sonnet_main_aos']) or '(none)'}",
+                f"- **Opus main_aos:** {', '.join(d['opus_main_aos']) or '(none)'}",
+                f"- **Sonnet position_type:** {d['sonnet_position']}",
+                f"- **Opus position_type:** {d['opus_position']}",
+                f"- **Sonnet reasoning:** {d['sonnet_reasoning'][:200]}",
+                f"- **Opus reasoning:** {d['opus_reasoning'][:200]}",
+                '',
+            ])
+        if len(disagreements) > 50:
+            lines.append(f"*({len(disagreements) - 50} additional disagreements omitted from this report; see raw JSON for the full list.)*")
+            lines.append('')
+
+        lines.extend([
+            '---',
+            '',
+            '## How to Read This Report',
+            '',
+            '- **High agreement rates** (>90% on main_aos) suggest Sonnet is reliable',
+            '  for this corpus — no methodological concern.',
+            '- **Lower agreement** on specific categories may indicate either',
+            '  taxonomy ambiguity, prompt issues, or genuinely-hard-to-classify jobs.',
+            '  Spot-check the disagreement list to identify the cause.',
+            '- **If Opus consistently disagrees in one direction** (e.g., almost',
+            '  always adds an additional main_aos), consider revising the prompt to',
+            '  match Opus\'s more conservative or more liberal labeling style.',
+            '',
+            '## Change History',
+            '',
+            'New report files are written each QC run with the date in the filename',
+            f'(`docs/QC_REPORT.md` always reflects the most recent; raw outputs at',
+            f'`data/qc_opus_*.json` preserve every historical run).',
+            '',
+        ])
+
+        out_file = docs_dir / 'QC_REPORT.md'
+        out_file.write_text('\n'.join(lines))
+        print(f"QC report written → {out_file}")
+
     # ── Keyword Explorer audit documents ──────────────────────────────────
 
     def write_keyword_docs(self, historical_data):
@@ -1751,6 +2025,18 @@ class PhilJobsScraper:
             '',
             '## Change Log',
             '',
+            f'- **{date_str}**: Added bimonthly Opus QC check. Every 2 months, the',
+            '  more capable `claude-opus-4-5` model independently re-classifies the',
+            '  corpus using the same prompt and taxonomy as the live Sonnet pipeline.',
+            '  Results are stored in `data/qc_opus_<date>.json` (raw) and summarized',
+            "  in `docs/QC_REPORT.md` (human-readable). Sonnet remains authoritative;",
+            '  Opus output is a parallel audit reference. Quantifies agreement rate',
+            "  between Sonnet's labels and Opus's labels per field (main_aos,",
+            "  position_type, institution_type) and per AOS category, plus a full",
+            '  disagreement list for spot-review. Workflow:',
+            '  `.github/workflows/quarterly-opus-qc.yml`. Cost scales with corpus;',
+            '  downsamples to 200 jobs when corpus exceeds 500 to keep per-run cost',
+            '  bounded.',
             f'- **{date_str}**: Switched Claude model from `claude-haiku-4-5-20251001`',
             f'  to `claude-sonnet-4-5` across all API calls (classification, state',
             '  resolution, synonym generation). Sonnet is ~3× more expensive per',
