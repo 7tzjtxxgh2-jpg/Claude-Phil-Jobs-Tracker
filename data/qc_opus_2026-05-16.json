@@ -1,0 +1,3287 @@
+{
+  "classifications": {
+    "30201": {
+      "_classified_at": "2026-05-16T03:05:10.337007",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ],
+        "Social & Political Philosophy": [
+          "Social and Political Philosophy (General / Political Theory)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics",
+        "Social & Political Philosophy"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "Although the AOS is listed as 'Open,' the description specifies candidates should have a PhD in political theory, social and political philosophy, ethics, or leadership studies with connection to public policy, indicating Ethics and Social & Political Philosophy. The position is explicitly a non-tenure track Visiting Assistant Professor with a one-year term.",
+      "state_us": "TX"
+    },
+    "30205": {
+      "_classified_at": "2026-05-16T03:05:06.200997",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "Phenomenology",
+          "Continental Philosophy"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "History of Philosophy"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The AOS specifies French and/or Francophone Phenomenology, which falls under History of Philosophy with clear subcategories of Phenomenology and Continental Philosophy. The position is explicitly tenure-track Assistant Professor at Texas A&M University, a major research university in Texas.",
+      "state_us": "TX"
+    },
+    "30217": {
+      "_classified_at": "2026-05-16T03:05:03.206605",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "AI, Technology, and Information Ethics",
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ],
+        "History of Philosophy": [
+          "Ancient Greek and Roman Philosophy"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Computing / Philosophy of AI"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "History of Philosophy",
+        "Ethics",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The AOS explicitly lists Ancient Philosophy (mapped to Ancient Greek and Roman Philosophy), Philosophy of Technology (mapped to AI, Technology, and Information Ethics and Philosophy of Computing/AI), and Ethics. The position is listed as tenure-track Assistant Professor. University of Scranton is a Jesuit teaching-focused institution in Pennsylvania.",
+      "state_us": "PA"
+    },
+    "30221": {
+      "_classified_at": "2026-05-16T03:04:33.335054",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "This is a tenured Professor and Chair position with AOS listed as Open. The job category explicitly states 'Senior faculty / Tenured, continuing or permanent' and the description confirms it is a tenured Professor role with administrative duties as department chair. Kennesaw State University is primarily a teaching-focused institution.",
+      "state_us": "GA"
+    },
+    "30245": {
+      "_classified_at": "2026-05-16T03:04:59.298485",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The AOS is explicitly 'applied ethics, broadly construed,' which maps directly to the general applied ethics subcategory under Ethics. The position is clearly described as tenure-track Assistant Professor at UAB, a research university in Alabama.",
+      "state_us": "AL"
+    },
+    "30277": {
+      "_classified_at": "2026-05-16T03:04:51.568656",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Biomedical Ethics / Bioethics",
+          "Environmental Ethics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The AOS explicitly specifies Bioethics broadly construed, with examples including medical/healthcare ethics, research ethics, public health ethics, disability ethics, reproductive ethics, and environmental ethics. The position is a Distinguished Professorship at Associate or Full Professor rank, categorized as Senior faculty/Tenured, continuing or permanent, indicating a tenured position at UNC Charlotte, a research university in North Carolina.",
+      "state_us": "NC"
+    },
+    "30281": {
+      "_classified_at": "2026-05-16T03:04:55.750531",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly listed as 'Open' with AOC in ethics and critical thinking. The position is a one-semester Visiting Lecturer, which is a fixed-term teaching position. Indiana University South Bend is a regional campus focused on undergraduate teaching.",
+      "state_us": "IN"
+    },
+    "30289": {
+      "_classified_at": "2026-05-16T03:04:44.153819",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly states AOS is 'Open to all areas of philosophy' and the job category is 'Postdoc or similar / Fixed term' for a postdoctoral fellowship at Fudan University in Shanghai, China.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30290": {
+      "_classified_at": "2026-05-16T03:04:47.283149",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly states AOS and AOC as 'Open' with no specific requirements. The position is clearly a postdoctoral research associate with a fixed term of one year (renewable for a second), fitting the Postdoc / Fellowship category. Princeton University is a major research university located in New Jersey.",
+      "state_us": "NJ"
+    },
+    "30305": {
+      "_classified_at": "2026-05-16T03:04:37.631880",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Mathematics",
+          "Philosophy of Cognitive Science",
+          "Logic",
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly lists Philosophy of Math, Cog Sci, Computing, Logic, and Science as preferred areas, all falling under Science, Logic, & Mathematics. The position is clearly a postdoctoral fellowship funded by the Templeton Foundation at Carnegie Mellon University in Pittsburgh, Pennsylvania.",
+      "state_us": "PA"
+    },
+    "30309": {
+      "_classified_at": "2026-05-16T03:04:14.782234",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly states AOS and AOC as 'Open' with no specific philosophical area requirements. The position is clearly described as a Postdoctoral Fellowship at Princeton University, a research institution located in New Jersey.",
+      "state_us": "NJ"
+    },
+    "30329": {
+      "_classified_at": "2026-05-16T03:04:29.486946",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Cognitive Science",
+          "Philosophy of Computing / Philosophy of AI"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The AOS explicitly specifies Philosophy of Cognitive Science and Artificial Intelligence, which maps to two subcategories under Science, Logic, & Mathematics. The job category states 'Tenured, continuing or permanent' and describes a 'renewable Lecturer position,' indicating a continuing/permanent role rather than fixed-term.",
+      "state_us": "GA"
+    },
+    "30374": {
+      "_classified_at": "2026-05-16T03:04:25.101513",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": [],
+        "Social & Political Philosophy": [
+          "PPE (Politics, Philosophy, and Economics)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open",
+        "Social & Political Philosophy"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly states AOS is Open but notes a preference for specializations complementary to PPE (Politics, Philosophy, and Economics). The position is clearly a two-year postdoctoral fellowship at Chapman University, an R2 research institution in Orange, California.",
+      "state_us": "CA"
+    },
+    "30386": {
+      "_classified_at": "2026-05-16T03:04:21.849440",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Virtue Ethics",
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ],
+        "Metaphysics & Epistemology": [
+          "Epistemology"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics",
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly seeks expertise in philosophy of attention, intellectual virtue, and character development, which spans virtue ethics and epistemology (intellectual virtues). The position is clearly labeled as a Postdoctoral Fellow with a grant-funded project at UNC Chapel Hill, a major research university in North Carolina.",
+      "state_us": "NC"
+    },
+    "30410": {
+      "_classified_at": "2026-05-16T03:04:06.224183",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The AOS is explicitly listed as 'Open' with no specific requirements. The job category states 'Tenured, continuing or permanent' and the title indicates 'Non-Tenure Track' Lecturer, suggesting a permanent/continuing lecturer position. Loyola University Chicago is a teaching-focused Jesuit institution.",
+      "state_us": "IL"
+    },
+    "30414": {
+      "_classified_at": "2026-05-16T03:04:09.623750",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Social & Political Philosophy": [
+          "Philosophy of Law"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Social & Political Philosophy"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The AOS is explicitly 'Philosophy and Law,' which maps directly to Philosophy of Law under Social & Political Philosophy. The position is clearly described as tenure-track Assistant Professor at a CSU campus, which is a teaching-focused institution.",
+      "state_us": "CA"
+    },
+    "30430": {
+      "_classified_at": "2026-05-16T03:04:01.935541",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The posting explicitly lists AOS and AOC as 'Open' with no specific philosophical area requirements. The position is a named endowed chair (Sanders Chair) categorized as 'Senior faculty / Tenured, continuing or permanent,' indicating a permanent senior position at the University of Oklahoma, a research university.",
+      "state_us": "OK"
+    },
+    "30457": {
+      "_classified_at": "2026-05-16T03:03:57.534190",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Biomedical Ethics / Bioethics"
+        ]
+      },
+      "institution_type": "Other",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly specifies Clinical Ethics, which falls under Biomedical Ethics / Bioethics. This is a two-year fellowship in clinical ethics at a medical college's bioethics institute, making it a fixed-term research/training fellowship position at a non-BA-granting medical institution.",
+      "state_us": "NY"
+    },
+    "30461": {
+      "_classified_at": "2026-05-16T03:03:53.860547",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The posting explicitly states AOS and AOC as 'Open' with no specific requirements. Position includes tenure-track Assistant Professor option and tenured Professor/Associate Professor options; classified as Tenure-Track as that is the entry-level path described. University of Hong Kong is a major research university located outside the US.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30469": {
+      "_classified_at": "2026-05-16T03:03:49.971385",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Biomedical Ethics / Bioethics",
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The AOS explicitly mentions Bioethics and Science and Technology Studies, with AOC in Health. The description emphasizes research ethics, clinical ethics, and public health ethics. Position is explicitly tenure-track (T/TT) at open rank. Northeastern University is a research university in Boston, Massachusetts.",
+      "state_us": "MA"
+    },
+    "30477": {
+      "_classified_at": "2026-05-16T03:03:45.369477",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Philosophy of Religion"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Science, Logic, & Mathematics",
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The AOS explicitly lists History and Philosophy of Science and Philosophy of Religion. The position is described as tenure-track at the Assistant Professor level. Union College is a liberal arts college in Schenectady, New York.",
+      "state_us": "NY"
+    },
+    "30513": {
+      "_classified_at": "2026-05-16T03:03:32.075538",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Social & Political Philosophy": [
+          "Social and Political Philosophy (General / Political Theory)"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Social & Political Philosophy"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The AOS explicitly lists Social and Political Philosophy. The position is an endowed chair at the Professor/Associate Professor level, categorized as 'Senior faculty / Tenured, continuing or permanent,' indicating a permanent position. Bentley University is primarily a business-focused teaching institution.",
+      "state_us": "MA"
+    },
+    "30519": {
+      "_classified_at": "2026-05-16T03:03:35.913048",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Other",
+      "reasoning": "The job category explicitly states 'Administration (non-academic)' and the title is 'Manager, Campus Ethics Programs,' indicating this is an administrative position focused on coordinating ethics programming rather than a faculty role. DePauw University is a liberal arts college in Indiana.",
+      "state_us": "IN"
+    },
+    "30526": {
+      "_classified_at": "2026-05-16T03:03:40.389820",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "AI, Technology, and Information Ethics",
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Computing / Philosophy of AI"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS specifies Applied Ethics and Philosophy of Technology, with the title explicitly focusing on Ethics of AI and Emerging Technologies. The position is clearly a postdoctoral research associate at the University of Mississippi's Center for Practical Ethics.",
+      "state_us": "MS"
+    },
+    "30538": {
+      "_classified_at": "2026-05-16T03:03:24.044632",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Social & Political Philosophy": [
+          "Social and Political Philosophy (General / Political Theory)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Social & Political Philosophy"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The posting explicitly lists AOS as 'Social and Political Philosophy' and is for a senior-level Professor position (Editor-in-Chief role), indicating a tenured/permanent position at Wuhan University in China, described as an elite research university.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30546": {
+      "_classified_at": "2026-05-16T03:03:28.248898",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Food and Agricultural Ethics",
+          "Environmental Ethics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The AOS explicitly focuses on agriculture, food systems, sustainability, resilience, and community, which maps directly to Food and Agricultural Ethics and Environmental Ethics. The position is a tenured Professor and Endowed Chair, making it a permanent position at Michigan State University, a research university in Michigan.",
+      "state_us": "MI"
+    },
+    "30561": {
+      "_classified_at": "2026-05-16T03:03:14.140072",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Ethics of Population, Future Generations, and Global Justice"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly specifies 'Population ethics,' which maps directly to the Ethics subcategory on population, future generations, and global justice. The position is clearly a postdoctoral role funded by an ERC grant at the University of Z\u00fcrich in Switzerland.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30566": {
+      "_classified_at": "2026-05-16T03:03:20.078307",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly states AOS and AOC as 'Open' with focus on practical philosophy, normativity, and law but no specific area requirements. Position is clearly a postdoctoral fellowship at international institutions (University of Toronto in Canada and Hebrew University in Jerusalem, Israel).",
+      "state_us": "INTERNATIONAL"
+    },
+    "30573": {
+      "_classified_at": "2026-05-16T03:03:10.332313",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "Early Modern Philosophy (17th/18th Century)"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "History of Philosophy",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS explicitly requires History of Philosophy with expertise in early modern European philosophy and history of science through primary sources. The position is a Visiting Assistant Professor with fixed-term appointment, and New College of Florida is a small liberal arts college focused on undergraduate teaching.",
+      "state_us": "FL"
+    },
+    "30581": {
+      "_classified_at": "2026-05-16T03:03:07.034127",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Metaphysics",
+          "Epistemology",
+          "Philosophy of Language"
+        ],
+        "Social & Political Philosophy": [
+          "Social and Political Philosophy (General / Political Theory)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Metaphysics & Epistemology",
+        "Social & Political Philosophy"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly specifies social and political issues in metaphysics, epistemology, or philosophy of language, combining core M&E areas with social/political dimensions. The position is clearly a postdoctoral associate with lecturer duties at Yale, a major research university in Connecticut.",
+      "state_us": "CT"
+    },
+    "30585": {
+      "_classified_at": "2026-05-16T03:03:02.783492",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The posting explicitly lists AOS as Ethics with emphasis on applied ethics courses (bioethics, business ethics, engineering ethics), indicating a general/applied ethics focus. Marian University is a Catholic teaching-focused institution, and the position is explicitly tenure-track Assistant Professor.",
+      "state_us": "IN"
+    },
+    "30609": {
+      "_classified_at": "2026-05-16T03:02:55.528652",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Computing / Philosophy of AI"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The AOS specifies Artificial Intelligence, which maps to Philosophy of Computing / Philosophy of AI. The position is for Associate or Full Professor (senior faculty), indicating a tenured/permanent position rather than tenure-track. UTSA is a research university in Texas.",
+      "state_us": "TX"
+    },
+    "30610": {
+      "_classified_at": "2026-05-16T03:02:58.814309",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "Ancient Greek and Roman Philosophy",
+          "Early Modern Philosophy (17th/18th Century)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "History of Philosophy"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS explicitly lists Ancient or Early Modern Philosophy, both subcategories of History of Philosophy. The position is titled 'Visiting Faculty' with a 'Fixed term' job category, indicating a temporary teaching-focused position at the University of Nebraska-Lincoln, a research university.",
+      "state_us": "NE"
+    },
+    "30654": {
+      "_classified_at": "2026-05-16T03:02:51.651782",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "Ancient Greek and Roman Philosophy"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "History of Philosophy"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly Ancient Philosophy, which maps to Ancient Greek and Roman Philosophy under History of Philosophy. The job category states 'Visiting fellowship / Professorship / Fixed term', indicating a fixed-term position despite the Assistant Professor title. Mount Allison University is a small liberal arts university in Canada known for undergraduate teaching.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30670": {
+      "_classified_at": "2026-05-16T03:02:47.568055",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly listed as 'Open' with no specific area requirements beyond philosophy. The position is an Assistant Lecturer on a two-year fixed-term basis, which fits the Visiting/Adjunct/Lecturer category. University of Hong Kong is a research university located outside the US.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30674": {
+      "_classified_at": "2026-05-16T03:02:43.600014",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly states AOS and AOC as 'Open' and seeks 'disciplinarily diverse scholars' across all areas. The position is clearly a Postdoctoral Fellowship at Johns Hopkins University, a research university in Baltimore, Maryland.",
+      "state_us": "MD"
+    },
+    "30678": {
+      "_classified_at": "2026-05-16T03:02:36.279375",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Other",
+      "reasoning": "This is a Dean position, which is primarily administrative rather than a faculty appointment. The AOS is listed as Open, and the job category explicitly includes 'Administration (non-academic)'. Located in Cairo, Egypt.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30698": {
+      "_classified_at": "2026-05-16T03:02:40.411752",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "Early Modern Philosophy (17th/18th Century)",
+          "19th/20th Century Philosophy"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "History of Philosophy"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The AOS explicitly specifies Early or Late Modern Philosophy from Descartes to Hegel, which spans 17th/18th century and into 19th century philosophy. The position is explicitly described as tenure-track Assistant Professor at UT Dallas, a research university in Texas.",
+      "state_us": "TX"
+    },
+    "30710": {
+      "_classified_at": "2026-05-16T03:02:32.969999",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly listed as 'Open' with teaching needs mentioned as context rather than requirements. The position is a two-year Visiting Assistant Professor, which is a fixed-term teaching position. Davidson College is a liberal arts college focused on undergraduate teaching.",
+      "state_us": "NC"
+    },
+    "30718": {
+      "_classified_at": "2026-05-16T03:01:49.948016",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Biomedical Ethics / Bioethics"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Decision Theory"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The position is explicitly a postdoctoral research fellow at McGill's Biomedical Ethics Unit, with AOS in philosophy, decision science, or statistics. The focus on drug trials and biomedical ethics clearly indicates Bioethics, while decision science maps to Decision Theory.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30726": {
+      "_classified_at": "2026-05-16T03:02:29.653868",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Physics",
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly lists Philosophy of Physics and Philosophy of Science, both subcategories under Science, Logic, & Mathematics. The job category states 'Postdoc or similar / Fixed term' and the title is 'Research Fellow,' indicating a postdoctoral position. Nanyang Technological University is located in Singapore.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30746": {
+      "_classified_at": "2026-05-16T03:02:26.125242",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The posting is for a Department Head position with AOS listed as Open. As a senior faculty leadership role at a research university, this is a tenured/permanent position. Carnegie Mellon is located in Pittsburgh, Pennsylvania.",
+      "state_us": "PA"
+    },
+    "30754": {
+      "_classified_at": "2026-05-16T03:02:22.307029",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The posting explicitly states AOS is open. The position is a one-year visiting appointment (fixed-term) at Amherst College, a liberal arts teaching college in Massachusetts.",
+      "state_us": "MA"
+    },
+    "30758": {
+      "_classified_at": "2026-05-16T03:02:15.429389",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Philosophy of Mind"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly specifies Philosophy of Mind, which falls under Metaphysics & Epistemology. The position is clearly described as a postdoc (fixed-term, one or two years) at the University of Antwerp in Belgium.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30762": {
+      "_classified_at": "2026-05-16T03:02:18.992196",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "AI, Technology, and Information Ethics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The AOS explicitly specifies AI Ethics, which maps directly to the 'AI, Technology, and Information Ethics' subcategory under Ethics. The position is clearly described as tenure-track at the Assistant Professor level at the University of Guelph in Ontario, Canada.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30766": {
+      "_classified_at": "2026-05-16T03:02:11.837606",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "19th/20th Century Philosophy"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Logic"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "History of Philosophy",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The position focuses on Bertrand Russell and early analytic philosophy, which falls under 19th/20th Century Philosophy. Given Russell's foundational work in logic, this also relates to Logic. The job category explicitly states 'Visiting fellowship / Professorship / Fixed term' for 2026-2027, making it a fixed-term visiting position. McMaster University is in Canada.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30774": {
+      "_classified_at": "2026-05-16T03:02:07.229765",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Social Science"
+        ],
+        "Social & Political Philosophy": [
+          "PPE (Politics, Philosophy, and Economics)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Social & Political Philosophy",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly lists PPE and Empirical/Experimental Methods, placing this in Social & Political Philosophy (PPE subcategory) and Science, Logic, & Mathematics (empirical methods relate to philosophy of social science). The position is clearly a postdoctoral research fellowship at University at Buffalo, a research university in New York.",
+      "state_us": "NY"
+    },
+    "30778": {
+      "_classified_at": "2026-05-16T03:02:02.902665",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Epistemology"
+        ],
+        "Social & Political Philosophy": [
+          "Social and Political Philosophy (General / Political Theory)",
+          "PPE (Politics, Philosophy, and Economics)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Social & Political Philosophy",
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly lists PPE, Social and Political Philosophy, and Formal and Social Epistemology. The position is titled 'Postdoctoral Associate' and categorized as 'Postdoc or similar / Fixed term,' making it a postdoc/fellowship position. University at Buffalo is a research university in New York state.",
+      "state_us": "NY"
+    },
+    "30782": {
+      "_classified_at": "2026-05-16T03:01:58.883828",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Social & Political Philosophy": [
+          "PPE (Politics, Philosophy, and Economics)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Social & Political Philosophy"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly specifies PPE (Politics, Philosophy, and Economics), which is a subcategory under Social & Political Philosophy. The position is clearly a postdoctoral associate role at the University at Buffalo, a research university in New York.",
+      "state_us": "NY"
+    },
+    "30786": {
+      "_classified_at": "2026-05-16T03:01:54.760492",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Biomedical Ethics / Bioethics",
+          "Neuroethics",
+          "AI, Technology, and Information Ethics"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Computing / Philosophy of AI"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The AOS explicitly lists Bioethics, Neuroethics, AI ethics, ELSI Genetics, Transplant Ethics, and Clinical Ethics, which fall primarily under Ethics subcategories. AI ethics also connects to Philosophy of Computing/AI. The position is described as 'tenure-eligible' (open rank) at a medical school, indicating a research university tenure-track position.",
+      "state_us": "NY"
+    },
+    "30794": {
+      "_classified_at": "2026-05-16T03:01:37.679767",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Decision Theory"
+        ],
+        "Social & Political Philosophy": [
+          "PPE (Politics, Philosophy, and Economics)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Social & Political Philosophy",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "This is a doctoral fellowship (graduate program) focused on 'Collective Decision-Making' which falls under Decision Theory and PPE given the interdisciplinary nature involving Economics, Philosophy, and Political Science. As a DFG Graduate Program fellowship for doctoral researchers, it is a research-focused fixed-term position similar to a fellowship.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30798": {
+      "_classified_at": "2026-05-16T03:01:42.034098",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Epistemology"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)",
+          "Philosophy of Mathematics",
+          "Philosophy of Computing / Philosophy of AI"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Science, Logic, & Mathematics",
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS explicitly lists Philosophy of Science or Epistemology. The description broadly construes philosophy of science to include philosophy of mathematics, computing, and technology. Colorado College is a liberal arts college, and the position is explicitly a one-year visiting assistant professor with potential renewal.",
+      "state_us": "CO"
+    },
+    "30802": {
+      "_classified_at": "2026-05-16T03:01:45.944155",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Normative Ethics",
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS explicitly lists Normative Ethics or Applied Ethics, placing this in the Ethics category. The position is a one-year Visiting Assistant Professor, which is a fixed-term teaching position. Colorado College is a liberal arts college known for its block plan teaching model.",
+      "state_us": "CO"
+    },
+    "30822": {
+      "_classified_at": "2026-05-16T03:01:33.172754",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "Ancient Greek and Roman Philosophy"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "History of Philosophy"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly Ancient Philosophy, which maps to Ancient Greek and Roman Philosophy under History of Philosophy. The position is a one-year Visiting Assistant Professor, a fixed-term teaching position at Pomona College, a liberal arts teaching college in California.",
+      "state_us": "CA"
+    },
+    "30834": {
+      "_classified_at": "2026-05-16T03:01:25.397555",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "History of Philosophy (General)"
+        ],
+        "Metaphysics & Epistemology": [
+          "Philosophy of Religion"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "History of Philosophy",
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS specifies Catholic Intellectual Tradition, which relates to Philosophy of Religion and the historical tradition of Catholic philosophy. The position is a fixed-term Lecturer (Junior faculty / Fixed term) with a heavy teaching load (24 credits/year), indicating a teaching-focused temporary position at a Catholic university.",
+      "state_us": "NJ"
+    },
+    "30838": {
+      "_classified_at": "2026-05-16T03:01:29.863452",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "AI, Technology, and Information Ethics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The AOS explicitly specifies 'Artificial Intelligence Ethics,' which maps directly to the AI, Technology, and Information Ethics subcategory under Ethics. The job category states 'Tenured, continuing or permanent' and the title indicates Teaching Professor ranks, which at Northeastern are continuing/permanent non-tenure-track positions.",
+      "state_us": "MA"
+    },
+    "30845": {
+      "_classified_at": "2026-05-16T03:01:17.534462",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Biomedical Ethics / Bioethics",
+          "Environmental Ethics"
+        ],
+        "Metaphysics & Epistemology": [
+          "Philosophy of Mind",
+          "Philosophy of Language",
+          "Metaphysics & Epistemology (General)"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Metaphysics & Epistemology",
+        "Ethics"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS explicitly lists Philosophy of Mind, Philosophy of Language, Introduction to Metaphysics and Epistemology, Medical Ethics, and Environmental Ethics. The position is a Visiting Assistant Teaching Professor (fixed-term) at Wellesley College, a liberal arts teaching college in Massachusetts.",
+      "state_us": "MA"
+    },
+    "30857": {
+      "_classified_at": "2026-05-16T03:01:21.195709",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Non-Western & Cross-Cultural Philosophy": [],
+        "Social & Political Philosophy": [
+          "Philosophy of Education",
+          "Public Philosophy"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Social & Political Philosophy",
+        "Non-Western & Cross-Cultural Philosophy"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS specifies Civic Education, Civic Engagement, and Citizenship, which align with Philosophy of Education and Public Philosophy under Social & Political Philosophy. The AOC mentions American Philosophy, suggesting Non-Western & Cross-Cultural Philosophy. The job is explicitly a Post Doctoral Research Associate at Iowa State University, a research university in Iowa.",
+      "state_us": "IA"
+    },
+    "30861": {
+      "_classified_at": "2026-05-16T03:00:20.927074",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The posting explicitly states AOS and AOC as 'Open' with preference for diverse philosophical expertise across broad topics. The title 'Senior Academic Faculty Position' with open rank suggests a permanent/continuing position rather than fixed-term. The Open University of Israel is an international teaching-focused institution.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30877": {
+      "_classified_at": "2026-05-16T03:01:13.180382",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly listed as 'Open' with no specific area requirements. The position is a one-year Visiting Assistant Professor sabbatical replacement, which is a fixed-term teaching position. Skidmore College is a liberal arts teaching college in New York.",
+      "state_us": "NY"
+    },
+    "30885": {
+      "_classified_at": "2026-05-16T03:01:09.572119",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ],
+        "Social & Political Philosophy": [
+          "Social and Political Philosophy (General / Political Theory)"
+        ]
+      },
+      "institution_type": "Other",
+      "main_aos": [
+        "Ethics",
+        "Social & Political Philosophy"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting is for a Resident Ethics Fellow at the Stockdale Center for Ethical Leadership, explicitly listed as a postdoc/fellowship position. AOS specifies Ethics and Political Philosophy. The Naval Academy is a military service academy, classified as 'Other' rather than a traditional research university or teaching college.",
+      "state_us": "MD"
+    },
+    "30889": {
+      "_classified_at": "2026-05-16T03:01:05.376534",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly listed as 'Open' with no specific area requirements. The title 'Visiting Assistant Professor' and job category 'Junior faculty / Fixed term' clearly indicate a fixed-term visiting position. Illinois Wesleyan University is a small liberal arts college with a 4-4 teaching load.",
+      "state_us": "IL"
+    },
+    "30893": {
+      "_classified_at": "2026-05-16T03:01:02.117515",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Epistemology"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)",
+          "Decision Theory"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics",
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly lists philosophy of science, formal epistemology, and decision theory. This is a 3-year PhD position (graduate fellowship), which falls under the Postdoc / Fellowship category as a research-focused fixed-term position. The University of Poitiers is in France.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30897": {
+      "_classified_at": "2026-05-16T03:00:58.052181",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Epistemology"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)",
+          "Decision Theory"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics",
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly lists philosophy of science, formal epistemology, and decision theory. Formal epistemology falls under Epistemology in the Metaphysics & Epistemology category. The position is clearly described as a postdoctoral position with a 2+1 year term at a French university.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30901": {
+      "_classified_at": "2026-05-16T03:00:24.110612",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "AI, Technology, and Information Ethics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly lists AOS as 'Ethics of AI' which maps directly to the AI, Technology, and Information Ethics subcategory under Ethics. The position is clearly a Postdoctoral Fellow at Lingnan University in Hong Kong, which is outside the US.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30905": {
+      "_classified_at": "2026-05-16T03:00:53.425664",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "Early Modern Philosophy (17th/18th Century)",
+          "19th/20th Century Philosophy"
+        ],
+        "Metaphysics & Epistemology": [
+          "Philosophy of Mind"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)",
+          "Philosophy of Biology",
+          "Philosophy of Cognitive Science"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics",
+        "Metaphysics & Epistemology",
+        "History of Philosophy"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "This is a funded PhD position (graduate fellowship) at a research university in Israel. The AOS explicitly lists philosophy of science (life sciences, cognitive science, pharmacy/medicine), philosophy of mind and perception, and early modern/modern philosophy.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30913": {
+      "_classified_at": "2026-05-16T03:00:49.416351",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [],
+        "Metaphysics & Epistemology": [
+          "Philosophy of Mind",
+          "Philosophy of Action"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Cognitive Science"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Metaphysics & Epistemology",
+        "Ethics",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly lists Philosophy of Mind + Action, Ethics, and Cognitive Science as AOS areas. The position is clearly described as a postdoctoral fellowship at Institut Jean Nicod in Paris, France, which is a research institution affiliated with CNRS/EHESS/ENS.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30917": {
+      "_classified_at": "2026-05-16T03:00:45.298524",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Philosophy of Mind",
+          "Philosophy of Action"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Cognitive Science"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics",
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly lists Philosophy of Cognitive Science and Cognitive control, with AOC in Philosophy of Mind and Action Theory. The position is clearly a postdoctoral fellowship at Institut Jean Nicod in Paris, France.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30921": {
+      "_classified_at": "2026-05-16T03:00:41.407913",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "This is a 4-year salaried PhD position (graduate fellowship) in Sweden, explicitly open to all areas of philosophy. The job category is 'Graduate fellowship / Fixed term' and the AOS is listed as 'Open', indicating no specific area requirements. PhD positions are classified under Postdoc / Fellowship as research-focused fixed-term positions.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30925": {
+      "_classified_at": "2026-05-16T03:00:37.331223",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly listed as 'Open' with only a teaching requirement for Logic. The position is a 'Teaching Assistant Professor' with a 'renewable 3-year' fixed-term contract, categorized as 'Junior faculty / Fixed term', making it a fixed-term teaching position rather than tenure-track.",
+      "state_us": "NC"
+    },
+    "30929": {
+      "_classified_at": "2026-05-16T03:00:28.714877",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Environmental Ethics",
+          "Biomedical Ethics / Bioethics",
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly lists Applied Ethics, Environmental Ethics, and Biomedical Ethics, placing this in Ethics with relevant subcategories. The AOC in Philosophy of Science adds the Science, Logic, & Mathematics category. The title 'Postdoctoral Scholar Teaching Fellow' and job category 'Postdoc or similar / Fixed term' clearly indicate a postdoctoral position at Caltech, a research university in California.",
+      "state_us": "CA"
+    },
+    "30933": {
+      "_classified_at": "2026-05-16T03:00:33.168556",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "AI, Technology, and Information Ethics"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly lists AOS as 'Ethics of AI' and 'Philosophy of Science,' mapping to AI, Technology, and Information Ethics and Philosophy of Science subcategories. Though titled 'PhD position,' the job category 'Graduate fellowship / Fixed term' indicates a research fellowship position. University of Edinburgh is in the UK.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30937": {
+      "_classified_at": "2026-05-16T03:00:17.554950",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Philosophy of Religion"
+        ]
+      },
+      "institution_type": "Other",
+      "main_aos": [
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Other",
+      "reasoning": "This is a non-academic editorial/executive director position at a nonprofit organization (Center for Inquiry), not a faculty role. The AOS specifies philosophy of religion as preferred, placing it in Metaphysics & Epistemology.",
+      "state_us": "NY"
+    },
+    "30941": {
+      "_classified_at": "2026-05-16T03:00:14.509660",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Other",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Other",
+      "reasoning": "This is a non-academic position (Editorial Consultant) at a nonprofit media organization (Ergo), not a faculty or research position at an academic institution. The AOS is explicitly listed as Open, and the role requires general philosophical fluency rather than specialization in any particular area.",
+      "state_us": "NY"
+    },
+    "30945": {
+      "_classified_at": "2026-05-16T03:00:10.741016",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The posting explicitly states AOS and AOC as 'Open' with no specific philosophical area requirements. The position is listed as 'Senior faculty / Tenured, continuing or permanent' at Lecturer/Associate Professor level in the UK system, which represents a permanent academic position. UCL is a major research university located in London, UK.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30949": {
+      "_classified_at": "2026-05-16T02:59:54.476295",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "This is a doctoral student position (graduate fellowship) focused on Ethics in Teacher Education, which falls under applied ethics. The job category explicitly states 'Graduate fellowship / Fixed term' and the AOS specifies ethics in an educational context. Ume\u00e5 University is a research university in Sweden.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30957": {
+      "_classified_at": "2026-05-16T02:59:38.407527",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS specifies 'Ethics (broadly construed)' which maps to the general ethics subcategory. The position is explicitly a Visiting Assistant Professor with job category 'Fixed term', and the University of Scranton is a teaching-focused Jesuit institution in Pennsylvania.",
+      "state_us": "PA"
+    },
+    "30961": {
+      "_classified_at": "2026-05-16T03:00:06.561956",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Meta-Ethics",
+          "Normative Ethics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The position is a doctoral researcher (graduate fellowship) with AOS in Ethics or Metaethics and AOC in Metaethics and Normative Ethics. As a fixed-term doctoral/graduate fellowship focused on independent research, this fits the Postdoc/Fellowship category. Goethe University Frankfurt is in Germany.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30965": {
+      "_classified_at": "2026-05-16T03:00:01.848322",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "Early Modern Philosophy (17th/18th Century)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "History of Philosophy"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The AOS explicitly specifies Early Modern Philosophy, and the description mentions research focus from Hobbes to Hegel, which spans 17th-19th century. The position is listed as Senior faculty/Tenured, continuing or permanent at a Swiss university, making it an international permanent position.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30969": {
+      "_classified_at": "2026-05-16T02:59:57.923770",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly listed as 'Open' with only a preference for Biomedical Ethics, so the main AOS is Open. The title is 'Lecturer in Philosophy' which indicates a fixed-term teaching position despite the job category listing 'tenure-track or similar'. Georgia State University is a research university located in Atlanta, Georgia.",
+      "state_us": "GA"
+    },
+    "30973": {
+      "_classified_at": "2026-05-16T02:59:43.040581",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Neuroethics"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Cognitive Science"
+        ]
+      },
+      "institution_type": "Other",
+      "main_aos": [
+        "Ethics",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The position is a pre-doctoral scholarship at a neuroscience and ethics center, focusing on neuroscience and humanities. The AOS clearly indicates neuroethics and cognitive science-related philosophy. As a graduate fellowship/fixed-term research position at a specialized research center in Spain, it qualifies as a fellowship at a non-university institution.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30977": {
+      "_classified_at": "2026-05-16T02:59:47.088955",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Physics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly specifies philosophy of physics, gauge physics, and boundary conditions. The position is a fixed-term Research Officer on an ERC-funded project at LSE in London, UK, which is a postdoctoral research position.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30981": {
+      "_classified_at": "2026-05-16T02:59:50.385786",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Physics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly specifies philosophy of physics and philosophy of cosmology. The job category is 'Postdoc or similar / Fixed term' with 3-year funding, indicating a postdoctoral research position at LSE in London, UK.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30985": {
+      "_classified_at": "2026-05-16T02:59:34.496599",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Physics",
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The AOS explicitly specifies Philosophy of Physics, with the description also mentioning general philosophy of science as desirable. The position is a Full Professor (\u00a7 99 UG 2002), which is a permanent/tenured position in the Austrian university system, at the University of Salzburg in Austria.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30989": {
+      "_classified_at": "2026-05-16T02:59:30.475208",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Social & Political Philosophy": [
+          "Philosophy of Law"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Social & Political Philosophy"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS explicitly specifies Philosophy of Law, which falls under Social & Political Philosophy. The position is titled 'Visiting Assistant Professor' with a fixed term (one year renewable up to 3 years), clearly indicating a visiting/fixed-term position. Clemson University is a research university in South Carolina.",
+      "state_us": "SC"
+    },
+    "30993": {
+      "_classified_at": "2026-05-16T02:59:11.695188",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Logic",
+          "Philosophy of Mathematics",
+          "Philosophy of Computing / Philosophy of AI"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The position is a fixed-term Research Fellow (postdoc) on a project about mathematics, computation, and philosophy. The AOS explicitly lists mathematics, computing, and logic, fitting the Science, Logic, & Mathematics category. University of Warwick is in the UK.",
+      "state_us": "INTERNATIONAL"
+    },
+    "30997": {
+      "_classified_at": "2026-05-16T02:59:15.061146",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Social & Political Philosophy": [
+          "Social and Political Philosophy (General / Political Theory)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Social & Political Philosophy"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "This is a funded PhD studentship (graduate fellowship) in Political and Social Philosophy at the University of Bristol, UK. The AOS explicitly lists Social and Political Philosophy, with interests in political philosophy, social epistemology, and migration studies. As a funded doctoral fellowship, it falls under Postdoc / Fellowship category.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31001": {
+      "_classified_at": "2026-05-16T02:59:17.985220",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Other",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Other",
+      "reasoning": "This is a non-academic organizational/administrative position for Minorities and Philosophy International, not a faculty or research position. The AOS is explicitly listed as Open, and the role involves facilitating MAP chapters rather than teaching or research.",
+      "state_us": "NJ"
+    },
+    "31005": {
+      "_classified_at": "2026-05-16T02:59:22.318818",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "AI, Technology, and Information Ethics"
+        ],
+        "History of Philosophy": [
+          "Early Modern Philosophy (17th/18th Century)"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Ethics",
+        "History of Philosophy"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS explicitly lists 'Ethics of AI and/or Modern Philosophy', indicating two main areas. Ethics of AI maps to AI, Technology, and Information Ethics, while Modern Philosophy refers to Early Modern Philosophy (17th/18th Century). Colby College is a liberal arts teaching college. Position is explicitly a Visiting Assistant Professor with fixed-term job category.",
+      "state_us": "ME"
+    },
+    "31009": {
+      "_classified_at": "2026-05-16T02:58:51.255266",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "American Philosophy"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "History of Philosophy"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The position is a Visiting Fellowship focused on research related to John Dewey, a major figure in American Philosophy. The fellowship has no teaching duties and is research-focused, making it a Postdoc/Fellowship rather than a visiting teaching position.",
+      "state_us": "IL"
+    },
+    "31013": {
+      "_classified_at": "2026-05-16T02:59:26.289230",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ],
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics",
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS specifies 'Core Philosophy and Ethics' with teaching in ethics and introductory curriculum, indicating a general ethics focus alongside broad introductory philosophy. The position is a 3-year fixed-term Lecturer, which falls under Visiting/Adjunct/Lecturer category.",
+      "state_us": "CA"
+    },
+    "31017": {
+      "_classified_at": "2026-05-16T02:59:02.926539",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Cognitive Science"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS explicitly specifies Philosophy of Cognitive Science. The position is a one-year Term Lecturer, which is a fixed-term teaching position. Barnard College is a liberal arts teaching college in New York.",
+      "state_us": "NY"
+    },
+    "31021": {
+      "_classified_at": "2026-05-16T02:59:07.462298",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Other",
+      "reasoning": "The AOS is explicitly listed as 'Open' with preferences across multiple areas (Marxist Philosophy, Chinese Philosophy, Ethics, Logic, etc.), making it broadly open. Position type is 'Other' because the posting lists multiple ranks from Assistant Professor to tenured Professor with 'Contract type open,' making it impossible to classify as a single position type.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31025": {
+      "_classified_at": "2026-05-16T02:58:56.007038",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ],
+        "History of Philosophy": [
+          "Phenomenology"
+        ],
+        "Metaphysics & Epistemology": [
+          "Philosophy of Mind"
+        ],
+        "Social & Political Philosophy": [
+          "Philosophy of Law",
+          "Social and Political Philosophy (General / Political Theory)"
+        ],
+        "Value Theory / Aesthetics": [
+          "Value Theory / Axiology",
+          "Value Theory / Aesthetics (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Value Theory / Aesthetics",
+        "Ethics",
+        "Social & Political Philosophy",
+        "History of Philosophy",
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly lists value theory (broadly construed to include ethics, political philosophy, jurisprudence, aesthetics, moral psychology), history of philosophy, phenomenology, and philosophy of mind. The position is clearly a postdoctoral research fellowship at UCL in London, UK, working on an ERC/UKRI-funded project.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31029": {
+      "_classified_at": "2026-05-16T02:59:00.159443",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "AOS and AOC are both listed as Open. The position is explicitly described as 'non-tenure-track Assistant Professor' but the job category indicates 'Tenured, continuing or permanent,' suggesting a continuing/permanent non-tenure-track position rather than a temporary one. Truman State University is a public liberal arts university focused on undergraduate education.",
+      "state_us": "MO"
+    },
+    "31033": {
+      "_classified_at": "2026-05-16T02:58:47.449206",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Logic"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The job category explicitly states 'Senior faculty / Tenured, continuing or permanent' and the title is Associate Professor with tenure. Although the AOS field says 'Open', the description clearly specifies 'The area of specialization is Logic,' making Logic the primary AOS requirement.",
+      "state_us": "NY"
+    },
+    "31037": {
+      "_classified_at": "2026-05-16T02:58:31.075456",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The posting explicitly lists AOS as 'Open' with no specific area requirements. The title 'Visiting Assistant Professor' and job category 'Junior faculty / Fixed term' clearly indicate a fixed-term visiting position. UTEP is described as a Carnegie R1 research university located in El Paso, Texas.",
+      "state_us": "TX"
+    },
+    "31041": {
+      "_classified_at": "2026-05-16T02:58:42.954494",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Other",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Other",
+      "reasoning": "This is a non-academic position at the Law School Admission Council (LSAC) for a Test Developer creating LSAT content. The job category explicitly states 'Other (non-academic)' and the role is administrative/technical rather than a faculty position. AOS is listed as Open. Located in Pennsylvania (Newtown).",
+      "state_us": "PA"
+    },
+    "31045": {
+      "_classified_at": "2026-05-16T02:58:35.134590",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Environmental Ethics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS specifies environmental philosophy, which maps to Environmental Ethics. The title 'Visiting Assistant Teaching Professor' with job category 'Junior faculty / Fixed term' indicates a fixed-term teaching position. WPI is a research-focused polytechnic institute in Massachusetts.",
+      "state_us": "MA"
+    },
+    "31049": {
+      "_classified_at": "2026-05-16T02:58:38.942958",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly listed as 'Open' with no specific area requirements. The positions are Lecturers described as 'full-time, non-renewable' fixed-term (one-year and two-year), fitting the Visiting/Adjunct/Lecturer category. Smith College is a liberal arts college in Massachusetts.",
+      "state_us": "MA"
+    },
+    "31053": {
+      "_classified_at": "2026-05-16T03:05:33.153347",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Philosophy of Language"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS explicitly requires Philosophy of Language, which falls under Metaphysics & Epistemology. The position is a fixed-term (3-year) Lecturer role at King's College London, a UK research university, making it a fixed-term teaching position rather than a permanent Senior Lecturer.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31057": {
+      "_classified_at": "2026-05-16T03:05:37.261522",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ],
+        "Social & Political Philosophy": [
+          "Social and Political Philosophy (General / Political Theory)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics",
+        "Social & Political Philosophy"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly states 'Moral or Political Philosophy,' which maps to Ethics and Social & Political Philosophy. The position is clearly described as a 'two-year postdoctoral fellowship' with the title 'Postdoctoral Associate,' making it a Postdoc/Fellowship position at Cornell University, a research university in New York.",
+      "state_us": "NY"
+    },
+    "31061": {
+      "_classified_at": "2026-05-16T03:05:20.780892",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "AI, Technology, and Information Ethics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The AOS explicitly specifies AI Ethics, which maps directly to the AI, Technology, and Information Ethics subcategory under Ethics. The position is open rank (Assistant/Associate/Professor) but listed as tenure-track faculty at a major public research university in Miami, Florida.",
+      "state_us": "FL"
+    },
+    "31065": {
+      "_classified_at": "2026-05-16T03:05:24.210655",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The AOS is explicitly listed as 'Open' with no specific area requirements. The position is clearly described as 'tenure-track Assistant Professor' at Rhode Island College, a teaching-focused public college emphasizing undergraduate instruction.",
+      "state_us": "RI"
+    },
+    "31069": {
+      "_classified_at": "2026-05-16T03:05:28.430267",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "History of Philosophy (General)"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics",
+        "History of Philosophy"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The position is a Summer Archival Fellowship focused on History of Philosophy of Science and Philosophy of Science, which spans both Science, Logic, & Mathematics and History of Philosophy. As a named fellowship requiring PhD completion with a research focus at the Archives of Scientific Philosophy, it qualifies as a Postdoc/Fellowship position.",
+      "state_us": "PA"
+    },
+    "31073": {
+      "_classified_at": "2026-05-16T03:06:57.682839",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is listed as 'Philosophy' broadly, welcoming applicants from all areas within the Catholic intellectual tradition, indicating an open position. This is a one-year fixed-term Instructor position (junior faculty/fixed term) at Ave Maria University's Ireland campus, making it a visiting/fixed-term teaching role at an international location.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31081": {
+      "_classified_at": "2026-05-16T03:05:17.388777",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "19th/20th Century Philosophy"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Physics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "History of Philosophy",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly seeks postdoctoral scholars in history or philosophy of 20th century physics, focusing on Einstein-related research (general relativity, cosmology, unified field theory). This combines history of philosophy (20th century) with philosophy of physics. Job category confirms postdoc status.",
+      "state_us": "CA"
+    },
+    "31085": {
+      "_classified_at": "2026-05-16T03:06:53.655545",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [],
+        "Social & Political Philosophy": [
+          "Philosophy of Law",
+          "PPE (Politics, Philosophy, and Economics)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Social & Political Philosophy",
+        "Ethics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS specifies 'Politics, Philosophy and Law,' which maps to Social & Political Philosophy (particularly Philosophy of Law and PPE). This is an Early Career Research Fellowship requiring a PhD within 5 years, making it a postdoctoral/fellowship position despite the 'Other (non-academic)' job category label. King's College London is a research university in the UK.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31089": {
+      "_classified_at": "2026-05-16T03:06:49.137212",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Epistemology"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)",
+          "Philosophy of Computing / Philosophy of AI"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics",
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly lists Philosophy of Science, Philosophy of Machine Learning (which falls under Philosophy of Computing/AI), and Epistemology. The position is clearly a 3-year postdoctoral research associate role at the University of Edinburgh in the UK.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31093": {
+      "_classified_at": "2026-05-16T03:06:41.849051",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Epistemology"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)",
+          "Philosophy of Computing / Philosophy of AI"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics",
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly lists Philosophy of Science, Philosophy of Machine Learning, and Epistemology. The position is clearly a 2-year postdoctoral research associate role at the University of Edinburgh, a research university in the UK.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31097": {
+      "_classified_at": "2026-05-16T03:06:37.877482",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Computing / Philosophy of AI",
+          "Philosophy of Social Science"
+        ],
+        "Social & Political Philosophy": [
+          "Social and Political Philosophy (General / Political Theory)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics",
+        "Social & Political Philosophy"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly lists Philosophy of AI and Philosophy of Social Science (under Science, Logic, & Mathematics) and Social and Political Philosophy. The position is clearly a postdoctoral research role at LSE in London, UK.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31101": {
+      "_classified_at": "2026-05-16T03:06:33.836712",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Philosophy of Language"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly lists AOS as Philosophy of Language/Linguistics, which falls under Metaphysics & Epistemology. The job category states 'Postdoc or similar / Fixed term' and describes it as a 'three-year postdoctoral research position,' clearly indicating a postdoctoral fellowship.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31105": {
+      "_classified_at": "2026-05-16T03:06:29.785266",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Meta-Ethics"
+        ],
+        "Value Theory / Aesthetics": [
+          "Value Theory / Axiology"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics",
+        "Value Theory / Aesthetics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly lists Metaethics/Value Theory, which maps to Meta-Ethics under Ethics and Value Theory/Axiology under Value Theory/Aesthetics. The job category states 'Postdoc or similar / Fixed term' and describes a three-year postdoctoral research position, confirming it as a Postdoc/Fellowship. University of Bristol is in the United Kingdom.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31113": {
+      "_classified_at": "2026-05-16T03:06:25.307546",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly specifies Philosophy of Science, which falls under Science, Logic, & Mathematics. The position is clearly labeled as a PostDoc with fixed-term contract (1 year, extendable to 3), and the University of Salzburg is located in Austria.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31117": {
+      "_classified_at": "2026-05-16T03:06:21.276013",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Philosophy of Mind"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Cognitive Science"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Metaphysics & Epistemology",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly specifies Philosophy of Mind or Philosophy of Cognitive Science. The position is clearly labeled as a Postdoctoral Research Associate with a fixed two-year term, making it a postdoc/fellowship. Brown University is a research university located in Providence, Rhode Island.",
+      "state_us": "RI"
+    },
+    "31121": {
+      "_classified_at": "2026-05-16T03:06:16.877532",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Other",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Other",
+      "reasoning": "This is an administrative position (Assistant to the Secretary-Treasurer) explicitly categorized as 'Administration (non-academic)' with no faculty or teaching component. The APA is a professional organization, not a university, making it 'Other' for institution type. AOS is explicitly listed as Open.",
+      "state_us": "DE"
+    },
+    "31125": {
+      "_classified_at": "2026-05-16T03:06:12.153933",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The posting explicitly states AOS and AOC are open. The position is a Lecturer with annual renewable contracts (fixed-term), categorized as 'Junior faculty / Fixed term', which fits the Visiting/Adjunct/Lecturer category. Clemson University is a research university in South Carolina.",
+      "state_us": "SC"
+    },
+    "31129": {
+      "_classified_at": "2026-05-16T03:06:04.345286",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Epistemology",
+          "Philosophy of Language"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Metaphysics & Epistemology",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "This is a 4-year PhD position (research assistant, fixed-term) at the University of Zurich in Switzerland, which functions as a research fellowship for doctoral training. The AOS explicitly lists Epistemology, Philosophy of Language, and Philosophy of Science, mapping to Metaphysics & Epistemology and Science, Logic, & Mathematics categories.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31133": {
+      "_classified_at": "2026-05-16T03:06:08.875612",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The position is a Professor role explicitly listed as 'Senior faculty / Tenured, continuing or permanent' at the University of Amsterdam. While AOS is listed as 'Open', the title specifies 'Practical Philosophy with a focus on Ethics' and AOC is Ethics, with description emphasizing theoretical and critical work in ethics engaging with practical themes, indicating a general ethics specialization.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31141": {
+      "_classified_at": "2026-05-16T03:05:59.983835",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "History of Philosophy (General)"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Computing / Philosophy of AI"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Science, Logic, & Mathematics",
+        "History of Philosophy"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS explicitly lists Philosophy of Technology (mapped to Philosophy of Computing/AI under Science, Logic, & Mathematics) and History of Philosophy. The position is a half-time guest faculty role, non-tenure track, fixed-term, which fits Visiting/Adjunct/Lecturer. Sarah Lawrence College is a liberal arts teaching college in Bronxville, NY.",
+      "state_us": "NY"
+    },
+    "31145": {
+      "_classified_at": "2026-05-16T03:05:42.838788",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The posting explicitly states AOS and AOC are open, with only teaching preferences mentioned (Professional Ethics, Technology and Human Values, World Religions). The title 'Limited-Term Instructor' and job category 'Fixed term' indicate a temporary teaching position. The 5/4 teaching load with minimal research expectations suggests a teaching-focused institution.",
+      "state_us": "GA"
+    },
+    "31149": {
+      "_classified_at": "2026-05-16T03:05:47.143814",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "History of Philosophy (General)"
+        ],
+        "Social & Political Philosophy": [
+          "Social and Political Philosophy (General / Political Theory)"
+        ],
+        "Value Theory / Aesthetics": [
+          "Philosophy of Literature"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "History of Philosophy",
+        "Social & Political Philosophy",
+        "Value Theory / Aesthetics"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The position is explicitly tenure-track at the assistant professor level. The AOS mentions political thought, philosophy, literature, and religious studies within a Great Books curriculum, suggesting broad historical and interdisciplinary focus rather than a narrow specialty. UT Austin is a major research university.",
+      "state_us": "TX"
+    },
+    "31153": {
+      "_classified_at": "2026-05-16T03:05:51.696128",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Epistemology",
+          "Philosophy of Mind",
+          "Philosophy of Language"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Cognitive Science",
+          "Philosophy of Mathematics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Metaphysics & Epistemology",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS explicitly lists Formal Epistemology, Philosophy of Language, Philosophy of Mind/Cognitive Science, and Philosophy of Mathematics. The position is a Lecturer with 'Fixed term' job category at a major research university (UIUC), indicating a fixed-term teaching position.",
+      "state_us": "IL"
+    },
+    "31157": {
+      "_classified_at": "2026-05-16T03:05:55.622844",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [],
+        "History of Philosophy": [],
+        "Social & Political Philosophy": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics",
+        "Social & Political Philosophy",
+        "History of Philosophy"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS explicitly lists Ethics, Social/Political Philosophy, and History of Philosophy as broad areas without specific subcategories. The position is a Lecturer with 'Fixed term' job category at a major research university (UIUC), indicating a fixed-term teaching position.",
+      "state_us": "IL"
+    },
+    "31161": {
+      "_classified_at": "2026-05-16T03:08:00.333753",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "History of Philosophy (General)"
+        ],
+        "Social & Political Philosophy": [
+          "Social and Political Philosophy (General / Political Theory)"
+        ],
+        "Value Theory / Aesthetics": [
+          "Philosophy of Literature"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "History of Philosophy",
+        "Social & Political Philosophy",
+        "Value Theory / Aesthetics"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The position seeks expertise in political thought, philosophy, literature, and liberal arts broadly for a Great Books program, suggesting History of Philosophy, Social & Political Philosophy, and Value Theory/Aesthetics. The posting is for Associate/Full Professor level (senior faculty), indicating a tenured or continuing permanent position at UT Austin, a major research university in Texas.",
+      "state_us": "TX"
+    },
+    "31165": {
+      "_classified_at": "2026-05-16T03:07:55.461528",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "History of Philosophy (General)"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics",
+        "History of Philosophy"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The AOS specifies Philosophy of Science or History of Western Philosophy. The position is listed as tenure-track or similar for Assistant or Associate Professor at the University of Macau, which is located in Macao (international).",
+      "state_us": "INTERNATIONAL"
+    },
+    "31169": {
+      "_classified_at": "2026-05-16T03:07:43.956958",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Logic",
+          "Philosophy of Mathematics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly specifies Science, Logic and Mathematics, with the description emphasizing Logic and/or Philosophy of Mathematics. This is a five-year Career Development Fellowship at Christ Church, Oxford (UK), which is a postdoctoral/fellowship position as indicated by the job category.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31173": {
+      "_classified_at": "2026-05-16T03:07:52.012470",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The AOS is listed simply as 'Philosophy' with no specific subfield requirements, indicating an open search. The position is explicitly a tenure-track Assistant Professor at a community college (non-BA-granting teaching institution) in New York.",
+      "state_us": "NY"
+    },
+    "31177": {
+      "_classified_at": "2026-05-16T03:07:47.971959",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Philosophy of Mind",
+          "Epistemology"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Cognitive Science"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Metaphysics & Epistemology",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly lists Philosophy of Mind, Philosophy of Cognitive Science, and Epistemology. The position is clearly labeled as a Dean's Postdoctoral Scholar with fixed-term appointment, making it a postdoc/fellowship position at Florida State University, a research university in Florida.",
+      "state_us": "FL"
+    },
+    "31181": {
+      "_classified_at": "2026-05-16T03:07:22.196749",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Social & Political Philosophy": [
+          "Social and Political Philosophy (General / Political Theory)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Social & Political Philosophy"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The position is a Lecturer in Political Science at UC San Diego, a fixed-term teaching position as indicated by the 'Junior faculty / Fixed term' job category. The AOS is Political Science, which maps to Social and Political Philosophy in the philosophy taxonomy.",
+      "state_us": "CA"
+    },
+    "31185": {
+      "_classified_at": "2026-05-16T03:07:39.601731",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Metaphysics"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)",
+          "Philosophy of Computing / Philosophy of AI"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Metaphysics & Epistemology",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "This is a funded PhD scholarship (graduate fellowship) at the University of Melbourne in Australia. The AOS explicitly lists Metaphysics, Philosophy of Science, and Philosophy of AI, with the description emphasizing metaphysics of science and causation in physics.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31189": {
+      "_classified_at": "2026-05-16T03:07:36.005522",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Epistemology"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics",
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly lists social epistemology and philosophy of science, which maps to Epistemology under Metaphysics & Epistemology and Philosophy of Science (General) under Science, Logic, & Mathematics. The position is clearly described as a postdoctoral fellowship with a fixed 3-year term at the University of Iceland.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31193": {
+      "_classified_at": "2026-05-16T03:07:31.772630",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Epistemology"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Metaphysics & Epistemology",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly lists social epistemology and philosophy of science, which maps to Epistemology under Metaphysics & Epistemology and Philosophy of Science (General) under Science, Logic, & Mathematics. The position is clearly a postdoctoral fellowship at the University of Iceland, which is outside the US.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31197": {
+      "_classified_at": "2026-05-16T03:08:27.174406",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The AOS is explicitly listed as 'Open' with AOC specifying Jewish philosophy and related areas. Despite the job category saying 'Fixed term', the description explicitly states 'tenure-track appointment', making this a tenure-track position at Baruch College in New York.",
+      "state_us": "NY"
+    },
+    "31213": {
+      "_classified_at": "2026-05-16T03:07:27.627623",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Biomedical Ethics / Bioethics",
+          "AI, Technology, and Information Ethics"
+        ],
+        "History of Philosophy": [],
+        "Open": [],
+        "Science, Logic, & Mathematics": [
+          "Logic",
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics",
+        "Science, Logic, & Mathematics",
+        "History of Philosophy",
+        "Open"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The posting explicitly lists preferences for Applied Ethics (Bioethics, AI Ethics), Philosophy of Logic, Philosophy of Science, and History of Science and Technology, while stating AOS is 'Open.' The position includes both tenure-track and tenured options at open rank, but tenure-track is listed first and the job category indicates 'Tenure-track or similar.' Located in Chengdu, China, at a research-focused university.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31217": {
+      "_classified_at": "2026-05-16T03:07:18.189805",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Business Ethics",
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS explicitly lists Business Ethics and Applied Ethics. The position is clearly a Visiting Professor (Non-Tenure Track, Non-Renewable), which is a fixed-term teaching position. Creighton University is a teaching-focused institution.",
+      "state_us": "NE"
+    },
+    "31221": {
+      "_classified_at": "2026-05-16T03:07:14.289607",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly states AOS and AOC are open. The position is titled 'Postdoctoral Teaching Fellow' and categorized as 'Postdoc or similar / Fixed term,' making it a postdoc despite the teaching focus. Utah State University is a public research university located in Logan, Utah.",
+      "state_us": "UT"
+    },
+    "31225": {
+      "_classified_at": "2026-05-16T03:07:10.731358",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Logic"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS is explicitly Philosophical Logic, which falls under Logic in the Science, Logic, & Mathematics category. The position is a four-year PhD fellowship funded by an ERC grant, which qualifies as a graduate fellowship/fixed-term research position. The University of Amsterdam is located in the Netherlands.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31229": {
+      "_classified_at": "2026-05-16T03:07:05.997646",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Philosophy of Language"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Logic"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics",
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS is explicitly Philosophical Logic, which maps to Logic. The project focuses on propositional talk and intensionality, which involves philosophy of language and semantics. The position is clearly a three-year postdoc at the University of Amsterdam in the Netherlands.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31233": {
+      "_classified_at": "2026-05-16T03:07:02.182917",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Logic"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS is explicitly Philosophical Logic with focus on provability, which falls under Logic in the Science, Logic, & Mathematics category. The position is a four-year postdoc funded by an ERC grant at the University of Amsterdam in the Netherlands.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31237": {
+      "_classified_at": "2026-05-16T03:08:38.485546",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Value Theory / Aesthetics": [
+          "Aesthetics (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Value Theory / Aesthetics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly specifies Aesthetics, which falls under Value Theory / Aesthetics. The position is titled 'Postdoctoral Teaching Fellowship' and categorized as 'Postdoc or similar / Fixed term', making it a Postdoc / Fellowship position despite the teaching component.",
+      "state_us": "AL"
+    },
+    "31241": {
+      "_classified_at": "2026-05-16T03:08:34.718445",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "AI, Technology, and Information Ethics"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Computing / Philosophy of AI"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly specifies 'Philosophy and AI Ethics,' which maps to AI, Technology, and Information Ethics under Ethics and Philosophy of Computing / Philosophy of AI under Science, Logic, & Mathematics. The position is clearly a postdoctoral scholar with a fixed two-year term at Ohio State University, a major research institution in Ohio.",
+      "state_us": "OH"
+    },
+    "31245": {
+      "_classified_at": "2026-05-16T03:08:30.157489",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly listed as Open. The title includes 'Visiting Assistant Professor or Lecturer' and the job category is 'Junior faculty / Fixed term', indicating a fixed-term teaching position. Texas Tech University is a research university located in Lubbock, Texas.",
+      "state_us": "TX"
+    },
+    "31249": {
+      "_classified_at": "2026-05-16T03:08:24.169696",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly states AOS: Open with no specific requirements. The position is titled 'Postdoctoral Teaching Fellow' and categorized as 'Postdoc or similar / Fixed term,' making it a postdoctoral fellowship despite the teaching component.",
+      "state_us": "NY"
+    },
+    "31253": {
+      "_classified_at": "2026-05-16T03:08:49.771765",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The posting explicitly states AOS: Open with no specific area requirements. The title 'Visiting Assistant Professor' and job category 'Visiting fellowship / Professorship / Fixed term' clearly indicate a fixed-term visiting position. Kansas State University is a public research university located in Manhattan, Kansas.",
+      "state_us": "KS"
+    },
+    "31257": {
+      "_classified_at": "2026-05-16T03:08:43.201035",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Metaphysics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "Although the AOS is listed as Open, the project description clearly focuses on metaphysical questions about unity, wholes, and composition (working with Aaron Cotnoir, known for work in mereology). The position is explicitly a Post-doctoral Research Fellow with a fixed 24-month term at a UK university.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31261": {
+      "_classified_at": "2026-05-16T03:08:21.436955",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ]
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The AOS mentions emphases on ethics, civic engagement, and general education, pointing to general ethics. The job category explicitly states 'Tenured, continuing or permanent' and the title 'Assistant Teaching Professor (Non-Tenure Track)' indicates a continuing/permanent non-tenure-track teaching position. The teaching-focused title and general education emphasis suggest a teaching college orientation.",
+      "state_us": "MO"
+    },
+    "31265": {
+      "_classified_at": "2026-05-16T03:08:17.659828",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Other",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Other",
+      "reasoning": "This is explicitly listed as 'Administration (non-academic)' for a high school administrator position, not a faculty role. The institution is a K-12 school (not BA-granting), and AOS/AOC are both Open, indicating no specific philosophical specialization is required for this administrative position.",
+      "state_us": "CA"
+    },
+    "31269": {
+      "_classified_at": "2026-05-16T03:08:13.804714",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)",
+          "Philosophy of Physics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "This is a doctoral fellowship position at CNRS in France focused on philosophy of science, specifically concerning explanatory progress in mathematical/mathematized sciences with examples preferably from physics. As a graduate/doctoral fellowship, it falls under Postdoc/Fellowship category for research-focused fixed-term positions.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31273": {
+      "_classified_at": "2026-05-16T03:08:07.534334",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "AI, Technology, and Information Ethics",
+          "Meta-Ethics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly lists 'Ethics (e.g., ethics of technology, metaethics)' and the position focuses on ethics of socially disruptive technologies and methodological innovations in ethics of technology. The job category clearly states 'Postdoc or similar / Fixed term' and the title includes 'Postdoc'. Eindhoven University of Technology is in the Netherlands.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31277": {
+      "_classified_at": "2026-05-16T03:10:00.513275",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Biomedical Ethics / Bioethics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The AOS explicitly specifies 'Biomedical ethics,' which maps directly to the Biomedical Ethics / Bioethics subcategory under Ethics. The position is explicitly described as 'tenure-track' Assistant Professor at the University of South Dakota in Vermillion, SD.",
+      "state_us": "SD"
+    },
+    "31281": {
+      "_classified_at": "2026-05-16T03:08:03.531122",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The AOS is explicitly listed as Open. The position is a renewable three-year Assistant/Associate Professor of Instruction, which is a continuing/permanent non-tenure-track teaching faculty role at a University of Texas system institution, not a visiting or temporary position.",
+      "state_us": "TX"
+    },
+    "31285": {
+      "_classified_at": "2026-05-16T03:08:56.831583",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS is explicitly listed as 'Open,' though the AOC and description indicate interest in PPE-related topics including philosophy of social science and political philosophy. The position is clearly a postdoctoral fellowship at the University of Pennsylvania, a research university in Philadelphia, Pennsylvania.",
+      "state_us": "PA"
+    },
+    "31289": {
+      "_classified_at": "2026-05-16T03:08:53.218540",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "Ancient Greek and Roman Philosophy",
+          "Medieval and Renaissance Philosophy"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "History of Philosophy"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The posting explicitly seeks a Visiting Assistant Professor (fixed-term, one-year with possible renewal) in History of Philosophy with preference for ancient or medieval. Ohio State University is a major research university located in Columbus, Ohio.",
+      "state_us": "OH"
+    },
+    "31293": {
+      "_classified_at": "2026-05-16T03:08:46.318736",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The posting explicitly states AOS and AOC as 'Open' with no specific requirements. The title 'Visiting Assistant Professor' and job category 'Junior faculty / Fixed term' clearly indicate a fixed-term visiting position. Grand Valley State University is primarily a teaching-focused institution.",
+      "state_us": "MI"
+    },
+    "31297": {
+      "_classified_at": "2026-05-16T03:10:11.123884",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly listed as 'Open' with no specific requirements. The position is a Lecturer with job category 'Junior faculty / Fixed term', indicating a fixed-term teaching position at the University of Kentucky, a research university.",
+      "state_us": "KY"
+    },
+    "31301": {
+      "_classified_at": "2026-05-16T03:10:07.476165",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "Ethics (General / Applied Ethics, Broadly Construed)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The AOS is explicitly Ethics, with AOC interest in applied/practical ethics, supporting the general/applied ethics subcategory. The position is explicitly tenured at Associate or Full Professor level at a major research university (University of Georgia).",
+      "state_us": "GA"
+    },
+    "31305": {
+      "_classified_at": "2026-05-16T03:09:57.066108",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The posting explicitly states AOS and AOC as 'Open' with no specific requirements. The position is described as 'tenurable basis' (tenure-track) at Assistant/Senior Assistant Professor level. UWA India is an international campus of a global top 100 research university located in India.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31309": {
+      "_classified_at": "2026-05-16T03:10:03.842625",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly listed as 'Open' with no specific area requirements. The position is a one-year Visiting Lecturer with possible renewal, which is a fixed-term teaching-focused position at IU South Bend, a regional campus focused on undergraduate teaching.",
+      "state_us": "IN"
+    },
+    "31313": {
+      "_classified_at": "2026-05-16T03:09:53.952491",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly lists AOS and AOC as 'Open' with no specific philosophical area requirements. The position is clearly a postdoctoral fellowship at the Center for Public Engagement with Science, and the University of Cincinnati is a Carnegie R1 research university located in Ohio.",
+      "state_us": "OH"
+    },
+    "31317": {
+      "_classified_at": "2026-05-16T03:09:50.877882",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly listed as Open. The position is a one-year non-renewable Contractually Limited Appointment at Assistant Professor rank, which is a fixed-term teaching position. McMaster University is a Canadian research university.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31321": {
+      "_classified_at": "2026-05-16T03:09:47.322925",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "This is a doctoral/junior research fellowship position with open AOS/AOC requirements. Though it involves student status, it is a funded research fellowship position at the University of Tartu in Estonia, which is a research university outside the US.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31325": {
+      "_classified_at": "2026-05-16T03:09:39.649481",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS is explicitly listed as 'Open' with no specific area requirements. This is a Dissertation Fellow position, which is a fixed-term research fellowship for early career scholars, fitting the Postdoc/Fellowship category. Adelphi University is a liberal arts-focused institution in Garden City, New York.",
+      "state_us": "NY"
+    },
+    "31333": {
+      "_classified_at": "2026-05-16T03:09:43.240925",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly listed as 'Open' with no specific requirements. The position is a one-year non-tenure-track Visiting Assistant Teaching Professor, which is a fixed-term teaching position. Widener University is a comprehensive teaching-focused institution.",
+      "state_us": "PA"
+    },
+    "31337": {
+      "_classified_at": "2026-05-16T03:10:24.782426",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "AI, Technology, and Information Ethics"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Computing / Philosophy of AI"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The position explicitly focuses on 'Ethics of AI' with AOS in 'Philosophy and Ethics of AI,' clearly fitting AI/Technology Ethics and Philosophy of AI subcategories. The posting states it is 'tenure-tracked' starting at W2 (associate) level, making it a tenure-track position at a German research university.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31341": {
+      "_classified_at": "2026-05-16T03:09:36.073259",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly lists AOS as 'Open' with no specific philosophical area requirements. The position is clearly a Postdoctoral Research Associate/Fellow on a Leverhulme-funded project about autonomous AI Scientists, fixed-term from 2026-2030. University of Exeter is a research university in the UK.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31345": {
+      "_classified_at": "2026-05-16T03:09:29.009866",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)",
+          "Philosophy of Biology"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "Although the AOS is listed as Open, the position is at the Minnesota Center for Philosophy of Science and is associated with the 'Consortium for Advancing a Science of Purpose' project focused on biological purpose, strongly indicating philosophy of science and philosophy of biology. The title 'Post-Doctoral Associate' and job category 'Postdoc or similar / Fixed term' clearly indicate a postdoctoral fellowship.",
+      "state_us": "MN"
+    },
+    "31349": {
+      "_classified_at": "2026-05-16T03:09:32.182878",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly includes philosophy of science alongside meta-science and science studies disciplines. The position is clearly labeled as a Postdoc with fixed term in the job category. Eindhoven University of Technology is a research university in the Netherlands.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31361": {
+      "_classified_at": "2026-05-16T03:09:24.683961",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "History of Philosophy (General)"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics",
+        "History of Philosophy"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS specifies History of Science and Digital Humanities, which falls under Philosophy of Science and History of Philosophy. The position is explicitly a 3-year PostDoc within an ERC project at Ruhr University Bochum in Germany.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31365": {
+      "_classified_at": "2026-05-16T03:09:20.910135",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly listed as 'Open' with no specific area requirements. This is a part-time, non-tenure-track lecturer position for teaching introductory philosophy courses, making it a fixed-term teaching position at Tufts University, a research university in Massachusetts.",
+      "state_us": "MA"
+    },
+    "31369": {
+      "_classified_at": "2026-05-16T03:09:17.704189",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "History of Philosophy (General)"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics",
+        "History of Philosophy"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS specifies History and Philosophy of Science, which spans both the Science, Logic, & Mathematics category (Philosophy of Science) and History of Philosophy. These are PhD fellowship positions (graduate fellowship, fixed-term, 4 years) within an ERC research project at a German university.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31373": {
+      "_classified_at": "2026-05-16T03:09:13.216922",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [],
+        "Social & Political Philosophy": [],
+        "Value Theory / Aesthetics": [
+          "Value Theory / Axiology",
+          "Value Theory / Aesthetics (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Value Theory / Aesthetics",
+        "Ethics",
+        "Social & Political Philosophy"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly 'Value Theory (broadly construed)' which maps directly to the Value Theory / Aesthetics category, though value theory broadly construed can also encompass ethics and social/political philosophy. The position is clearly a Visiting Assistant Professor with fixed-term designation. Virginia Tech is a research university located in Blacksburg, Virginia.",
+      "state_us": "VA"
+    },
+    "31377": {
+      "_classified_at": "2026-05-16T03:09:08.608562",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The posting explicitly states AOS and AOC are open. The position is titled 'Instructor' with job category 'Junior faculty / Fixed term', indicating a fixed-term teaching position rather than tenure-track. Virginia Tech is a research university located in Virginia.",
+      "state_us": "VA"
+    },
+    "31381": {
+      "_classified_at": "2026-05-16T03:09:04.866595",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly listed as 'Open'. The position is a one-year Lecturer appointment (fixed-term, part-time instructional academic staff), which fits the Visiting/Adjunct/Lecturer category. UW Eau Claire is a teaching-focused comprehensive university in Wisconsin.",
+      "state_us": "WI"
+    },
+    "31385": {
+      "_classified_at": "2026-05-16T03:09:01.190026",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "AI, Technology, and Information Ethics"
+        ],
+        "Metaphysics & Epistemology": [
+          "Philosophy of Mind",
+          "Philosophy of Language",
+          "Epistemology"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Computing / Philosophy of AI"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics",
+        "Metaphysics & Epistemology",
+        "Ethics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly seeks a Postdoctoral Fellow with AOS in Philosophy of AI or neighbouring areas including philosophy of mind, philosophy of language, epistemology, and ethics of AI. The University of Hong Kong is a research university located in Hong Kong, outside the US.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31389": {
+      "_classified_at": "2026-05-16T03:10:47.843089",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The AOS is explicitly listed as 'Open' with no specific requirements. The job category states 'Tenured, continuing or permanent' and the title 'Lecturer' at a European university typically indicates a permanent academic position. Located in the Netherlands, hence international.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31393": {
+      "_classified_at": "2026-05-16T03:10:51.535280",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly listed as 'Open' with only preferred teaching competencies mentioned. The position is an Assistant Lecturer on a two-year fixed-term basis, which fits the Visiting/Adjunct/Lecturer category. University of Hong Kong is a research university located outside the US.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31397": {
+      "_classified_at": "2026-05-16T03:10:55.483821",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Physics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS explicitly specifies Philosophy of Physics. The position is a fixed-term (12 months) Departmental Lecturer covering for a permanent postholder on research leave, which fits the Visiting/Adjunct/Lecturer category. University of Oxford is in the UK.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31401": {
+      "_classified_at": "2026-05-16T03:10:36.925481",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "AI, Technology, and Information Ethics"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Computing / Philosophy of AI"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Tenure-Track",
+      "reasoning": "The AOS explicitly lists 'Ethics of AI' which maps to AI, Technology, and Information Ethics under Ethics and Philosophy of Computing / Philosophy of AI under Science, Logic, & Mathematics. The position includes tenure-track Assistant Professor option at a major research university in Hong Kong.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31405": {
+      "_classified_at": "2026-05-16T03:10:40.446148",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The posting explicitly states AOS is 'Open to all areas of philosophy' and the job category is 'Postdoc or similar / Fixed term' for a postdoctoral fellowship at Fudan University in Shanghai, China.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31409": {
+      "_classified_at": "2026-05-16T03:10:44.540452",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "19th/20th Century Philosophy"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "History of Philosophy"
+      ],
+      "position_type": "Tenured / Continuing / Permanent",
+      "reasoning": "The AOS specifies 'Modern and Contemporary Philosophy,' which corresponds to 19th/20th Century Philosophy in the History of Philosophy category. The position is listed as 'Full Professor' under 'Senior faculty / Tenured, continuing or permanent' at a Swiss university, indicating a permanent position at an international research institution.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31413": {
+      "_classified_at": "2026-05-16T03:10:20.715027",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The posting explicitly states AOS and AOC as Open with no specific requirements. The position is a full-time, one-year Lecturer that is Non Tenure Track, making it a fixed-term teaching position.",
+      "state_us": "TX"
+    },
+    "31417": {
+      "_classified_at": "2026-05-16T03:10:32.979758",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Science, Logic, & Mathematics": [
+          "Logic"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The AOS is explicitly Logic. The position is a one-year contractually limited term appointment (CLTA) at the Assistant Professor, Teaching Stream level, which is a fixed-term teaching-focused position. University of Toronto is a major research university located in Canada.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31421": {
+      "_classified_at": "2026-05-16T03:10:28.863309",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [
+          "AI, Technology, and Information Ethics"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Ethics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly specifies AI Ethics, which maps directly to the AI, Technology, and Information Ethics subcategory under Ethics. The title and job category clearly indicate this is a postdoctoral fellowship position at a Carnegie 1 research university in Ohio.",
+      "state_us": "OH"
+    },
+    "31425": {
+      "_classified_at": "2026-05-16T03:10:17.407865",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Metaphysics"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Physics",
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Science, Logic, & Mathematics",
+        "Metaphysics & Epistemology"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly lists Philosophy of Physics, Metaphysics, and Philosophy of Science. This is a PhD position (graduate fellowship) at a French university, which falls under Postdoc / Fellowship as a research-focused fixed-term position for doctoral training.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31429": {
+      "_classified_at": "2026-05-16T03:10:13.828769",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": [
+          "Ancient Greek and Roman Philosophy"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "History of Philosophy"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly specifies Ancient (Post-Classical) Greek and Roman Philosophy, which falls under History of Philosophy. The position is clearly described as a two-year postdoctoral research fellowship at the University of Toronto in Canada.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31433": {
+      "_classified_at": "2026-05-16T03:11:11.306801",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Ethics": [],
+        "Social & Political Philosophy": [
+          "Social and Political Philosophy (General / Political Theory)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Social & Political Philosophy",
+        "Ethics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The position is explicitly a Postdoctoral Researcher on a research project about 'The Ethics of Social Punishment.' The AOS specifies political theory and philosophy, with the description emphasizing political theorist, political philosopher, or social philosopher. Oxford is in the UK, hence international.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31437": {
+      "_classified_at": "2026-05-16T03:11:15.997116",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "History of Philosophy": []
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "History of Philosophy"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS is explicitly 'History of Philosophy' without specifying a particular period or tradition. The job category states 'Postdoc or similar / Fixed term' and the title indicates a research assistant (Wissenschaftliche:r Mitarbeiter:in) position, which is a standard German postdoc designation. Located at Universit\u00e4t Hamburg in Germany.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31441": {
+      "_classified_at": "2026-05-16T03:11:07.283476",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Metaphysics"
+        ],
+        "Science, Logic, & Mathematics": [
+          "Philosophy of Physics",
+          "Philosophy of Science (General)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Metaphysics & Epistemology",
+        "Science, Logic, & Mathematics"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "This is a fully funded PhD fellowship (graduate research position) focusing on metaphysics of physics, explicitly listing Philosophy of physics, Philosophy of science, and Metaphysics as AOS. Located at Norwegian University of Science and Technology in Norway, making it international.",
+      "state_us": "INTERNATIONAL"
+    },
+    "31445": {
+      "_classified_at": "2026-05-16T03:10:59.420882",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Open": []
+      },
+      "institution_type": "Teaching College",
+      "main_aos": [
+        "Open"
+      ],
+      "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+      "reasoning": "The posting explicitly states AOS and AOC as Open with no specific requirements. The position is a non-tenure-track Lecturer with a 3-year appointment period, making it a fixed-term teaching position.",
+      "state_us": "TX"
+    },
+    "31449": {
+      "_classified_at": "2026-05-16T03:11:03.418348",
+      "_model": "claude-opus-4-5",
+      "detail_aos": {
+        "Metaphysics & Epistemology": [
+          "Metaphysics"
+        ],
+        "Social & Political Philosophy": [
+          "PPE (Politics, Philosophy, and Economics)"
+        ]
+      },
+      "institution_type": "Research University",
+      "main_aos": [
+        "Metaphysics & Epistemology",
+        "Social & Political Philosophy"
+      ],
+      "position_type": "Postdoc / Fellowship",
+      "reasoning": "The AOS explicitly lists Social Ontology (a subfield of Metaphysics) and Philosophy of Economics (related to PPE). The position is clearly described as a Postdoctoral Research Assistant with fixed term, and Purdue University is a major research university located in Indiana.",
+      "state_us": "IN"
+    }
+  },
+  "date": "2026-05-16",
+  "jobs_evaluated": 191,
+  "qc_model": "claude-opus-4-5",
+  "reference_model": "claude-sonnet-4-5",
+  "sample_size": null
+}
