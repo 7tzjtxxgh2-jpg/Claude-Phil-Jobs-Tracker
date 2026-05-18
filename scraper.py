@@ -194,6 +194,7 @@ MAIN_AOS_CATEGORIES = [
 DETAIL_AOS = {
     "Ethics": [
         "Meta-Ethics", "Normative Ethics", "Virtue Ethics",
+        "Feminist Ethics",
         "Biomedical Ethics / Bioethics",
         "Neuroethics", "AI, Technology, and Information Ethics",
         "Environmental Ethics", "Animal Ethics", "Food and Agricultural Ethics",
@@ -246,7 +247,7 @@ DETAIL_AOS = {
 # stored jobs. Prior classifications get preserved on each job under
 # `classification_v1` (or `classification_v<N>`) so we can audit how labels
 # shifted between revisions.
-TAXONOMY_VERSION = "2026-05-18-sonnet-v3"
+TAXONOMY_VERSION = "2026-05-18-sonnet-v4"
 
 # Single source of truth for the Claude model used across all API calls
 # (classification, state resolution, synonym map). Changing this should
@@ -260,13 +261,6 @@ CLAUDE_MODEL = "claude-sonnet-4-5"
 # summarized in docs/QC_REPORT.md. Does NOT replace the live CLAUDE_MODEL
 # labels — the QC produces an independent reference set for comparison.
 OPUS_MODEL = "claude-opus-4-5"
-
-CROSS_CUTTING_AREAS = [
-    "Feminist Philosophy",
-    "Philosophy of Race",
-    "Philosophy of Gender",
-    "Philosophy of Law",
-]
 
 MAIN_AOS_COLORS = {
     "Ethics": "#ef4444",
@@ -347,7 +341,7 @@ MAIN AOS CATEGORIES (8 total):
 Ethics, Social & Political Philosophy, Value Theory / Aesthetics, History of Philosophy, Non-Western & Cross-Cultural Philosophy, Metaphysics & Epistemology, Science, Logic, & Mathematics, Open
 
 DETAIL AOS SUBCATEGORIES (by main category):
-Ethics: Meta-Ethics, Normative Ethics, Virtue Ethics, Biomedical Ethics / Bioethics, Neuroethics, AI, Technology, and Information Ethics, Environmental Ethics, Animal Ethics, Food and Agricultural Ethics, Business Ethics, Ethics of Population, Future Generations, and Global Justice, Ethics (General / Applied Ethics, Broadly Construed)
+Ethics: Meta-Ethics, Normative Ethics, Virtue Ethics, Feminist Ethics, Biomedical Ethics / Bioethics, Neuroethics, AI, Technology, and Information Ethics, Environmental Ethics, Animal Ethics, Food and Agricultural Ethics, Business Ethics, Ethics of Population, Future Generations, and Global Justice, Ethics (General / Applied Ethics, Broadly Construed)
 Social & Political Philosophy: Social and Political Philosophy (General / Political Theory), Philosophy of Law, Philosophy of Race, Philosophy of Gender, Philosophy of Disability, Feminist Philosophy, Philosophy of Sexuality and Queer Theory, PPE (Politics, Philosophy, and Economics), Philosophy of Education, Public Philosophy
 Value Theory / Aesthetics: Aesthetics (General), Philosophy of Art, Philosophy of Music, Philosophy of Film and Media, Philosophy of Literature, Value Theory / Axiology, Value Theory / Aesthetics (General)
 History of Philosophy: Ancient Greek and Roman Philosophy, Medieval and Renaissance Philosophy, Early Modern Philosophy (17th/18th Century), 19th/20th Century Philosophy, American Philosophy, Continental Philosophy, Phenomenology, History of Philosophy (General)
@@ -1055,10 +1049,6 @@ class PhilJobsScraper:
         detail_aos_by_context = defaultdict(
             lambda: {'solo': defaultdict(int), 'with_others': defaultdict(int), 'total': 0}
         )
-        cc_totals = {area: 0 for area in CROSS_CUTTING_AREAS}
-        cc_by_main = {area: defaultdict(int) for area in CROSS_CUTTING_AREAS}
-        cc_weekly = {area: defaultdict(int) for area in CROSS_CUTTING_AREAS}
-
         for job in historical_data.get('jobs', []):
             classification = job.get('classification')
             if not classification:
@@ -1094,25 +1084,6 @@ class PhilJobsScraper:
                             if other_main != main:
                                 ctx['with_others'][other_main] += 1
 
-            # Cross-cutting areas
-            for main, details in detail_dict.items():
-                for detail in details:
-                    if detail in CROSS_CUTTING_AREAS:
-                        cc_totals[detail] += 1
-                        cc_by_main[detail][main] += 1
-                        if week:
-                            cc_weekly[detail][week] += 1
-
-        all_weeks = sorted({t['date'] for t in historical_data.get('weekly_trends', [])})
-
-        cross_cutting_final = {}
-        for area in CROSS_CUTTING_AREAS:
-            cross_cutting_final[area] = {
-                'total': cc_totals[area],
-                'by_main_aos': dict(cc_by_main[area]),
-                'trend': [{'week': w, 'count': cc_weekly[area].get(w, 0)} for w in all_weeks],
-            }
-
         result = {
             'main_aos_matrix': {k: dict(v) for k, v in main_aos_matrix.items()},
             'detail_aos_by_context': {
@@ -1124,7 +1095,6 @@ class PhilJobsScraper:
                 for k, v in detail_aos_by_context.items()
             },
             'main_aos_solo_vs_joint': {k: dict(v) for k, v in main_aos_solo_vs_joint.items()},
-            'cross_cutting_areas': cross_cutting_final,
         }
 
         cooc_file = self.data_dir / 'co_occurrence.json'
@@ -1139,19 +1109,13 @@ class PhilJobsScraper:
     def _compute_cooc_from_jobs(self, jobs):
         """Compute co-occurrence data from a filtered list of jobs (no file I/O).
 
-        Cross-cutting data is tracked three ways (all / solo / joint) based on
-        whether the job's main_aos list has exactly one entry (solo) or more
-        than one (joint). Solo + Joint = All for every cell.
+        Solo + Joint = All for every cell.
         """
-        modes = ('all', 'solo', 'joint')
         main_aos_matrix = defaultdict(lambda: defaultdict(int))
         main_aos_solo_vs_joint = defaultdict(lambda: {'solo': 0, 'joint': 0})
         detail_aos_by_context = defaultdict(
             lambda: {'solo': defaultdict(int), 'with_others': defaultdict(int), 'total': 0}
         )
-        cc_totals = {m: {area: 0 for area in CROSS_CUTTING_AREAS} for m in modes}
-        cc_by_main = {m: {area: defaultdict(int) for area in CROSS_CUTTING_AREAS} for m in modes}
-        cc_weekly = {m: {area: defaultdict(int) for area in CROSS_CUTTING_AREAS} for m in modes}
 
         for job in jobs:
             classification = job.get('classification')
@@ -1159,8 +1123,6 @@ class PhilJobsScraper:
                 continue
             main_list = classification.get('main_aos', [])
             detail_dict = classification.get('detail_aos', {})
-            week = job.get('scraped_date', '')[:10]
-            job_mode = 'solo' if len(main_list) == 1 else 'joint'
             is_faculty = classification.get('position_type') != 'Other'
 
             for m1 in main_list:
@@ -1186,30 +1148,6 @@ class PhilJobsScraper:
                             if other_main != main:
                                 ctx['with_others'][other_main] += 1
 
-            for main, details in detail_dict.items():
-                for detail in details:
-                    if detail in CROSS_CUTTING_AREAS:
-                        cc_totals['all'][detail] += 1
-                        cc_totals[job_mode][detail] += 1
-                        cc_weekly['all'][detail][week] += 1
-                        cc_weekly[job_mode][detail][week] += 1
-                        for other_main in main_list:
-                            cc_by_main['all'][detail][other_main] += 1
-                            cc_by_main[job_mode][detail][other_main] += 1
-
-        # Use the union of all weeks seen, regardless of mode
-        all_weeks = sorted({w for m in modes for area in CROSS_CUTTING_AREAS for w in cc_weekly[m][area]})
-        cross_cutting_final = {}
-        for area in CROSS_CUTTING_AREAS:
-            cross_cutting_final[area] = {
-                m: {
-                    'total': cc_totals[m][area],
-                    'by_main': dict(cc_by_main[m][area]),
-                    'weekly': {w: cc_weekly[m][area].get(w, 0) for w in all_weeks},
-                }
-                for m in modes
-            }
-
         return {
             'main_aos_matrix': {k: dict(v) for k, v in main_aos_matrix.items()},
             'main_aos_solo_vs_joint': {k: dict(v) for k, v in main_aos_solo_vs_joint.items()},
@@ -1217,7 +1155,6 @@ class PhilJobsScraper:
                 k: {'solo': dict(v['solo']), 'with_others': dict(v['with_others']), 'total': v['total']}
                 for k, v in detail_aos_by_context.items()
             },
-            'cross_cutting_areas': cross_cutting_final,
         }
 
     # ── Keyword Explorer helpers ──────────────────────────────────────────
@@ -2767,7 +2704,6 @@ class PhilJobsScraper:
             mainAosCategories: {json.dumps(MAIN_AOS_CATEGORIES)},
             coocMatrix: {json.dumps(cooc.get('main_aos_matrix', {}))},
             soloVsJoint: {json.dumps(cooc.get('main_aos_solo_vs_joint', {}))},
-            crossCutting: {json.dumps(cooc.get('cross_cutting_areas', {}))},
             detailAosByContext: {json.dumps(cooc.get('detail_aos_by_context', {}))},
             jobsForKeyword: {json.dumps(keyword_index)},
             synonymMap: {json.dumps(synonym_map)},
@@ -4187,27 +4123,6 @@ class PhilJobsScraper:
             </div>
         </div>
 
-        <!-- Cross-Cutting Areas -->
-        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-1">Cross-Cutting Areas</h2>
-                    <p class="text-sm text-gray-500">Weekly trend for areas that span multiple AOS categories: Feminist Philosophy, Philosophy of Race, Philosophy of Gender, Philosophy of Law. Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
-                </div>
-                <div class="flex flex-col items-end gap-2">
-                    <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 bg-white">
-                        <button id="ccModeAll" type="button" onclick="setCcMode('all')" class="px-3 py-1.5 text-sm font-medium bg-cyan-600 text-white">All</button>
-                        <button id="ccModeSolo" type="button" onclick="setCcMode('solo')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-cyan-50">Solo</button>
-                        <button id="ccModeJoint" type="button" onclick="setCcMode('joint')" class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-cyan-50">Joint</button>
-                    </div>
-                    <div id="ccModeNote" class="text-xs text-gray-500 italic"></div>
-                </div>
-            </div>
-            <div class="chart-container">
-                <canvas id="crossCuttingChart"></canvas>
-            </div>
-        </div>
-
         <!-- Geographic Overview -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
             <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
@@ -4336,7 +4251,6 @@ class PhilJobsScraper:
             mainAosCategories: {json.dumps(MAIN_AOS_CATEGORIES)},
             coocMatrix: {json.dumps(cooc.get('main_aos_matrix', {}))},
             soloVsJoint: {json.dumps(cooc.get('main_aos_solo_vs_joint', {}))},
-            crossCutting: {json.dumps(cooc.get('cross_cutting_areas', {}))},
             detailAosByContext: {json.dumps(cooc.get('detail_aos_by_context', {}))},
             jobsForKeyword: {json.dumps(keyword_index)},
             synonymMap: {json.dumps(synonym_map)},
