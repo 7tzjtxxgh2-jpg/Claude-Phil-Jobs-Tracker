@@ -246,7 +246,7 @@ DETAIL_AOS = {
 # stored jobs. Prior classifications get preserved on each job under
 # `classification_v1` (or `classification_v<N>`) so we can audit how labels
 # shifted between revisions.
-TAXONOMY_VERSION = "2026-05-16-sonnet-v2"
+TAXONOMY_VERSION = "2026-05-18-sonnet-v3"
 
 # Single source of truth for the Claude model used across all API calls
 # (classification, state resolution, synonym map). Changing this should
@@ -372,14 +372,18 @@ POSITION TYPE — pick exactly one:
 - "Other": department chairs with no faculty component, deans, purely administrative positions, non-academic positions, anything that does not fit the above
 
 Rules:
-1. A job can — and often should — belong to MULTIPLE main AOS categories. If the AOS field, title, or description mentions content from more than one main category, include ALL of them.
-   Examples:
-   - "Philosophy and Ethics of AI" → ["Ethics", "Science, Logic, & Mathematics"] (AI is under Philosophy of Computing / Philosophy of AI in Science, Logic, & Mathematics)
-   - "Applied Ethics and Philosophy of Technology" → ["Ethics", "Science, Logic, & Mathematics"]
+1. A job can belong to multiple main AOS categories, but ONLY when the posting genuinely spans distinct philosophical areas. Add a second (or third) main category only if the posting explicitly hires for work outside the first category's scope. Examples:
+   - "Ethics of AI and Modern Philosophy" → ["Ethics", "History of Philosophy"] (two genuinely distinct areas)
+   - "Philosophy of Mind, Ethics, and Cognitive Science" → ["Metaphysics & Epistemology", "Ethics", "Science, Logic, & Mathematics"] (three genuinely distinct areas)
    - "Ethics, civic engagement, and general education" → ["Ethics", "Social & Political Philosophy"]
-   - "Philosophy of attention, intellectual virtue" → ["Metaphysics & Epistemology", "Ethics"]
+1a. APPLIED ETHICS STAYS UNDER ETHICS ONLY — do not double-tag with Science, Logic, & Mathematics (or any other category) just because the applied domain happens to overlap. The applied-ethics sub-fields ("AI, Technology, and Information Ethics", "Biomedical Ethics / Bioethics", "Environmental Ethics", "Business Ethics", "Neuroethics", "Animal Ethics", "Food and Agricultural Ethics") all belong under Ethics ONLY. The detail_aos sub-field captures the applied domain — do not add a second main_aos category for it. Examples:
+   - "AI Ethics" → ["Ethics"] with detail_aos {"Ethics": ["AI, Technology, and Information Ethics"]} — NOT also Science, Logic, & Mathematics
+   - "Bioethics" → ["Ethics"] with detail_aos {"Ethics": ["Biomedical Ethics / Bioethics"]} — NOT also Science, Logic, & Mathematics
+   - "Environmental Ethics" → ["Ethics"] only
+   Only add Science, Logic, & Mathematics as a second main category if the posting ALSO independently hires for non-ethics work in that area (e.g., the posting says "AI Ethics AND Philosophy of Mind" or "Bioethics AND Philosophy of Biology methodology"). The mere mention that a position "intersects with science" or "engages technology" is NOT enough.
+1b. Similarly, "Philosophy of X" sub-fields (Philosophy of Biology, Philosophy of Physics, Philosophy of AI, etc.) stay under Science, Logic, & Mathematics ONLY unless the posting independently hires for work in another main category.
 2. Use ["Open"] ONLY when the posting genuinely has no stated preference for any specific area. If the AOS field says anything like "Open, with preference for X", "Open but X preferred", "Open to all areas but X", "Open, although X is welcome" — do NOT use "Open". Use the preferred area(s) instead. The presence of any stated preference, even a soft one, disqualifies "Open".
-3. Base AOS classification on the AOS field, title, AOC field, and description together. Do not ignore the description — preferences are often stated there even when the AOS field says "Open".
+3. Base AOS classification on the AOS field, title, AOC field, and description together. Do not ignore the description — preferences are often stated there even when the AOS field says "Open". However, do not inflate main_aos with every passing mention in the description; only include a main category if the posting genuinely hires for work in that area.
 4. For detail_aos, only include subcategories clearly mentioned or strongly implied.
 5. For position_type, prioritize explicit wording in the title and job category over inferred meaning.
 6. Return only valid JSON — no markdown, no code fences.
