@@ -2320,6 +2320,37 @@ class PhilJobsScraper:
                 pos_type_x_aos_map[mode_key][main][pos_type] += 1
         pos_type_x_aos = {m: {k: dict(v) for k, v in pos_type_x_aos_map[m].items()} for m in ('all', 'solo', 'joint')}
 
+        # ── Job IDs by (main AOS × position type) and (main AOS pair) ────
+        # Used by clickable cells in the Position Type Trends table and the
+        # AOS Co-Occurrence Matrix — clicking a cell triggers a PDF report
+        # of matching jobs via downloadJobsReport(). Keyed identically to
+        # the count tables so the JS can look up the cell's job list.
+        pos_type_aos_job_ids = {m: defaultdict(lambda: defaultdict(list)) for m in ('all', 'solo', 'joint')}
+        cooc_job_ids = defaultdict(lambda: defaultdict(list))
+        for job in us_jobs:
+            jid = job.get('id')
+            if not jid:
+                continue
+            cls = job.get('classification')
+            if not cls:
+                continue
+            main_list = cls.get('main_aos', [])
+            mode_key = 'solo' if len(main_list) == 1 else 'joint'
+            raw_pt = (cls.get('position_type')
+                      or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
+                      or job.get('job_type', 'Other'))
+            pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
+            for main in main_list:
+                pos_type_aos_job_ids['all'][main][pos_type].append(jid)
+                pos_type_aos_job_ids[mode_key][main][pos_type].append(jid)
+            for m1 in main_list:
+                for m2 in main_list:
+                    if m1 != m2:
+                        cooc_job_ids[m1][m2].append(jid)
+        pos_type_aos_job_ids = {m: {k: dict(v) for k, v in pos_type_aos_job_ids[m].items()}
+                                for m in ('all', 'solo', 'joint')}
+        cooc_job_ids = {k: dict(v) for k, v in cooc_job_ids.items()}
+
         # ── Co-occurrence ─────────────────────────────────────────────────
         cooc = self._compute_cooc_from_jobs(us_jobs)
 
@@ -2465,7 +2496,7 @@ class PhilJobsScraper:
         <!-- Co-Occurrence Matrix -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-1">AOS Co-Occurrence Matrix</h2>
-            <p class="text-sm text-gray-500 mb-4">How often main AOS categories appear together in the same job posting (all-time counts). Darker = more frequent co-occurrence.</p>
+            <p class="text-sm text-gray-500 mb-4">How often main AOS categories appear together in the same job posting (all-time counts). Darker = more frequent co-occurrence. <span class="italic">Click any cell with a number to download a PDF report of those jobs.</span></p>
             <div id="coocMatrixTable" class="overflow-x-auto text-sm"></div>
         </div>
 
@@ -2541,7 +2572,7 @@ class PhilJobsScraper:
             <div class="flex flex-wrap justify-between items-start mb-2 gap-4">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800">Position Type Trends</h2>
-                    <p class="text-sm text-gray-500 mt-1">New jobs per week by position type — filter by AOS to see hiring patterns within each area. Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
+                    <p class="text-sm text-gray-500 mt-1">New jobs per week by position type — filter by AOS to see hiring patterns within each area. Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings. <span class="italic">In the summary table below, click any cell with a number to download a PDF report of those jobs (respects the current All/Solo/Joint toggle).</span></p>
                 </div>
                 <div class="flex flex-col items-end gap-2">
                     <div class="flex flex-wrap gap-2 justify-end">
@@ -2709,6 +2740,8 @@ class PhilJobsScraper:
             synonymMap: {json.dumps(synonym_map)},
             bubbleStopwords: {json.dumps(bubble_stopwords)},
             subcategoryJobIds: {json.dumps(subcategory_job_ids)},
+            coocJobIds: {json.dumps(cooc_job_ids)},
+            posTypeAosJobIds: {json.dumps(pos_type_aos_job_ids)},
             jobDetails: {json.dumps(job_details_map)}
         }};
 
@@ -2813,10 +2846,8 @@ class PhilJobsScraper:
             categoryGrid.innerHTML = '';
             Object.entries(data.categories).forEach(([key, cat]) => {{
                 const series = catDataFor(cat);
-                const currentJobs = series[series.length - 1] || 0;
-                const previousJobs = series[series.length - 2] || 0;
-                const change = currentJobs - previousJobs;
-                const changePercent = previousJobs > 0 ? ((change / previousJobs) * 100).toFixed(1) : 0;
+                const totalJobs = series.reduce((s, n) => s + (n || 0), 0);
+                const newThisWeek = series[series.length - 1] || 0;
                 const card = document.createElement('div');
                 card.className = 'category-card bg-white rounded-lg shadow hover:shadow-lg cursor-pointer p-5 border-l-4';
                 card.style.borderLeftColor = cat.color;
@@ -2828,12 +2859,12 @@ class PhilJobsScraper:
                     </div>
                     <div class="flex items-end justify-between">
                         <div>
-                            <div class="text-3xl font-bold text-gray-800">${{currentJobs}}</div>
-                            <div class="text-sm text-gray-500">new this week</div>
+                            <div class="text-3xl font-bold text-gray-800">${{totalJobs}}</div>
+                            <div class="text-sm text-gray-500">total jobs</div>
                         </div>
                         <div class="text-right">
-                            <div class="text-sm font-semibold ${{change >= 0 ? 'text-green-600' : 'text-red-600'}}">${{change >= 0 ? '↑' : '↓'}} ${{Math.abs(change)}}</div>
-                            <div class="text-xs text-gray-500">${{changePercent}}%</div>
+                            <div class="text-sm font-semibold text-gray-700">+${{newThisWeek}}</div>
+                            <div class="text-xs text-gray-500">this week</div>
                         </div>
                     </div>
                     ${{cat.subcategories.length > 0 ? `<div class="mt-3 pt-3 border-t border-gray-100"><div class="text-xs text-gray-500">${{cat.subcategories.length}} subcategories</div></div>` : ''}}
@@ -2993,13 +3024,14 @@ class PhilJobsScraper:
             if (e.target === this) closeModal();
         }});
 
-        // ===== SUBCATEGORY DOWNLOAD REPORT (PDF) =====
+        // ===== JOBS REPORT DOWNLOAD (PDF) =====
         // Generates a multi-page PDF where each page is the full job posting
-        // for a job tagged with the given subcategory. Uses jsPDF (UMD CDN).
-        function downloadSubcategoryReport(subcategoryName) {{
-            const jobIds = data.subcategoryJobIds[subcategoryName] || [];
-            if (jobIds.length === 0) {{
-                alert('No jobs available for "' + subcategoryName + '" yet.');
+        // for one job in the supplied id list. Uses jsPDF (UMD CDN).
+        // Driven by three callsites: the subcategory modal cards, the AOS
+        // co-occurrence matrix cells, and the Position Type Trends table cells.
+        function downloadJobsReport(jobIds, contextLabel, filenameTag) {{
+            if (!jobIds || jobIds.length === 0) {{
+                alert('No jobs available for "' + (contextLabel || 'this selection') + '" yet.');
                 return;
             }}
             if (!window.jspdf) {{
@@ -3047,8 +3079,8 @@ class PhilJobsScraper:
                 doc.line(margin, y, pageWidth - margin, y);
                 y += 14;
 
-                // Header strip — subcategory + position in batch
-                writeBlock(`Subcategory: ${{subcategoryName}}  ·  Job ${{idx + 1}} of ${{jobIds.length}}`, 9, false, 120);
+                // Header strip — context + position in batch
+                writeBlock(`${{contextLabel || 'Jobs report'}}  ·  Job ${{idx + 1}} of ${{jobIds.length}}`, 9, false, 120);
                 y += 4;
 
                 // Metadata
@@ -3077,9 +3109,44 @@ class PhilJobsScraper:
                 writeBlock(job.description || 'No description recorded for this posting.', 10, false);
             }});
 
-            const safeName = subcategoryName.replace(/[^a-z0-9]+/gi, '_').toLowerCase();
+            const safeName = (filenameTag || 'jobs').replace(/[^a-z0-9]+/gi, '_').toLowerCase();
             const dateStr = new Date().toISOString().slice(0, 10);
             doc.save(`philjobs_${{safeName}}_${{dateStr}}.pdf`);
+        }}
+
+        // Backwards-compatible wrapper used by the Browse-by-Category modal.
+        function downloadSubcategoryReport(subcategoryName) {{
+            downloadJobsReport(
+                data.subcategoryJobIds[subcategoryName] || [],
+                `Subcategory: ${{subcategoryName}}`,
+                subcategoryName
+            );
+        }}
+
+        // Download all jobs whose main_aos contains BOTH catA and catB.
+        // Called from clickable cells in the AOS Co-Occurrence Matrix.
+        function downloadCoocReport(catA, catB) {{
+            const jobIds = (data.coocJobIds[catA] || {{}})[catB] || [];
+            downloadJobsReport(
+                jobIds,
+                `Co-occurrence: ${{catA}} + ${{catB}}`,
+                `cooc_${{catA}}_${{catB}}`
+            );
+        }}
+
+        // Download all jobs matching an AOS × position-type cell under the
+        // current mode (all/solo/joint). Called from clickable cells in the
+        // Position Type Trends summary table.
+        function downloadPosTypeAosReport(aos, pt) {{
+            const slot = (data.posTypeAosJobIds[posTypeMode] || {{}})[aos] || {{}};
+            const jobIds = slot[pt] || [];
+            const ptLabel = (typeof displayPt === 'function') ? displayPt(pt) : pt;
+            const modeLabel = posTypeMode === 'all' ? 'all' : posTypeMode;
+            downloadJobsReport(
+                jobIds,
+                `${{aos}} · ${{ptLabel}} (${{modeLabel}})`,
+                `${{aos}}_${{ptLabel}}_${{modeLabel}}`
+            );
         }}
 
         // ===== REGIONAL CHART (with All/Solo/Joint toggle) =====
@@ -3158,7 +3225,10 @@ class PhilJobsScraper:
                     const intensity = v > 0 ? Math.max(0.1, v / maxVal) : 0;
                     const bg = v > 0 ? `rgba(99,102,241,${{intensity.toFixed(2)}})` : '#f9fafb';
                     const color = intensity > 0.5 ? 'white' : '#374151';
-                    matrixHtml += `<td class="p-2 border border-gray-200 text-center font-medium" style="background:${{bg}};color:${{color}}" title="${{row}} ↔ ${{col}}: ${{v}}">${{v > 0 ? v : ''}}</td>`;
+                    const cellAttrs = v > 0
+                        ? `style="background:${{bg}};color:${{color}};cursor:pointer" title="${{row}} ↔ ${{col}}: ${{v}} — click to download" onclick="downloadCoocReport('${{row.replace(/'/g, "\\\\'")}}', '${{col.replace(/'/g, "\\\\'")}}')"`
+                        : `style="background:${{bg}};color:${{color}}" title="${{row}} ↔ ${{col}}: 0"`;
+                    matrixHtml += `<td class="p-2 border border-gray-200 text-center font-medium" ${{cellAttrs}}>${{v > 0 ? v : ''}}</td>`;
                 }}
             }});
             matrixHtml += '</tr>';
@@ -3485,7 +3555,10 @@ class PhilJobsScraper:
                 data.positionTypes.forEach(pt => {{
                     const v = row[pt] || 0;
                     const pct = rowTotal > 0 ? Math.round(v / rowTotal * 100) : 0;
-                    html += `<td class="py-2 px-2 text-center border border-gray-200 text-xs ${{v > 0 ? 'font-semibold text-gray-800' : 'text-gray-300'}}">${{v > 0 ? `${{v}}<div class="text-gray-400 font-normal">${{pct}}%</div>` : '—'}}</td>`;
+                    const cellExtra = v > 0
+                        ? ` style="cursor:pointer" title="Click to download ${{v}} ${{displayPt(pt)}} job${{v === 1 ? '' : 's'}} in ${{aos}}" onclick="downloadPosTypeAosReport('${{aos.replace(/'/g, "\\\\'")}}', '${{pt.replace(/'/g, "\\\\'")}}')"`
+                        : '';
+                    html += `<td class="py-2 px-2 text-center border border-gray-200 text-xs ${{v > 0 ? 'font-semibold text-gray-800 hover:bg-indigo-50' : 'text-gray-300'}}"${{cellExtra}}>${{v > 0 ? `${{v}}<div class="text-gray-400 font-normal">${{pct}}%</div>` : '—'}}</td>`;
                 }});
                 html += `<td class="py-2 px-3 text-center font-bold text-indigo-600 border border-gray-200 text-sm">${{rowTotal}}</td></tr>`;
             }});
@@ -3922,6 +3995,36 @@ class PhilJobsScraper:
                 pos_type_x_aos_map[mode_key][main][pos_type] += 1
         pos_type_x_aos = {m: {k: dict(v) for k, v in pos_type_x_aos_map[m].items()} for m in ('all', 'solo', 'joint')}
 
+        # ── Job IDs by (main AOS × position type) and (main AOS pair) ────
+        # Used by clickable cells in the Position Type Trends table and the
+        # AOS Co-Occurrence Matrix — clicking a cell triggers a PDF report
+        # of matching jobs via downloadJobsReport().
+        pos_type_aos_job_ids = {m: defaultdict(lambda: defaultdict(list)) for m in ('all', 'solo', 'joint')}
+        cooc_job_ids = defaultdict(lambda: defaultdict(list))
+        for job in intl_jobs:
+            jid = job.get('id')
+            if not jid:
+                continue
+            cls = job.get('classification')
+            if not cls:
+                continue
+            main_list = cls.get('main_aos', [])
+            mode_key = 'solo' if len(main_list) == 1 else 'joint'
+            raw_pt = (cls.get('position_type')
+                      or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
+                      or job.get('job_type', 'Other'))
+            pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
+            for main in main_list:
+                pos_type_aos_job_ids['all'][main][pos_type].append(jid)
+                pos_type_aos_job_ids[mode_key][main][pos_type].append(jid)
+            for m1 in main_list:
+                for m2 in main_list:
+                    if m1 != m2:
+                        cooc_job_ids[m1][m2].append(jid)
+        pos_type_aos_job_ids = {m: {k: dict(v) for k, v in pos_type_aos_job_ids[m].items()}
+                                for m in ('all', 'solo', 'joint')}
+        cooc_job_ids = {k: dict(v) for k, v in cooc_job_ids.items()}
+
         # ── Country → AOS breakdown ──────────────────────────────────────
         country_cat_map = defaultdict(lambda: defaultdict(int))
         for job in intl_jobs:
@@ -4110,7 +4213,7 @@ class PhilJobsScraper:
         <!-- Co-Occurrence Matrix -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-1">AOS Co-Occurrence Matrix</h2>
-            <p class="text-sm text-gray-500 mb-4">How often main AOS categories appear together in the same posting (all-time, international jobs). Darker = more frequent co-occurrence.</p>
+            <p class="text-sm text-gray-500 mb-4">How often main AOS categories appear together in the same posting (all-time, international jobs). Darker = more frequent co-occurrence. <span class="italic">Click any cell with a number to download a PDF report of those jobs.</span></p>
             <div id="coocMatrixTable" class="overflow-x-auto text-sm"></div>
         </div>
 
@@ -4147,7 +4250,7 @@ class PhilJobsScraper:
             <div class="flex flex-wrap justify-between items-start mb-2 gap-4">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800">Position Type Trends</h2>
-                    <p class="text-sm text-gray-500 mt-1">New jobs per week by position type — filter by AOS to see hiring patterns within each area. Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
+                    <p class="text-sm text-gray-500 mt-1">New jobs per week by position type — filter by AOS to see hiring patterns within each area. Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings. <span class="italic">In the summary table below, click any cell with a number to download a PDF report of those jobs (respects the current All/Solo/Joint toggle).</span></p>
                 </div>
                 <div class="flex flex-col items-end gap-2">
                     <div class="flex flex-wrap gap-2 justify-end">
@@ -4256,6 +4359,8 @@ class PhilJobsScraper:
             synonymMap: {json.dumps(synonym_map)},
             bubbleStopwords: {json.dumps(bubble_stopwords)},
             subcategoryJobIds: {json.dumps(subcategory_job_ids)},
+            coocJobIds: {json.dumps(cooc_job_ids)},
+            posTypeAosJobIds: {json.dumps(pos_type_aos_job_ids)},
             jobDetails: {json.dumps(job_details_map)}
         }};
 
@@ -4338,10 +4443,8 @@ class PhilJobsScraper:
             categoryGrid.innerHTML = '';
             Object.entries(data.categories).forEach(([key, cat]) => {{
                 const series = catDataFor(cat);
-                const currentJobs = series[series.length - 1] || 0;
-                const previousJobs = series[series.length - 2] || 0;
-                const change = currentJobs - previousJobs;
-                const changePercent = previousJobs > 0 ? ((change / previousJobs) * 100).toFixed(1) : 0;
+                const totalJobs = series.reduce((s, n) => s + (n || 0), 0);
+                const newThisWeek = series[series.length - 1] || 0;
                 const card = document.createElement('div');
                 card.className = 'category-card bg-white rounded-lg shadow hover:shadow-lg cursor-pointer p-5 border-l-4';
                 card.style.borderLeftColor = cat.color;
@@ -4353,12 +4456,12 @@ class PhilJobsScraper:
                     </div>
                     <div class="flex items-end justify-between">
                         <div>
-                            <div class="text-3xl font-bold text-gray-800">${{currentJobs}}</div>
-                            <div class="text-sm text-gray-500">new this week</div>
+                            <div class="text-3xl font-bold text-gray-800">${{totalJobs}}</div>
+                            <div class="text-sm text-gray-500">total jobs</div>
                         </div>
                         <div class="text-right">
-                            <div class="text-sm font-semibold ${{change >= 0 ? 'text-green-600' : 'text-red-600'}}">${{change >= 0 ? '↑' : '↓'}} ${{Math.abs(change)}}</div>
-                            <div class="text-xs text-gray-500">${{changePercent}}%</div>
+                            <div class="text-sm font-semibold text-gray-700">+${{newThisWeek}}</div>
+                            <div class="text-xs text-gray-500">this week</div>
                         </div>
                     </div>
                     ${{cat.subcategories.length > 0 ? `<div class="mt-3 pt-3 border-t border-gray-100"><div class="text-xs text-gray-500">${{cat.subcategories.length}} subcategories</div></div>` : ''}}
@@ -4511,13 +4614,14 @@ class PhilJobsScraper:
             if (e.target === this) closeModal();
         }});
 
-        // ===== SUBCATEGORY DOWNLOAD REPORT (PDF) =====
+        // ===== JOBS REPORT DOWNLOAD (PDF) =====
         // Generates a multi-page PDF where each page is the full job posting
-        // for a job tagged with the given subcategory. Uses jsPDF (UMD CDN).
-        function downloadSubcategoryReport(subcategoryName) {{
-            const jobIds = data.subcategoryJobIds[subcategoryName] || [];
-            if (jobIds.length === 0) {{
-                alert('No jobs available for "' + subcategoryName + '" yet.');
+        // for one job in the supplied id list. Uses jsPDF (UMD CDN).
+        // Driven by three callsites: the subcategory modal cards, the AOS
+        // co-occurrence matrix cells, and the Position Type Trends table cells.
+        function downloadJobsReport(jobIds, contextLabel, filenameTag) {{
+            if (!jobIds || jobIds.length === 0) {{
+                alert('No jobs available for "' + (contextLabel || 'this selection') + '" yet.');
                 return;
             }}
             if (!window.jspdf) {{
@@ -4565,8 +4669,8 @@ class PhilJobsScraper:
                 doc.line(margin, y, pageWidth - margin, y);
                 y += 14;
 
-                // Header strip — subcategory + position in batch
-                writeBlock(`Subcategory: ${{subcategoryName}}  ·  Job ${{idx + 1}} of ${{jobIds.length}}`, 9, false, 120);
+                // Header strip — context + position in batch
+                writeBlock(`${{contextLabel || 'Jobs report'}}  ·  Job ${{idx + 1}} of ${{jobIds.length}}`, 9, false, 120);
                 y += 4;
 
                 // Metadata
@@ -4595,9 +4699,44 @@ class PhilJobsScraper:
                 writeBlock(job.description || 'No description recorded for this posting.', 10, false);
             }});
 
-            const safeName = subcategoryName.replace(/[^a-z0-9]+/gi, '_').toLowerCase();
+            const safeName = (filenameTag || 'jobs').replace(/[^a-z0-9]+/gi, '_').toLowerCase();
             const dateStr = new Date().toISOString().slice(0, 10);
             doc.save(`philjobs_${{safeName}}_${{dateStr}}.pdf`);
+        }}
+
+        // Backwards-compatible wrapper used by the Browse-by-Category modal.
+        function downloadSubcategoryReport(subcategoryName) {{
+            downloadJobsReport(
+                data.subcategoryJobIds[subcategoryName] || [],
+                `Subcategory: ${{subcategoryName}}`,
+                subcategoryName
+            );
+        }}
+
+        // Download all jobs whose main_aos contains BOTH catA and catB.
+        // Called from clickable cells in the AOS Co-Occurrence Matrix.
+        function downloadCoocReport(catA, catB) {{
+            const jobIds = (data.coocJobIds[catA] || {{}})[catB] || [];
+            downloadJobsReport(
+                jobIds,
+                `Co-occurrence: ${{catA}} + ${{catB}}`,
+                `cooc_${{catA}}_${{catB}}`
+            );
+        }}
+
+        // Download all jobs matching an AOS × position-type cell under the
+        // current mode (all/solo/joint). Called from clickable cells in the
+        // Position Type Trends summary table.
+        function downloadPosTypeAosReport(aos, pt) {{
+            const slot = (data.posTypeAosJobIds[posTypeMode] || {{}})[aos] || {{}};
+            const jobIds = slot[pt] || [];
+            const ptLabel = (typeof displayPt === 'function') ? displayPt(pt) : pt;
+            const modeLabel = posTypeMode === 'all' ? 'all' : posTypeMode;
+            downloadJobsReport(
+                jobIds,
+                `${{aos}} · ${{ptLabel}} (${{modeLabel}})`,
+                `${{aos}}_${{ptLabel}}_${{modeLabel}}`
+            );
         }}
 
         // ===== REGIONAL CHART =====
@@ -4678,7 +4817,10 @@ class PhilJobsScraper:
                     const intensity = v > 0 ? Math.max(0.1, v / maxCoocVal) : 0;
                     const bg = v > 0 ? `rgba(8,145,178,${{intensity.toFixed(2)}})` : '#f9fafb';
                     const color = intensity > 0.5 ? 'white' : '#374151';
-                    matrixHtml += `<td class="p-2 border border-gray-200 text-center font-medium" style="background:${{bg}};color:${{color}}" title="${{row}} ↔ ${{col}}: ${{v}}">${{v > 0 ? v : ''}}</td>`;
+                    const cellAttrs = v > 0
+                        ? `style="background:${{bg}};color:${{color}};cursor:pointer" title="${{row}} ↔ ${{col}}: ${{v}} — click to download" onclick="downloadCoocReport('${{row.replace(/'/g, "\\\\'")}}', '${{col.replace(/'/g, "\\\\'")}}')"`
+                        : `style="background:${{bg}};color:${{color}}" title="${{row}} ↔ ${{col}}: 0"`;
+                    matrixHtml += `<td class="p-2 border border-gray-200 text-center font-medium" ${{cellAttrs}}>${{v > 0 ? v : ''}}</td>`;
                 }}
             }});
             matrixHtml += '</tr>';
@@ -5005,7 +5147,10 @@ class PhilJobsScraper:
                 data.positionTypes.forEach(pt => {{
                     const v = row[pt] || 0;
                     const pct = rowTotal > 0 ? Math.round(v / rowTotal * 100) : 0;
-                    html += `<td class="py-2 px-2 text-center border border-gray-200 text-xs ${{v > 0 ? 'font-semibold text-gray-800' : 'text-gray-300'}}">${{v > 0 ? `${{v}}<div class="text-gray-400 font-normal">${{pct}}%</div>` : '—'}}</td>`;
+                    const cellExtra = v > 0
+                        ? ` style="cursor:pointer" title="Click to download ${{v}} ${{displayPt(pt)}} job${{v === 1 ? '' : 's'}} in ${{aos}}" onclick="downloadPosTypeAosReport('${{aos.replace(/'/g, "\\\\'")}}', '${{pt.replace(/'/g, "\\\\'")}}')"`
+                        : '';
+                    html += `<td class="py-2 px-2 text-center border border-gray-200 text-xs ${{v > 0 ? 'font-semibold text-gray-800 hover:bg-indigo-50' : 'text-gray-300'}}"${{cellExtra}}>${{v > 0 ? `${{v}}<div class="text-gray-400 font-normal">${{pct}}%</div>` : '—'}}</td>`;
                 }});
                 html += `<td class="py-2 px-3 text-center font-bold text-cyan-600 border border-gray-200 text-sm">${{rowTotal}}</td></tr>`;
             }});
