@@ -327,15 +327,6 @@ POSITION_TYPE_COLORS = {
     "Other": "#6b7280",
 }
 
-# Map old Claude-assigned job_type labels → new position_type labels
-JOB_TYPE_MIGRATION = {
-    "Tenure-track": "Tenure-Track",
-    "Postdoc": "Postdoc / Fellowship",
-    "Adjunct/Visiting": "Visiting / Adjunct / Lecturer (Fixed-Term)",
-    "Tenured": "Tenured / Continuing / Permanent",
-    "Other": "Other",
-}
-
 CLASSIFICATION_PROMPT = """You are classifying a philosophy job posting using a two-level area of specialization (AOS) taxonomy.
 
 MAIN AOS CATEGORIES (8 total):
@@ -606,35 +597,6 @@ class PhilJobsScraper:
                 return data
         return {'jobs': [], 'weekly_snapshots': [], 'weekly_trends': []}
 
-    def migrate_hashes_to_job_id(self, historical_data) -> int:
-        """One-time migration: recompute all existing job hashes using PhilJobs job ID.
-
-        Previously hashes were MD5(institution_title). Switching to MD5(job_id) is
-        more reliable. This runs on every scrape but is a no-op once all jobs have
-        been migrated (detected by checking whether the stored hash matches the
-        ID-based hash).
-        """
-        jobs = historical_data.get('jobs', [])
-        migrated = 0
-        for job in jobs:
-            job_id = job.get('id', '')
-            if not job_id:
-                continue
-            expected_hash = hashlib.md5(job_id.encode()).hexdigest()
-            if job.get('hash') != expected_hash:
-                job['hash'] = expected_hash
-                migrated += 1
-
-        if migrated:
-            print(f"  Migrated {migrated} job hashes to PhilJobs-ID-based deduplication")
-            all_data_file = self.data_dir / "all_jobs.json"
-            with open(all_data_file, 'w') as f:
-                json.dump(historical_data, f, indent=2)
-        else:
-            print("  Hash format already up to date — no migration needed")
-
-        return migrated
-
     def migrate_to_current_taxonomy(self, historical_data) -> int:
         """If the stored taxonomy_version differs from the current TAXONOMY_VERSION,
         clear classifications on all jobs so they get re-classified under the new
@@ -796,15 +758,9 @@ class PhilJobsScraper:
                     valid_details = [d for d in (details or []) if d in DETAIL_AOS.get(main, [])]
                     result['detail_aos'][main] = valid_details
 
-                # Validate position_type — migrate old labels if needed
-                raw_pt = result.get('position_type') or result.get('job_type', 'Other')
-                if raw_pt in POSITION_TYPES:
-                    result['position_type'] = raw_pt
-                elif raw_pt in JOB_TYPE_MIGRATION:
-                    result['position_type'] = JOB_TYPE_MIGRATION[raw_pt]
-                else:
-                    result['position_type'] = 'Other'
-                result.pop('job_type', None)  # remove old field
+                # Validate position_type
+                raw_pt = result.get('position_type')
+                result['position_type'] = raw_pt if raw_pt in POSITION_TYPES else 'Other'
 
                 # Validate state_us
                 raw_state = (result.get('state_us') or '').strip().upper()
@@ -828,20 +784,8 @@ class PhilJobsScraper:
         return self._classification_fallback()
 
     def reclassify_all_jobs(self, historical_data) -> int:
-        """Classify all jobs that don't have a classification yet. Migrates old labels. Saves checkpoints."""
+        """Classify all jobs that don't have a classification yet. Saves checkpoints."""
         jobs = historical_data.get('jobs', [])
-
-        # Migrate already-classified jobs from old job_type labels to new position_type labels
-        migrated = 0
-        for job in jobs:
-            cls = job.get('classification')
-            if cls and not cls.get('position_type'):
-                old = cls.get('job_type', 'Other')
-                cls['position_type'] = JOB_TYPE_MIGRATION.get(old, 'Other')
-                cls.pop('job_type', None)
-                migrated += 1
-        if migrated:
-            print(f"  Migrated {migrated} jobs to new position_type labels")
 
         unclassified = [
             j for j in jobs
@@ -851,10 +795,6 @@ class PhilJobsScraper:
         total = len(unclassified)
 
         if total == 0:
-            if migrated:
-                all_data_file = self.data_dir / "all_jobs.json"
-                with open(all_data_file, 'w') as f:
-                    json.dump(historical_data, f, indent=2)
             print("All jobs already classified.")
             return 0
 
@@ -990,9 +930,7 @@ class PhilJobsScraper:
                     detail_aos_counts[f"{main}::{detail}"] += 1
 
             # position_type: new 5-category field; fall back to migrated job_type if needed
-            raw_pt = (classification.get('position_type')
-                      or JOB_TYPE_MIGRATION.get(classification.get('job_type', ''), None)
-                      or 'Other')
+            raw_pt = classification.get('position_type') or 'Other'
             pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
             position_type_counts[pos_type] += 1
 
@@ -1379,14 +1317,8 @@ class PhilJobsScraper:
                         result['detail_aos'][main] = [
                             d for d in (details or []) if d in DETAIL_AOS.get(main, [])
                         ]
-                    raw_pt = result.get('position_type') or result.get('job_type', 'Other')
-                    if raw_pt in POSITION_TYPES:
-                        result['position_type'] = raw_pt
-                    elif raw_pt in JOB_TYPE_MIGRATION:
-                        result['position_type'] = JOB_TYPE_MIGRATION[raw_pt]
-                    else:
-                        result['position_type'] = 'Other'
-                    result.pop('job_type', None)
+                    raw_pt = result.get('position_type')
+                    result['position_type'] = raw_pt if raw_pt in POSITION_TYPES else 'Other'
                     result['_model'] = OPUS_MODEL
                     result['_classified_at'] = datetime.now().isoformat()
                     time.sleep(0.5)
@@ -2022,9 +1954,7 @@ class PhilJobsScraper:
                         key = f"{main}::{detail}"
                         detail_counts['all'][key] += 1
                         detail_counts[mode_key][key] += 1
-                raw_pt = (cls.get('position_type')
-                          or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
-                          or 'Other')
+                raw_pt = cls.get('position_type') or 'Other'
                 pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
                 pt_counts['all'][pos_type] += 1
                 pt_counts[mode_key][pos_type] += 1
@@ -2251,9 +2181,7 @@ class PhilJobsScraper:
             cls = job.get('classification')
             if not cls:
                 continue
-            raw_pt = (cls.get('position_type')
-                      or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
-                      or 'Other')
+            raw_pt = cls.get('position_type') or 'Other'
             pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
             main_list = cls.get('main_aos', [])
             mode_key = 'solo' if len(main_list) == 1 else 'joint'
@@ -2278,9 +2206,7 @@ class PhilJobsScraper:
                 continue
             main_list = cls.get('main_aos', [])
             mode_key = 'solo' if len(main_list) == 1 else 'joint'
-            raw_pt = (cls.get('position_type')
-                      or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
-                      or 'Other')
+            raw_pt = cls.get('position_type') or 'Other'
             pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
             for main in main_list:
                 pos_type_aos_job_ids['all'][main][pos_type].append(jid)
@@ -3988,9 +3914,7 @@ class PhilJobsScraper:
             cls = job.get('classification')
             if not cls:
                 continue
-            raw_pt = (cls.get('position_type')
-                      or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
-                      or 'Other')
+            raw_pt = cls.get('position_type') or 'Other'
             pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
             main_list = cls.get('main_aos', [])
             mode_key = 'solo' if len(main_list) == 1 else 'joint'
@@ -4014,9 +3938,7 @@ class PhilJobsScraper:
                 continue
             main_list = cls.get('main_aos', [])
             mode_key = 'solo' if len(main_list) == 1 else 'joint'
-            raw_pt = (cls.get('position_type')
-                      or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
-                      or 'Other')
+            raw_pt = cls.get('position_type') or 'Other'
             pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
             for main in main_list:
                 pos_type_aos_job_ids['all'][main][pos_type].append(jid)
@@ -5463,11 +5385,7 @@ def main():
     print("\nLoading historical data...")
     historical_data = scraper.load_historical_data()
 
-    # 2a. Migrate existing hashes to PhilJobs-ID-based format (one-time, safe to re-run)
-    print("Checking deduplication hash format...")
-    scraper.migrate_hashes_to_job_id(historical_data)
-
-    # 2b. Detect taxonomy revisions and flag all jobs for re-classification
+    # 2a. Detect taxonomy revisions and flag all jobs for re-classification
     print("Checking taxonomy version...")
     scraper.migrate_to_current_taxonomy(historical_data)
 
