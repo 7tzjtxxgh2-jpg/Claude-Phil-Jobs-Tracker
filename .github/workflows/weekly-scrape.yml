@@ -13,6 +13,13 @@ permissions:
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    # Opt in to Node 24 ahead of GitHub Actions' June 2026 cut-over. All
+    # actions used here (checkout, setup-python, github-script) already
+    # support Node 24 in their latest minor releases; this just switches
+    # the runtime now so we catch any compatibility issues before the
+    # forced migration and the Sept 2026 Node 20 removal.
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout repository

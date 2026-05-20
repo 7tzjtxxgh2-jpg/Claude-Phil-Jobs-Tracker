@@ -23,6 +23,8 @@ permissions:
 jobs:
   opus-qc:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # see weekly-scrape.yml
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

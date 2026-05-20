@@ -1,0 +1,77 @@
+name: Classifier Regression Test
+
+# Runs the hand-curated regression suite (tests/regression_gold.json) against
+# the live classifier. Catches prompt edits that break expected behavior
+# BEFORE they merge to main.
+#
+# Triggers:
+#   - manual: always available via workflow_dispatch
+#   - automatic on PRs that touch the classification prompt, taxonomy, or
+#     the gold file itself. PRs to other parts of scraper.py (dashboard
+#     rendering, scraping, etc.) skip this — they can't break the classifier.
+#
+# Cost: each run makes 1 Claude API call per case (currently 8). Cheap on
+# Sonnet, but not free, so the trigger is intentionally narrow. To force a
+# run anyway, dispatch manually.
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'tests/regression_gold.json'
+      - 'tests/test_classifier.py'
+      # scraper.py is broad; the path filter here mirrors the spirit of
+      # "did this PR touch the classifier" without listing every function.
+      # If you want stricter control, narrow to specific files.
+      - 'scraper.py'
+
+permissions:
+  contents: read
+  pull-requests: write  # for posting the result comment
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # see weekly-scrape.yml
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4 anthropic
+
+      - name: Run regression tests
+        id: regression
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.CLAUDE }}
+        run: |
+          python tests/test_classifier.py 2>&1 | tee regression_output.txt
+          echo "exit_code=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
+
+      - name: Comment on PR
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const output = fs.readFileSync('regression_output.txt', 'utf8');
+            const exit = '${{ steps.regression.outputs.exit_code }}';
+            const status = exit === '0' ? '✅ All cases passed' : '❌ Some cases failed';
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `### Classifier regression: ${status}\n\n<details><summary>Output</summary>\n\n\`\`\`\n${output.slice(0, 4500)}\n\`\`\`\n\n</details>`,
+            });
+
+      - name: Fail job if regression failed
+        if: steps.regression.outputs.exit_code != '0'
+        run: exit 1

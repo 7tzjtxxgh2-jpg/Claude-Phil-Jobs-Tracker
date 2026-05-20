@@ -254,14 +254,18 @@ TAXONOMY_VERSION = "2026-05-18-sonnet-v4"
 # (classification, state resolution, synonym map). Changing this should
 # also bump TAXONOMY_VERSION so existing data gets re-classified under the
 # new model. Each classification stores `_model` for per-job audit.
-CLAUDE_MODEL = "claude-sonnet-4-5"
+#
+# The env-var override lets you A/B-test a new model locally without
+# editing source (e.g. CLAUDE_MODEL=claude-sonnet-4-6 python scraper.py).
+# In CI the env var is unset, so the literal default below wins.
+CLAUDE_MODEL = os.environ.get('CLAUDE_MODEL', 'claude-sonnet-4-5')
 
 # Higher-capability model used only for the periodic QC check (run twice
 # a year via .github/workflows/semiannual-opus-qc.yml). Opus classifies
 # every job in parallel; results are saved to data/qc_opus_<date>.json and
 # summarized in docs/QC_REPORT.md. Does NOT replace the live CLAUDE_MODEL
 # labels — the QC produces an independent reference set for comparison.
-OPUS_MODEL = "claude-opus-4-5"
+OPUS_MODEL = os.environ.get('OPUS_MODEL', 'claude-opus-4-5')
 
 MAIN_AOS_COLORS = {
     "Ethics": "#ef4444",
@@ -597,11 +601,72 @@ class PhilJobsScraper:
                 return data
         return {'jobs': [], 'weekly_snapshots': [], 'weekly_trends': []}
 
+    # ── Classification history (separate file to keep all_jobs.json slim) ──
+
+    def _history_file(self):
+        return self.data_dir / "classification_history.json"
+
+    def _load_classification_history(self) -> dict:
+        """Load the archived-classifications map, keyed by job id."""
+        hf = self._history_file()
+        if not hf.exists():
+            return {}
+        try:
+            with open(hf) as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"  Warning: classification_history.json unreadable ({e}); starting fresh")
+            return {}
+
+    def _save_classification_history(self, history: dict):
+        with open(self._history_file(), 'w') as f:
+            json.dump(history, f, indent=2)
+
+    def _archive_classification(self, history: dict, job_id, classification, stored_version):
+        """Append a classification entry to the per-job history list."""
+        if not job_id or not classification:
+            return
+        entry = {
+            'taxonomy_version': stored_version or 'unknown',
+            'archived_at': datetime.now().isoformat(),
+            'classification': classification,
+        }
+        history.setdefault(str(job_id), []).append(entry)
+
+    def backfill_classification_history(self, historical_data) -> int:
+        """One-time migration: pull any classification_v* fields out of each job
+        and into the dedicated history file. Idempotent — re-running finds
+        nothing to migrate."""
+        history = self._load_classification_history()
+        moved = 0
+        for job in historical_data.get('jobs', []):
+            old_keys = sorted(k for k in list(job.keys()) if k.startswith('classification_v'))
+            if not old_keys:
+                continue
+            jid = job.get('id')
+            for k in old_keys:
+                entry = {
+                    'taxonomy_version': k,  # best we can recover — no original version stamp
+                    'archived_at': 'backfilled',
+                    'classification': job.pop(k),
+                }
+                if jid:
+                    history.setdefault(str(jid), []).append(entry)
+                moved += 1
+        if moved:
+            self._save_classification_history(history)
+            all_data_file = self.data_dir / "all_jobs.json"
+            with open(all_data_file, 'w') as f:
+                json.dump(historical_data, f, indent=2)
+            print(f"  Moved {moved} historical classifications from all_jobs.json → classification_history.json")
+        return moved
+
     def migrate_to_current_taxonomy(self, historical_data) -> int:
         """If the stored taxonomy_version differs from the current TAXONOMY_VERSION,
         clear classifications on all jobs so they get re-classified under the new
-        subcategory structure. Preserves prior labels under `classification_v1`
-        (or v2, v3, etc.) so we can audit how labels shifted between revisions.
+        subcategory structure. Prior labels are archived to
+        data/classification_history.json (keyed by job id), so we can audit how
+        labels shifted between revisions without bloating the main data file.
 
         Idempotent: safe to call on every scrape. No-op when versions match.
         """
@@ -610,24 +675,22 @@ class PhilJobsScraper:
             return 0
 
         print(f"  Taxonomy version change detected: '{stored}' → '{TAXONOMY_VERSION}'")
+        history = self._load_classification_history()
         cleared = 0
         for job in historical_data.get('jobs', []):
             cls = job.get('classification')
             if not cls:
                 continue
-            # Pick the next available `classification_vN` slot so re-runs don't overwrite
-            n = 1
-            while f'classification_v{n}' in job:
-                n += 1
-            job[f'classification_v{n}'] = cls
+            self._archive_classification(history, job.get('id'), cls, stored)
             job['classification'] = None  # forces re-classification on next pass
             cleared += 1
 
+        self._save_classification_history(history)
         historical_data['taxonomy_version'] = TAXONOMY_VERSION
         all_data_file = self.data_dir / "all_jobs.json"
         with open(all_data_file, 'w') as f:
             json.dump(historical_data, f, indent=2)
-        print(f"  Cleared classification on {cleared} jobs; prior labels preserved under classification_v* keys")
+        print(f"  Cleared classification on {cleared} jobs; prior labels archived to classification_history.json")
         return cleared
 
     def backfill_city_field(self, historical_data) -> int:
@@ -1148,15 +1211,21 @@ class PhilJobsScraper:
         return index, vocab, bubble_stopwords
 
     def generate_synonym_map(self, vocab, max_terms=150):
-        """Use Claude Haiku to generate synonyms / related terms for the top
-        `max_terms` corpus vocabulary. Returns dict {term: [synonyms]}. Fails
-        gracefully — if the API or package is unavailable, returns {} and the
-        client-side search still works (just without synonym expansion).
+        """Use the live Claude model to generate synonyms / related terms for
+        the top `max_terms` corpus vocabulary. Returns dict {term: [synonyms]}.
+        Fails gracefully — if the API or package is unavailable, returns {}
+        and the client-side search still works (just without synonym expansion).
 
-        Cached for the lifetime of the scraper instance, so calling once from
-        the US dashboard and once from the Intl dashboard only hits the API
-        once. Synonym mappings are universal — they don't depend on whether
-        the vocab came from US or Intl jobs.
+        Three layers of caching:
+        - In-memory (`_synonym_map_cache`): reuse within a single scraper run.
+        - Disk by vocab hash: if the input vocab is unchanged from the last
+          run, reuse `data/synonym_map.json` and skip the API entirely. The
+          hash lives in a sidecar `data/synonym_map.meta.json` so we don't
+          have to change the on-disk synonym_map format.
+        - Disk regenerate: if the vocab hash differs, hit the API.
+
+        Synonym mappings are universal — they don't depend on whether the
+        vocab came from US or Intl jobs.
         """
         if not vocab:
             return {}
@@ -1164,8 +1233,45 @@ class PhilJobsScraper:
             print(f"  Using cached synonym map ({len(self._synonym_map_cache)} terms)")
             return self._synonym_map_cache
 
+        terms_to_expand = vocab[:max_terms]
+        vocab_hash = hashlib.md5(
+            (CLAUDE_MODEL + '|' + '\n'.join(terms_to_expand)).encode()
+        ).hexdigest()
+        out_file = self.data_dir / 'synonym_map.json'
+        meta_file = self.data_dir / 'synonym_map.meta.json'
+
+        # Try the disk cache. We only trust it when both files exist AND the
+        # hash matches AND the model matches — a model change can shift the
+        # synonyms produced for the same vocab, so re-generate in that case.
+        try:
+            if out_file.exists() and meta_file.exists():
+                with open(meta_file) as f:
+                    meta = json.load(f)
+                if meta.get('vocab_hash') == vocab_hash and meta.get('model') == CLAUDE_MODEL:
+                    with open(out_file) as f:
+                        cached = json.load(f)
+                    if isinstance(cached, dict) and cached:
+                        print(f"  Reusing synonym map from disk ({len(cached)} terms, vocab unchanged)")
+                        self._synonym_map_cache = cached
+                        return cached
+        except Exception as e:
+            print(f"  Synonym disk cache unreadable ({e}); regenerating")
+
         api_key = os.environ.get('ANTHROPIC_API_KEY')
         if not api_key:
+            # No way to regenerate. If a stale-but-usable disk map exists,
+            # prefer it over an empty map so local dashboard regenerations
+            # still get synonym expansion in the keyword search.
+            if out_file.exists():
+                try:
+                    with open(out_file) as f:
+                        cached = json.load(f)
+                    if isinstance(cached, dict) and cached:
+                        print(f"  No ANTHROPIC_API_KEY — using existing on-disk synonym map ({len(cached)} terms, vocab hash may be stale)")
+                        self._synonym_map_cache = cached
+                        return cached
+                except Exception:
+                    pass
             print("  No ANTHROPIC_API_KEY — synonym map will be empty")
             return {}
         try:
@@ -1173,8 +1279,6 @@ class PhilJobsScraper:
             client = anthropic.Anthropic(api_key=api_key)
         except ImportError:
             return {}
-
-        terms_to_expand = vocab[:max_terms]
         synonym_map = {}
         batch_size = 25
 
@@ -1233,9 +1337,16 @@ class PhilJobsScraper:
                         time.sleep(1)
 
         # Cache to disk so we can inspect / debug, and in memory for cross-dashboard reuse
-        out_file = self.data_dir / 'synonym_map.json'
         with open(out_file, 'w') as f:
             json.dump(synonym_map, f, indent=2, sort_keys=True)
+        with open(meta_file, 'w') as f:
+            json.dump({
+                'vocab_hash': vocab_hash,
+                'model': CLAUDE_MODEL,
+                'n_terms_input': len(terms_to_expand),
+                'n_terms_output': len(synonym_map),
+                'generated_at': datetime.now().isoformat(),
+            }, f, indent=2)
         print(f"  Synonym map written: {len(synonym_map)} terms → {out_file}")
         self._synonym_map_cache = synonym_map
         return synonym_map
@@ -5385,7 +5496,12 @@ def main():
     print("\nLoading historical data...")
     historical_data = scraper.load_historical_data()
 
-    # 2a. Detect taxonomy revisions and flag all jobs for re-classification
+    # 2a. One-time backfill: pull any inline classification_v* fields out of
+    # all_jobs.json and into the dedicated classification_history.json. Safe
+    # to re-run; finds nothing to migrate once the move is complete.
+    scraper.backfill_classification_history(historical_data)
+
+    # 2b. Detect taxonomy revisions and flag all jobs for re-classification
     print("Checking taxonomy version...")
     scraper.migrate_to_current_taxonomy(historical_data)
 
