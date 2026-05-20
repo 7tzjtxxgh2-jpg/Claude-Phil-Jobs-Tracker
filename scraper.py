@@ -2,7 +2,8 @@
 """
 PhilJobs Comprehensive Market Analytics Dashboard
 Tracks new job postings, job types, locations, and institution types.
-Uses Claude API (Haiku) for intelligent AOS classification.
+Uses the Claude API (model defined by CLAUDE_MODEL — currently Sonnet 4.5)
+for intelligent AOS classification.
 """
 
 import os
@@ -255,8 +256,8 @@ TAXONOMY_VERSION = "2026-05-18-sonnet-v4"
 # new model. Each classification stores `_model` for per-job audit.
 CLAUDE_MODEL = "claude-sonnet-4-5"
 
-# Higher-capability model used only for the periodic QC check (run every
-# ~2 months via .github/workflows/quarterly-opus-qc.yml). Opus classifies
+# Higher-capability model used only for the periodic QC check (run twice
+# a year via .github/workflows/semiannual-opus-qc.yml). Opus classifies
 # every job in parallel; results are saved to data/qc_opus_<date>.json and
 # summarized in docs/QC_REPORT.md. Does NOT replace the live CLAUDE_MODEL
 # labels — the QC produces an independent reference set for comparison.
@@ -549,18 +550,11 @@ class PhilJobsScraper:
                     elif key == "Time created":
                         job['posted_date'] = value
 
-            # Basic job_type from job_category + title (Claude will refine via classification)
-            combined = f"{job.get('job_category', '')} {job.get('title', '')}".lower()
-            if any(w in combined for w in ['tenure-track', 'tenure track', 'assistant professor']):
-                job['job_type'] = 'Tenure-Track'
-            elif any(w in combined for w in ['postdoc', 'post-doc', 'postdoctoral', 'fellowship']):
-                job['job_type'] = 'Postdoc / Fellowship'
-            elif any(w in combined for w in ['adjunct', 'visiting', 'lecturer', 'instructor']):
-                job['job_type'] = 'Visiting / Adjunct / Lecturer (Fixed-Term)'
-            elif any(w in combined for w in ['tenured', 'associate professor', 'full professor', 'professor']):
-                job['job_type'] = 'Tenured / Continuing / Permanent'
-            else:
-                job['job_type'] = 'Other'
+            # Position type is now set exclusively by classify_job_with_claude
+            # under classification.position_type. The previous heuristic write
+            # to a top-level job['job_type'] field was removed — it was a
+            # leftover from before Claude classification existed and created a
+            # dual source of truth.
 
             job['institution_type'] = 'Other'  # refined by Claude
             job['classification'] = None        # filled by classify_job_with_claude()
@@ -735,10 +729,14 @@ class PhilJobsScraper:
     # ── Claude API classification ─────────────────────────────────────────
 
     def _classification_fallback(self):
+        """Sentinel classification used when the Claude API fails or no API key
+        is available. main_aos is left empty (NOT defaulted to "Open") and
+        position_type is left None so the dashboard surfaces these jobs as
+        explicitly unclassified rather than silently lumping them into Open."""
         return {
-            "main_aos": ["Open"],
-            "detail_aos": {"Open": []},
-            "position_type": "Other",
+            "main_aos": [],
+            "detail_aos": {},
+            "position_type": None,
             "institution_type": "Other",
             "reasoning": "classification_failed",
             "_model": "fallback",
@@ -841,7 +839,6 @@ class PhilJobsScraper:
                 old = cls.get('job_type', 'Other')
                 cls['position_type'] = JOB_TYPE_MIGRATION.get(old, 'Other')
                 cls.pop('job_type', None)
-                job['job_type'] = cls['position_type']  # sync top-level
                 migrated += 1
         if migrated:
             print(f"  Migrated {migrated} jobs to new position_type labels")
@@ -869,8 +866,6 @@ class PhilJobsScraper:
             print(f"  [{i}/{total}] {label}")
             classification = self.classify_job_with_claude(job)
             job['classification'] = classification
-            # Sync top-level fields for backward compatibility
-            job['job_type'] = classification.get('position_type', 'Other')
             job['institution_type'] = classification.get('institution_type', 'Other')
             # Populate state from Claude if scraper couldn't parse it
             if not job.get('state'):
@@ -986,7 +981,7 @@ class PhilJobsScraper:
         for job in new_jobs:
             classification = job.get('classification') or {}
 
-            main_list = classification.get('main_aos', ['Open'])
+            main_list = classification.get('main_aos', [])
             for main in main_list:
                 main_aos_counts[main] += 1
 
@@ -997,7 +992,7 @@ class PhilJobsScraper:
             # position_type: new 5-category field; fall back to migrated job_type if needed
             raw_pt = (classification.get('position_type')
                       or JOB_TYPE_MIGRATION.get(classification.get('job_type', ''), None)
-                      or job.get('job_type', 'Other'))
+                      or 'Other')
             pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
             position_type_counts[pos_type] += 1
 
@@ -1040,71 +1035,7 @@ class PhilJobsScraper:
             'west_coast_city_counts': dict(west_coast_city_counts),
         }
 
-    # ── Co-occurrence ─────────────────────────────────────────────────────
-
-    def compute_cooccurrence(self, historical_data) -> dict:
-        """Compute co-occurrence matrix and related stats from classified jobs."""
-        main_aos_matrix = defaultdict(lambda: defaultdict(int))
-        main_aos_solo_vs_joint = defaultdict(lambda: {'solo': 0, 'joint': 0})
-        detail_aos_by_context = defaultdict(
-            lambda: {'solo': defaultdict(int), 'with_others': defaultdict(int), 'total': 0}
-        )
-        for job in historical_data.get('jobs', []):
-            classification = job.get('classification')
-            if not classification:
-                continue
-
-            main_list = classification.get('main_aos', [])
-            detail_dict = classification.get('detail_aos', {})
-            week = job.get('scraped_date', '')[:10]
-
-            # Matrix: count each pair
-            for m1 in main_list:
-                for m2 in main_list:
-                    if m1 != m2:
-                        main_aos_matrix[m1][m2] += 1
-
-            # Solo vs. joint — faculty positions only (excludes position_type "Other")
-            if classification.get('position_type') != 'Other':
-                if len(main_list) == 1:
-                    main_aos_solo_vs_joint[main_list[0]]['solo'] += 1
-                elif len(main_list) > 1:
-                    for m in main_list:
-                        main_aos_solo_vs_joint[m]['joint'] += 1
-
-            # Detail AOS by context
-            for main, details in detail_dict.items():
-                for detail in details:
-                    ctx = detail_aos_by_context[detail]
-                    ctx['total'] += 1
-                    if len(main_list) == 1:
-                        ctx['solo'][main] += 1
-                    else:
-                        for other_main in main_list:
-                            if other_main != main:
-                                ctx['with_others'][other_main] += 1
-
-        result = {
-            'main_aos_matrix': {k: dict(v) for k, v in main_aos_matrix.items()},
-            'detail_aos_by_context': {
-                k: {
-                    'solo': dict(v['solo']),
-                    'with_others': dict(v['with_others']),
-                    'total': v['total'],
-                }
-                for k, v in detail_aos_by_context.items()
-            },
-            'main_aos_solo_vs_joint': {k: dict(v) for k, v in main_aos_solo_vs_joint.items()},
-        }
-
-        cooc_file = self.data_dir / 'co_occurrence.json'
-        with open(cooc_file, 'w') as f:
-            json.dump(result, f, indent=2)
-
-        print(f"✓ Co-occurrence data saved to {cooc_file}")
-        return result
-
-    # ── Dashboard helpers ──────────────────────────────────────────────────
+    # ── Co-occurrence (dashboard helper) ──────────────────────────────────
 
     def _compute_cooc_from_jobs(self, jobs):
         """Compute co-occurrence data from a filtered list of jobs (no file I/O).
@@ -2079,7 +2010,7 @@ class PhilJobsScraper:
 
             for job in week_jobs:
                 cls = job.get('classification') or {}
-                main_list = cls.get('main_aos', ['Open'])
+                main_list = cls.get('main_aos', [])
                 mode_key = 'solo' if len(main_list) == 1 else 'joint'
                 week_totals['all'] += 1
                 week_totals[mode_key] += 1
@@ -2093,7 +2024,7 @@ class PhilJobsScraper:
                         detail_counts[mode_key][key] += 1
                 raw_pt = (cls.get('position_type')
                           or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
-                          or job.get('job_type', 'Other'))
+                          or 'Other')
                 pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
                 pt_counts['all'][pos_type] += 1
                 pt_counts[mode_key][pos_type] += 1
@@ -2181,7 +2112,7 @@ class PhilJobsScraper:
                 if not s:
                     continue
                 cls = job.get('classification') or {}
-                main_list = cls.get('main_aos', ['Open'])
+                main_list = cls.get('main_aos', [])
                 mode_key = 'solo' if len(main_list) == 1 else 'joint'
                 sc['all'][s] += 1
                 sc[mode_key][s] += 1
@@ -2213,7 +2144,7 @@ class PhilJobsScraper:
             if not metro:
                 continue
             classification = job.get('classification') or {}
-            main_list = classification.get('main_aos', ['Open'])
+            main_list = classification.get('main_aos', [])
             mode_key = 'solo' if len(main_list) == 1 else 'joint'
             for main in main_list:
                 wc_city_aos['all'][city][main] += 1
@@ -2243,7 +2174,7 @@ class PhilJobsScraper:
                 if not region:
                     continue
                 cls = job.get('classification') or {}
-                main_list = cls.get('main_aos', ['Open'])
+                main_list = cls.get('main_aos', [])
                 mode_key = 'solo' if len(main_list) == 1 else 'joint'
                 region_data[region]['all'][i] += 1
                 region_data[region][mode_key][i] += 1
@@ -2270,13 +2201,24 @@ class PhilJobsScraper:
         # Per-subcategory list of matching jobs and an id-keyed dict with all
         # the fields the download report needs. Used by the Browse by Category
         # modal's "Download report" button per subcategory.
+        #
+        # Also tracks unclassified jobs separately. A job is "unclassified" if
+        # its classification is missing, its reasoning is "classification_failed",
+        # or main_aos came back empty. These are surfaced via a banner at the
+        # top of the dashboard and excluded from all AOS-based charts so we
+        # don't silently lump them into Open.
         subcategory_job_ids = defaultdict(list)
+        unclassified_job_ids = []
         job_details_map = {}
         for job in us_jobs:
             jid = job.get('id')
             if not jid:
                 continue
             cls = job.get('classification') or {}
+            main_list = cls.get('main_aos', [])
+            reasoning = cls.get('reasoning', '')
+            if (not cls) or reasoning == 'classification_failed' or not main_list:
+                unclassified_job_ids.append(jid)
             for main, details in cls.get('detail_aos', {}).items():
                 for detail in details:
                     if jid not in subcategory_job_ids[detail]:
@@ -2299,7 +2241,7 @@ class PhilJobsScraper:
                 'application_url': job.get('application_url', ''),
                 'contact_email': job.get('contact_email', ''),
                 'description': job.get('description', ''),
-                'job_type': job.get('job_type', ''),
+                'job_type': cls.get('position_type', ''),
             }
         subcategory_job_ids = {k: list(v) for k, v in subcategory_job_ids.items()}
 
@@ -2311,7 +2253,7 @@ class PhilJobsScraper:
                 continue
             raw_pt = (cls.get('position_type')
                       or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
-                      or job.get('job_type', 'Other'))
+                      or 'Other')
             pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
             main_list = cls.get('main_aos', [])
             mode_key = 'solo' if len(main_list) == 1 else 'joint'
@@ -2338,7 +2280,7 @@ class PhilJobsScraper:
             mode_key = 'solo' if len(main_list) == 1 else 'joint'
             raw_pt = (cls.get('position_type')
                       or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
-                      or job.get('job_type', 'Other'))
+                      or 'Other')
             pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
             for main in main_list:
                 pos_type_aos_job_ids['all'][main][pos_type].append(jid)
@@ -2369,7 +2311,7 @@ class PhilJobsScraper:
         last_main = defaultdict(int)
         for job in last_week_jobs:
             cls = job.get('classification') or {}
-            for main in cls.get('main_aos', ['Open']):
+            for main in cls.get('main_aos', []):
                 last_main[main] += 1
         most_active = max(last_main, key=last_main.get) if last_main else "—"
 
@@ -2430,6 +2372,18 @@ class PhilJobsScraper:
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- Unclassified Jobs Banner — revealed by JS only if count > 0 -->
+        <div id="unclassifiedBanner" class="hidden bg-amber-50 border border-amber-300 rounded-xl shadow p-4 mb-6 flex items-center justify-between flex-wrap gap-3">
+            <div class="flex items-start gap-3">
+                <div class="text-amber-700 text-xl leading-none">⚠️</div>
+                <div>
+                    <div class="font-semibold text-amber-900"><span id="unclassifiedCount">0</span> jobs could not be classified</div>
+                    <div class="text-sm text-amber-800">These postings are excluded from the AOS-based charts below so they don't pollute the data. Download the full list to review them.</div>
+                </div>
+            </div>
+            <button type="button" onclick="downloadUnclassifiedReport()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold rounded-lg whitespace-nowrap">📄 Download unclassified jobs</button>
+        </div>
 
         <!-- Stats Cards -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
@@ -2740,6 +2694,7 @@ class PhilJobsScraper:
             synonymMap: {json.dumps(synonym_map)},
             bubbleStopwords: {json.dumps(bubble_stopwords)},
             subcategoryJobIds: {json.dumps(subcategory_job_ids)},
+            unclassifiedJobIds: {json.dumps(unclassified_job_ids)},
             coocJobIds: {json.dumps(cooc_job_ids)},
             posTypeAosJobIds: {json.dumps(pos_type_aos_job_ids)},
             jobDetails: {json.dumps(job_details_map)}
@@ -2871,6 +2826,35 @@ class PhilJobsScraper:
                 `;
                 categoryGrid.appendChild(card);
             }});
+
+            // Unclassified card — only shown when there are unclassified jobs.
+            // Clicking downloads the PDF rather than opening a modal (there's
+            // no AOS data to render for these jobs).
+            const unclassifiedIds = data.unclassifiedJobIds || [];
+            if (unclassifiedIds.length > 0) {{
+                const uCard = document.createElement('div');
+                uCard.className = 'category-card bg-amber-50 rounded-lg shadow hover:shadow-lg cursor-pointer p-5 border-l-4';
+                uCard.style.borderLeftColor = '#d97706';
+                uCard.title = 'Click to download a PDF of these jobs';
+                uCard.onclick = () => downloadUnclassifiedReport();
+                uCard.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="font-semibold text-amber-900 text-lg">Unclassified</h3>
+                        <div class="text-amber-700">⚠️</div>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <div class="text-3xl font-bold text-amber-900">${{unclassifiedIds.length}}</div>
+                            <div class="text-sm text-amber-800">total jobs</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xs text-amber-800">click to download</div>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-amber-200"><div class="text-xs text-amber-800">Excluded from AOS-based charts</div></div>
+                `;
+                categoryGrid.appendChild(uCard);
+            }}
         }}
 
         function updateMarketControls() {{
@@ -3148,6 +3132,26 @@ class PhilJobsScraper:
                 `${{aos}}_${{ptLabel}}_${{modeLabel}}`
             );
         }}
+
+        // Download all jobs whose classification is missing, failed, or has
+        // an empty main_aos list. Triggered by the top-of-page banner button.
+        function downloadUnclassifiedReport() {{
+            const jobIds = data.unclassifiedJobIds || [];
+            downloadJobsReport(jobIds, 'Unclassified jobs', 'unclassified');
+        }}
+
+        // Reveal the warning banner if any jobs failed classification.
+        function initUnclassifiedBanner() {{
+            const ids = data.unclassifiedJobIds || [];
+            const banner = document.getElementById('unclassifiedBanner');
+            const countEl = document.getElementById('unclassifiedCount');
+            if (!banner || !countEl) return;
+            if (ids.length > 0) {{
+                countEl.textContent = ids.length;
+                banner.classList.remove('hidden');
+            }}
+        }}
+        initUnclassifiedBanner();
 
         // ===== REGIONAL CHART (with All/Solo/Joint toggle) =====
         const regionColors = {{ 'West': '#2563eb', 'Northeast': '#7c3aed', 'South': '#dc2626', 'Midwest': '#d97706' }};
@@ -3958,7 +3962,7 @@ class PhilJobsScraper:
                 if not region:
                     continue
                 cls = job.get('classification') or {}
-                main_list = cls.get('main_aos', ['Open'])
+                main_list = cls.get('main_aos', [])
                 mode_key = 'solo' if len(main_list) == 1 else 'joint'
                 intl_region_data[region]['all'][i] += 1
                 intl_region_data[region][mode_key][i] += 1
@@ -3986,7 +3990,7 @@ class PhilJobsScraper:
                 continue
             raw_pt = (cls.get('position_type')
                       or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
-                      or job.get('job_type', 'Other'))
+                      or 'Other')
             pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
             main_list = cls.get('main_aos', [])
             mode_key = 'solo' if len(main_list) == 1 else 'joint'
@@ -4012,7 +4016,7 @@ class PhilJobsScraper:
             mode_key = 'solo' if len(main_list) == 1 else 'joint'
             raw_pt = (cls.get('position_type')
                       or JOB_TYPE_MIGRATION.get(cls.get('job_type', ''), None)
-                      or job.get('job_type', 'Other'))
+                      or 'Other')
             pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
             for main in main_list:
                 pos_type_aos_job_ids['all'][main][pos_type].append(jid)
@@ -4037,13 +4041,19 @@ class PhilJobsScraper:
         country_category_data = {k: dict(v) for k, v in country_cat_map.items()}
 
         # ── Subcategory → job IDs + full job details (for PDF download) ──
+        # See US dashboard equivalent for the unclassified-tracking rationale.
         subcategory_job_ids = defaultdict(list)
+        unclassified_job_ids = []
         job_details_map = {}
         for job in intl_jobs:
             jid = job.get('id')
             if not jid:
                 continue
             cls = job.get('classification') or {}
+            main_list = cls.get('main_aos', [])
+            reasoning = cls.get('reasoning', '')
+            if (not cls) or reasoning == 'classification_failed' or not main_list:
+                unclassified_job_ids.append(jid)
             for main, details in cls.get('detail_aos', {}).items():
                 for detail in details:
                     if jid not in subcategory_job_ids[detail]:
@@ -4066,7 +4076,7 @@ class PhilJobsScraper:
                 'application_url': job.get('application_url', ''),
                 'contact_email': job.get('contact_email', ''),
                 'description': job.get('description', ''),
-                'job_type': job.get('job_type', ''),
+                'job_type': cls.get('position_type', ''),
             }
         subcategory_job_ids = {k: list(v) for k, v in subcategory_job_ids.items()}
 
@@ -4087,7 +4097,7 @@ class PhilJobsScraper:
         last_main = defaultdict(int)
         for job in last_week_jobs:
             cls = job.get('classification') or {}
-            for main in cls.get('main_aos', ['Open']):
+            for main in cls.get('main_aos', []):
                 last_main[main] += 1
         most_active = max(last_main, key=last_main.get) if last_main else "—"
 
@@ -4147,6 +4157,18 @@ class PhilJobsScraper:
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- Unclassified Jobs Banner — revealed by JS only if count > 0 -->
+        <div id="unclassifiedBanner" class="hidden bg-amber-50 border border-amber-300 rounded-xl shadow p-4 mb-6 flex items-center justify-between flex-wrap gap-3">
+            <div class="flex items-start gap-3">
+                <div class="text-amber-700 text-xl leading-none">⚠️</div>
+                <div>
+                    <div class="font-semibold text-amber-900"><span id="unclassifiedCount">0</span> jobs could not be classified</div>
+                    <div class="text-sm text-amber-800">These postings are excluded from the AOS-based charts below so they don't pollute the data. Download the full list to review them.</div>
+                </div>
+            </div>
+            <button type="button" onclick="downloadUnclassifiedReport()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold rounded-lg whitespace-nowrap">📄 Download unclassified jobs</button>
+        </div>
 
         <!-- Stats Cards -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
@@ -4359,6 +4381,7 @@ class PhilJobsScraper:
             synonymMap: {json.dumps(synonym_map)},
             bubbleStopwords: {json.dumps(bubble_stopwords)},
             subcategoryJobIds: {json.dumps(subcategory_job_ids)},
+            unclassifiedJobIds: {json.dumps(unclassified_job_ids)},
             coocJobIds: {json.dumps(cooc_job_ids)},
             posTypeAosJobIds: {json.dumps(pos_type_aos_job_ids)},
             jobDetails: {json.dumps(job_details_map)}
@@ -4468,6 +4491,35 @@ class PhilJobsScraper:
                 `;
                 categoryGrid.appendChild(card);
             }});
+
+            // Unclassified card — only shown when there are unclassified jobs.
+            // Clicking downloads the PDF rather than opening a modal (there's
+            // no AOS data to render for these jobs).
+            const unclassifiedIds = data.unclassifiedJobIds || [];
+            if (unclassifiedIds.length > 0) {{
+                const uCard = document.createElement('div');
+                uCard.className = 'category-card bg-amber-50 rounded-lg shadow hover:shadow-lg cursor-pointer p-5 border-l-4';
+                uCard.style.borderLeftColor = '#d97706';
+                uCard.title = 'Click to download a PDF of these jobs';
+                uCard.onclick = () => downloadUnclassifiedReport();
+                uCard.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="font-semibold text-amber-900 text-lg">Unclassified</h3>
+                        <div class="text-amber-700">⚠️</div>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <div class="text-3xl font-bold text-amber-900">${{unclassifiedIds.length}}</div>
+                            <div class="text-sm text-amber-800">total jobs</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xs text-amber-800">click to download</div>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-amber-200"><div class="text-xs text-amber-800">Excluded from AOS-based charts</div></div>
+                `;
+                categoryGrid.appendChild(uCard);
+            }}
         }}
 
         function updateMarketControls() {{
@@ -4738,6 +4790,26 @@ class PhilJobsScraper:
                 `${{aos}}_${{ptLabel}}_${{modeLabel}}`
             );
         }}
+
+        // Download all jobs whose classification is missing, failed, or has
+        // an empty main_aos list. Triggered by the top-of-page banner button.
+        function downloadUnclassifiedReport() {{
+            const jobIds = data.unclassifiedJobIds || [];
+            downloadJobsReport(jobIds, 'Unclassified jobs', 'unclassified');
+        }}
+
+        // Reveal the warning banner if any jobs failed classification.
+        function initUnclassifiedBanner() {{
+            const ids = data.unclassifiedJobIds || [];
+            const banner = document.getElementById('unclassifiedBanner');
+            const countEl = document.getElementById('unclassifiedCount');
+            if (!banner || !countEl) return;
+            if (ids.length > 0) {{
+                countEl.textContent = ids.length;
+                banner.classList.remove('hidden');
+            }}
+        }}
+        initUnclassifiedBanner();
 
         // ===== REGIONAL CHART =====
         const regionColors = {{
@@ -5298,8 +5370,9 @@ class PhilJobsScraper:
             for job in new_jobs[:15]:
                 report += f"\n### {job.get('institution', 'Unknown')}\n"
                 report += f"**Position:** {job.get('title', 'Unknown')}\n"
-                if job.get('job_type'):
-                    report += f"**Type:** {job['job_type']}\n"
+                position_type = (job.get('classification') or {}).get('position_type')
+                if position_type:
+                    report += f"**Type:** {position_type}\n"
                 if job.get('aos') and job['aos'] != 'Open':
                     report += f"**AOS:** {job['aos']}\n"
                 if job.get('location'):
@@ -5322,7 +5395,7 @@ class PhilJobsScraper:
     def export_csv(self, historical_data):
         """Export all jobs and weekly trends to CSV."""
         jobs_fields = [
-            'id', 'institution', 'title', 'job_category', 'job_type', 'institution_type',
+            'id', 'institution', 'title', 'job_category', 'position_type', 'institution_type',
             'aos', 'aoc', 'location', 'state', 'country', 'city',
             'workload', 'vacancies', 'deadline', 'start_date', 'posted_date',
             'status', 'url', 'scraped_date'
@@ -5332,7 +5405,12 @@ class PhilJobsScraper:
             writer = csv.DictWriter(f, fieldnames=jobs_fields, extrasaction='ignore')
             writer.writeheader()
             for job in historical_data.get('jobs', []):
-                writer.writerow({k: job.get(k, '') for k in jobs_fields})
+                cls = job.get('classification') or {}
+                row = {k: job.get(k, '') for k in jobs_fields}
+                # position_type lives inside classification, not top-level
+                row['position_type'] = cls.get('position_type') or ''
+                row['institution_type'] = cls.get('institution_type') or job.get('institution_type', '')
+                writer.writerow(row)
 
         trends = historical_data.get('weekly_trends', [])
         if trends:
@@ -5405,7 +5483,6 @@ def main():
             if not job.get('classification'):
                 classification = scraper.classify_job_with_claude(job)
                 job['classification'] = classification
-                job['job_type'] = classification.get('position_type', 'Other')
                 job['institution_type'] = classification.get('institution_type', 'Other')
                 if not job.get('state'):
                     state_us = classification.get('state_us', '')
@@ -5457,7 +5534,6 @@ def main():
 
     print(f"\n✓ Done! Data saved to {scraper.data_dir}/")
     print(f"  - all_jobs.json: {len(historical_data['jobs'])} unique jobs")
-    print(f"  - co_occurrence.json: Co-occurrence matrix")
     print(f"  - jobs_all.csv: Full job archive (Excel-compatible)")
     print(f"  - trends_weekly.csv: Weekly trend archive")
     print(f"  - snapshot_{snapshot['date']}.json: This week's data")
