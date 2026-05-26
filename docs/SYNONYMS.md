@@ -1,8 +1,8 @@
 # Keyword Explorer — Synonym Map
 
-**Last updated:** 2026-05-16
+**Last updated:** 2026-05-26
 **Source data:** [`data/synonym_map.json`](../data/synonym_map.json)
-**Terms in map:** 150
+**Terms in map:** 125
 
 ---
 
@@ -25,60 +25,50 @@ used, see [KEYWORD_EXPLORER_METHODOLOGY.md](KEYWORD_EXPLORER_METHODOLOGY.md).
 
 ## Synonym Groups (Alphabetical)
 
-- **active** → actively, activity
-- **activities** → activity
-- **addition** → additional
-- **applied** → applied ethics, applied philosophy
-- **associate** → assistant, adjunct, lecturer
-- **background** → backgrounds
-- **competence** → competency, competencies, competent
-- **continue** → continuing
-- **critical** → critical theory, critical thinking, critique
-- **description** → describe, described, describing
-- **discipline** → disciplinary, disciplines, field
-- **educational** → education, philosophy of education
-- **eligible** → eligibility, qualified, qualification
-- **environment** → environmental, environmental philosophy, environmental ethics
-- **ethical** → ethics, metaethics, meta-ethics, normative ethics, applied ethics, moral philosophy, moral theory
+- **access** → accessibility, accessible
+- **active** → engaged, engagement, activity
+- **applied** → practical, application, praxis
+- **arts** → humanities, liberal arts
+- **chair** → chairperson, chaired
+- **collaboration** → collaborative, collaborator, collaborating
+- **comprehensive** → comprehensively
+- **critical** → critique, criticism
+- **curriculum** → curricular, syllabus, course design
+- **description** → describe, described, descriptive
+- **education** → educational, pedagogy, pedagogical, teaching
+- **employees** → employee, employment, employer
+- **engage** → engagement, engaged, engaging
+- **environment** → environmental, ecology, ecological, environmental philosophy, environmental ethics
 - **ethics** → ethical, metaethics, meta-ethics, normative ethics, moral philosophy, moral theory
-- **health** → healthcare, medical, biomedical, medicine, public health, health ethics
-- **highly** → high, strong, strongly, excellent
-- **history** → historical, history of philosophy
-- **includes** → include, including
-- **intellectual** → scholarly, academic
+- **focus** → focused, focusing, foci
+- **health** → medical, medicine, bioethics, biomedical, healthcare, clinical
+- **high** → higher, highest
+- **highly** → high
+- **history** → historical, historiography, historian
 - **interdisciplinary** → multidisciplinary, cross-disciplinary, transdisciplinary
-- **knowledge** → knowledgeable
+- **interests** → interest, interested, interesting
+- **introductory** → introduction, intro, elementary, foundational
+- **leadership** → leader, lead, leading
 - **liberal** → liberal arts
-- **located** → location, based
-- **logic** → logical, formal logic, philosophical logic, symbolic logic, mathematical logic
-- **medical** → medicine, biomedical, bioethics, medical ethics, clinical ethics, healthcare ethics
-- **names** → named, naming
-- **opportunities** → opportunity
-- **person** → personal identity, personhood
-- **philosophical** → philosophy, philosophic
-- **policy** → policies
-- **political** → politics, political philosophy, political theory
+- **member** → membership, members
+- **month** → monthly, months
+- **participate** → participation, participatory, participant
+- **philosophical** → philosophy
+- **political** → political philosophy, political theory
 - **postdoctoral** → postdoc, post-doctoral, post-doc
-- **prior** → previous, earlier, formerly
-- **received** → receive, receiving, obtained
-- **recommendation** → recommendations
-- **relevant** → relevance
-- **renewal** → renewable, reappointment
-- **scholars** → scholar, scholarship, scholarly
+- **potential** → potentially
+- **projects** → project
+- **public** → public philosophy
+- **research** → scholarship, scholarly, investigation
+- **scholars** → scholar, scholarship
 - **science** → sciences, scientific, philosophy of science
 - **sciences** → science, scientific, philosophy of science
-- **serve** → service, serving
-- **specialization** → specializations, specialize, specialty, specialties
-- **studies** → study
-- **submitted** → submit, submission, submitting
-- **syllabi** → syllabus, syllabuses
-- **system** → systems, systematic
-- **technology** → technologies, technological, philosophy of technology
-- **term** → terms, temporary, fixed-term
-- **training** → trained, preparation, formation
-- **visit** → visiting
-- **visiting** → visitor, guest
-- **vitae** → cv, curriculum vitae
+- **social** → social philosophy
+- **success** → successful, successfully
+- **syllabi** → syllabus
+- **system** → systems, systematic, systemic
+- **technology** → philosophy of technology, tech ethics, digital ethics
+- **thinking** → thought, think
 
 ---
 
