@@ -367,8 +367,8 @@ Rules:
    - "Philosophy of Mind, Ethics, and Cognitive Science" → ["Metaphysics & Epistemology", "Ethics", "Science, Logic, & Mathematics"] (three genuinely distinct areas)
    - "Ethics, civic engagement, and general education" → ["Ethics", "Social & Political Philosophy"]
 1a. APPLIED ETHICS STAYS UNDER ETHICS ONLY — do not double-tag with Science, Logic, & Mathematics (or any other category) just because the applied domain happens to overlap. The applied-ethics sub-fields ("AI, Technology, and Information Ethics", "Biomedical Ethics / Bioethics", "Environmental Ethics", "Business Ethics", "Neuroethics", "Animal Ethics", "Food and Agricultural Ethics") all belong under Ethics ONLY. The detail_aos sub-field captures the applied domain — do not add a second main_aos category for it. Examples:
-   - "AI Ethics" → ["Ethics"] with detail_aos {"Ethics": ["AI, Technology, and Information Ethics"]} — NOT also Science, Logic, & Mathematics
-   - "Bioethics" → ["Ethics"] with detail_aos {"Ethics": ["Biomedical Ethics / Bioethics"]} — NOT also Science, Logic, & Mathematics
+   - "AI Ethics" → ["Ethics"] with detail_aos {{"Ethics": ["AI, Technology, and Information Ethics"]}} — NOT also Science, Logic, & Mathematics
+   - "Bioethics" → ["Ethics"] with detail_aos {{"Ethics": ["Biomedical Ethics / Bioethics"]}} — NOT also Science, Logic, & Mathematics
    - "Environmental Ethics" → ["Ethics"] only
    Only add Science, Logic, & Mathematics as a second main category if the posting ALSO independently hires for non-ethics work in that area (e.g., the posting says "AI Ethics AND Philosophy of Mind" or "Bioethics AND Philosophy of Biology methodology"). The mere mention that a position "intersects with science" or "engages technology" is NOT enough.
 1b. Similarly, "Philosophy of X" sub-fields (Philosophy of Biology, Philosophy of Physics, Philosophy of AI, etc.) stay under Science, Logic, & Mathematics ONLY unless the posting independently hires for work in another main category.
