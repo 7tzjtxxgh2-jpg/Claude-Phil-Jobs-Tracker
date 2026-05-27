@@ -1,6 +1,6 @@
 # Keyword Explorer — Methodology
 
-**Last updated:** 2026-05-26
+**Last updated:** 2026-05-27
 **Corpus size at this writing:** 203 jobs
 **Vocabulary size eligible for synonym lookup:** 2201 terms
 **Synonym groups in current map:** 125
@@ -152,35 +152,53 @@ the dashboard still works — search falls back to stemming only.
 The current synonym map is documented in human-readable form at
 [SYNONYMS.md](SYNONYMS.md).
 
-### 5. Bubble Chart Construction
+### 5. Bubble Chart Construction (Co-occurrence + Lift)
 
-When a user searches for a term, the bubble chart displays **the
-field-defining synonyms from the map (Section 4)**, each sized by how
-many jobs in the corpus contain that specific term. The bubble chart
-is NOT a co-occurrence visualization.
+When a user searches for a term, the bubble chart shows **other
+concepts that co-occur with the query in matching job descriptions**,
+ranked by how *distinctively* they're associated with that query.
+This answers: "given that a posting mentions feminism, what other
+philosophy topics tend to show up alongside it?"
 
-1. Look up the search term in the synonym map to get its field-defining
-   alternatives.
-2. For each candidate (the query plus each synonym), stem it and count
-   jobs in the corpus whose stem set contains that stem.
-3. Display each as a bubble: the search term at the center, synonyms
-   around it. Bubble size is proportional to per-term job count.
-4. Render as a D3 force-directed simulation. Each bubble is clickable
-   to re-search with that term.
+1. **Match jobs.** Find every job whose description (after EEO
+   stripping and stopword filtering) contains the query, any of its
+   stem variants, or any of its synonyms (from Section 4's map).
+2. **Tally co-occurring stems.** For each matching job, walk its
+   unique stems and increment a counter. The query's own stems and
+   the corpus-wide bubble stopwords (terms present in >80% of all
+   descriptions, e.g. "philosophy") are excluded so they don't
+   crowd out distinctive signals.
+3. **Apply a minimum-count floor.** A stem must appear in at least
+   `max(2, ceil(5% of matching jobs))` matching descriptions to be
+   eligible. This filters single-job coincidences.
+4. **Score by lift.** For each eligible stem `t`:
 
-**Why synonyms, not co-occurrence?** The purpose of the chart is to
-help users discover the field's vocabulary — "what other words does
-the discipline use for this concept?" — not to surface every word that
-happens to appear in the same job descriptions. A prior co-occurrence
-design produced noisy bubbles ("three" from "three letters of
-reference"; "online" from teaching modality; "ethics" merely because
-philosophy of race jobs often mention ethics). Sourcing strictly from
-the synonym map gives a clean signal about field-defining alternatives.
+   ```
+   lift(t) = P(t | matches query) / P(t | corpus)
+          = (count_in_matching / |matching|) / (count_in_corpus / |corpus|)
+   ```
 
-**Bubble sizes are per-synonym corpus counts**, not match-set
-co-occurrence counts. This answers the question "how many jobs in
-the corpus list this specific word?" which is what the user typically
-wants when assessing a field's market presence.
+   Lift > 1 means the stem appears more often in matching jobs than
+   in the corpus generally. Lift around 1 means the stem is just
+   evenly distributed (background noise). Lift selects bubbles that
+   tell the user something specific about the query, not what's
+   merely popular.
+5. **Render top 18 by lift.** Bubble *size* is proportional to raw
+   count (intuitive: "this many matching jobs mention it") while
+   *selection* is driven by lift. Tooltip shows both numbers.
+6. **Force-directed layout** via D3 with the query bubble visually
+   distinct. Each bubble is clickable; clicking drills into a new
+   search for that term.
+
+**Why lift rather than raw count?** Raw count would over-promote
+terms that are common everywhere (teaching, research, students)
+rather than terms specifically associated with the query. The 80%
+bubble-stopword filter handles the most extreme cases, but lift
+catches the next tier — terms that aren't quite universal but
+aren't distinctively connected to the query either. A previous
+iteration of this chart used only synonyms (field-defining
+alternatives) and provided no co-occurrence information, which
+didn't match the question users actually wanted to answer.
 
 ### 6. Trend Chart Construction
 
@@ -206,11 +224,14 @@ season.
 - **Stemming is rule-based, not lexical**: words like "race" and
   "racial" do NOT stem to the same form. The synonym map is intended
   to bridge these gaps for important terms.
-- **Bubble suggestions are co-occurrence, not lift**: a term appearing
-  with high frequency in matching jobs may be common in *all* jobs
-  rather than specifically associated with the search term. A future
-  improvement is lift-based scoring (term overrepresentation relative
-  to corpus baseline).
+- **Lift can mislead at small N**: when only a handful of jobs match
+  the query, lift scores fluctuate sharply with each new posting.
+  Treat suggestions from <10 matching jobs as exploratory, not as
+  established field correlations.
+- **Stems, not bigrams**: "feminist" and "ethics" are tracked as
+  separate stems, not as the compound "feminist ethics". A search
+  for either will surface the other as a co-occurring bubble, but
+  the chart cannot directly visualize multi-word concepts.
 
 ---
 
@@ -234,7 +255,7 @@ season.
 
 ## Change Log
 
-- **2026-05-26**: Added semi-annual Opus QC check. Twice a year
+- **2026-05-27**: Added semi-annual Opus QC check. Twice a year
   (January 15 and July 15), the more capable `claude-opus-4-5` model
   independently re-classifies the corpus using the same prompt and
   taxonomy as the live Sonnet pipeline. Results are stored in
@@ -249,7 +270,7 @@ season.
   `.github/workflows/semiannual-opus-qc.yml`. Cost scales with corpus;
   downsamples to 200 jobs when corpus exceeds 500 to keep per-run cost
   bounded.
-- **2026-05-26**: Switched Claude model from `claude-haiku-4-5-20251001`
+- **2026-05-27**: Switched Claude model from `claude-haiku-4-5-20251001`
   to `claude-sonnet-4-5` across all API calls (classification, state
   resolution, synonym generation). Sonnet is ~3× more expensive per
   token but markedly better on edge-case classification (subtle multi-
@@ -259,7 +280,7 @@ season.
   always verify which model produced any given label. TAXONOMY_VERSION
   bumped to `2026-05-16-sonnet`; existing jobs reclassified under
   Sonnet with prior Haiku labels preserved under `classification_v2`.
-- **2026-05-26**: Taxonomy revised to add four subcategories from a
+- **2026-05-27**: Taxonomy revised to add four subcategories from a
   cross-source review against PhilPapers and APA submission tracks:
   Virtue Ethics (under Ethics), Philosophy of Disability and Public
   Philosophy (under Social & Political), and Phenomenology (under
@@ -269,7 +290,7 @@ season.
   catchall. All existing jobs were reclassified under the new
   taxonomy; prior classifications preserved on each job under
   `classification_v1`. Taxonomy version bumped to `2026-05-16`.
-- **2026-05-26**: Bubble chart rewritten to source from the Claude-
+- **2026-05-27**: Bubble chart rewritten to source from the Claude-
   generated synonym map (field-defining alternatives) rather than from
   corpus co-occurrence. Each bubble is now sized by per-term corpus
   count. The Claude synonym prompt was tightened to ask only for
@@ -282,4 +303,4 @@ season.
   related jobs often also discuss ethics. The new approach answers a
   more focused question — "what are the field's alternative names
   for this concept, and how many jobs use each?"
-- **2026-05-26**: Initial documented version of the methodology.
+- **2026-05-27**: Initial documented version of the methodology.

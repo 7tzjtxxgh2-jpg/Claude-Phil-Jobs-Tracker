@@ -1951,35 +1951,53 @@ class PhilJobsScraper:
             'The current synonym map is documented in human-readable form at',
             '[SYNONYMS.md](SYNONYMS.md).',
             '',
-            '### 5. Bubble Chart Construction',
+            '### 5. Bubble Chart Construction (Co-occurrence + Lift)',
             '',
-            'When a user searches for a term, the bubble chart displays **the',
-            'field-defining synonyms from the map (Section 4)**, each sized by how',
-            'many jobs in the corpus contain that specific term. The bubble chart',
-            'is NOT a co-occurrence visualization.',
+            'When a user searches for a term, the bubble chart shows **other',
+            'concepts that co-occur with the query in matching job descriptions**,',
+            "ranked by how *distinctively* they're associated with that query.",
+            'This answers: "given that a posting mentions feminism, what other',
+            'philosophy topics tend to show up alongside it?"',
             '',
-            '1. Look up the search term in the synonym map to get its field-defining',
-            '   alternatives.',
-            '2. For each candidate (the query plus each synonym), stem it and count',
-            '   jobs in the corpus whose stem set contains that stem.',
-            '3. Display each as a bubble: the search term at the center, synonyms',
-            '   around it. Bubble size is proportional to per-term job count.',
-            '4. Render as a D3 force-directed simulation. Each bubble is clickable',
-            '   to re-search with that term.',
+            '1. **Match jobs.** Find every job whose description (after EEO',
+            '   stripping and stopword filtering) contains the query, any of its',
+            "   stem variants, or any of its synonyms (from Section 4's map).",
+            '2. **Tally co-occurring stems.** For each matching job, walk its',
+            "   unique stems and increment a counter. The query's own stems and",
+            '   the corpus-wide bubble stopwords (terms present in >80% of all',
+            "   descriptions, e.g. \"philosophy\") are excluded so they don't",
+            "   crowd out distinctive signals.",
+            '3. **Apply a minimum-count floor.** A stem must appear in at least',
+            '   `max(2, ceil(5% of matching jobs))` matching descriptions to be',
+            '   eligible. This filters single-job coincidences.',
+            '4. **Score by lift.** For each eligible stem `t`:',
             '',
-            '**Why synonyms, not co-occurrence?** The purpose of the chart is to',
-            'help users discover the field\'s vocabulary — "what other words does',
-            'the discipline use for this concept?" — not to surface every word that',
-            'happens to appear in the same job descriptions. A prior co-occurrence',
-            'design produced noisy bubbles ("three" from "three letters of',
-            'reference"; "online" from teaching modality; "ethics" merely because',
-            'philosophy of race jobs often mention ethics). Sourcing strictly from',
-            'the synonym map gives a clean signal about field-defining alternatives.',
+            '   ```',
+            '   lift(t) = P(t | matches query) / P(t | corpus)',
+            '          = (count_in_matching / |matching|) / (count_in_corpus / |corpus|)',
+            '   ```',
             '',
-            '**Bubble sizes are per-synonym corpus counts**, not match-set',
-            "co-occurrence counts. This answers the question \"how many jobs in",
-            'the corpus list this specific word?" which is what the user typically',
-            'wants when assessing a field\'s market presence.',
+            '   Lift > 1 means the stem appears more often in matching jobs than',
+            '   in the corpus generally. Lift around 1 means the stem is just',
+            '   evenly distributed (background noise). Lift selects bubbles that',
+            "   tell the user something specific about the query, not what's",
+            '   merely popular.',
+            '5. **Render top 18 by lift.** Bubble *size* is proportional to raw',
+            '   count (intuitive: "this many matching jobs mention it") while',
+            '   *selection* is driven by lift. Tooltip shows both numbers.',
+            '6. **Force-directed layout** via D3 with the query bubble visually',
+            '   distinct. Each bubble is clickable; clicking drills into a new',
+            '   search for that term.',
+            '',
+            '**Why lift rather than raw count?** Raw count would over-promote',
+            'terms that are common everywhere (teaching, research, students)',
+            'rather than terms specifically associated with the query. The 80%',
+            'bubble-stopword filter handles the most extreme cases, but lift',
+            "catches the next tier — terms that aren't quite universal but",
+            "aren't distinctively connected to the query either. A previous",
+            'iteration of this chart used only synonyms (field-defining',
+            'alternatives) and provided no co-occurrence information, which',
+            "didn't match the question users actually wanted to answer.",
             '',
             '### 6. Trend Chart Construction',
             '',
@@ -2005,11 +2023,14 @@ class PhilJobsScraper:
             '- **Stemming is rule-based, not lexical**: words like "race" and',
             '  "racial" do NOT stem to the same form. The synonym map is intended',
             '  to bridge these gaps for important terms.',
-            '- **Bubble suggestions are co-occurrence, not lift**: a term appearing',
-            '  with high frequency in matching jobs may be common in *all* jobs',
-            '  rather than specifically associated with the search term. A future',
-            '  improvement is lift-based scoring (term overrepresentation relative',
-            '  to corpus baseline).',
+            '- **Lift can mislead at small N**: when only a handful of jobs match',
+            '  the query, lift scores fluctuate sharply with each new posting.',
+            '  Treat suggestions from <10 matching jobs as exploratory, not as',
+            '  established field correlations.',
+            '- **Stems, not bigrams**: "feminist" and "ethics" are tracked as',
+            '  separate stems, not as the compound "feminist ethics". A search',
+            '  for either will surface the other as a co-occurring bubble, but',
+            '  the chart cannot directly visualize multi-word concepts.',
             '',
             '---',
             '',
@@ -2629,7 +2650,7 @@ class PhilJobsScraper:
                     </span>
                 </div>
             </div>
-            <p class="text-sm text-gray-500 mb-4">Search any term to see (1) related vocabulary used in matching jobs, and (2) how often that area appears in postings over time. Synonyms expand automatically (e.g. "feminism" matches "feminist").</p>
+            <p class="text-sm text-gray-500 mb-4">Search any term to see (1) what <em>other</em> concepts cluster around it in matching job descriptions, and (2) how often that area appears in postings over time. Synonyms expand automatically (e.g. "feminism" matches "feminist"). Bubbles are ranked by how <em>distinctively</em> a term is associated with your query — not just raw frequency — so universal words like "philosophy" don't dominate.</p>
             <div class="flex items-center gap-3 mb-4 flex-wrap">
                 <input id="kwInput" type="text" placeholder="Try: feminism, queer, AI, race, environmental, history..." class="flex-1 min-w-[200px] px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" />
                 <button id="kwSearchBtn" type="button" class="px-5 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700">Search</button>
@@ -2640,8 +2661,8 @@ class PhilJobsScraper:
             </div>
             <div id="kwResults" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
-                    <h3 class="text-sm font-semibold text-gray-700 mb-2">Vocabulary Neighborhood</h3>
-                    <p class="text-xs text-gray-500 mb-2">Terms commonly appearing in matching descriptions. Click any bubble to search that term.</p>
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">Co-occurring concepts</h3>
+                    <p class="text-xs text-gray-500 mb-2">Other terms that appear in matching job descriptions, ranked by how distinctively they co-occur with your query (lift). Size = count of matching jobs that mention each term. Click any bubble to drill into that term. Hover for the underlying numbers.</p>
                     <div id="kwBubble" style="height:340px;"></div>
                 </div>
                 <div>
@@ -3434,6 +3455,26 @@ class PhilJobsScraper:
         // generated weekly by Claude at scrape time and embedded as data.synonymMap.
         let kwTrendChart = null;
 
+        // Corpus-wide stem frequencies. Computed lazily on first search and
+        // memoized for the page lifetime — used to compute "lift" in the
+        // co-occurrence bubble chart (how distinctively a term is associated
+        // with the search query, vs. how often it appears in the whole corpus).
+        let _corpusStemCounts = null;
+        function ensureCorpusStemCounts() {{
+            if (_corpusStemCounts) return _corpusStemCounts;
+            _corpusStemCounts = new Map();
+            for (const j of data.jobsForKeyword) {{
+                const seen = new Set();
+                for (const t of j.terms) {{
+                    const s = kwStem(t);
+                    if (!s || seen.has(s)) continue;
+                    seen.add(s);
+                    _corpusStemCounts.set(s, (_corpusStemCounts.get(s) || 0) + 1);
+                }}
+            }}
+            return _corpusStemCounts;
+        }}
+
         // Recursive morphological stemmer. Applies suffix rules until stable
         // so "feminists" → "feminist" → "femin" all collapse to one stem.
         // Mirrors the Python _keyword_stem method.
@@ -3514,46 +3555,77 @@ class PhilJobsScraper:
             document.getElementById('kwEmptyState').classList.add('hidden');
             document.getElementById('kwResults').classList.remove('hidden');
 
-            // Build bubble chart from the synonym map (field-defining alternatives),
-            // NOT from corpus co-occurrence. Each bubble = a synonym, sized by how
-            // many jobs in the corpus contain that specific term (via stem matching).
-            // This surfaces "what are the other names the field uses for this
-            // concept" rather than "what words show up alongside this in postings".
-            const qLower = q.toLowerCase();
-            const queryStem = kwStem(qLower);
-            const synonymList = data.synonymMap[qLower] || data.synonymMap[queryStem] || [];
-            // Build the candidate set: query + synonyms, deduped by stem
-            const stemToBubble = new Map();
-            const addBubble = (rawTerm, isQuery) => {{
-                const s = kwStem(rawTerm.toLowerCase());
-                if (!s) return;
-                if (stemToBubble.has(s)) {{
-                    // Keep longest label
-                    const existing = stemToBubble.get(s);
-                    if (rawTerm.length > existing.label.length) existing.label = rawTerm;
-                    if (isQuery) existing.isQuery = true;
-                }} else {{
-                    stemToBubble.set(s, {{ label: rawTerm, isQuery: !!isQuery, stem: s }});
-                }}
-            }};
-            addBubble(qLower, true);
-            synonymList.forEach(syn => addBubble(syn, false));
+            // Build bubble chart from CO-OCCURRENCE in matching jobs.
+            //   - For each matching job, look at all its other substantive terms.
+            //   - Rank candidate terms by LIFT: how distinctively associated they
+            //     are with the query vs. how often they appear across the whole
+            //     corpus. Filters out terms that are just "common everywhere".
+            //   - Bubble SIZE reflects raw count (intuitive: "X matching jobs
+            //     mention this") so the visual stays readable.
+            //   - Bubble SELECTION is lift-driven, so the chart shows terms that
+            //     are characteristic of the query rather than universal.
+            const corpusCounts = ensureCorpusStemCounts();
+            const totalCorpus = data.jobsForKeyword.length;
+            const totalMatching = matchingJobs.length;
 
-            // For each candidate stem, count how many jobs in the corpus contain it
-            const bubbles = [];
-            for (const [stem, entry] of stemToBubble) {{
-                let count = 0;
-                for (const j of data.jobsForKeyword) {{
-                    if (j._stemSet.has(stem)) count++;
-                }}
-                bubbles.push({{ label: entry.label, count, isQuery: entry.isQuery }});
+            // Stems to exclude from co-occurring results: the query, its
+            // synonyms (avoid bubbling "feminist" next to "feminism"), and the
+            // global bubble stopwords (words like "philosophy" that appear in
+            // >80% of postings — already filtered server-side).
+            const excludedStems = new Set();
+            for (const t of expanded) {{
+                const s = kwStem(t);
+                if (s) excludedStems.add(s);
             }}
-            // Sort: query first, then by count desc
-            bubbles.sort((a, b) => {{
-                if (a.isQuery && !b.isQuery) return -1;
-                if (!a.isQuery && b.isQuery) return 1;
-                return b.count - a.count;
-            }});
+            for (const sw of (data.bubbleStopwords || [])) {{
+                const s = kwStem(sw);
+                if (s) excludedStems.add(s);
+            }}
+
+            // Count term occurrences across matching jobs (once per job).
+            const matchingCounts = new Map();  // stem -> {{ label, count }}
+            for (const j of matchingJobs) {{
+                const seen = new Set();
+                for (const t of j.terms) {{
+                    const s = kwStem(t);
+                    if (!s || excludedStems.has(s) || seen.has(s)) continue;
+                    seen.add(s);
+                    if (!matchingCounts.has(s)) {{
+                        matchingCounts.set(s, {{ label: t, count: 1 }});
+                    }} else {{
+                        const e = matchingCounts.get(s);
+                        e.count++;
+                        if (t.length > e.label.length) e.label = t;
+                    }}
+                }}
+            }}
+
+            // Compute lift, apply minimum-count floor to avoid noise from
+            // single-job coincidences. Floor scales with match-set size.
+            const minCount = Math.max(2, Math.ceil(totalMatching * 0.05));
+            const candidates = [];
+            for (const [stem, entry] of matchingCounts) {{
+                if (entry.count < minCount) continue;
+                const corpusFreq = Math.max(corpusCounts.get(stem) || entry.count, 1);
+                const pInMatching = entry.count / Math.max(totalMatching, 1);
+                const pInCorpus = corpusFreq / Math.max(totalCorpus, 1);
+                const lift = pInMatching / pInCorpus;
+                candidates.push({{
+                    label: entry.label, count: entry.count,
+                    corpusCount: corpusFreq, lift, stem,
+                }});
+            }}
+            // Rank by lift (most distinctively-associated first), take top 18
+            candidates.sort((a, b) => b.lift - a.lift);
+            const topN = candidates.slice(0, 18);
+
+            const bubbles = [
+                {{ label: q, count: matchCount, isQuery: true, lift: 1, corpusCount: matchCount }},
+                ...topN.map(c => ({{
+                    label: c.label, count: c.count, isQuery: false,
+                    lift: c.lift, corpusCount: c.corpusCount,
+                }}))
+            ];
             renderBubbleChart(q, bubbles, matchCount);
 
             // Trend chart: matching-job count per week
@@ -3571,17 +3643,22 @@ class PhilJobsScraper:
             const width = container.clientWidth || 400;
             const height = 340;
 
-            // If we have no synonyms AND the query has no matches, show a helpful empty state
-            if (bubbles.length === 0) {{
-                container.innerHTML = '<div class="text-gray-400 text-center py-12 text-sm">No field-defining synonyms found for this term in our map. The map covers the top 150 most frequent corpus terms — your term may be rare or use vocabulary the field doesn\\'t yet emphasize.</div>';
+            // If we have only the query bubble (no co-occurring terms passed the
+            // filters), show a helpful empty state.
+            if (bubbles.length <= 1) {{
+                container.innerHTML = '<div class="text-gray-400 text-center py-12 text-sm">No co-occurring terms cleared the filters. Either too few matching jobs, or the matching jobs share no distinctive vocabulary beyond the query itself.</div>';
                 return;
             }}
 
-            // Convert bubble entries to D3 node format
+            // Convert bubble entries to D3 node format. Carry lift & corpusCount
+            // through to the tooltip so users can see what makes a bubble stand
+            // out (distinctively associated vs. just frequent).
             const nodes = bubbles.map(b => ({{
                 id: b.label,
                 count: b.count,
-                isQuery: b.isQuery
+                lift: b.lift || 1,
+                corpusCount: b.corpusCount || b.count,
+                isQuery: b.isQuery,
             }}));
             const maxCount = Math.max(1, ...nodes.map(n => n.count));
             const minR = 18, maxR = 55;
@@ -3627,7 +3704,18 @@ class PhilJobsScraper:
                 .attr('font-weight', d => d.isQuery ? '700' : '500')
                 .style('pointer-events', 'none');
 
-            node.append('title').text(d => `${{d.id}}: ${{d.count}} job${{d.count === 1 ? '' : 's'}}`);
+            node.append('title').text(d => {{
+                if (d.isQuery) {{
+                    return `${{d.id}} — query (${{d.count}} job${{d.count === 1 ? '' : 's'}} match)`;
+                }}
+                const liftStr = d.lift >= 10 ? d.lift.toFixed(0) : d.lift.toFixed(1);
+                return (
+                    `${{d.id}}: appears in ${{d.count}} of the matching jobs `
+                    + `(${{d.corpusCount}} corpus-wide). `
+                    + `Lift ${{liftStr}}× — ${{liftStr === '1.0' ? 'about as common in matches as in corpus' : 'distinctively associated with this query'}}. `
+                    + `Click to drill into this term.`
+                );
+            }});
 
             simulation.on('tick', () => {{
                 node.attr('transform', d => `translate(${{d.x}}, ${{d.y}})`);
@@ -5139,6 +5227,26 @@ class PhilJobsScraper:
         // generated weekly by Claude at scrape time and embedded as data.synonymMap.
         let kwTrendChart = null;
 
+        // Corpus-wide stem frequencies. Computed lazily on first search and
+        // memoized for the page lifetime — used to compute "lift" in the
+        // co-occurrence bubble chart (how distinctively a term is associated
+        // with the search query, vs. how often it appears in the whole corpus).
+        let _corpusStemCounts = null;
+        function ensureCorpusStemCounts() {{
+            if (_corpusStemCounts) return _corpusStemCounts;
+            _corpusStemCounts = new Map();
+            for (const j of data.jobsForKeyword) {{
+                const seen = new Set();
+                for (const t of j.terms) {{
+                    const s = kwStem(t);
+                    if (!s || seen.has(s)) continue;
+                    seen.add(s);
+                    _corpusStemCounts.set(s, (_corpusStemCounts.get(s) || 0) + 1);
+                }}
+            }}
+            return _corpusStemCounts;
+        }}
+
         // Recursive morphological stemmer. Applies suffix rules until stable
         // so "feminists" → "feminist" → "femin" all collapse to one stem.
         // Mirrors the Python _keyword_stem method.
@@ -5219,46 +5327,77 @@ class PhilJobsScraper:
             document.getElementById('kwEmptyState').classList.add('hidden');
             document.getElementById('kwResults').classList.remove('hidden');
 
-            // Build bubble chart from the synonym map (field-defining alternatives),
-            // NOT from corpus co-occurrence. Each bubble = a synonym, sized by how
-            // many jobs in the corpus contain that specific term (via stem matching).
-            // This surfaces "what are the other names the field uses for this
-            // concept" rather than "what words show up alongside this in postings".
-            const qLower = q.toLowerCase();
-            const queryStem = kwStem(qLower);
-            const synonymList = data.synonymMap[qLower] || data.synonymMap[queryStem] || [];
-            // Build the candidate set: query + synonyms, deduped by stem
-            const stemToBubble = new Map();
-            const addBubble = (rawTerm, isQuery) => {{
-                const s = kwStem(rawTerm.toLowerCase());
-                if (!s) return;
-                if (stemToBubble.has(s)) {{
-                    // Keep longest label
-                    const existing = stemToBubble.get(s);
-                    if (rawTerm.length > existing.label.length) existing.label = rawTerm;
-                    if (isQuery) existing.isQuery = true;
-                }} else {{
-                    stemToBubble.set(s, {{ label: rawTerm, isQuery: !!isQuery, stem: s }});
-                }}
-            }};
-            addBubble(qLower, true);
-            synonymList.forEach(syn => addBubble(syn, false));
+            // Build bubble chart from CO-OCCURRENCE in matching jobs.
+            //   - For each matching job, look at all its other substantive terms.
+            //   - Rank candidate terms by LIFT: how distinctively associated they
+            //     are with the query vs. how often they appear across the whole
+            //     corpus. Filters out terms that are just "common everywhere".
+            //   - Bubble SIZE reflects raw count (intuitive: "X matching jobs
+            //     mention this") so the visual stays readable.
+            //   - Bubble SELECTION is lift-driven, so the chart shows terms that
+            //     are characteristic of the query rather than universal.
+            const corpusCounts = ensureCorpusStemCounts();
+            const totalCorpus = data.jobsForKeyword.length;
+            const totalMatching = matchingJobs.length;
 
-            // For each candidate stem, count how many jobs in the corpus contain it
-            const bubbles = [];
-            for (const [stem, entry] of stemToBubble) {{
-                let count = 0;
-                for (const j of data.jobsForKeyword) {{
-                    if (j._stemSet.has(stem)) count++;
-                }}
-                bubbles.push({{ label: entry.label, count, isQuery: entry.isQuery }});
+            // Stems to exclude from co-occurring results: the query, its
+            // synonyms (avoid bubbling "feminist" next to "feminism"), and the
+            // global bubble stopwords (words like "philosophy" that appear in
+            // >80% of postings — already filtered server-side).
+            const excludedStems = new Set();
+            for (const t of expanded) {{
+                const s = kwStem(t);
+                if (s) excludedStems.add(s);
             }}
-            // Sort: query first, then by count desc
-            bubbles.sort((a, b) => {{
-                if (a.isQuery && !b.isQuery) return -1;
-                if (!a.isQuery && b.isQuery) return 1;
-                return b.count - a.count;
-            }});
+            for (const sw of (data.bubbleStopwords || [])) {{
+                const s = kwStem(sw);
+                if (s) excludedStems.add(s);
+            }}
+
+            // Count term occurrences across matching jobs (once per job).
+            const matchingCounts = new Map();  // stem -> {{ label, count }}
+            for (const j of matchingJobs) {{
+                const seen = new Set();
+                for (const t of j.terms) {{
+                    const s = kwStem(t);
+                    if (!s || excludedStems.has(s) || seen.has(s)) continue;
+                    seen.add(s);
+                    if (!matchingCounts.has(s)) {{
+                        matchingCounts.set(s, {{ label: t, count: 1 }});
+                    }} else {{
+                        const e = matchingCounts.get(s);
+                        e.count++;
+                        if (t.length > e.label.length) e.label = t;
+                    }}
+                }}
+            }}
+
+            // Compute lift, apply minimum-count floor to avoid noise from
+            // single-job coincidences. Floor scales with match-set size.
+            const minCount = Math.max(2, Math.ceil(totalMatching * 0.05));
+            const candidates = [];
+            for (const [stem, entry] of matchingCounts) {{
+                if (entry.count < minCount) continue;
+                const corpusFreq = Math.max(corpusCounts.get(stem) || entry.count, 1);
+                const pInMatching = entry.count / Math.max(totalMatching, 1);
+                const pInCorpus = corpusFreq / Math.max(totalCorpus, 1);
+                const lift = pInMatching / pInCorpus;
+                candidates.push({{
+                    label: entry.label, count: entry.count,
+                    corpusCount: corpusFreq, lift, stem,
+                }});
+            }}
+            // Rank by lift (most distinctively-associated first), take top 18
+            candidates.sort((a, b) => b.lift - a.lift);
+            const topN = candidates.slice(0, 18);
+
+            const bubbles = [
+                {{ label: q, count: matchCount, isQuery: true, lift: 1, corpusCount: matchCount }},
+                ...topN.map(c => ({{
+                    label: c.label, count: c.count, isQuery: false,
+                    lift: c.lift, corpusCount: c.corpusCount,
+                }}))
+            ];
             renderBubbleChart(q, bubbles, matchCount);
 
             // Trend chart: matching-job count per week
@@ -5276,17 +5415,22 @@ class PhilJobsScraper:
             const width = container.clientWidth || 400;
             const height = 340;
 
-            // If we have no synonyms AND the query has no matches, show a helpful empty state
-            if (bubbles.length === 0) {{
-                container.innerHTML = '<div class="text-gray-400 text-center py-12 text-sm">No field-defining synonyms found for this term in our map. The map covers the top 150 most frequent corpus terms — your term may be rare or use vocabulary the field doesn\\'t yet emphasize.</div>';
+            // If we have only the query bubble (no co-occurring terms passed the
+            // filters), show a helpful empty state.
+            if (bubbles.length <= 1) {{
+                container.innerHTML = '<div class="text-gray-400 text-center py-12 text-sm">No co-occurring terms cleared the filters. Either too few matching jobs, or the matching jobs share no distinctive vocabulary beyond the query itself.</div>';
                 return;
             }}
 
-            // Convert bubble entries to D3 node format
+            // Convert bubble entries to D3 node format. Carry lift & corpusCount
+            // through to the tooltip so users can see what makes a bubble stand
+            // out (distinctively associated vs. just frequent).
             const nodes = bubbles.map(b => ({{
                 id: b.label,
                 count: b.count,
-                isQuery: b.isQuery
+                lift: b.lift || 1,
+                corpusCount: b.corpusCount || b.count,
+                isQuery: b.isQuery,
             }}));
             const maxCount = Math.max(1, ...nodes.map(n => n.count));
             const minR = 18, maxR = 55;
@@ -5332,7 +5476,18 @@ class PhilJobsScraper:
                 .attr('font-weight', d => d.isQuery ? '700' : '500')
                 .style('pointer-events', 'none');
 
-            node.append('title').text(d => `${{d.id}}: ${{d.count}} job${{d.count === 1 ? '' : 's'}}`);
+            node.append('title').text(d => {{
+                if (d.isQuery) {{
+                    return `${{d.id}} — query (${{d.count}} job${{d.count === 1 ? '' : 's'}} match)`;
+                }}
+                const liftStr = d.lift >= 10 ? d.lift.toFixed(0) : d.lift.toFixed(1);
+                return (
+                    `${{d.id}}: appears in ${{d.count}} of the matching jobs `
+                    + `(${{d.corpusCount}} corpus-wide). `
+                    + `Lift ${{liftStr}}× — ${{liftStr === '1.0' ? 'about as common in matches as in corpus' : 'distinctively associated with this query'}}. `
+                    + `Click to drill into this term.`
+                );
+            }});
 
             simulation.on('tick', () => {{
                 node.attr('transform', d => `translate(${{d.x}}, ${{d.y}})`);
