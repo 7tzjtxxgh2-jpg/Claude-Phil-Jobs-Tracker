@@ -509,41 +509,72 @@ class PhilJobsScraper:
             job['institution'] = h2.get_text(strip=True) if h2 else "Unknown"
             job['title'] = h1.get_text(strip=True) if h1 else "Unknown"
 
+            # PhilJobs page label → our field name. Listed here so adding /
+            # renaming a field is a one-line change. Anything not in this map
+            # falls through to raw_fields (see below) so we never silently lose
+            # data when PhilJobs adds new fields.
+            # PhilJobs page label → our field name. Listed here so adding /
+            # renaming a field is a one-line change. Anything not in this map
+            # falls through to raw_fields (see below) so we never silently lose
+            # data when PhilJobs adds new fields.
+            FIELD_MAP = {
+                "Job category":                    "job_category",
+                "AOS":                             "aos",                  # free-text AOS field
+                "AOS categories":                  "aos_categories",       # PhilJobs categorical AOS tags
+                "AOC":                             "aoc",                  # free-text AOC field
+                "AOC categories":                  "aoc_categories",       # PhilJobs categorical AOC tags
+                "Workload":                        "workload",
+                "Vacancies":                       "vacancies",
+                "Location":                        "location",  # also triggers state/country/city derivation
+                "Start date":                      "start_date",
+                "Job description":                 "description",
+                "Hard deadline":                   "deadline",
+                "Deadline for full consideration:":"soft_deadline",        # when applications start being reviewed
+                "Scheduled expiry date":           "scheduled_expiry_date",# when PhilJobs auto-removes the listing
+                "Expired on":                      "expired_on",           # actual expiry date when status=expired
+                "Application type":                "application_type",
+                "Web address to apply":            "application_url",
+                "Email to apply":                  "application_email",
+                "Instructions":                    "instructions",         # free-text application instructions
+                "Web address for more information":"more_info_url",
+                "How to apply":                    "how_to_apply",
+                "Contact email":                   "contact_email",
+                "Contact":                         "contact",              # non-email contact (mailing address / phone)
+                "Contact name":                    "contact_name",         # named individual to contact
+                "Organization's reference number": "org_reference_number", # institution-side job id
+                "Time created":                    "posted_date",
+                "Last updated":                    "last_updated",
+                "Job Market Calendar":             "job_market_calendar",
+            }
+            # Fields we deliberately ignore — internal admin / pure boilerplate.
+            IGNORED_FIELDS = {"Bookkeeping", "Last update notification"}
+
+            raw_fields = {}
             for row in soup.find_all('tr'):
                 cells = row.find_all('td')
-                if len(cells) == 2:
-                    key = cells[0].get_text(strip=True)
-                    value = cells[1].get_text(strip=True)
-                    if key == "Job category":
-                        job['job_category'] = value
-                    elif key == "AOS":
-                        job['aos'] = value
-                    elif key == "AOC":
-                        job['aoc'] = value
-                    elif key == "Workload":
-                        job['workload'] = value
-                    elif key == "Vacancies":
-                        job['vacancies'] = value
-                    elif key == "Location":
-                        job['location'] = value
+                if len(cells) != 2:
+                    continue
+                key = cells[0].get_text(strip=True)
+                value = cells[1].get_text(strip=True)
+                if not key:
+                    continue
+                if key in FIELD_MAP:
+                    field_name = FIELD_MAP[key]
+                    job[field_name] = value
+                    if key == "Location":
                         state, country, city = self.extract_location_data(value)
                         job['state'] = state
                         job['country'] = country
                         job['city'] = city
-                    elif key == "Start date":
-                        job['start_date'] = value
-                    elif key == "Job description":
-                        job['description'] = value
-                    elif key == "Hard deadline":
-                        job['deadline'] = value
-                    elif key == "Application type":
-                        job['application_type'] = value
-                    elif key == "Web address to apply":
-                        job['application_url'] = value
-                    elif key == "Contact email":
-                        job['contact_email'] = value
-                    elif key == "Time created":
-                        job['posted_date'] = value
+                elif key in IGNORED_FIELDS:
+                    continue
+                else:
+                    # Unknown field — capture it so future PhilJobs additions
+                    # don't get silently dropped. If a raw_field gets populated
+                    # consistently across the corpus, add it to FIELD_MAP.
+                    raw_fields[key] = value
+            if raw_fields:
+                job['raw_fields'] = raw_fields
 
             # Position type is now set exclusively by classify_job_with_claude
             # under classification.position_type. The previous heuristic write
