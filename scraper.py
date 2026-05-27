@@ -1117,6 +1117,59 @@ class PhilJobsScraper:
         return word
 
     @staticmethod
+    def _parse_pj_date(s):
+        """Parse a PhilJobs date string like 'May 21, 2026, 9:23pm UTC' or
+        'May 21, 2026' into a date. Returns None when the value is missing,
+        is 'No deadline specified', or otherwise unparseable.
+        """
+        if not s:
+            return None
+        m = re.match(r'^([A-Za-z]+ \d{1,2},\s*\d{4})', s.strip())
+        if not m:
+            return None
+        for fmt in ('%b %d, %Y', '%B %d, %Y'):
+            try:
+                return datetime.strptime(m.group(1), fmt)
+            except ValueError:
+                continue
+        return None
+
+    @classmethod
+    def _posting_window_stats(cls, jobs):
+        """Days from posted_date to deadline, across the given job list.
+
+        Returns a dict with median / p10 / p25 / p75 / n_used / n_total,
+        or None when no jobs have a parseable posted+deadline pair. Used
+        by the "Typical posting window" stat card to suggest a check
+        cadence for the dashboard.
+
+        Jobs whose deadline is "No deadline specified" (open until filled)
+        are excluded — they would skew the metric arbitrarily long.
+        """
+        durations = []
+        for j in jobs:
+            posted = cls._parse_pj_date(j.get('posted_date'))
+            deadline = cls._parse_pj_date(j.get('deadline'))
+            if posted and deadline:
+                days = (deadline - posted).days
+                if days > 0:
+                    durations.append(days)
+        if not durations:
+            return None
+        durations.sort()
+        n = len(durations)
+        return {
+            'median':  int(durations[n // 2]),
+            'p10':     durations[max(0, n // 10)],
+            'p25':     durations[max(0, n // 4)],
+            'p75':     durations[(3 * n) // 4],
+            'min':     durations[0],
+            'max':     durations[-1],
+            'n_used':  n,
+            'n_total': len(jobs),
+        }
+
+    @staticmethod
     def _strip_eeo_boilerplate(text):
         """Remove sentences that are EEO / equal-opportunity-employer statements.
 
@@ -2358,6 +2411,29 @@ class PhilJobsScraper:
                 last_main[main] += 1
         most_active = max(last_main, key=last_main.get) if last_main else "—"
 
+        # Typical posting window: median days from posted_date to deadline.
+        # Drives the "how often should I check?" stat card and its tooltip.
+        window_stats = self._posting_window_stats(us_jobs)
+        if window_stats:
+            window_main = f"{window_stats['median']}d"
+            m = window_stats['median']
+            if   m <= 10: window_cadence = "Check weekly"
+            elif m <= 20: window_cadence = "Check every 2 weeks"
+            elif m <= 35: window_cadence = "Check every 3 weeks"
+            elif m <= 50: window_cadence = "Check monthly"
+            else:         window_cadence = f"Check every {round(m / 7)} weeks"
+            window_tooltip = (
+                f"Median days from posted to deadline, across "
+                f"{window_stats['n_used']} of {window_stats['n_total']} jobs "
+                f"(rest had no fixed deadline). "
+                f"P10: {window_stats['p10']}d · P25: {window_stats['p25']}d · "
+                f"P75: {window_stats['p75']}d · range {window_stats['min']}-{window_stats['max']}d."
+            )
+        else:
+            window_main = "—"
+            window_cadence = "Not enough data yet"
+            window_tooltip = "Need jobs with parseable posted_date and deadline to compute this."
+
         seasonal_markers = []
         for i, date in enumerate(dates):
             if self.is_hiring_season(date):
@@ -2440,9 +2516,10 @@ class PhilJobsScraper:
                 <div class="text-gray-600">Total US Jobs Tracked</div>
                 <div class="text-xs text-indigo-600 mt-2">↓ Click to download list</div>
             </div>
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <div class="text-2xl font-bold text-gray-800 truncate">{most_active}</div>
-                <div class="text-gray-600">Most Active This Week</div>
+            <div class="bg-white rounded-xl shadow-lg p-6" title="{window_tooltip}">
+                <div class="text-3xl font-bold text-gray-800">{window_main}</div>
+                <div class="text-gray-600">Typical posting window</div>
+                <div class="text-xs text-gray-500 mt-2">{window_cadence}</div>
             </div>
             <div class="bg-white rounded-xl shadow-lg p-6">
                 <div class="text-3xl font-bold text-gray-800">{weeks_tracked}</div>
@@ -4166,6 +4243,28 @@ class PhilJobsScraper:
                 last_main[main] += 1
         most_active = max(last_main, key=last_main.get) if last_main else "—"
 
+        # Typical posting window — see US dashboard for the rationale.
+        window_stats = self._posting_window_stats(intl_jobs)
+        if window_stats:
+            window_main = f"{window_stats['median']}d"
+            m = window_stats['median']
+            if   m <= 10: window_cadence = "Check weekly"
+            elif m <= 20: window_cadence = "Check every 2 weeks"
+            elif m <= 35: window_cadence = "Check every 3 weeks"
+            elif m <= 50: window_cadence = "Check monthly"
+            else:         window_cadence = f"Check every {round(m / 7)} weeks"
+            window_tooltip = (
+                f"Median days from posted to deadline, across "
+                f"{window_stats['n_used']} of {window_stats['n_total']} jobs "
+                f"(rest had no fixed deadline). "
+                f"P10: {window_stats['p10']}d · P25: {window_stats['p25']}d · "
+                f"P75: {window_stats['p75']}d · range {window_stats['min']}-{window_stats['max']}d."
+            )
+        else:
+            window_main = "—"
+            window_cadence = "Not enough data yet"
+            window_tooltip = "Need jobs with parseable posted_date and deadline to compute this."
+
         seasonal_markers = []
         for i, date in enumerate(dates):
             if self.is_hiring_season(date):
@@ -4247,9 +4346,10 @@ class PhilJobsScraper:
                 <div class="text-gray-600">Total Intl Jobs Tracked</div>
                 <div class="text-xs text-cyan-600 mt-2">↓ Click to download list</div>
             </div>
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <div class="text-2xl font-bold text-gray-800 truncate">{most_active}</div>
-                <div class="text-gray-600">Most Active This Week</div>
+            <div class="bg-white rounded-xl shadow-lg p-6" title="{window_tooltip}">
+                <div class="text-3xl font-bold text-gray-800">{window_main}</div>
+                <div class="text-gray-600">Typical posting window</div>
+                <div class="text-xs text-gray-500 mt-2">{window_cadence}</div>
             </div>
             <div class="bg-white rounded-xl shadow-lg p-6">
                 <div class="text-3xl font-bold text-gray-800">{weeks_tracked}</div>
