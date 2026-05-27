@@ -106,7 +106,92 @@ def check_stored_data(data):
         if days_since > 14:
             issues.append(('ERROR', f"Last scrape was {days_since} days ago ({last_date.date()}) — scraper may not be running"))
 
+    # 6. Field-coverage report.
+    # Scoped to jobs scraped in the last 35 days so we measure "is the
+    # scraper currently capturing the fields it should?" rather than the
+    # historical archive's completeness.
+    #
+    # `available_since` lets us silence false-positive warnings when a new
+    # field has just been added to the scraper but hasn't had time to be
+    # populated across many jobs yet — coverage only counts jobs scraped
+    # after that date. If fewer than 10 such jobs exist, we report the
+    # field as "not enough data yet" and skip the warning.
+    if jobs:
+        from datetime import timedelta
+        recent_cutoff = datetime.now() - timedelta(days=35)
+        recent = []
+        for j in jobs:
+            scraped = j.get('scraped_date', '')
+            if not scraped:
+                continue
+            try:
+                d = datetime.strptime(scraped[:19], '%Y-%m-%dT%H:%M:%S')
+            except ValueError:
+                continue
+            if d >= recent_cutoff and j.get('status') != 'expired':
+                recent.append((j, d))
+
+        if recent:
+            # field name : (minimum %, available_since YYYY-MM-DD or None for "always", note)
+            expected_coverage = {
+                'description':            (95, None,         'core posting text'),
+                'posted_date':             (95, None,         'when listing went up'),
+                'location':               (90, None,         'geographic location'),
+                'application_url':        (60, None,         'apply link — some use email or web instructions instead'),
+                'last_updated':           (80, '2026-05-27', 'PhilJobs edit timestamp (added 2026-05-27)'),
+                'scheduled_expiry_date':  (80, '2026-05-27', 'PhilJobs auto-removal date (added 2026-05-27)'),
+                'soft_deadline':          (40, '2026-05-27', '"Deadline for full consideration" (added 2026-05-27)'),
+            }
+            cov_lines = []
+            for field, (min_pct, available_since_str, note) in expected_coverage.items():
+                if available_since_str:
+                    available_since = datetime.strptime(available_since_str, '%Y-%m-%d')
+                    eligible = [(j, d) for (j, d) in recent if d >= available_since]
+                else:
+                    eligible = recent
+
+                ne = len(eligible)
+                if ne < 10:
+                    cov_lines.append(f"⏳ {field}: {ne} eligible jobs — not enough data yet to evaluate ({note})")
+                    continue
+
+                have = sum(1 for (j, _) in eligible if j.get(field))
+                pct = (have / ne) * 100
+                marker = '🔴' if pct < min_pct else '🟢'
+                cov_lines.append(f"{marker} {field}: {have}/{ne} ({pct:.0f}%, threshold {min_pct}%) — {note}")
+                if pct < min_pct:
+                    issues.append((
+                        'WARN',
+                        f"Field coverage low: {field} populated on only {have}/{ne} eligible jobs "
+                        f"({pct:.0f}%, below {min_pct}% threshold)"
+                    ))
+            issues.append((
+                'INFO',
+                f'Field coverage on jobs scraped in the last 35 days (eligible = recent + after the field was introduced):\n  '
+                + '\n  '.join(cov_lines)
+            ))
+
     return issues
+
+
+def check_live_count_drift(stored_total: int, live_count: int):
+    """If the live PhilJobs listing count differs from our most recent
+    snapshot's total by more than ~20% in either direction, flag — likely
+    indicates the scraper is silently missing pages, or PhilJobs structure
+    has changed.
+    """
+    if not live_count or not stored_total:
+        return None
+    drift = abs(live_count - stored_total) / max(live_count, stored_total)
+    if drift < 0.20:
+        return None
+    direction = 'fewer' if stored_total < live_count else 'more'
+    return (
+        'WARN',
+        f"Live-count drift: PhilJobs lists {live_count} active jobs but last "
+        f"scrape captured {stored_total} ({drift*100:.0f}% {direction}). "
+        f"Threshold is 20%. Could indicate scraper pagination issue or upstream change."
+    )
 
 
 def main():
@@ -131,6 +216,19 @@ def main():
 
     # Run quality checks
     issues = check_stored_data(data)
+
+    # Compare live PhilJobs count against our most recent scrape's total.
+    # The 'total_jobs' on the latest snapshot reflects what was live when the
+    # scrape ran; a big mismatch with the live count weeks later usually means
+    # the scraper is silently dropping listings.
+    if live_count and snapshots:
+        last_snap = max(snapshots, key=lambda s: s['date'])
+        drift_issue = check_live_count_drift(
+            stored_total=last_snap.get('total_jobs', 0),
+            live_count=live_count,
+        )
+        if drift_issue:
+            issues.append(drift_issue)
 
     # Build report
     errors = [i for i in issues if i[0] == 'ERROR']
