@@ -2345,6 +2345,12 @@ class PhilJobsScraper:
         total_unique_jobs = len(us_jobs)
         weeks_tracked = len(dates)
 
+        # Job ID lists for the clickable stat cards. Exposed so the dashboard
+        # can offer "download the raw jobs behind this number" — a small
+        # transparency / verification affordance.
+        current_week_job_ids = [j.get('id') for j in last_week_jobs if j.get('id')]
+        all_us_job_ids = [j.get('id') for j in us_jobs if j.get('id')]
+
         last_main = defaultdict(int)
         for job in last_week_jobs:
             cls = job.get('classification') or {}
@@ -2422,15 +2428,17 @@ class PhilJobsScraper:
             <button type="button" onclick="downloadUnclassifiedReport()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold rounded-lg whitespace-nowrap">📄 Download unclassified jobs</button>
         </div>
 
-        <!-- Stats Cards -->
+        <!-- Stats Cards — first two are clickable for PDF download of the underlying jobs -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-            <div class="stat-card rounded-xl shadow-lg p-6 text-white col-span-2 md:col-span-1">
+            <div class="stat-card rounded-xl shadow-lg p-6 text-white col-span-2 md:col-span-1 cursor-pointer hover:opacity-95 transition" onclick="downloadCurrentWeekReport()" title="Click to download a PDF of this week's new postings — useful for independent verification">
                 <div class="text-3xl font-bold">{current_week_new_jobs}</div>
                 <div class="text-indigo-100">New US Jobs This Week</div>
+                <div class="text-xs text-indigo-100 mt-2 opacity-80">↓ Click to download list</div>
             </div>
-            <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="bg-white rounded-xl shadow-lg p-6 cursor-pointer hover:bg-gray-50 transition" onclick="downloadAllJobsReport()" title="Click to download a PDF of every US job tracked — useful for independent verification">
                 <div class="text-3xl font-bold text-gray-800">{total_unique_jobs}</div>
                 <div class="text-gray-600">Total US Jobs Tracked</div>
+                <div class="text-xs text-indigo-600 mt-2">↓ Click to download list</div>
             </div>
             <div class="bg-white rounded-xl shadow-lg p-6">
                 <div class="text-2xl font-bold text-gray-800 truncate">{most_active}</div>
@@ -2732,6 +2740,8 @@ class PhilJobsScraper:
             bubbleStopwords: {json.dumps(bubble_stopwords)},
             subcategoryJobIds: {json.dumps(subcategory_job_ids)},
             unclassifiedJobIds: {json.dumps(unclassified_job_ids)},
+            currentWeekJobIds: {json.dumps(current_week_job_ids)},
+            allJobIds: {json.dumps(all_us_job_ids)},
             coocJobIds: {json.dumps(cooc_job_ids)},
             posTypeAosJobIds: {json.dumps(pos_type_aos_job_ids)},
             jobDetails: {json.dumps(job_details_map)}
@@ -3175,6 +3185,23 @@ class PhilJobsScraper:
         function downloadUnclassifiedReport() {{
             const jobIds = data.unclassifiedJobIds || [];
             downloadJobsReport(jobIds, 'Unclassified jobs', 'unclassified');
+        }}
+
+        // Download all jobs in the most recent week's snapshot. Triggered
+        // by clicking the "New Jobs This Week" stat card. Lets users see
+        // the raw postings behind the dashboard's headline number.
+        function downloadCurrentWeekReport() {{
+            const jobIds = data.currentWeekJobIds || [];
+            downloadJobsReport(jobIds, 'New jobs this week', 'new_this_week');
+        }}
+
+        // Download every job currently tracked. Triggered by clicking the
+        // "Total Jobs Tracked" stat card. The full corpus for independent
+        // verification or offline analysis. Large PDFs (200+ pages) — fine
+        // but the browser may take a few seconds to assemble.
+        function downloadAllJobsReport() {{
+            const jobIds = data.allJobIds || [];
+            downloadJobsReport(jobIds, 'All tracked jobs', 'all_jobs');
         }}
 
         // Reveal the warning banner if any jobs failed classification.
@@ -4127,6 +4154,11 @@ class PhilJobsScraper:
         total_unique_jobs = len(intl_jobs)
         weeks_tracked = len(dates)
 
+        # Job ID lists for the clickable stat cards (see US dashboard for
+        # rationale — transparency / verification affordance).
+        current_week_job_ids = [j.get('id') for j in last_week_jobs if j.get('id')]
+        all_intl_job_ids = [j.get('id') for j in intl_jobs if j.get('id')]
+
         last_main = defaultdict(int)
         for job in last_week_jobs:
             cls = job.get('classification') or {}
@@ -4203,15 +4235,17 @@ class PhilJobsScraper:
             <button type="button" onclick="downloadUnclassifiedReport()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold rounded-lg whitespace-nowrap">📄 Download unclassified jobs</button>
         </div>
 
-        <!-- Stats Cards -->
+        <!-- Stats Cards — first two are clickable for PDF download of the underlying jobs -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-            <div class="stat-card rounded-xl shadow-lg p-6 text-white col-span-2 md:col-span-1">
+            <div class="stat-card rounded-xl shadow-lg p-6 text-white col-span-2 md:col-span-1 cursor-pointer hover:opacity-95 transition" onclick="downloadCurrentWeekReport()" title="Click to download a PDF of this week's new postings — useful for independent verification">
                 <div class="text-3xl font-bold">{current_week_new_jobs}</div>
                 <div class="text-cyan-100">New Intl Jobs This Week</div>
+                <div class="text-xs text-cyan-100 mt-2 opacity-80">↓ Click to download list</div>
             </div>
-            <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="bg-white rounded-xl shadow-lg p-6 cursor-pointer hover:bg-gray-50 transition" onclick="downloadAllJobsReport()" title="Click to download a PDF of every international job tracked — useful for independent verification">
                 <div class="text-3xl font-bold text-gray-800">{total_unique_jobs}</div>
                 <div class="text-gray-600">Total Intl Jobs Tracked</div>
+                <div class="text-xs text-cyan-600 mt-2">↓ Click to download list</div>
             </div>
             <div class="bg-white rounded-xl shadow-lg p-6">
                 <div class="text-2xl font-bold text-gray-800 truncate">{most_active}</div>
@@ -4415,6 +4449,8 @@ class PhilJobsScraper:
             bubbleStopwords: {json.dumps(bubble_stopwords)},
             subcategoryJobIds: {json.dumps(subcategory_job_ids)},
             unclassifiedJobIds: {json.dumps(unclassified_job_ids)},
+            currentWeekJobIds: {json.dumps(current_week_job_ids)},
+            allJobIds: {json.dumps(all_intl_job_ids)},
             coocJobIds: {json.dumps(cooc_job_ids)},
             posTypeAosJobIds: {json.dumps(pos_type_aos_job_ids)},
             jobDetails: {json.dumps(job_details_map)}
@@ -4829,6 +4865,23 @@ class PhilJobsScraper:
         function downloadUnclassifiedReport() {{
             const jobIds = data.unclassifiedJobIds || [];
             downloadJobsReport(jobIds, 'Unclassified jobs', 'unclassified');
+        }}
+
+        // Download all jobs in the most recent week's snapshot. Triggered
+        // by clicking the "New Jobs This Week" stat card. Lets users see
+        // the raw postings behind the dashboard's headline number.
+        function downloadCurrentWeekReport() {{
+            const jobIds = data.currentWeekJobIds || [];
+            downloadJobsReport(jobIds, 'New jobs this week', 'new_this_week');
+        }}
+
+        // Download every job currently tracked. Triggered by clicking the
+        // "Total Jobs Tracked" stat card. The full corpus for independent
+        // verification or offline analysis. Large PDFs (200+ pages) — fine
+        // but the browser may take a few seconds to assemble.
+        function downloadAllJobsReport() {{
+            const jobIds = data.allJobIds || [];
+            downloadJobsReport(jobIds, 'All tracked jobs', 'all_jobs');
         }}
 
         // Reveal the warning banner if any jobs failed classification.
