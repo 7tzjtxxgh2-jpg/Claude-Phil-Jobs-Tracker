@@ -9252,7 +9252,7 @@
       },
       "status": "active",
       "hash": "3ff5ad8918b875387908967a23b9a8d4",
-      "scraped_date": "2026-05-26T14:53:24.197768"
+      "scraped_date": "2026-05-25T14:00:00"
     },
     {
       "id": "31501",
@@ -9299,7 +9299,7 @@
       },
       "status": "active",
       "hash": "01ad78c33cf1fcaf447971fa919a96b7",
-      "scraped_date": "2026-05-26T14:53:24.864902"
+      "scraped_date": "2026-05-25T14:00:00"
     },
     {
       "id": "31493",
@@ -9339,7 +9339,7 @@
       },
       "status": "active",
       "hash": "1f79c37c38ef31e2174277b34e5aa64b",
-      "scraped_date": "2026-05-26T14:53:25.493031"
+      "scraped_date": "2026-05-25T14:00:00"
     },
     {
       "id": "31477",
@@ -9379,7 +9379,7 @@
       },
       "status": "active",
       "hash": "9dfe9454b8b6c1b80bbb33fb12e890af",
-      "scraped_date": "2026-05-26T14:53:26.127602"
+      "scraped_date": "2026-05-18T14:00:00"
     },
     {
       "id": "31481",
@@ -9419,7 +9419,7 @@
       },
       "status": "active",
       "hash": "5a897c4ac62db0e169de0b47ae9c2842",
-      "scraped_date": "2026-05-26T14:53:26.802535"
+      "scraped_date": "2026-05-18T14:00:00"
     },
     {
       "id": "31473",
@@ -9463,7 +9463,7 @@
       },
       "status": "active",
       "hash": "a20cab171bfed09f88940ead90462022",
-      "scraped_date": "2026-05-26T14:53:27.426962"
+      "scraped_date": "2026-05-18T14:00:00"
     },
     {
       "id": "31457",
@@ -9503,7 +9503,7 @@
       },
       "status": "active",
       "hash": "b5a568bf143bb0d356faadd0b7b592b3",
-      "scraped_date": "2026-05-26T14:53:28.046844"
+      "scraped_date": "2026-05-18T14:00:00"
     },
     {
       "id": "31461",
@@ -9546,7 +9546,7 @@
       },
       "status": "active",
       "hash": "16f86429ff6ff5a9ea9b2bd590744243",
-      "scraped_date": "2026-05-26T14:53:28.738843"
+      "scraped_date": "2026-05-18T14:00:00"
     },
     {
       "id": "31465",
@@ -9592,7 +9592,7 @@
       },
       "status": "active",
       "hash": "8de0c3085da54b8e957220b9c8de8aca",
-      "scraped_date": "2026-05-26T14:53:29.441678"
+      "scraped_date": "2026-05-18T14:00:00"
     },
     {
       "id": "31469",
@@ -9639,7 +9639,7 @@
       },
       "status": "active",
       "hash": "54a96ac32645d07ae686344a55414be1",
-      "scraped_date": "2026-05-26T14:53:30.137251"
+      "scraped_date": "2026-05-18T14:00:00"
     },
     {
       "id": "31453",
@@ -9682,7 +9682,7 @@
       },
       "status": "active",
       "hash": "e1d96dd51f6c61a48b3af39333626766",
-      "scraped_date": "2026-05-26T14:53:30.750655"
+      "scraped_date": "2026-05-18T14:00:00"
     }
   ],
   "weekly_snapshots": [
@@ -9984,13 +9984,10 @@
       ]
     },
     {
-      "date": "2026-05-26",
-      "total_jobs": 92,
-      "new_jobs": 11,
+      "date": "2026-05-18",
+      "total_jobs": 8,
+      "new_jobs": 8,
       "new_job_ids": [
-        "31485",
-        "31501",
-        "31493",
         "31477",
         "31481",
         "31473",
@@ -9999,7 +9996,26 @@
         "31465",
         "31469",
         "31453"
-      ]
+      ],
+      "_note": "Backfilled retroactively from May 26 scrape based on posted_date"
+    },
+    {
+      "date": "2026-05-25",
+      "total_jobs": 3,
+      "new_jobs": 3,
+      "new_job_ids": [
+        "31485",
+        "31501",
+        "31493"
+      ],
+      "_note": "Backfilled retroactively from May 26 scrape based on posted_date"
+    },
+    {
+      "date": "2026-05-26",
+      "total_jobs": 92,
+      "new_jobs": 0,
+      "new_job_ids": [],
+      "_note": "Scrape ran on 2026-05-26 but all newly-seen postings were redistributed to the missed May 18 / May 25 snapshots based on their posted_date"
     }
   ],
   "weekly_trends": [
@@ -10883,74 +10899,60 @@
       "west_coast_city_counts": {}
     },
     {
-      "date": "2026-05-26",
-      "new_jobs_count": 11,
+      "date": "2026-05-18",
+      "new_jobs_count": 8,
       "main_aos_counts": {
-        "Metaphysics & Epistemology": 2,
-        "Science, Logic, & Mathematics": 3,
-        "Ethics": 4,
-        "Open": 4,
-        "Social & Political Philosophy": 3
+        "Open": 3,
+        "Ethics": 3,
+        "Social & Political Philosophy": 3,
+        "Science, Logic, & Mathematics": 1,
+        "Metaphysics & Epistemology": 1
       },
       "detail_aos_counts": {
-        "Metaphysics & Epistemology::Philosophy of Language": 1,
-        "Metaphysics & Epistemology::Philosophy of Mind": 1,
-        "Metaphysics & Epistemology::Metaphysics": 2,
-        "Science, Logic, & Mathematics::Logic": 1,
-        "Science, Logic, & Mathematics::Philosophy of Computing / Philosophy of AI": 1,
-        "Science, Logic, & Mathematics::Philosophy of Cognitive Science": 1,
-        "Ethics::AI, Technology, and Information Ethics": 1,
         "Social & Political Philosophy::Social and Political Philosophy (General / Political Theory)": 3,
         "Social & Political Philosophy::Public Philosophy": 1,
         "Ethics::Normative Ethics": 2,
         "Science, Logic, & Mathematics::Philosophy of Physics": 1,
         "Science, Logic, & Mathematics::Philosophy of Science (General)": 1,
+        "Metaphysics & Epistemology::Metaphysics": 1,
         "Ethics::Ethics (General / Applied Ethics, Broadly Construed)": 1
       },
       "position_type_counts": {
-        "Visiting / Adjunct / Lecturer (Fixed-Term)": 6,
-        "Postdoc / Fellowship": 3,
-        "Tenured / Continuing / Permanent": 1,
+        "Visiting / Adjunct / Lecturer (Fixed-Term)": 5,
+        "Postdoc / Fellowship": 2,
         "Other": 1
       },
       "position_type_by_aos": {
-        "Metaphysics & Epistemology": {
-          "Visiting / Adjunct / Lecturer (Fixed-Term)": 1,
-          "Other": 1
-        },
-        "Science, Logic, & Mathematics": {
-          "Visiting / Adjunct / Lecturer (Fixed-Term)": 1,
-          "Postdoc / Fellowship": 1,
-          "Other": 1
+        "Open": {
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 3
         },
         "Ethics": {
-          "Postdoc / Fellowship": 2,
-          "Visiting / Adjunct / Lecturer (Fixed-Term)": 2
-        },
-        "Open": {
-          "Tenured / Continuing / Permanent": 1,
-          "Visiting / Adjunct / Lecturer (Fixed-Term)": 3
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 2,
+          "Postdoc / Fellowship": 1
         },
         "Social & Political Philosophy": {
           "Visiting / Adjunct / Lecturer (Fixed-Term)": 1,
           "Postdoc / Fellowship": 2
+        },
+        "Science, Logic, & Mathematics": {
+          "Other": 1
+        },
+        "Metaphysics & Epistemology": {
+          "Other": 1
         }
       },
       "job_category_counts": {
-        "Faculty (open rank) / Fixed term": 1,
-        "Postdoc or similar / Fixed term": 3,
-        "Junior faculty / Fixed term": 4,
+        "Junior faculty / Fixed term": 3,
         "Visiting fellowship / Professorship / Fixed term": 2,
+        "Postdoc or similar / Fixed term": 2,
         "Graduate fellowship / Fixed term": 1
       },
       "institution_type_counts": {
-        "Research University": 7,
         "Teaching College": 3,
+        "Research University": 4,
         "Other": 1
       },
       "state_counts": {
-        "FL": 1,
-        "OH": 1,
         "IL": 1,
         "CO": 1,
         "MN": 1,
@@ -10959,14 +10961,69 @@
         "NE": 1
       },
       "country_counts": {
-        "United Kingdom": 1,
-        "United States": 8,
+        "United States": 6,
         "Denmark": 1,
         "Norway": 1
       },
       "west_coast_city_counts": {
         "Washington": 1
       }
+    },
+    {
+      "date": "2026-05-25",
+      "new_jobs_count": 3,
+      "main_aos_counts": {
+        "Metaphysics & Epistemology": 1,
+        "Science, Logic, & Mathematics": 2,
+        "Ethics": 1,
+        "Open": 1
+      },
+      "detail_aos_counts": {
+        "Metaphysics & Epistemology::Philosophy of Language": 1,
+        "Metaphysics & Epistemology::Philosophy of Mind": 1,
+        "Metaphysics & Epistemology::Metaphysics": 1,
+        "Science, Logic, & Mathematics::Logic": 1,
+        "Science, Logic, & Mathematics::Philosophy of Computing / Philosophy of AI": 1,
+        "Science, Logic, & Mathematics::Philosophy of Cognitive Science": 1,
+        "Ethics::AI, Technology, and Information Ethics": 1
+      },
+      "position_type_counts": {
+        "Visiting / Adjunct / Lecturer (Fixed-Term)": 1,
+        "Postdoc / Fellowship": 1,
+        "Tenured / Continuing / Permanent": 1
+      },
+      "position_type_by_aos": {
+        "Metaphysics & Epistemology": {
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 1
+        },
+        "Science, Logic, & Mathematics": {
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 1,
+          "Postdoc / Fellowship": 1
+        },
+        "Ethics": {
+          "Postdoc / Fellowship": 1
+        },
+        "Open": {
+          "Tenured / Continuing / Permanent": 1
+        }
+      },
+      "job_category_counts": {
+        "Faculty (open rank) / Fixed term": 1,
+        "Postdoc or similar / Fixed term": 1,
+        "Junior faculty / Fixed term": 1
+      },
+      "institution_type_counts": {
+        "Research University": 3
+      },
+      "state_counts": {
+        "FL": 1,
+        "OH": 1
+      },
+      "country_counts": {
+        "United Kingdom": 1,
+        "United States": 2
+      },
+      "west_coast_city_counts": {}
     }
   ],
   "taxonomy_version": "2026-05-18-sonnet-v4"
