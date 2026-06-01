@@ -1,8 +1,8 @@
 # Keyword Explorer — Synonym Map
 
-**Last updated:** 2026-05-27
+**Last updated:** 2026-06-01
 **Source data:** [`data/synonym_map.json`](../data/synonym_map.json)
-**Terms in map:** 125
+**Terms in map:** 150
 
 ---
 
@@ -25,50 +25,73 @@ used, see [KEYWORD_EXPLORER_METHODOLOGY.md](KEYWORD_EXPLORER_METHODOLOGY.md).
 
 ## Synonym Groups (Alphabetical)
 
-- **access** → accessibility, accessible
-- **active** → engaged, engagement, activity
-- **applied** → practical, application, praxis
+- **access** → accessibility
+- **across** → cross, inter, between
+- **activities** → activity
+- **additional** → supplementary, extra, further
+- **american** → american philosophy, american pragmatism, pragmatism
+- **applied** → practical, practice
 - **arts** → humanities, liberal arts
-- **chair** → chairperson, chaired
-- **collaboration** → collaborative, collaborator, collaborating
-- **comprehensive** → comprehensively
-- **critical** → critique, criticism
-- **curriculum** → curricular, syllabus, course design
-- **description** → describe, described, descriptive
+- **assistant** → assistant professor
+- **center** → centre, institute, center for, centre for
+- **collaboration** → collaborative
+- **committed** → commit, commits, commitment, commitments
+- **consideration** → consider, considered, considers
+- **considered** → consider, considers, consideration
+- **continue** → continuing, continuation
+- **contribute** → contributes, contributed, contribution, contributions
+- **critical** → critical theory
+- **curriculum** → curricular, syllabus
+- **demonstrated** → demonstrate, demonstrates, demonstrable, demonstration
+- **development** → developmental, develop, develops, developing
+- **diverse** → diversity, diversities, diversification
 - **education** → educational, pedagogy, pedagogical, teaching
-- **employees** → employee, employment, employer
-- **engage** → engagement, engaged, engaging
-- **environment** → environmental, ecology, ecological, environmental philosophy, environmental ethics
+- **eligible** → eligibility
+- **engage** → engagement
+- **engagement** → engage, engaged, engages, engaging
+- **environment** → environmental, ecology, ecological
+- **ethical** → ethics, metaethics, meta-ethics, normative ethics, moral philosophy, moral theory
 - **ethics** → ethical, metaethics, meta-ethics, normative ethics, moral philosophy, moral theory
-- **focus** → focused, focusing, foci
-- **health** → medical, medicine, bioethics, biomedical, healthcare, clinical
-- **high** → higher, highest
-- **highly** → high
-- **history** → historical, historiography, historian
-- **interdisciplinary** → multidisciplinary, cross-disciplinary, transdisciplinary
-- **interests** → interest, interested, interesting
-- **introductory** → introduction, intro, elementary, foundational
-- **leadership** → leader, lead, leading
-- **liberal** → liberal arts
-- **member** → membership, members
-- **month** → monthly, months
-- **participate** → participation, participatory, participant
-- **philosophical** → philosophy
-- **political** → political philosophy, political theory
+- **evidence** → evidential, evidentiary, evidenced
+- **expertise** → expert, specialization, specialty
+- **first** → primary, initial, premier
+- **health** → healthcare, medical, medicine, clinical
+- **history** → historical, historian, historians, historiography
+- **humanities** → humanistic, liberal arts, studia humanitatis
+- **interdisciplinary** → multidisciplinary, transdisciplinary, cross-disciplinary, pluridisciplinary
+- **interested** → interest
+- **introductory** → introduction
+- **knowledge** → epistemology, epistemic, epistemological, theory of knowledge
+- **learning** → learn, learns, learned, pedagogy, pedagogical
+- **life** → living, vital, biological
+- **logic** → logical, formal logic, symbolic logic, philosophical logic
+- **medical** → bioethics, biomedical ethics, medical ethics, clinical ethics, healthcare ethics
+- **members** → member, membership
+- **online** → distance, remote, virtual, digital
+- **opportunities** → opportunity
+- **participate** → participation
+- **philosophical** → philosophy, philosophic
+- **political** → politics, political philosophy, political theory
 - **postdoctoral** → postdoc, post-doctoral, post-doc
-- **potential** → potentially
-- **projects** → project
-- **public** → public philosophy
+- **process** → process philosophy, process metaphysics, process thought
+- **recommendation** → recommendations, reference, references
+- **relevant** → relevance
+- **renewal** → renewable, reappointment
 - **research** → scholarship, scholarly, investigation
 - **scholars** → scholar, scholarship
-- **science** → sciences, scientific, philosophy of science
-- **sciences** → science, scientific, philosophy of science
-- **social** → social philosophy
-- **success** → successful, successfully
+- **science** → scientific, philosophy of science
+- **sciences** → science, scientific
+- **seeks** → seek, seeking, sought
+- **semester** → term, quarter, academic term
+- **specialization** → specializations, specialty, specialties, area of specialization, aos
+- **staff** → faculty, personnel
 - **syllabi** → syllabus
-- **system** → systems, systematic, systemic
-- **technology** → philosophy of technology, tech ethics, digital ethics
-- **thinking** → thought, think
+- **system** → systems, systematic
+- **technology** → technological, technologies, tech
+- **thinking** → thought, reasoning, cognition, cognitive
+- **vision** → visual, perception, philosophy of perception
+- **visit** → visiting, visitor
+- **vitae** → cv, curriculum vitae, resume
 
 ---
 
