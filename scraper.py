@@ -2211,11 +2211,197 @@ class PhilJobsScraper:
             'total_new_jobs_weekly': total_new_jobs_weekly,
         }
 
+    # ── Granularity aggregation ───────────────────────────────────────────
+    #
+    # The scraper produces one bucket per weekly scrape, but the dashboard
+    # lets the user view the time series at week / month / year granularity.
+    # These helpers roll weekly buckets up into monthly or yearly ones; year
+    # is computed even when only one calendar year of data exists (the
+    # frontend disables the toggle until two years are present).
+
+    @staticmethod
+    def _bucket_for(date_str, granularity):
+        """Map a YYYY-MM-DD scrape date to a bucket label for the chosen
+        granularity. Returns None when the input is unparseable.
+        """
+        if not date_str:
+            return None
+        try:
+            d = datetime.strptime(date_str[:10], '%Y-%m-%d')
+        except ValueError:
+            return None
+        if granularity == 'week':
+            return date_str[:10]
+        if granularity == 'month':
+            return d.strftime('%Y-%m')
+        if granularity == 'year':
+            return d.strftime('%Y')
+        raise ValueError(f"Unknown granularity: {granularity}")
+
+    @classmethod
+    def _compute_bucket_index(cls, weekly_dates, granularity):
+        """Compute the bucket layout for a list of weekly scrape dates.
+
+        Returns (bucket_labels, bucket_indices) where bucket_labels is the
+        ordered list of unique bucket labels and bucket_indices[i] gives the
+        position in bucket_labels for weekly_dates[i].
+        """
+        bucket_labels = []
+        bucket_pos = {}
+        bucket_indices = []
+        for d in weekly_dates:
+            label = cls._bucket_for(d, granularity)
+            if label is None:
+                bucket_indices.append(-1)  # sentinel for "skip"
+                continue
+            if label not in bucket_pos:
+                bucket_pos[label] = len(bucket_labels)
+                bucket_labels.append(label)
+            bucket_indices.append(bucket_pos[label])
+        return bucket_labels, bucket_indices
+
+    @staticmethod
+    def _agg_array(weekly_values, bucket_indices, n_buckets):
+        """Sum a parallel weekly value array into n_buckets according to the
+        bucket_indices map returned by _compute_bucket_index().
+        """
+        out = [0] * n_buckets
+        for i, v in enumerate(weekly_values):
+            if i < len(bucket_indices):
+                idx = bucket_indices[i]
+                if 0 <= idx < n_buckets:
+                    out[idx] += v
+        return out
+
+    def _build_granularity_slice(self, granularity, weekly_dates, parent_categories,
+                                 subcategory_data, job_type_series,
+                                 position_type_by_aos_weekly, inst_type_series,
+                                 total_new_jobs_weekly, state_data, region_data,
+                                 jobs_by_date):
+        """Aggregate the weekly time-series outputs into a single granularity
+        slice (e.g. monthly buckets). Same shape as the weekly originals so
+        the existing chart code can render any granularity by swapping which
+        slice is active.
+
+        Args:
+          granularity: 'week' | 'month' | 'year'
+          weekly_dates: list of YYYY-MM-DD scrape dates (one per weekly bucket)
+          ... (the weekly series produced by _compute_weekly_series)
+          state_data, region_data: weekly geographic series (US dashboard only;
+              pass {} for the intl dashboard)
+          jobs_by_date: dict YYYY-MM-DD → list of jobs scraped that day, used
+              to compute the period's "current jobs" for the stat card download
+
+        Returns a dict in the same shape as the rendered data binding fields:
+          dates, categories, subcategoryData, jobTypeData,
+          positionTypeByAosWeekly, instTypeSeries, totalNewJobsWeekly,
+          stateData, regionData, seasonalMarkers, currentPeriodJobIds,
+          currentPeriodNewJobs, currentPeriodLabel
+        """
+        bucket_labels, bucket_indices = self._compute_bucket_index(weekly_dates, granularity)
+        n = len(bucket_labels)
+
+        def agg(arr):
+            return self._agg_array(arr, bucket_indices, n)
+
+        aggregated_categories = {
+            cat: {
+                'name': cat,
+                'dataAll':  agg(info['dataAll']),
+                'dataSolo': agg(info['dataSolo']),
+                'dataJoint':agg(info['dataJoint']),
+                'subcategories': info['subcategories'],
+                'color': info['color'],
+            }
+            for cat, info in parent_categories.items()
+        }
+        aggregated_subs = {
+            sub: {m: agg(d[m]) for m in ('all', 'solo', 'joint')}
+            for sub, d in subcategory_data.items()
+        }
+        aggregated_pt = {
+            pt: {m: agg(d[m]) for m in ('all', 'solo', 'joint')}
+            for pt, d in job_type_series.items()
+        }
+        aggregated_pt_aos = {
+            aos: {
+                pt: {m: agg(d[m]) for m in ('all', 'solo', 'joint')}
+                for pt, d in pt_data.items()
+            }
+            for aos, pt_data in position_type_by_aos_weekly.items()
+        }
+        aggregated_it = {it: agg(arr) for it, arr in inst_type_series.items()}
+        aggregated_total = {
+            m: agg(total_new_jobs_weekly[m]) for m in ('all', 'solo', 'joint')
+        }
+        aggregated_state = {
+            state: {m: agg(d[m]) for m in ('all', 'solo', 'joint')}
+            for state, d in state_data.items()
+        }
+        aggregated_region = {
+            region: {m: agg(d[m]) for m in ('all', 'solo', 'joint')}
+            for region, d in region_data.items()
+        }
+
+        seasonal_markers = [
+            {'index': i, 'label': 'Hiring Season'}
+            for i, label in enumerate(bucket_labels)
+            if self.is_hiring_season(label)
+        ]
+
+        # The most-recent bucket's worth of new jobs — drives the stat card
+        # ("New jobs this week/month/year") and its PDF download. We take
+        # the union of all weekly scrape dates whose bucket label equals
+        # the last bucket.
+        current_period_job_ids = []
+        if bucket_labels:
+            last_label = bucket_labels[-1]
+            for d in weekly_dates:
+                if self._bucket_for(d, granularity) == last_label:
+                    for j in jobs_by_date.get(d, []):
+                        jid = j.get('id')
+                        if jid:
+                            current_period_job_ids.append(jid)
+        current_period_new = len(current_period_job_ids)
+
+        # Friendly label for the stat card sub-line and modal headings
+        period_label_map = {'week': 'this week', 'month': 'this month', 'year': 'this year'}
+
+        return {
+            'dates': bucket_labels,
+            'categories': aggregated_categories,
+            'subcategoryData': aggregated_subs,
+            'jobTypeData': aggregated_pt,
+            'positionTypeByAosWeekly': aggregated_pt_aos,
+            'instTypeSeries': aggregated_it,
+            'totalNewJobsWeekly': aggregated_total,
+            'stateData': aggregated_state,
+            'regionData': aggregated_region,
+            'seasonalMarkers': seasonal_markers,
+            'currentPeriodJobIds': current_period_job_ids,
+            'currentPeriodNewJobs': current_period_new,
+            'currentPeriodLabel': period_label_map.get(granularity, granularity),
+        }
+
     # ── Dashboard ─────────────────────────────────────────────────────────
 
     def is_hiring_season(self, date_str):
-        date = datetime.strptime(date_str, "%Y-%m-%d")
-        return date.month >= 9 or date.month <= 1
+        """True if a (week or month or year) bucket label falls in the
+        Sept–Jan academic hiring season. Accepts 'YYYY-MM-DD', 'YYYY-MM',
+        or 'YYYY' label formats so the same logic drives shading at all
+        three granularities.
+        """
+        # year-only buckets ("2026") span the whole year — always shade
+        if len(date_str) == 4 and date_str.isdigit():
+            return True
+        try:
+            if len(date_str) >= 7:
+                d = datetime.strptime(date_str[:7], '%Y-%m')
+            else:
+                d = datetime.strptime(date_str, '%Y-%m-%d')
+        except ValueError:
+            return False
+        return d.month >= 9 or d.month <= 1
 
     def generate_trend_dashboard(self, historical_data):
         """Generate US-only HTML dashboard (docs/index.html)."""
@@ -2327,6 +2513,33 @@ class PhilJobsScraper:
 
         # state_alltime drives map color shading — use the 'all' slice for total
         state_alltime = {s: sum(v['all']) for s, v in state_data.items() if sum(v['all']) > 0}
+
+        # ── Granularity slices (week / month / year) ─────────────────────
+        # Charts read time-series data from data.dates, data.categories, etc.
+        # The default granularity ('month') is applied at page load by JS;
+        # the toggle swaps which slice's data those names point to.
+        weekly_dates_short = [d[:10] for d in dates]
+        granularities = {}
+        for g in ('week', 'month', 'year'):
+            granularities[g] = self._build_granularity_slice(
+                granularity=g,
+                weekly_dates=weekly_dates_short,
+                parent_categories=parent_categories,
+                subcategory_data=subcategory_data,
+                job_type_series=job_type_series,
+                position_type_by_aos_weekly=position_type_by_aos_weekly,
+                inst_type_series=inst_type_series,
+                total_new_jobs_weekly=total_new_jobs_weekly,
+                state_data=state_data,
+                region_data=region_data,
+                jobs_by_date=jobs_by_date,
+            )
+
+        # Whether the Year toggle is selectable — only when we have data
+        # spanning at least 2 calendar years, otherwise it'd just be a
+        # single bucket.
+        year_unique = len({d[:4] for d in weekly_dates_short})
+        granularity_year_enabled = year_unique >= 2
 
         # ── State → AOS breakdown (with solo/joint slicing) ──────────────
         state_cat_map = {m: defaultdict(lambda: defaultdict(int)) for m in ('all', 'solo', 'joint')}
@@ -2556,11 +2769,21 @@ class PhilJobsScraper:
             <button type="button" onclick="downloadUnclassifiedReport()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold rounded-lg whitespace-nowrap">📄 Download unclassified jobs</button>
         </div>
 
+        <!-- Granularity toggle: aggregates all time-series charts by week / month / year. -->
+        <div class="flex items-center justify-end gap-3 mb-4 text-sm">
+            <span class="text-gray-500">View time series by:</span>
+            <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 bg-white">
+                <button id="granWeek"  type="button" onclick="setGranularity('week')"  class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50">Week</button>
+                <button id="granMonth" type="button" onclick="setGranularity('month')" class="px-3 py-1.5 text-sm font-medium bg-indigo-600 text-white">Month</button>
+                <button id="granYear"  type="button" onclick="setGranularity('year')"  class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-indigo-50">Year</button>
+            </div>
+        </div>
+
         <!-- Stats Cards — first two are clickable for PDF download of the underlying jobs -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-            <div class="stat-card rounded-xl shadow-lg p-6 text-white col-span-2 md:col-span-1 cursor-pointer hover:opacity-95 transition" onclick="downloadCurrentWeekReport()" title="Click to download a PDF of this week's new postings — useful for independent verification">
-                <div class="text-3xl font-bold">{current_week_new_jobs}</div>
-                <div class="text-indigo-100">New US Jobs This Week</div>
+            <div class="stat-card rounded-xl shadow-lg p-6 text-white col-span-2 md:col-span-1 cursor-pointer hover:opacity-95 transition" onclick="downloadCurrentWeekReport()" data-period-label="Click to download the new postings from {{period}} — useful for independent verification" title="Click to download the new postings from this month — useful for independent verification">
+                <div class="text-3xl font-bold" id="statsCurrentPeriodCount">{current_week_new_jobs}</div>
+                <div class="text-indigo-100" data-period-label="New US Jobs {{period}}">New US Jobs this month</div>
                 <div class="text-xs text-indigo-100 mt-2 opacity-80">↓ Click to download list</div>
             </div>
             <div class="bg-white rounded-xl shadow-lg p-6 cursor-pointer hover:bg-gray-50 transition" onclick="downloadAllJobsReport()" title="Click to download a PDF of every US job tracked — useful for independent verification">
@@ -2841,6 +3064,13 @@ class PhilJobsScraper:
 
     <script>
         const data = {{
+            // Granularity slices (week / month / year). Charts read from
+            // data.dates, data.categories, etc. — those are initialised from
+            // data.granularities[defaultGranularity] at page load and swapped
+            // by setGranularity() when the user clicks the toggle.
+            granularities: {json.dumps(granularities)},
+            defaultGranularity: 'month',
+            granularityYearEnabled: {json.dumps(granularity_year_enabled)},
             dates: {json.dumps(dates)},
             totalNewJobsWeekly: {json.dumps(total_new_jobs_weekly)},
             categories: {categories_js},
@@ -2875,6 +3105,94 @@ class PhilJobsScraper:
             posTypeAosJobIds: {json.dumps(pos_type_aos_job_ids)},
             jobDetails: {json.dumps(job_details_map)}
         }};
+
+        // ===== GRANULARITY (week / month / year) =====
+        // The same time-series data is computed in 3 buckets server-side; the
+        // toggle picks which one the charts render. Existing chart code
+        // accesses data.dates, data.categories, etc. — setGranularity()
+        // swaps those references to the chosen granularity's slice.
+        let currentGranularity = data.defaultGranularity || 'month';
+
+        function applyGranularitySlice(g) {{
+            const src = data.granularities[g];
+            if (!src) return;
+            data.dates                    = src.dates;
+            data.categories               = src.categories;
+            data.subcategoryData          = src.subcategoryData;
+            data.jobTypeData              = src.jobTypeData;
+            data.positionTypeByAosWeekly  = src.positionTypeByAosWeekly;
+            data.totalNewJobsWeekly       = src.totalNewJobsWeekly;
+            data.stateData                = src.stateData;
+            data.regionData               = src.regionData;
+            data.seasonalMarkers          = src.seasonalMarkers;
+            data.currentWeekJobIds        = src.currentPeriodJobIds;
+            data.currentPeriodLabel       = src.currentPeriodLabel;
+            data.currentPeriodNewJobs     = src.currentPeriodNewJobs;
+        }}
+
+        function setGranularity(g) {{
+            if (g === 'year' && !data.granularityYearEnabled) return;
+            currentGranularity = g;
+            applyGranularitySlice(g);
+            updateGranularityControls();
+            updateGranularityDependentLabels();
+            // Re-render every time-series chart. Each render uses the helper
+            // it already had — the chart code itself didn't change.
+            if (typeof renderMainChart === 'function') renderMainChart();
+            if (typeof renderCategoryCards === 'function') renderCategoryCards();
+            if (typeof renderRegionalChart === 'function') renderRegionalChart();
+            if (typeof updatePositionTypeChart === 'function') updatePositionTypeChart();
+            // Re-running keyword search redraws its trend chart if open
+            const kwInput = document.getElementById('kwInput');
+            if (kwInput && kwInput.value.trim() && typeof kwSearch === 'function') kwSearch();
+            // Re-open the modal if it's currently visible
+            if (typeof currentModalKey !== 'undefined' && currentModalKey
+                && document.getElementById('detailModal')
+                && !document.getElementById('detailModal').classList.contains('hidden')) {{
+                openModal(currentModalKey, data.categories[currentModalKey]);
+            }}
+        }}
+
+        function updateGranularityControls() {{
+            const btns = {{
+                week:  document.getElementById('granWeek'),
+                month: document.getElementById('granMonth'),
+                year:  document.getElementById('granYear'),
+            }};
+            const active = 'bg-indigo-600 text-white';
+            const inactive = 'text-gray-700 hover:bg-indigo-50';
+            for (const g in btns) {{
+                if (!btns[g]) continue;
+                btns[g].className = `px-3 py-1.5 text-sm font-medium ${{currentGranularity === g ? active : inactive}}`;
+            }}
+            if (btns.year && !data.granularityYearEnabled) {{
+                btns.year.disabled = true;
+                btns.year.title = 'Need data spanning at least 2 calendar years before year-level rollups are meaningful.';
+                btns.year.className += ' opacity-50 cursor-not-allowed';
+            }}
+        }}
+
+        function updateGranularityDependentLabels() {{
+            // The stat card sub-line and download tooltip use the current period
+            // name so the dashboard stays self-describing across granularities.
+            const periodLabel = data.currentPeriodLabel || 'this period';
+            document.querySelectorAll('[data-period-label]').forEach(el => {{
+                el.textContent = el.dataset.periodLabel.replace('{{period}}', periodLabel);
+            }});
+            const countEl = document.getElementById('statsCurrentPeriodCount');
+            if (countEl) countEl.textContent = data.currentPeriodNewJobs;
+        }}
+
+        // Initialise BEFORE any chart renders below run. The control/label
+        // updates run after applying the slice so the toggle button and
+        // stat-card label reflect the active granularity from page load.
+        applyGranularitySlice(currentGranularity);
+        // Defer DOM-touching updates to a microtask so the rest of the
+        // markup below has parsed by the time these run.
+        Promise.resolve().then(() => {{
+            updateGranularityControls();
+            updateGranularityDependentLabels();
+        }});
 
         // ===== SEASON PLUGIN =====
         const seasonPlugin = {{
@@ -4227,6 +4545,28 @@ class PhilJobsScraper:
                 intl_region_data[region]['all'][i] += 1
                 intl_region_data[region][mode_key][i] += 1
 
+        # ── Granularity slices (week / month / year) ─────────────────────
+        # See US dashboard for the rationale. The intl dashboard has no
+        # state-level data, so we pass an empty dict for state_data.
+        weekly_dates_short = [d[:10] for d in dates]
+        granularities = {}
+        for g in ('week', 'month', 'year'):
+            granularities[g] = self._build_granularity_slice(
+                granularity=g,
+                weekly_dates=weekly_dates_short,
+                parent_categories=parent_categories,
+                subcategory_data=subcategory_data,
+                job_type_series=job_type_series,
+                position_type_by_aos_weekly=position_type_by_aos_weekly,
+                inst_type_series=inst_type_series,
+                total_new_jobs_weekly=total_new_jobs_weekly,
+                state_data={},
+                region_data=intl_region_data,
+                jobs_by_date=jobs_by_date,
+            )
+        year_unique = len({d[:4] for d in weekly_dates_short})
+        granularity_year_enabled = year_unique >= 2
+
         # ── Country-level all-time counts for world choropleth ───────────
         country_alltime = defaultdict(int)
         country_current = defaultdict(int)
@@ -4453,11 +4793,21 @@ class PhilJobsScraper:
             <button type="button" onclick="downloadUnclassifiedReport()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold rounded-lg whitespace-nowrap">📄 Download unclassified jobs</button>
         </div>
 
+        <!-- Granularity toggle: aggregates all time-series charts by week / month / year. -->
+        <div class="flex items-center justify-end gap-3 mb-4 text-sm">
+            <span class="text-gray-500">View time series by:</span>
+            <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 bg-white">
+                <button id="granWeek"  type="button" onclick="setGranularity('week')"  class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-cyan-50">Week</button>
+                <button id="granMonth" type="button" onclick="setGranularity('month')" class="px-3 py-1.5 text-sm font-medium bg-cyan-600 text-white">Month</button>
+                <button id="granYear"  type="button" onclick="setGranularity('year')"  class="px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-cyan-50">Year</button>
+            </div>
+        </div>
+
         <!-- Stats Cards — first two are clickable for PDF download of the underlying jobs -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-            <div class="stat-card rounded-xl shadow-lg p-6 text-white col-span-2 md:col-span-1 cursor-pointer hover:opacity-95 transition" onclick="downloadCurrentWeekReport()" title="Click to download a PDF of this week's new postings — useful for independent verification">
-                <div class="text-3xl font-bold">{current_week_new_jobs}</div>
-                <div class="text-cyan-100">New Intl Jobs This Week</div>
+            <div class="stat-card rounded-xl shadow-lg p-6 text-white col-span-2 md:col-span-1 cursor-pointer hover:opacity-95 transition" onclick="downloadCurrentWeekReport()" data-period-label="Click to download the new postings from {{period}} — useful for independent verification" title="Click to download the new postings from this month — useful for independent verification">
+                <div class="text-3xl font-bold" id="statsCurrentPeriodCount">{current_week_new_jobs}</div>
+                <div class="text-cyan-100" data-period-label="New Intl Jobs {{period}}">New Intl Jobs this month</div>
                 <div class="text-xs text-cyan-100 mt-2 opacity-80">↓ Click to download list</div>
             </div>
             <div class="bg-white rounded-xl shadow-lg p-6 cursor-pointer hover:bg-gray-50 transition" onclick="downloadAllJobsReport()" title="Click to download a PDF of every international job tracked — useful for independent verification">
@@ -4641,6 +4991,13 @@ class PhilJobsScraper:
 
     <script>
         const data = {{
+            // Granularity slices (week / month / year). Charts read from
+            // data.dates, data.categories, etc. — those are initialised from
+            // data.granularities[defaultGranularity] at page load and swapped
+            // by setGranularity() when the user clicks the toggle.
+            granularities: {json.dumps(granularities)},
+            defaultGranularity: 'month',
+            granularityYearEnabled: {json.dumps(granularity_year_enabled)},
             dates: {json.dumps(dates)},
             totalNewJobsWeekly: {json.dumps(total_new_jobs_weekly)},
             categories: {categories_js},
@@ -4674,6 +5031,94 @@ class PhilJobsScraper:
             posTypeAosJobIds: {json.dumps(pos_type_aos_job_ids)},
             jobDetails: {json.dumps(job_details_map)}
         }};
+
+        // ===== GRANULARITY (week / month / year) =====
+        // The same time-series data is computed in 3 buckets server-side; the
+        // toggle picks which one the charts render. Existing chart code
+        // accesses data.dates, data.categories, etc. — setGranularity()
+        // swaps those references to the chosen granularity's slice.
+        let currentGranularity = data.defaultGranularity || 'month';
+
+        function applyGranularitySlice(g) {{
+            const src = data.granularities[g];
+            if (!src) return;
+            data.dates                    = src.dates;
+            data.categories               = src.categories;
+            data.subcategoryData          = src.subcategoryData;
+            data.jobTypeData              = src.jobTypeData;
+            data.positionTypeByAosWeekly  = src.positionTypeByAosWeekly;
+            data.totalNewJobsWeekly       = src.totalNewJobsWeekly;
+            data.stateData                = src.stateData;
+            data.regionData               = src.regionData;
+            data.seasonalMarkers          = src.seasonalMarkers;
+            data.currentWeekJobIds        = src.currentPeriodJobIds;
+            data.currentPeriodLabel       = src.currentPeriodLabel;
+            data.currentPeriodNewJobs     = src.currentPeriodNewJobs;
+        }}
+
+        function setGranularity(g) {{
+            if (g === 'year' && !data.granularityYearEnabled) return;
+            currentGranularity = g;
+            applyGranularitySlice(g);
+            updateGranularityControls();
+            updateGranularityDependentLabels();
+            // Re-render every time-series chart. Each render uses the helper
+            // it already had — the chart code itself didn't change.
+            if (typeof renderMainChart === 'function') renderMainChart();
+            if (typeof renderCategoryCards === 'function') renderCategoryCards();
+            if (typeof renderRegionalChart === 'function') renderRegionalChart();
+            if (typeof updatePositionTypeChart === 'function') updatePositionTypeChart();
+            // Re-running keyword search redraws its trend chart if open
+            const kwInput = document.getElementById('kwInput');
+            if (kwInput && kwInput.value.trim() && typeof kwSearch === 'function') kwSearch();
+            // Re-open the modal if it's currently visible
+            if (typeof currentModalKey !== 'undefined' && currentModalKey
+                && document.getElementById('detailModal')
+                && !document.getElementById('detailModal').classList.contains('hidden')) {{
+                openModal(currentModalKey, data.categories[currentModalKey]);
+            }}
+        }}
+
+        function updateGranularityControls() {{
+            const btns = {{
+                week:  document.getElementById('granWeek'),
+                month: document.getElementById('granMonth'),
+                year:  document.getElementById('granYear'),
+            }};
+            const active = 'bg-indigo-600 text-white';
+            const inactive = 'text-gray-700 hover:bg-indigo-50';
+            for (const g in btns) {{
+                if (!btns[g]) continue;
+                btns[g].className = `px-3 py-1.5 text-sm font-medium ${{currentGranularity === g ? active : inactive}}`;
+            }}
+            if (btns.year && !data.granularityYearEnabled) {{
+                btns.year.disabled = true;
+                btns.year.title = 'Need data spanning at least 2 calendar years before year-level rollups are meaningful.';
+                btns.year.className += ' opacity-50 cursor-not-allowed';
+            }}
+        }}
+
+        function updateGranularityDependentLabels() {{
+            // The stat card sub-line and download tooltip use the current period
+            // name so the dashboard stays self-describing across granularities.
+            const periodLabel = data.currentPeriodLabel || 'this period';
+            document.querySelectorAll('[data-period-label]').forEach(el => {{
+                el.textContent = el.dataset.periodLabel.replace('{{period}}', periodLabel);
+            }});
+            const countEl = document.getElementById('statsCurrentPeriodCount');
+            if (countEl) countEl.textContent = data.currentPeriodNewJobs;
+        }}
+
+        // Initialise BEFORE any chart renders below run. The control/label
+        // updates run after applying the slice so the toggle button and
+        // stat-card label reflect the active granularity from page load.
+        applyGranularitySlice(currentGranularity);
+        // Defer DOM-touching updates to a microtask so the rest of the
+        // markup below has parsed by the time these run.
+        Promise.resolve().then(() => {{
+            updateGranularityControls();
+            updateGranularityDependentLabels();
+        }});
 
         // ===== SEASON PLUGIN =====
         const seasonPlugin = {{
