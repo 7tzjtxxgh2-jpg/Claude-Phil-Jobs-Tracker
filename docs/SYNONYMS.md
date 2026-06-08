@@ -1,8 +1,8 @@
 # Keyword Explorer — Synonym Map
 
-**Last updated:** 2026-06-01
+**Last updated:** 2026-06-08
 **Source data:** [`data/synonym_map.json`](../data/synonym_map.json)
-**Terms in map:** 150
+**Terms in map:** 125
 
 ---
 
@@ -25,73 +25,63 @@ used, see [KEYWORD_EXPLORER_METHODOLOGY.md](KEYWORD_EXPLORER_METHODOLOGY.md).
 
 ## Synonym Groups (Alphabetical)
 
-- **access** → accessibility
-- **across** → cross, inter, between
+- **able** → ability, enable
+- **access** → accessible, accessibility, accessing
+- **active** → actively, activate, activity
 - **activities** → activity
-- **additional** → supplementary, extra, further
 - **american** → american philosophy, american pragmatism, pragmatism
-- **applied** → practical, practice
+- **applied** → apply, application, applications
 - **arts** → humanities, liberal arts
 - **assistant** → assistant professor
 - **center** → centre, institute, center for, centre for
-- **collaboration** → collaborative
-- **committed** → commit, commits, commitment, commitments
-- **consideration** → consider, considered, considers
-- **considered** → consider, considers, consideration
+- **chair** → chairs, chaired
+- **collaboration** → collaborative, cooperate, cooperation, cooperative
+- **comprehensive** → comprehensively
 - **continue** → continuing, continuation
-- **contribute** → contributes, contributed, contribution, contributions
-- **critical** → critical theory
-- **curriculum** → curricular, syllabus
-- **demonstrated** → demonstrate, demonstrates, demonstrable, demonstration
-- **development** → developmental, develop, develops, developing
-- **diverse** → diversity, diversities, diversification
+- **curriculum** → curricular, syllabus, course design
 - **education** → educational, pedagogy, pedagogical, teaching
 - **eligible** → eligibility
-- **engage** → engagement
-- **engagement** → engage, engaged, engages, engaging
-- **environment** → environmental, ecology, ecological
-- **ethical** → ethics, metaethics, meta-ethics, normative ethics, moral philosophy, moral theory
+- **employees** → employee, employment, employ
+- **engage** → engagement, engaging, engaged
+- **ethical** → ethics, metaethics, meta-ethics, normative ethics, applied ethics, moral philosophy, moral theory
 - **ethics** → ethical, metaethics, meta-ethics, normative ethics, moral philosophy, moral theory
-- **evidence** → evidential, evidentiary, evidenced
-- **expertise** → expert, specialization, specialty
-- **first** → primary, initial, premier
-- **health** → healthcare, medical, medicine, clinical
-- **history** → historical, historian, historians, historiography
+- **expertise** → expert, specialization, specialism
+- **focus** → focused, focusing, foci
+- **global** → global justice, cosmopolitanism, cosmopolitan
+- **high** → higher, highly
+- **highly** → high
+- **hours** → hour
 - **humanities** → humanistic, liberal arts, studia humanitatis
-- **interdisciplinary** → multidisciplinary, transdisciplinary, cross-disciplinary, pluridisciplinary
 - **interested** → interest
-- **introductory** → introduction
-- **knowledge** → epistemology, epistemic, epistemological, theory of knowledge
-- **learning** → learn, learns, learned, pedagogy, pedagogical
-- **life** → living, vital, biological
-- **logic** → logical, formal logic, symbolic logic, philosophical logic
+- **introductory** → introduction, intro, introductions
+- **leadership** → leader, lead, leading
+- **liberal** → liberal arts
+- **logic** → logical, logics, logician
 - **medical** → bioethics, biomedical ethics, medical ethics, clinical ethics, healthcare ethics
-- **members** → member, membership
-- **online** → distance, remote, virtual, digital
+- **month** → monthly, months
 - **opportunities** → opportunity
-- **participate** → participation
+- **participate** → participation, participatory, participant
 - **philosophical** → philosophy, philosophic
-- **political** → politics, political philosophy, political theory
+- **political** → political philosophy, political theory
 - **postdoctoral** → postdoc, post-doctoral, post-doc
 - **process** → process philosophy, process metaphysics, process thought
+- **projects** → project
+- **public** → public philosophy
 - **recommendation** → recommendations, reference, references
+- **record** → records, recording
 - **relevant** → relevance
 - **renewal** → renewable, reappointment
 - **research** → scholarship, scholarly, investigation
-- **scholars** → scholar, scholarship
-- **science** → scientific, philosophy of science
-- **sciences** → science, scientific
-- **seeks** → seek, seeking, sought
-- **semester** → term, quarter, academic term
-- **specialization** → specializations, specialty, specialties, area of specialization, aos
-- **staff** → faculty, personnel
+- **science** → scientific, sciences, philosophy of science
+- **social** → social philosophy
+- **specialization** → specialisation, specialty, speciality, area of specialization, aos
+- **success** → successful, successfully, succeed
 - **syllabi** → syllabus
-- **system** → systems, systematic
-- **technology** → technological, technologies, tech
-- **thinking** → thought, reasoning, cognition, cognitive
-- **vision** → visual, perception, philosophy of perception
+- **system** → systems, systematic, systematically
+- **technology** → technological, tech, digital technology
+- **thinking** → think, thought
+- **vision** → visionary
 - **visit** → visiting, visitor
-- **vitae** → cv, curriculum vitae, resume
 
 ---
 

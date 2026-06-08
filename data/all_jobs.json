@@ -9896,6 +9896,58 @@
       "status": "active",
       "hash": "6326bcc85252edd1439a695f78c96e23",
       "scraped_date": "2026-06-01T19:16:32.106665"
+    },
+    {
+      "id": "31529",
+      "url": "https://philjobs.org/job/show/31529",
+      "institution": "Philosophy Program, La Trobe University",
+      "title": "Research Officer (Philosophy)",
+      "job_category": "Postdoc or similar / Fixed term",
+      "aos": "Open",
+      "aoc": "Open",
+      "workload": "Full time",
+      "vacancies": "1",
+      "org_reference_number": "569919",
+      "location": "Melbourne, Victoria, Australia",
+      "state": null,
+      "country": "Australia",
+      "city": null,
+      "start_date": "September 2026",
+      "description": "Work type:Fixed TermFull-Time, Fixed Term until 9 March 2029Melbourne (Bundoora) locationClassification: Level A - Base salary from $84,205 + 17% superannuationThis position requires the incumbent to hold a conferred PhD min. step 6 of Level AHybrid work model supportAbout the positionLa Trobe University\u2019s School of Humanities and Social Sciences is seeking to appoint a Research Officer in Philosophy to work on the ARC Discovery Project \u201cVirtual Reality and Knowing What It Is Like\u201d (DP260102586). The successful applicant will also contribute to the coordination of the project\u2019s research activities including potentially the organisation of seminars, a conference, and outreach activities.Skills and ExperienceTo be considered for this position, you will have:A completed PhD in Philosophy, or potentially a PhD in another discipline if the candidate\u2019s PhD research aligns closely with the project\u2019s themes.Strong evidence\u2014in the form of e.g., publications, conference presentations, and an excellent PhD thesis\u2014of the candidate\u2019s potential to develop and publish high quality research on the themes of the ARC Discovery Project \u201cVirtual Reality and Knowing What It Is Like\u201d (DP260102586).Sound analytical skills with an ability to communicate complex information clearly both orally and in writing.Ability to work independently and with senior colleagues to develop and fulfil a research plan that meets the priorities and expectations of the Discovery Project.Please refer to the Position Description (available at the application website) for other duties, skills and experience required for this position.Benefits17% superannuationPrivate Health Insurance discountPlus, many more (see application website for link)How to applyClosing date:\u00a0 By 11:55pm Sunday 5 July 2026Position Enquiries:\u00a0\u00a0\u00a0\u00a0Yuri Cath, Associate Professor, PhilosophyEmail:[email\u00a0protected]Recruitment Enquiries:\u00a0\u00a0Talent Acquisition Operations Officer, Yola El-hassanieh;Email:[email\u00a0protected]Please submit an online application ONLY and must include the following documents:An up to date resume;1 page cover letter; andAddress all the Key Selection Criteria in a separate document under Essential Criteria located in the PD.Only candidates with Full Working Rights and residing in Australia may apply for this position.Aboriginal and Torres Strait Islander ApplicantsWe welcome and strongly encourage applications from Aboriginal and Torres Strait Islander people.Our commitment to diversity and inclusionLa Trobe University is committed to creating a diverse and inclusive workforce. We take an intersectional approach by actively supporting and encouraging people of all backgrounds and abilities to submit an application and aim to ensure that the recruitment and employee experience is as accessible and inclusive as possible. Flexibility in interview format will be offered to shortlisted candidates.Our commitment to safetyAll La Trobe University employees are bound by the Working with Children Act 2005.\u00a0 If you are successful, you will be required to hold a valid Victorian Employee Working with Children Check prior to commencement.National Code on Gender Based Violence in Higher EducationLa Trobe University is committed to upholding the National Code to Prevent and Respond to Gender-Based Violence (GBV Code). This aligns with our mission to create safe and respectful communities. Candidates will be asked during the recruitment process to declare whether they have ever been investigated for, or found to have engaged in, gender-based violence in previous employment and/or in legal proceedings and provide relevant information to assist in determining suitability. Gender-based violence means any form of physical or non-physical violence, harassment, abuse or threats based on gender, that results in, or is likely to result in harm, coercion, control, fear or deprivation liberty or autonomy.",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "application_url": "https://jobs.latrobe.edu.au/caw/en/job/569919?lApp...",
+      "application_email": "",
+      "deadline": "July 5, 2026, 11:59pm +10:00",
+      "contact": "",
+      "more_info_url": "https://jobs.latrobe.edu.au/caw/en/job/569919?lApp...",
+      "contact_name": "Yuri Cath",
+      "contact_email": "",
+      "posted_date": "June 4, 2026, 9:34pm UTC",
+      "scheduled_expiry_date": "July 5, 2026, 11:59pm +10:00",
+      "last_updated": "June 4, 2026, 9:34pm UTC",
+      "job_market_calendar": "This institution has indicated that the position advertised will not follow theAPA's recommended job market calendar. An explanation, if provided, appears below.This job needs to be filled as soon as possible as it is connected to an Australian Research Council ARC Discovery grant which has already started. The job is also restricted to candidates with existing permission to work and reside in Australia, which also makes the APA guidelines less directly relevant.",
+      "institution_type": "Research University",
+      "classification": {
+        "main_aos": [
+          "Metaphysics & Epistemology"
+        ],
+        "detail_aos": {
+          "Metaphysics & Epistemology": [
+            "Epistemology",
+            "Philosophy of Mind"
+          ]
+        },
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "state_us": "INTERNATIONAL",
+        "reasoning": "This is a fixed-term research position on an ARC Discovery Project focused on 'Virtual Reality and Knowing What It Is Like,' which clearly falls under epistemology (knowledge) and philosophy of mind (phenomenal consciousness/what-it's-like experiences). The position is explicitly a postdoctoral research officer role at an Australian research university.",
+        "_model": "claude-sonnet-4-5",
+        "_classified_at": "2026-06-08T17:18:51.010836"
+      },
+      "status": "active",
+      "hash": "7d3d99bab1c841a23a2d7b50ebd7b7bb",
+      "scraped_date": "2026-06-08T17:17:49.568576"
     }
   ],
   "weekly_snapshots": [
@@ -10239,6 +10291,14 @@
         "31513",
         "31509",
         "31505"
+      ]
+    },
+    {
+      "date": "2026-06-08",
+      "total_jobs": 81,
+      "new_jobs": 1,
+      "new_job_ids": [
+        "31529"
       ]
     }
   ],
@@ -11274,6 +11334,27 @@
       "country_counts": {
         "United States": 3,
         "Canada": 1
+      },
+      "west_coast_city_counts": {}
+    },
+    {
+      "date": "2026-06-08",
+      "new_jobs_count": 1,
+      "main_aos_counts": {},
+      "detail_aos_counts": {},
+      "position_type_counts": {
+        "Other": 1
+      },
+      "position_type_by_aos": {},
+      "job_category_counts": {
+        "Postdoc or similar / Fixed term": 1
+      },
+      "institution_type_counts": {
+        "Other": 1
+      },
+      "state_counts": {},
+      "country_counts": {
+        "Australia": 1
       },
       "west_coast_city_counts": {}
     }
