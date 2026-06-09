@@ -34,6 +34,10 @@ US_STATES = {
     'District of Columbia': 'DC', 'Washington DC': 'DC', 'Washington, DC': 'DC', 'Washington D.C.': 'DC'
 }
 
+# Valid 2-letter codes — used to reject hallucinated/foreign codes (e.g. a
+# Canadian province "ON") coming back from the Claude state-resolution calls.
+US_STATE_CODES = set(US_STATES.values())
+
 # West Coast cities for detailed view
 WEST_COAST_CITIES = {
     'Berkeley': {'lat': 37.8715, 'lon': -122.2730, 'state': 'CA'},
@@ -137,7 +141,7 @@ INTL_REGIONS = {
     'Asia-Pacific': [
         'Australia', 'New Zealand', 'Japan', 'Singapore', 'South Korea', 'China',
         'Hong Kong', 'Taiwan', 'India', 'Thailand', 'Malaysia', 'Philippines',
-        'Indonesia', 'Vietnam', 'Pakistan',
+        'Indonesia', 'Vietnam', 'Pakistan', 'Macao',
     ],
     'Latin America': [
         'Mexico', 'Brazil', 'Argentina', 'Chile', 'Colombia', 'Peru', 'Venezuela',
@@ -171,7 +175,7 @@ COUNTRY_NUMERIC = {
     'Australia': '036', 'New Zealand': '554', 'Japan': '392', 'Singapore': '702',
     'South Korea': '410', 'China': '156', 'Hong Kong': '344', 'Taiwan': '158',
     'India': '356', 'Thailand': '764', 'Malaysia': '458', 'Philippines': '608',
-    'Indonesia': '360', 'Vietnam': '704', 'Pakistan': '586',
+    'Indonesia': '360', 'Vietnam': '704', 'Pakistan': '586', 'Macao': '446',
     'Israel': '376', 'Turkey': '792', 'Jordan': '400', 'Lebanon': '422',
     'Kuwait': '414', 'Bahrain': '048', 'Oman': '512',
     'United Arab Emirates': '784', 'UAE': '784', 'Saudi Arabia': '682', 'Qatar': '634',
@@ -410,9 +414,19 @@ class PhilJobsScraper:
         parts = [p.strip() for p in location_string.split(',')]
         city = parts[0] if len(parts) > 1 and parts[0] else None
 
-        for state_name, state_code in US_STATES.items():
-            if re.search(r'\b' + re.escape(state_name) + r'\b', location_string):
-                return state_code, 'United States', city
+        # Only attempt US-state matching when the location is explicitly in the
+        # US (PhilJobs locations end with the country). This prevents country
+        # names that collide with state names — "Tbilisi, Georgia" — from being
+        # recorded as US states. Longest-first ordering makes "District of
+        # Columbia" / "Washington DC" win over the state "Washington", so DC
+        # jobs no longer land in Washington State.
+        if 'United States' in location_string:
+            for state_name, state_code in sorted(US_STATES.items(), key=lambda kv: -len(kv[0])):
+                if re.search(r'\b' + re.escape(state_name) + r'\b', location_string):
+                    return state_code, 'United States', city
+            # US location whose state we couldn't parse (e.g. "Stanford, Ca,
+            # United States") — Claude resolves the state later.
+            return None, 'United States', city
 
         latin_american_countries = [
             'Mexico', 'Brazil', 'Argentina', 'Chile', 'Colombia', 'Peru', 'Venezuela',
@@ -422,10 +436,10 @@ class PhilJobsScraper:
         ]
         for country in latin_american_countries:
             if country in location_string:
-                return None, country, None
+                return None, country, city
 
         country_name = parts[-1] if parts and parts[-1] else 'Other International'
-        return None, country_name, None
+        return None, country_name, city
 
     # ── Scraping ──────────────────────────────────────────────────────────
 
@@ -509,10 +523,6 @@ class PhilJobsScraper:
             job['institution'] = h2.get_text(strip=True) if h2 else "Unknown"
             job['title'] = h1.get_text(strip=True) if h1 else "Unknown"
 
-            # PhilJobs page label → our field name. Listed here so adding /
-            # renaming a field is a one-line change. Anything not in this map
-            # falls through to raw_fields (see below) so we never silently lose
-            # data when PhilJobs adds new fields.
             # PhilJobs page label → our field name. Listed here so adding /
             # renaming a field is a one-line change. Anything not in this map
             # falls through to raw_fields (see below) so we never silently lose
@@ -724,36 +734,6 @@ class PhilJobsScraper:
         print(f"  Cleared classification on {cleared} jobs; prior labels archived to classification_history.json")
         return cleared
 
-    def backfill_city_field(self, historical_data) -> int:
-        """Re-parse city from location for jobs that have a location string but no city.
-
-        The original extract_location_data() only populated 'city' when a full
-        state NAME was matched in the location string. Jobs whose location used
-        a 2-letter state code (e.g. "Stanford, Ca, United States") got city=None
-        even though state was later resolved by Claude. This backfill re-derives
-        city from the first comma-separated segment of the location string.
-        """
-        fixed = 0
-        for job in historical_data.get('jobs', []):
-            if job.get('city'):
-                continue
-            location = job.get('location', '')
-            if not location:
-                continue
-            parts = [p.strip() for p in location.split(',')]
-            if len(parts) > 1 and parts[0]:
-                job['city'] = parts[0]
-                fixed += 1
-
-        if fixed:
-            all_data_file = self.data_dir / "all_jobs.json"
-            with open(all_data_file, 'w') as f:
-                json.dump(historical_data, f, indent=2)
-            print(f"  Backfilled city field for {fixed} jobs")
-        else:
-            print("  No city fields needed backfilling")
-        return fixed
-
     def save_data(self, jobs, historical_data):
         """Save job data and update historical records."""
         timestamp = datetime.now().strftime("%Y-%m-%d")
@@ -762,14 +742,31 @@ class PhilJobsScraper:
         historical_data['jobs'].extend(new_jobs)
 
         weekly_trend = self.calculate_weekly_trends(new_jobs, timestamp)
+        # Replace (don't duplicate) any same-date entries — a re-run on the
+        # same day previously appended a second trend/snapshot for that date,
+        # which the dashboard bucketing would then double-count.
+        historical_data['weekly_trends'] = [
+            t for t in historical_data['weekly_trends'] if t.get('date') != timestamp
+        ]
         historical_data['weekly_trends'].append(weekly_trend)
 
+        # Merge with any same-date snapshot (re-run on the same day): keep the
+        # union of new-job ids found across the day's runs.
+        merged_ids = []
+        for s in historical_data['weekly_snapshots']:
+            if s.get('date') == timestamp:
+                merged_ids.extend(s.get('new_job_ids', []))
+        merged_ids.extend(job['id'] for job in new_jobs)
+        merged_ids = list(dict.fromkeys(merged_ids))
         snapshot = {
             'date': timestamp,
             'total_jobs': len(jobs),
-            'new_jobs': len(new_jobs),
-            'new_job_ids': [job['id'] for job in new_jobs]
+            'new_jobs': len(merged_ids),
+            'new_job_ids': merged_ids
         }
+        historical_data['weekly_snapshots'] = [
+            s for s in historical_data['weekly_snapshots'] if s.get('date') != timestamp
+        ]
         historical_data['weekly_snapshots'].append(snapshot)
 
         all_data_file = self.data_dir / "all_jobs.json"
@@ -856,9 +853,10 @@ class PhilJobsScraper:
                 raw_pt = result.get('position_type')
                 result['position_type'] = raw_pt if raw_pt in POSITION_TYPES else 'Other'
 
-                # Validate state_us
+                # Validate state_us — must be a real US state/DC code, not just
+                # any 2-letter code (rejects Canadian provinces like "ON")
                 raw_state = (result.get('state_us') or '').strip().upper()
-                if len(raw_state) == 2 and raw_state.isalpha():
+                if raw_state in US_STATE_CODES:
                     result['state_us'] = raw_state
                 else:
                     result['state_us'] = 'INTERNATIONAL'
@@ -904,7 +902,11 @@ class PhilJobsScraper:
             # Populate state from Claude if scraper couldn't parse it
             if not job.get('state'):
                 state_us = classification.get('state_us', '')
-                if state_us and state_us != 'INTERNATIONAL':
+                if state_us == 'INTERNATIONAL':
+                    # Remember the answer so resolve_missing_states doesn't
+                    # re-query this job on every subsequent run.
+                    job['intl_confirmed'] = True
+                elif state_us:
                     job['state'] = state_us
             classified_count += 1
 
@@ -934,12 +936,19 @@ class PhilJobsScraper:
         except ImportError:
             return 0
 
-        jobs_needing_state = [j for j in historical_data.get('jobs', []) if not j.get('state')]
+        # Skip jobs already confirmed international (intl_confirmed flag) —
+        # without it, every international job (state=None forever) would be
+        # re-queried on every weekly run, with cost growing as the corpus does.
+        jobs_needing_state = [
+            j for j in historical_data.get('jobs', [])
+            if not j.get('state') and not j.get('intl_confirmed')
+        ]
         if not jobs_needing_state:
             return 0
 
         print(f"Resolving state for {len(jobs_needing_state)} jobs via Claude...")
         resolved = 0
+        confirmed_intl = 0
         for job in jobs_needing_state:
             prompt = (
                 f"What US state is this institution located in?\n"
@@ -957,27 +966,36 @@ class PhilJobsScraper:
                         messages=[{"role": "user", "content": prompt}]
                     )
                     answer = response.content[0].text.strip().upper().strip('"\'')
-                    if answer == 'INTERNATIONAL':
-                        job['state'] = None  # already None, mark as confirmed international
-                        break
-                    elif len(answer) == 2 and answer.isalpha():
+                    if answer in US_STATE_CODES:
                         job['state'] = answer
                         resolved += 1
-                        break
+                    else:
+                        # INTERNATIONAL, or a non-US code like a Canadian
+                        # province — either way, not a US job. Persist that
+                        # so we never re-query it.
+                        job['intl_confirmed'] = True
+                        confirmed_intl += 1
+                    break
                 except Exception:
                     if attempt < 2:
                         time.sleep(1)
             time.sleep(0.3)
 
-        if resolved:
+        if resolved or confirmed_intl:
             all_data_file = self.data_dir / "all_jobs.json"
             with open(all_data_file, 'w') as f:
                 json.dump(historical_data, f, indent=2)
-            print(f"✓ Resolved state for {resolved} jobs")
+            print(f"✓ Resolved state for {resolved} jobs; confirmed {confirmed_intl} as international")
         return resolved
 
     def rebuild_weekly_trends(self, historical_data):
-        """Rebuild weekly_trends from classified jobs grouped by scraped_date."""
+        """Rebuild weekly_trends from classified jobs grouped by scraped_date.
+
+        The date axis is the union of job scrape dates and snapshot dates, so
+        runs that found ZERO new jobs keep an explicit zero entry. (Grouping by
+        jobs alone silently dropped real "0 new postings this week" data points
+        whenever trends were rebuilt — a zero week is genuine market data.)
+        """
         jobs = historical_data.get('jobs', [])
         date_groups = defaultdict(list)
         for job in jobs:
@@ -985,9 +1003,14 @@ class PhilJobsScraper:
             if date:
                 date_groups[date].append(job)
 
+        all_dates = set(date_groups.keys())
+        all_dates.update(
+            s['date'] for s in historical_data.get('weekly_snapshots', []) if s.get('date')
+        )
+
         new_trends = []
-        for date in sorted(date_groups.keys()):
-            trend = self.calculate_weekly_trends(date_groups[date], date)
+        for date in sorted(all_dates):
+            trend = self.calculate_weekly_trends(date_groups.get(date, []), date)
             new_trends.append(trend)
 
         historical_data['weekly_trends'] = new_trends
@@ -1750,7 +1773,7 @@ class PhilJobsScraper:
             'matching against job description text. Example: searching `feminism`',
             'will also find jobs mentioning `feminist`, `patriarchy`, `gender`, etc.',
             '',
-            'This map is regenerated automatically every Monday by Claude Haiku',
+            f'This map is regenerated automatically every Monday by `{CLAUDE_MODEL}`',
             'based on the most frequent terms in the corpus of philosophy job',
             'descriptions collected so far. As the corpus grows over time, more',
             'terms will appear here and existing groups may shift.',
@@ -1838,7 +1861,7 @@ class PhilJobsScraper:
             '5. **Identify corpus-frequent terms** (in >80% of descriptions) for',
             '   the bubble-display stopword list. These remain searchable but are',
             '   filtered from the bubble chart to avoid noise.',
-            '6. **Generate synonym map** via Claude Haiku (see Synonym Expansion).',
+            '6. **Generate synonym map** via the live Claude model (see Synonym Expansion).',
             '7. **Embed** the per-job term index, synonym map, and stopword list',
             '   into the dashboard HTML.',
             '8. **Search runs client-side** in the browser: stems the query,',
@@ -2669,13 +2692,6 @@ class PhilJobsScraper:
         current_week_job_ids = [j.get('id') for j in last_week_jobs if j.get('id')]
         all_us_job_ids = [j.get('id') for j in us_jobs if j.get('id')]
 
-        last_main = defaultdict(int)
-        for job in last_week_jobs:
-            cls = job.get('classification') or {}
-            for main in cls.get('main_aos', []):
-                last_main[main] += 1
-        most_active = max(last_main, key=last_main.get) if last_main else "—"
-
         # Typical posting window: median days from posted_date to deadline.
         # Drives the "how often should I check?" stat card and its tooltip.
         window_stats = self._posting_window_stats(us_jobs)
@@ -2714,6 +2730,10 @@ class PhilJobsScraper:
             }
             for k, v in parent_categories.items()
         })
+
+        # jobDetails carries raw posting text (descriptions, titles). Escape
+        # "</" so text like "</script>" can't terminate the inline script tag.
+        job_details_js = json.dumps(job_details_map).replace('</', '<\\/')
 
         # ── Build HTML ────────────────────────────────────────────────────
         html = f'''<!DOCTYPE html>
@@ -3022,7 +3042,8 @@ class PhilJobsScraper:
                         <div id="lassiterChart" class="overflow-x-auto text-sm"></div>
                     </div>
                     <div class="mb-6 max-w-md">
-                        <h4 class="text-lg font-semibold text-gray-700 mb-4">Institution Types</h4>
+                        <h4 class="text-lg font-semibold text-gray-700 mb-1">Institution Types</h4>
+                        <p class="text-xs text-gray-500 mb-3">Across all categories, current period — not specific to this category.</p>
                         <canvas id="institutionChart"></canvas>
                     </div>
                 </div>
@@ -3103,7 +3124,7 @@ class PhilJobsScraper:
             allJobIds: {json.dumps(all_us_job_ids)},
             coocJobIds: {json.dumps(cooc_job_ids)},
             posTypeAosJobIds: {json.dumps(pos_type_aos_job_ids)},
-            jobDetails: {json.dumps(job_details_map)}
+            jobDetails: {job_details_js}
         }};
 
         // ===== GRANULARITY (week / month / year) =====
@@ -3121,6 +3142,7 @@ class PhilJobsScraper:
             data.subcategoryData          = src.subcategoryData;
             data.jobTypeData              = src.jobTypeData;
             data.positionTypeByAosWeekly  = src.positionTypeByAosWeekly;
+            data.institutionTypeData      = src.instTypeSeries;
             data.totalNewJobsWeekly       = src.totalNewJobsWeekly;
             data.stateData                = src.stateData;
             data.regionData               = src.regionData;
@@ -3946,11 +3968,17 @@ class PhilJobsScraper:
             ];
             renderBubbleChart(q, bubbles, matchCount);
 
-            // Trend chart: matching-job count per week
+            // Trend chart: matching-job count per bucket. Job dates are full
+            // YYYY-MM-DD strings; under month/year granularity the chart
+            // labels are truncated bucket labels, so truncate to match.
+            const kwBucketOf = ds => currentGranularity === 'month' ? (ds || '').slice(0, 7)
+                                   : currentGranularity === 'year'  ? (ds || '').slice(0, 4)
+                                   : (ds || '');
             const weekCounts = {{}};
             data.dates.forEach(d => {{ weekCounts[d] = 0; }});
             matchingJobs.forEach(j => {{
-                if (weekCounts[j.scraped_date] !== undefined) weekCounts[j.scraped_date]++;
+                const k = kwBucketOf(j.scraped_date);
+                if (weekCounts[k] !== undefined) weekCounts[k]++;
             }});
             renderKwTrend(data.dates.map(d => weekCounts[d]), q);
         }}
@@ -4695,13 +4723,6 @@ class PhilJobsScraper:
         current_week_job_ids = [j.get('id') for j in last_week_jobs if j.get('id')]
         all_intl_job_ids = [j.get('id') for j in intl_jobs if j.get('id')]
 
-        last_main = defaultdict(int)
-        for job in last_week_jobs:
-            cls = job.get('classification') or {}
-            for main in cls.get('main_aos', []):
-                last_main[main] += 1
-        most_active = max(last_main, key=last_main.get) if last_main else "—"
-
         # Typical posting window — see US dashboard for the rationale.
         window_stats = self._posting_window_stats(intl_jobs)
         if window_stats:
@@ -4739,6 +4760,10 @@ class PhilJobsScraper:
             }
             for k, v in parent_categories.items()
         })
+
+        # jobDetails carries raw posting text (descriptions, titles). Escape
+        # "</" so text like "</script>" can't terminate the inline script tag.
+        job_details_js = json.dumps(job_details_map).replace('</', '<\\/')
 
         # ── Build HTML ────────────────────────────────────────────────────
         html = f'''<!DOCTYPE html>
@@ -4979,7 +5004,8 @@ class PhilJobsScraper:
                         <div id="lassiterChart" class="overflow-x-auto text-sm"></div>
                     </div>
                     <div class="mb-6 max-w-md">
-                        <h4 class="text-lg font-semibold text-gray-700 mb-4">Institution Types</h4>
+                        <h4 class="text-lg font-semibold text-gray-700 mb-1">Institution Types</h4>
+                        <p class="text-xs text-gray-500 mb-3">Across all categories, current period — not specific to this category.</p>
                         <canvas id="institutionChart"></canvas>
                     </div>
                 </div>
@@ -5004,7 +5030,7 @@ class PhilJobsScraper:
             subcategoryData: {json.dumps(subcategory_data)},
             jobTypeData: {json.dumps(job_type_series)},
             institutionTypeData: {json.dumps(inst_type_series)},
-            intlRegionData: {json.dumps(intl_region_data)},
+            regionData: {json.dumps(intl_region_data)},
             countryAlltime: {json.dumps(dict(country_alltime))},
             countryCurrentWeek: {json.dumps(dict(country_current))},
             countryNumeric: {json.dumps(COUNTRY_NUMERIC)},
@@ -5029,7 +5055,7 @@ class PhilJobsScraper:
             allJobIds: {json.dumps(all_intl_job_ids)},
             coocJobIds: {json.dumps(cooc_job_ids)},
             posTypeAosJobIds: {json.dumps(pos_type_aos_job_ids)},
-            jobDetails: {json.dumps(job_details_map)}
+            jobDetails: {job_details_js}
         }};
 
         // ===== GRANULARITY (week / month / year) =====
@@ -5047,6 +5073,7 @@ class PhilJobsScraper:
             data.subcategoryData          = src.subcategoryData;
             data.jobTypeData              = src.jobTypeData;
             data.positionTypeByAosWeekly  = src.positionTypeByAosWeekly;
+            data.institutionTypeData      = src.instTypeSeries;
             data.totalNewJobsWeekly       = src.totalNewJobsWeekly;
             data.stateData                = src.stateData;
             data.regionData               = src.regionData;
@@ -5571,7 +5598,7 @@ class PhilJobsScraper:
 
         function regionDataFor(region, mode) {{
             mode = mode || regionMode;
-            const slot = data.intlRegionData[region] || {{}};
+            const slot = data.regionData[region] || {{}};
             return slot[mode] || [];
         }}
 
@@ -5582,7 +5609,7 @@ class PhilJobsScraper:
                 type: 'line',
                 data: {{
                     labels: data.dates,
-                    datasets: Object.keys(data.intlRegionData).map(region => ({{
+                    datasets: Object.keys(data.regionData).map(region => ({{
                         label: region,
                         data: regionDataFor(region),
                         borderColor: regionColors[region] || '#6b7280',
@@ -5845,11 +5872,17 @@ class PhilJobsScraper:
             ];
             renderBubbleChart(q, bubbles, matchCount);
 
-            // Trend chart: matching-job count per week
+            // Trend chart: matching-job count per bucket. Job dates are full
+            // YYYY-MM-DD strings; under month/year granularity the chart
+            // labels are truncated bucket labels, so truncate to match.
+            const kwBucketOf = ds => currentGranularity === 'month' ? (ds || '').slice(0, 7)
+                                   : currentGranularity === 'year'  ? (ds || '').slice(0, 4)
+                                   : (ds || '');
             const weekCounts = {{}};
             data.dates.forEach(d => {{ weekCounts[d] = 0; }});
             matchingJobs.forEach(j => {{
-                if (weekCounts[j.scraped_date] !== undefined) weekCounts[j.scraped_date]++;
+                const k = kwBucketOf(j.scraped_date);
+                if (weekCounts[k] !== undefined) weekCounts[k]++;
             }});
             renderKwTrend(data.dates.map(d => weekCounts[d]), q);
         }}
@@ -6304,7 +6337,9 @@ def main():
                 job['institution_type'] = classification.get('institution_type', 'Other')
                 if not job.get('state'):
                     state_us = classification.get('state_us', '')
-                    if state_us and state_us != 'INTERNATIONAL':
+                    if state_us == 'INTERNATIONAL':
+                        job['intl_confirmed'] = True
+                    elif state_us:
                         job['state'] = state_us
 
     # 5. Migrate/reclassify any existing jobs without classification, with old labels, or that previously failed
@@ -6317,21 +6352,25 @@ def main():
     if unclassified or needs_migration:
         print(f"\nMigrating/reclassifying jobs (unclassified: {len(unclassified)}, needs label migration: {len(needs_migration)})...")
         scraper.reclassify_all_jobs(historical_data)
-        # Rebuild weekly trends now that all jobs are classified with new labels
-        print("Rebuilding weekly trends from classified data...")
-        scraper.rebuild_weekly_trends(historical_data)
-    else:
-        # Save the newly classified jobs
-        if new_jobs:
-            all_data_file = scraper.data_dir / "all_jobs.json"
-            with open(all_data_file, 'w') as f:
-                json.dump(historical_data, f, indent=2)
 
     # 6. Resolve missing states via Claude
-    state_resolved = scraper.resolve_missing_states(historical_data)
-    if state_resolved:
-        print("Rebuilding weekly trends after state resolution...")
-        scraper.rebuild_weekly_trends(historical_data)
+    scraper.resolve_missing_states(historical_data)
+
+    # 7. ALWAYS rebuild weekly trends (pure local computation, no API calls).
+    # save_data() wrote this week's trend entry BEFORE classification ran, so
+    # without an unconditional rebuild the latest entry has empty AOS counts
+    # and every job recorded as position_type "Other" — which is exactly what
+    # happened to the 2026-06-01 and 2026-06-08 entries. Rebuilding here also
+    # persists the classifications applied in steps 4-6.
+    print("\nRebuilding weekly trends from classified data...")
+    scraper.rebuild_weekly_trends(historical_data)
+    # Pick up the rebuilt (post-classification) entry for this week so the
+    # markdown report's AOS table reflects real labels, not the pre-
+    # classification placeholder.
+    weekly_trend = next(
+        (t for t in historical_data['weekly_trends'] if t.get('date') == snapshot['date']),
+        weekly_trend,
+    )
 
     # 8. Generate dashboards
     print("\nGenerating US dashboard...")

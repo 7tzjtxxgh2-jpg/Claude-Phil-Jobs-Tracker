@@ -65,10 +65,18 @@ def check_stored_data(data):
     trends = data.get('weekly_trends', [])
     snapshots = data.get('weekly_snapshots', [])
 
-    # 1. Zero-new-jobs weeks (possible silent failures)
+    # 1. Zero-new-jobs weeks (possible silent failures). Scoped to the last
+    # 45 days — older zero weeks have already been flagged by earlier monthly
+    # reports and may be genuine quiet weeks, so re-warning forever is noise.
+    zero_cutoff = datetime.now() - timedelta(days=45)
     for t in trends:
         if t.get('new_jobs_count', 0) == 0:
-            issues.append(('WARN', f"Week {t['date']}: 0 new jobs scraped — possible scrape failure"))
+            try:
+                week = datetime.strptime(t['date'], '%Y-%m-%d')
+            except (ValueError, KeyError):
+                continue
+            if week >= zero_cutoff:
+                issues.append(('WARN', f"Week {t['date']}: 0 new jobs scraped — possible scrape failure"))
 
     # 2. Missing critical fields
     missing_institution = sum(1 for j in jobs if not j.get('institution') or j['institution'] == 'Unknown')

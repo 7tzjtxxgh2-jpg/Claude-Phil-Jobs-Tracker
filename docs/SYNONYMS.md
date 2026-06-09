@@ -1,6 +1,6 @@
 # Keyword Explorer — Synonym Map
 
-**Last updated:** 2026-06-08
+**Last updated:** 2026-06-09
 **Source data:** [`data/synonym_map.json`](../data/synonym_map.json)
 **Terms in map:** 125
 
@@ -13,7 +13,7 @@ your query is expanded to include the synonyms listed below before
 matching against job description text. Example: searching `feminism`
 will also find jobs mentioning `feminist`, `patriarchy`, `gender`, etc.
 
-This map is regenerated automatically every Monday by Claude Haiku
+This map is regenerated automatically every Monday by `claude-sonnet-4-5`
 based on the most frequent terms in the corpus of philosophy job
 descriptions collected so far. As the corpus grows over time, more
 terms will appear here and existing groups may shift.
