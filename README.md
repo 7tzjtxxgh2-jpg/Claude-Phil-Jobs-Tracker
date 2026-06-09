@@ -59,7 +59,6 @@ scraper.py  (Python)
 | `scraper.py` | Main script — scraping, classification, trend calculation, HTML generation |
 | `.github/workflows/weekly-scrape.yml` | GitHub Actions automation |
 | `data/all_jobs.json` | Master historical record of all jobs and trends |
-| `data/co_occurrence.json` | Computed AOS co-occurrence matrix |
 | `data/snapshot_YYYY-MM-DD.json` | Weekly scrape snapshots |
 | `docs/index.html` | US market dashboard (served via GitHub Pages) |
 | `docs/international.html` | International market dashboard |
@@ -118,7 +117,7 @@ A 0.5-second delay is inserted between each individual job page request to avoid
 | `application_type` | Table row | How to apply |
 | `application_url` | Table row | Link to application portal |
 | `contact_email` | Table row | Contact email if provided |
-| `hash` | Computed | MD5 of `institution_title` — used for deduplication |
+| `hash` | Computed | MD5 of the PhilJobs job ID — used for deduplication |
 | `scraped_date` | System clock | ISO datetime when this job was first scraped |
 | `status` | Title text | `active` or `expired` (if title contains "(EXPIRED)") |
 | `classification` | Claude API | Full classification object — see [AI Classification](#ai-classification-methodology) |
@@ -400,9 +399,9 @@ Philosophy has a well-defined hiring cycle. The scraper marks weeks falling betw
 Both dashboards (`index.html` for US, `international.html` for International) contain the same set of charts and interactive elements.
 
 ### Summary statistics bar
-- New jobs this week
-- Total unique jobs tracked
-- Most active AOS category this week
+- New jobs this week/month/year (follows the granularity toggle; click to download the underlying postings as PDF)
+- Total unique jobs tracked (click to download)
+- Typical posting window (median days from posting to deadline, with a suggested check cadence)
 - Number of weeks tracked
 
 ### Market Overview chart
@@ -438,9 +437,10 @@ Both dashboards (`index.html` for US, `international.html` for International) co
 - For each main category: how many jobs listed it as their *only* AOS vs. alongside other categories
 - Reveals which specializations tend to appear as pure hires vs. cross-disciplinary
 
-### Cross-cutting areas chart
-- Trend lines for Feminist Philosophy, Philosophy of Race, Philosophy of Gender, Philosophy of Law
-- Shows their frequency over time and which main categories they appear with most often
+### Keyword Explorer
+- Searches the full text of job descriptions (not AOS/AOC labels or titles)
+- Synonym expansion via a Claude-generated map; co-occurring-concept bubbles ranked by lift; trend chart of matching jobs over time
+- See `docs/KEYWORD_EXPLORER_METHODOLOGY.md` for the full methodology
 
 ### US Geographic Overview (US dashboard only)
 - Interactive D3.js choropleth map of the US — states shaded by job count
@@ -448,8 +448,8 @@ Both dashboards (`index.html` for US, `international.html` for International) co
 - Click a state to open a detail panel showing jobs in that state
 - Regional trend lines: West, Northeast, South, Midwest
 
-### West Coast detail chart
-- Bar chart showing city-level job counts for tracked West Coast cities
+### West Coast Spotlight
+- Stacked bar chart of cumulative AOS breakdowns for CA/OR/WA, by metro area or individual city, with All/Solo/Joint filtering and metro→city drill-down
 
 ---
 
@@ -487,13 +487,12 @@ The master data file. Structure:
 }
 ```
 
-### `data/co_occurrence.json`
+### Co-occurrence data
 
-Computed from all classified jobs. Contains:
+Computed in-memory from all classified jobs at dashboard-generation time (no separate file) and embedded directly into the dashboards. Contains:
 - `main_aos_matrix`: how many times each pair of main categories co-occurs in a single job
 - `main_aos_solo_vs_joint`: for each category, solo vs. multi-category postings
 - `detail_aos_by_context`: for each detail subcategory, what main categories it appeared in (solo vs. with others)
-- `cross_cutting_areas`: per-week counts and main-category breakdowns for the 4 cross-cutting areas
 
 ### `data/snapshot_YYYY-MM-DD.json`
 
@@ -561,17 +560,13 @@ Open either HTML file directly in a browser to preview the dashboard.
 
 ### Current known issues
 
-- **West Coast city detail in modal:** The category drill-down modal has a "West Coast Detail" section that is not yet wired up with data — it remains hidden. The underlying data (`westCoastData`) is collected and available; the JS to populate the display has not been implemented.
-- **Cross-cutting chart X-axis:** The cross-cutting areas chart derives its week labels from the cross-cutting data itself rather than the global `data.dates` array. If a cross-cutting area had no jobs in early weeks, its X-axis will appear to start later than other charts.
+- **Drill-down modal institution-type chart is global:** the doughnut in the category modal shows institution types across *all* jobs for the current period, not the modal's category (noted in its caption). Per-category institution-type plumbing is future work.
 
 ### Roadmap
 
-- **International dashboard:** A second page (`international.html`) for non-US jobs is in active development, including a world choropleth map and continent/region trend lines.
-- **US/International navigation:** Once the international dashboard is built, both pages will have navigation links between them.
-- **West Coast city modal wiring:** Populate `#westCoastCities` in the drill-down modal for West Coast-relevant categories.
-- **Cross-cutting chart alignment:** Standardize X-axis to use global `data.dates`.
 - **Accessibility improvements:** Add ARIA roles/labels to modals and chart canvas elements, ESC key handler for modals.
 - **Meta tags:** Add `<meta name="description">` and Open Graph tags for link sharing.
+- **Offline unit tests:** pure-function tests (location parsing, bucketing, trend rebuild) that run without an API key.
 
 ### Design decisions and rationale
 
