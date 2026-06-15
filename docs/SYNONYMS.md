@@ -1,8 +1,8 @@
 # Keyword Explorer — Synonym Map
 
-**Last updated:** 2026-06-08
+**Last updated:** 2026-06-15
 **Source data:** [`data/synonym_map.json`](../data/synonym_map.json)
-**Terms in map:** 125
+**Terms in map:** 150
 
 ---
 
@@ -25,63 +25,56 @@ used, see [KEYWORD_EXPLORER_METHODOLOGY.md](KEYWORD_EXPLORER_METHODOLOGY.md).
 
 ## Synonym Groups (Alphabetical)
 
-- **able** → ability, enable
-- **access** → accessible, accessibility, accessing
-- **active** → actively, activate, activity
-- **activities** → activity
-- **american** → american philosophy, american pragmatism, pragmatism
-- **applied** → apply, application, applications
+- **addition** → additional, additionally
+- **american** → americanist, americas
 - **arts** → humanities, liberal arts
-- **assistant** → assistant professor
-- **center** → centre, institute, center for, centre for
-- **chair** → chairs, chaired
-- **collaboration** → collaborative, cooperate, cooperation, cooperative
-- **comprehensive** → comprehensively
-- **continue** → continuing, continuation
+- **associate** → associated, association
+- **center** → centre
+- **competence** → competent, competency, competencies
+- **critical** → critique, criticism
 - **curriculum** → curricular, syllabus, course design
+- **demonstrate** → demonstrated, demonstrates, demonstrable
+- **discipline** → disciplinary, disciplines
 - **education** → educational, pedagogy, pedagogical, teaching
 - **eligible** → eligibility
-- **employees** → employee, employment, employ
-- **engage** → engagement, engaging, engaged
-- **ethical** → ethics, metaethics, meta-ethics, normative ethics, applied ethics, moral philosophy, moral theory
-- **ethics** → ethical, metaethics, meta-ethics, normative ethics, moral philosophy, moral theory
-- **expertise** → expert, specialization, specialism
-- **focus** → focused, focusing, foci
-- **global** → global justice, cosmopolitanism, cosmopolitan
-- **high** → higher, highly
-- **highly** → high
-- **hours** → hour
+- **environment** → environmental, ecology, ecological, environmental philosophy, environmental ethics
+- **ethical** → ethics, metaethics, normative ethics, applied ethics, moral philosophy, moral theory
+- **ethics** → ethical, metaethics, meta-ethics, normative ethics, moral philosophy, applied ethics
+- **general** → generalist, broadly
+- **health** → healthcare, medical, medicine, biomedical, public health, health humanities
+- **history** → historical, historian, historians, history of philosophy
+- **hours** → hour, hourly
 - **humanities** → humanistic, liberal arts, studia humanitatis
-- **interested** → interest
-- **introductory** → introduction, intro, introductions
-- **leadership** → leader, lead, leading
+- **intellectual** → intellect, intellectuals
+- **interdisciplinary** → multidisciplinary, cross-disciplinary, transdisciplinary
+- **knowledge** → knowledgeable
 - **liberal** → liberal arts
-- **logic** → logical, logics, logician
-- **medical** → bioethics, biomedical ethics, medical ethics, clinical ethics, healthcare ethics
-- **month** → monthly, months
-- **opportunities** → opportunity
-- **participate** → participation, participatory, participant
+- **located** → location, locate
+- **logic** → logical, logics, formal logic, philosophical logic, mathematical logic, modal logic, non-classical logic
+- **medical** → medicine, biomedical, clinical
+- **names** → name, named
+- **online** → distance learning, remote, digital
+- **person** → persons, personnel
 - **philosophical** → philosophy, philosophic
-- **political** → political philosophy, political theory
+- **policy** → policies
+- **political** → politics, political philosophy, political theory
 - **postdoctoral** → postdoc, post-doctoral, post-doc
-- **process** → process philosophy, process metaphysics, process thought
-- **projects** → project
-- **public** → public philosophy
-- **recommendation** → recommendations, reference, references
-- **record** → records, recording
-- **relevant** → relevance
-- **renewal** → renewable, reappointment
+- **prior** → previous, previously
+- **received** → receive, receiving
+- **recommendation** → recommendations
+- **renewal** → renewable, reappointment, reappointed
 - **research** → scholarship, scholarly, investigation
-- **science** → scientific, sciences, philosophy of science
-- **social** → social philosophy
-- **specialization** → specialisation, specialty, speciality, area of specialization, aos
-- **success** → successful, successfully, succeed
+- **scholars** → scholar, scholarly, scholarship
+- **science** → sciences, scientific, natural science, natural sciences
+- **sciences** → science, scientific, natural science, natural sciences
+- **serve** → serving, served, service
+- **skills** → skill
+- **specialization** → specializations, specialism, specialisms, area of specialization, aos
+- **studies** → study
 - **syllabi** → syllabus
-- **system** → systems, systematic, systematically
-- **technology** → technological, tech, digital technology
-- **thinking** → think, thought
-- **vision** → visionary
-- **visit** → visiting, visitor
+- **technology** → technological, philosophy of technology, technoscience
+- **term** → terms
+- **vitae** → cv, curriculum vitae
 
 ---
 
