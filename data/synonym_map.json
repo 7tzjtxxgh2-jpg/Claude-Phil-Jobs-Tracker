@@ -1,87 +1,126 @@
 {
   "ability": [],
-  "able": [],
-  "access": [],
+  "able": [
+    "ability"
+  ],
+  "access": [
+    "accessible",
+    "accessibility"
+  ],
   "across": [],
-  "active": [],
-  "activities": [],
+  "active": [
+    "actively",
+    "activism",
+    "activist"
+  ],
   "addition": [
     "additional",
-    "additionally"
+    "plus",
+    "supplementary"
   ],
   "additional": [],
   "american": [
     "americanist",
-    "americas"
+    "american philosophy",
+    "pragmatism",
+    "pragmatist"
   ],
-  "applied": [],
+  "applied": [
+    "apply",
+    "applying",
+    "application"
+  ],
   "arts": [
     "humanities",
     "liberal arts"
   ],
-  "assistant": [],
+  "assistant": [
+    "assistant professor"
+  ],
   "associate": [
-    "associated",
-    "association"
+    "assistant",
+    "adjunct",
+    "lecturer",
+    "instructor"
   ],
-  "background": [],
-  "between": [],
   "campus": [],
-  "center": [
-    "centre"
-  ],
   "chair": [],
   "city": [],
-  "collaboration": [],
+  "collaboration": [
+    "collaborative",
+    "cooperate",
+    "cooperation",
+    "partnership"
+  ],
   "commitment": [],
   "committed": [],
   "competence": [
-    "competent",
     "competency",
-    "competencies"
+    "competencies",
+    "competent"
   ],
   "comprehensive": [],
   "consideration": [],
   "considered": [],
-  "continue": [],
   "contribute": [],
   "core": [],
   "critical": [
-    "critique",
-    "criticism"
+    "critical theory",
+    "critical thinking",
+    "critique"
   ],
+  "current": [],
   "curriculum": [
     "curricular",
     "syllabus",
     "course design"
   ],
   "date": [],
+  "dedicated": [],
   "demonstrate": [
     "demonstrated",
     "demonstrates",
-    "demonstrable"
+    "demonstrating",
+    "show",
+    "evidence"
   ],
   "demonstrated": [],
-  "description": [],
+  "departmental": [],
+  "description": [
+    "descriptive",
+    "descriptivist"
+  ],
   "develop": [],
   "development": [],
   "discipline": [
-    "disciplinary",
-    "disciplines"
+    "field",
+    "area",
+    "subject",
+    "disciplinary"
   ],
-  "diverse": [],
+  "diverse": [
+    "diversity"
+  ],
   "education": [
     "educational",
     "pedagogy",
     "pedagogical",
     "teaching"
   ],
-  "educational": [],
-  "eligible": [
-    "eligibility"
+  "educational": [
+    "education",
+    "philosophy of education",
+    "pedagogy",
+    "pedagogical"
   ],
-  "employees": [],
-  "engage": [],
+  "employees": [
+    "employee",
+    "employment"
+  ],
+  "engage": [
+    "engagement",
+    "engaging"
+  ],
   "engagement": [],
   "environment": [
     "environmental",
@@ -94,11 +133,10 @@
   "essential": [],
   "ethical": [
     "ethics",
-    "metaethics",
+    "moral",
+    "morality",
     "normative ethics",
-    "applied ethics",
-    "moral philosophy",
-    "moral theory"
+    "metaethics"
   ],
   "ethics": [
     "ethical",
@@ -106,29 +144,27 @@
     "meta-ethics",
     "normative ethics",
     "moral philosophy",
-    "applied ethics"
+    "moral theory"
   ],
   "evidence": [],
   "excellence": [],
   "expected": [],
-  "expertise": [],
   "filled": [],
-  "first": [],
   "focus": [],
-  "funding": [],
-  "general": [
-    "generalist",
-    "broadly"
-  ],
+  "four": [],
   "health": [
-    "healthcare",
     "medical",
     "medicine",
+    "bioethics",
     "biomedical",
-    "public health",
-    "health humanities"
+    "healthcare"
   ],
-  "high": [],
+  "high": [
+    "strong",
+    "excellent",
+    "superior"
+  ],
+  "higher": [],
   "highly": [],
   "history": [
     "historical",
@@ -136,128 +172,123 @@
     "historians",
     "history of philosophy"
   ],
-  "home": [],
   "hours": [
-    "hour",
-    "hourly"
+    "credit hours",
+    "contact hours",
+    "teaching hours"
   ],
   "https": [],
-  "human": [],
-  "humanities": [
-    "humanistic",
-    "liberal arts",
-    "studia humanitatis"
-  ],
-  "includes": [],
-  "intellectual": [
-    "intellect",
-    "intellectuals"
-  ],
   "interdisciplinary": [
     "multidisciplinary",
     "cross-disciplinary",
     "transdisciplinary"
   ],
   "interest": [],
-  "interested": [],
   "interests": [],
-  "introduction": [],
-  "introductory": [],
+  "introduction": [
+    "introductory"
+  ],
+  "introductory": [
+    "introduction"
+  ],
   "knowledge": [
-    "knowledgeable"
+    "expertise",
+    "familiarity",
+    "competence",
+    "understanding"
   ],
   "leadership": [],
-  "leading": [],
   "learning": [],
-  "least": [],
   "letters": [],
-  "liberal": [
-    "liberal arts"
-  ],
   "life": [],
-  "limited": [],
   "located": [
-    "location",
-    "locate"
+    "based",
+    "situated",
+    "housed"
   ],
   "logic": [
     "logical",
-    "logics",
-    "formal logic",
-    "philosophical logic",
-    "mathematical logic",
-    "modal logic",
-    "non-classical logic"
+    "logics"
   ],
   "march": [],
-  "medical": [
-    "medicine",
-    "biomedical",
-    "clinical"
+  "member": [
+    "membership"
   ],
-  "member": [],
   "members": [],
+  "mind": [
+    "philosophy of mind",
+    "mental",
+    "cognitive science",
+    "consciousness"
+  ],
   "mission": [],
   "month": [],
-  "names": [
-    "name",
-    "named"
-  ],
-  "needs": [],
+  "names": [],
   "online": [
-    "distance learning",
+    "distance",
     "remote",
+    "virtual",
     "digital"
   ],
   "open": [],
-  "opportunities": [],
-  "participate": [],
-  "person": [
-    "persons",
-    "personnel"
+  "participate": [
+    "participation",
+    "participatory"
   ],
-  "philosophical": [
-    "philosophy",
-    "philosophic"
+  "person": [
+    "individual",
+    "candidate",
+    "applicant"
   ],
   "plan": [],
   "policy": [
-    "policies"
+    "policies",
+    "governance",
+    "regulation",
+    "administration"
   ],
   "political": [
-    "politics",
     "political philosophy",
     "political theory"
   ],
   "postdoctoral": [
     "postdoc",
     "post-doctoral",
-    "post-doc"
+    "post-doc",
+    "postdoctorate"
   ],
   "potential": [],
   "prior": [
     "previous",
-    "previously"
+    "earlier",
+    "preceding"
   ],
-  "process": [],
+  "process": [
+    "process philosophy",
+    "process metaphysics",
+    "process thought"
+  ],
   "professional": [],
-  "projects": [],
-  "protected": [],
-  "public": [],
-  "received": [
-    "receive",
-    "receiving"
+  "projects": [
+    "project",
+    "initiatives",
+    "programs"
   ],
-  "recommendation": [
-    "recommendations"
+  "protected": [],
+  "public": [
+    "public philosophy"
+  ],
+  "received": [
+    "obtained",
+    "earned",
+    "awarded",
+    "conferred"
   ],
   "record": [],
-  "relevant": [],
-  "renewable": [],
   "renewal": [
-    "renewable",
     "reappointment",
-    "reappointed"
+    "extension",
+    "continuation"
   ],
   "research": [
     "scholarship",
@@ -268,70 +299,88 @@
   "role": [],
   "scholars": [
     "scholar",
-    "scholarly",
-    "scholarship"
+    "researchers",
+    "academics",
+    "faculty"
   ],
   "science": [
-    "sciences",
     "scientific",
-    "natural science",
-    "natural sciences"
+    "philosophy of science"
   ],
   "sciences": [
-    "science",
     "scientific",
-    "natural science",
-    "natural sciences"
+    "philosophy of science"
   ],
   "seeks": [],
   "semester": [],
   "serve": [
-    "serving",
-    "served",
-    "service"
+    "teach",
+    "instruct",
+    "contribute"
   ],
   "skills": [
-    "skill"
+    "competencies",
+    "abilities",
+    "expertise",
+    "proficiencies"
   ],
-  "social": [],
-  "specialization": [
-    "specializations",
-    "specialism",
-    "specialisms",
-    "area of specialization",
-    "aos"
+  "social": [
+    "social philosophy",
+    "social theory"
   ],
   "staff": [],
   "state": [],
   "strong": [],
   "studies": [
-    "study"
+    "study",
+    "scholarship",
+    "inquiry",
+    "research"
   ],
-  "subject": [],
-  "submitted": [],
+  "subject": [
+    "subjectivity"
+  ],
+  "submitted": [
+    "submit",
+    "submitting",
+    "submission"
+  ],
   "success": [],
   "syllabi": [
-    "syllabus"
+    "syllabus",
+    "curriculum",
+    "curricula"
   ],
-  "system": [],
+  "system": [
+    "systems",
+    "systematic"
+  ],
   "technology": [
-    "technological",
-    "philosophy of technology",
+    "digital",
+    "computational",
+    "informatics",
     "technoscience"
   ],
-  "term": [
-    "terms"
-  ],
+  "term": [],
   "thinking": [],
   "three": [],
   "topics": [],
-  "training": [],
-  "vision": [],
-  "visit": [],
-  "visiting": [],
-  "vitae": [
-    "cv",
-    "curriculum vitae"
+  "training": [
+    "preparation",
+    "education",
+    "formation",
+    "pedagogy"
   ],
-  "world": []
+  "vision": [
+    "visual perception",
+    "perception",
+    "visual experience",
+    "visual cognition",
+    "philosophy of perception"
+  ],
+  "visiting": [
+    "visitor",
+    "guest",
+    "adjunct visiting"
+  ]
 }

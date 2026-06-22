@@ -1,9 +1,9 @@
 # Keyword Explorer — Methodology
 
-**Last updated:** 2026-06-15
-**Corpus size at this writing:** 216 jobs
-**Vocabulary size eligible for synonym lookup:** 2373 terms
-**Synonym groups in current map:** 150
+**Last updated:** 2026-06-22
+**Corpus size at this writing:** 226 jobs
+**Vocabulary size eligible for synonym lookup:** 2443 terms
+**Synonym groups in current map:** 125
 
 ---
 
@@ -255,7 +255,7 @@ season.
 
 ## Change Log
 
-- **2026-06-15**: Added semi-annual Opus QC check. Twice a year
+- **2026-06-22**: Added semi-annual Opus QC check. Twice a year
   (January 15 and July 15), the more capable `claude-opus-4-5` model
   independently re-classifies the corpus using the same prompt and
   taxonomy as the live Sonnet pipeline. Results are stored in
@@ -270,7 +270,7 @@ season.
   `.github/workflows/semiannual-opus-qc.yml`. Cost scales with corpus;
   downsamples to 200 jobs when corpus exceeds 500 to keep per-run cost
   bounded.
-- **2026-06-15**: Switched Claude model from `claude-haiku-4-5-20251001`
+- **2026-06-22**: Switched Claude model from `claude-haiku-4-5-20251001`
   to `claude-sonnet-4-5` across all API calls (classification, state
   resolution, synonym generation). Sonnet is ~3× more expensive per
   token but markedly better on edge-case classification (subtle multi-
@@ -280,7 +280,7 @@ season.
   always verify which model produced any given label. TAXONOMY_VERSION
   bumped to `2026-05-16-sonnet`; existing jobs reclassified under
   Sonnet with prior Haiku labels preserved under `classification_v2`.
-- **2026-06-15**: Taxonomy revised to add four subcategories from a
+- **2026-06-22**: Taxonomy revised to add four subcategories from a
   cross-source review against PhilPapers and APA submission tracks:
   Virtue Ethics (under Ethics), Philosophy of Disability and Public
   Philosophy (under Social & Political), and Phenomenology (under
@@ -290,7 +290,7 @@ season.
   catchall. All existing jobs were reclassified under the new
   taxonomy; prior classifications preserved on each job under
   `classification_v1`. Taxonomy version bumped to `2026-05-16`.
-- **2026-06-15**: Bubble chart rewritten to source from the Claude-
+- **2026-06-22**: Bubble chart rewritten to source from the Claude-
   generated synonym map (field-defining alternatives) rather than from
   corpus co-occurrence. Each bubble is now sized by per-term corpus
   count. The Claude synonym prompt was tightened to ask only for
@@ -303,4 +303,4 @@ season.
   related jobs often also discuss ethics. The new approach answers a
   more focused question — "what are the field's alternative names
   for this concept, and how many jobs use each?"
-- **2026-06-15**: Initial documented version of the methodology.
+- **2026-06-22**: Initial documented version of the methodology.
