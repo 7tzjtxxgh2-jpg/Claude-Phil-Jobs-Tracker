@@ -1,8 +1,8 @@
 # Keyword Explorer — Synonym Map
 
-**Last updated:** 2026-06-29
+**Last updated:** 2026-07-06
 **Source data:** [`data/synonym_map.json`](../data/synonym_map.json)
-**Terms in map:** 125
+**Terms in map:** 150
 
 ---
 
@@ -25,47 +25,36 @@ used, see [KEYWORD_EXPLORER_METHODOLOGY.md](KEYWORD_EXPLORER_METHODOLOGY.md).
 
 ## Synonym Groups (Alphabetical)
 
-- **access** → accessibility
 - **american** → americanist, american philosophy
-- **applied** → applied philosophy, applied ethics, practical philosophy
-- **arts** → humanities, liberal arts
-- **center** → centre
-- **collaboration** → collaborative
-- **continue** → continuing
-- **critical** → critical theory, critical thinking, critique
+- **applied** → applied ethics, practical ethics, applied philosophy
+- **associate** → assistant, adjunct, lecturer
+- **critical** → critical theory, critical thinking
 - **curriculum** → curricular, syllabus, course design
-- **discipline** → disciplinary, interdisciplinary, multidisciplinary, cross-disciplinary
+- **discipline** → disciplinary, disciplines
 - **education** → educational, pedagogy, pedagogical, teaching
-- **eligible** → eligibility
-- **environment** → environmental, ecology, ecological
+- **environment** → environmental, environmental philosophy, environmental ethics, ecology
+- **ethical** → ethics, metaethics, meta-ethics, normative ethics, moral philosophy
 - **ethics** → ethical, metaethics, normative ethics, moral philosophy, applied ethics
-- **health** → healthcare, medicine, medical, bioethics, biomedical ethics
-- **history** → historical, historian, historians
-- **humanities** → humanistic
+- **health** → healthcare, medical, biomedical, medicine, health ethics, bioethics
+- **history** → historical, historian, historians, history of philosophy
+- **humanities** → humanistic, liberal arts
 - **interdisciplinary** → multidisciplinary, cross-disciplinary, transdisciplinary
-- **knowledge** → epistemology, epistemological, epistemic
+- **knowledge** → epistemology, epistemological, theory of knowledge
 - **liberal** → liberal arts
-- **life** → philosophy of life
-- **logic** → logical, logics, formal logic, mathematical logic, philosophical logic
-- **names** → naming, reference, proper names
-- **participate** → participation
-- **person** → personal identity, personhood, persons, philosophy of person
+- **logic** → logical, formal logic, symbolic logic, philosophical logic, mathematical logic
+- **person** → persons, personal identity, personhood
 - **philosophical** → philosophy, philosophic
-- **policy** → public policy
-- **political** → political philosophy, political theory
+- **political** → politics, political philosophy, political theory
 - **postdoctoral** → postdoc, post-doctoral, post-doc
-- **public** → public philosophy
 - **recommendation** → recommendations, reference, references, letter of recommendation, letters of recommendation
 - **research** → scholarship, scholarly, investigation
 - **scholars** → scholarship, scholarly
-- **science** → scientific, sciences, philosophy of science
-- **social** → social philosophy, social theory
-- **specialization** → specializations, specialism, specialisms, area of specialization, areas of specialization
-- **syllabi** → syllabus
-- **system** → systems, systematic
+- **science** → sciences, scientific
+- **sciences** → science, scientific
+- **specialization** → specialty, specializations, specialism, area of specialization, aos
+- **syllabi** → syllabus, curriculum, curricula
 - **technology** → technological, technologies, technoscience, philosophy of technology
-- **vision** → philosophy of vision, visual perception
-- **visit** → visiting
+- **visiting** → visitor, visit
 - **vitae** → cv, curriculum vitae
 
 ---

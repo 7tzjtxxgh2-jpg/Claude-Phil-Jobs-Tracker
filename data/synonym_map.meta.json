@@ -1,7 +1,7 @@
 {
-  "vocab_hash": "8c036adb4ab7327e64c502bcf6639588",
+  "vocab_hash": "db5a21f9be7ab66941eede03d2832f50",
   "model": "claude-sonnet-4-5",
   "n_terms_input": 150,
-  "n_terms_output": 125,
-  "generated_at": "2026-06-29T16:54:12.534228"
+  "n_terms_output": 150,
+  "generated_at": "2026-07-06T16:52:55.437852"
 }
