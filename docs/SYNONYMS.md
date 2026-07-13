@@ -1,6 +1,6 @@
 # Keyword Explorer — Synonym Map
 
-**Last updated:** 2026-07-06
+**Last updated:** 2026-07-13
 **Source data:** [`data/synonym_map.json`](../data/synonym_map.json)
 **Terms in map:** 150
 
@@ -25,37 +25,36 @@ used, see [KEYWORD_EXPLORER_METHODOLOGY.md](KEYWORD_EXPLORER_METHODOLOGY.md).
 
 ## Synonym Groups (Alphabetical)
 
-- **american** → americanist, american philosophy
-- **applied** → applied ethics, practical ethics, applied philosophy
-- **associate** → assistant, adjunct, lecturer
-- **critical** → critical theory, critical thinking
-- **curriculum** → curricular, syllabus, course design
-- **discipline** → disciplinary, disciplines
-- **education** → educational, pedagogy, pedagogical, teaching
-- **environment** → environmental, environmental philosophy, environmental ethics, ecology
-- **ethical** → ethics, metaethics, meta-ethics, normative ethics, moral philosophy
-- **ethics** → ethical, metaethics, normative ethics, moral philosophy, applied ethics
-- **health** → healthcare, medical, biomedical, medicine, health ethics, bioethics
-- **history** → historical, historian, historians, history of philosophy
+- **american** → americanist, americanism, american philosophy
+- **applied** → applied philosophy, applied ethics, practical philosophy
+- **critical** → critical theory, critical thinking, critique
+- **discipline** → disciplinary, interdisciplinary, multidisciplinary, cross-disciplinary
+- **education** → educational, pedagogy, pedagogical, philosophy of education
+- **educational** → education, pedagogy, pedagogical, philosophy of education
+- **eligible** → eligibility
+- **environment** → environmental, ecology, ecological, environmental philosophy, environmental ethics
+- **ethical** → ethics, metaethics, meta-ethics, normative ethics, applied ethics, moral philosophy, moral theory
+- **ethics** → ethical, metaethics, meta-ethics, normative ethics, applied ethics, moral philosophy, moral theory
+- **health** → medical, medicine, biomedical, healthcare, public health, health care
+- **history** → historical, historiography, history of philosophy
 - **humanities** → humanistic, liberal arts
 - **interdisciplinary** → multidisciplinary, cross-disciplinary, transdisciplinary
-- **knowledge** → epistemology, epistemological, theory of knowledge
+- **introductory** → introduction, intro, foundational, elementary
+- **knowledge** → epistemology, epistemological, epistemic
 - **liberal** → liberal arts
-- **logic** → logical, formal logic, symbolic logic, philosophical logic, mathematical logic
-- **person** → persons, personal identity, personhood
+- **logic** → logical, logics, formal logic, symbolic logic, mathematical logic
 - **philosophical** → philosophy, philosophic
 - **political** → politics, political philosophy, political theory
 - **postdoctoral** → postdoc, post-doctoral, post-doc
-- **recommendation** → recommendations, reference, references, letter of recommendation, letters of recommendation
-- **research** → scholarship, scholarly, investigation
 - **scholars** → scholarship, scholarly
-- **science** → sciences, scientific
-- **sciences** → science, scientific
-- **specialization** → specialty, specializations, specialism, area of specialization, aos
+- **science** → philosophy of science, scientific
+- **sciences** → philosophy of science, scientific
+- **specialization** → specialty, specializations, area of specialization
 - **syllabi** → syllabus, curriculum, curricula
-- **technology** → technological, technologies, technoscience, philosophy of technology
-- **visiting** → visitor, visit
-- **vitae** → cv, curriculum vitae
+- **system** → systems, systematic, systems theory
+- **technology** → technological, technologies, technoscience, digital technology, information technology
+- **visit** → visiting
+- **visiting** → visit, visitor
 
 ---
 
