@@ -1,16 +1,17 @@
-# Quarterly Opus QC Report
+# Semi-Annual Opus QC Report
 
-**Generated:** 2026-05-16
+**Generated:** 2026-07-15
 **Reference model (live dashboard):** `claude-sonnet-4-5`
 **QC model:** `claude-opus-4-5`
-**Jobs evaluated:** 191
+**Jobs evaluated:** 244
 
 ---
 
 ## Purpose
 
-Every ~2 months, the more capable Opus model independently re-classifies
-the corpus using the same prompt and taxonomy as the live Sonnet pipeline.
+Twice a year (January 15 and July 15), the more capable Opus model
+independently re-classifies the corpus using the same prompt and
+taxonomy as the live Sonnet pipeline.
 This report compares Opus against the live Sonnet labels to:
 
 1. Quantify how often the two models agree (a sanity check on Sonnet quality)
@@ -20,7 +21,7 @@ This report compares Opus against the live Sonnet labels to:
 
 Sonnet labels remain authoritative on the dashboard. This QC does not
 change any live classifications. Raw Opus output is saved to
-`data/qc_opus_2026-05-16.json` for full reproducibility.
+`data/qc_opus_2026-07-15.json` for full reproducibility.
 
 ---
 
@@ -28,9 +29,9 @@ change any live classifications. Raw Opus output is saved to
 
 | Field | Agreement rate |
 |---|---|
-| `main_aos` (exact set match) | **80.6%** (154/191) |
-| `position_type` | 90.6% (173/191) |
-| `institution_type` | 95.3% (182/191) |
+| `main_aos` (exact set match) | **86.1%** (210/244) |
+| `position_type` | 89.3% (218/244) |
+| `institution_type` | 95.5% (233/244) |
 
 ## Per-Main-Category Agreement
 
@@ -38,422 +39,422 @@ change any live classifications. Raw Opus output is saved to
 
 | Category | Match / Total | Rate |
 |---|---|---|
-| Ethics | 47 / 53 | 88.7% |
-| Social & Political Philosophy | 20 / 28 | 71.4% |
-| Value Theory / Aesthetics | 4 / 7 | 57.1% |
-| History of Philosophy | 27 / 28 | 96.4% |
-| Non-Western & Cross-Cultural Philosophy | 0 / 2 | 0.0% |
-| Metaphysics & Epistemology | 25 / 34 | 73.5% |
-| Science, Logic, & Mathematics | 54 / 68 | 79.4% |
-| Open | 58 / 70 | 82.9% |
+| Ethics | 75 / 89 | 84.3% |
+| Social & Political Philosophy | 48 / 55 | 87.3% |
+| Value Theory / Aesthetics | 5 / 10 | 50.0% |
+| History of Philosophy | 35 / 40 | 87.5% |
+| Non-Western & Cross-Cultural Philosophy | 3 / 8 | 37.5% |
+| Metaphysics & Epistemology | 35 / 42 | 83.3% |
+| Science, Logic, & Mathematics | 71 / 78 | 91.0% |
+| Open | 47 / 61 | 77.0% |
 
-## Disagreements (53 jobs)
+## Disagreements (59 jobs)
 
 Jobs where Sonnet's `main_aos` or `position_type` differs from Opus's.
 Inspect each manually if needed — Opus output is stored in
-`data/qc_opus_2026-05-16.json`.
+`data/qc_opus_2026-07-15.json`.
 
-### Worcester Polytechnic Institute — Visiting Assistant Teaching Professor in Philosophy and Religion
-- **Sonnet main_aos:** Ethics, Value Theory / Aesthetics
-- **Opus main_aos:** Ethics
+### University of Texas at El Paso — Visiting Assistant Professor of Philosophy
+- **Sonnet main_aos:** Open
+- **Opus main_aos:** History of Philosophy, Social & Political Philosophy
 - **Sonnet position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
 - **Opus position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
-- **Sonnet reasoning:** This is explicitly a 'Visiting Assistant Teaching Professor' position categorized as 'Junior faculty / Fixed term', making it a temporary teaching-focused role. The AOS is environmental philosophy and
-- **Opus reasoning:** The AOS specifies environmental philosophy, which maps to Environmental Ethics. The title 'Visiting Assistant Teaching Professor' with job category 'Junior faculty / Fixed term' indicates a fixed-term
+- **Sonnet reasoning:** The AOS is explicitly 'Open' with no stated preference, only teaching needs mentioned in AOC (Social-Political Philosophy and History of Philosophy), which does not constitute an AOS preference. The p
+- **Opus reasoning:** While AOS is listed as Open, the description specifies teaching needs in Social-Political Philosophy and History of Philosophy (Ancient, Modern, Twentieth Century), indicating a preference. The positi
 
 ### Department of Philosophy, University College London — Postdoctoral Research Fellow
 - **Sonnet main_aos:** History of Philosophy, Metaphysics & Epistemology, Value Theory / Aesthetics
 - **Opus main_aos:** Ethics, History of Philosophy, Metaphysics & Epistemology, Social & Political Philosophy, Value Theory / Aesthetics
 - **Sonnet position_type:** Postdoc / Fellowship
 - **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a postdoctoral research fellowship at UCL working on a specific ERC-funded research project. The AOS explicitly lists value theory (broadly construed to include ethics, political philosophy, j
-- **Opus reasoning:** The AOS explicitly lists value theory (broadly construed to include ethics, political philosophy, jurisprudence, aesthetics, moral psychology), history of philosophy, phenomenology, and philosophy of 
+- **Sonnet reasoning:** The posting explicitly lists four distinct areas: value theory (broadly construed to include ethics, political philosophy, jurisprudence, aesthetics, and moral psychology), history of philosophy, phen
+- **Opus reasoning:** The posting explicitly lists multiple distinct AOS areas: value theory (ethics, political philosophy, jurisprudence, aesthetics, moral psychology), history of philosophy, phenomenology, and philosophy
+
+### Department of Philosophy and Religious Studies, Peking University — Assistant Professor/ Tenure-Track Associate Professor/ Tenured Associate Profess
+- **Sonnet main_aos:** Ethics, History of Philosophy, Metaphysics & Epistemology, Non-Western & Cross-Cultural Philosophy, Science, Logic, & Mathematics, Social & Political Philosophy, Value Theory / Aesthetics
+- **Opus main_aos:** Ethics, History of Philosophy, Metaphysics & Epistemology, Non-Western & Cross-Cultural Philosophy, Science, Logic, & Mathematics, Social & Political Philosophy, Value Theory / Aesthetics
+- **Sonnet position_type:** Other
+- **Opus position_type:** Tenure-Track
+- **Sonnet reasoning:** The posting states 'Open but... preferred' with seven distinct philosophical areas listed (Chinese Philosophy, Foreign Philosophy, Marxist Philosophy, Logic, Ethics, Aesthetics, Philosophy of Science 
+- **Opus reasoning:** The posting lists multiple distinct preferred areas spanning nearly all main categories: Marxist Philosophy and Foreign Philosophy (History), Chinese Philosophy (Non-Western/Asian), Logic and Philosop
 
 ### Department of Philosophy, University of Bristol — PhD in Political and Social Philosophy
 - **Sonnet main_aos:** Social & Political Philosophy
 - **Opus main_aos:** Social & Political Philosophy
 - **Sonnet position_type:** Other
 - **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a funded PhD studentship, which is a graduate student position rather than a faculty or postdoctoral position. Since it doesn't fit the categories of tenure-track, postdoc, visiting/adjunct, o
-- **Opus reasoning:** This is a funded PhD studentship (graduate fellowship) in Political and Social Philosophy at the University of Bristol, UK. The AOS explicitly lists Social and Political Philosophy, with interests in 
-
-### Department of Philosophy, Stanford University — Lecturer in Philosophy and COLLEGE (Intro Gen Ed) - 3 yr
-- **Sonnet main_aos:** Ethics
-- **Opus main_aos:** Ethics, Open
-- **Sonnet position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
-- **Opus position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
-- **Sonnet reasoning:** This is a 3-year fixed-term lecturer position focused on teaching introductory general education and ethics courses with no tenure track. Stanford is a major research university, and the position is e
-- **Opus reasoning:** The AOS specifies 'Core Philosophy and Ethics' with teaching in ethics and introductory curriculum, indicating a general ethics focus alongside broad introductory philosophy. The position is a 3-year 
+- **Sonnet reasoning:** This is a PhD studentship (graduate fellowship) in political and social philosophy, focusing on migration, borders, and displacement. Position type is 'Other' because it is a graduate student position
+- **Opus reasoning:** This is a funded PhD studentship (graduate fellowship) at the University of Bristol in the UK, focused on political philosophy, social epistemology, and migration studies as part of an ERC-funded rese
 
 ### International Centre for Neuroscience and Ethics (CINET) — Call for applications for a pre-doctoral scholarship in Neuroscience and Humanit
-- **Sonnet main_aos:** Ethics, Science, Logic, & Mathematics
-- **Opus main_aos:** Ethics, Science, Logic, & Mathematics
-- **Sonnet position_type:** Other
-- **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a pre-doctoral (graduate) scholarship in neuroscience and humanities at a research center in Spain, which does not fit the standard academic position categories (it's for graduate students, no
-- **Opus reasoning:** The position is a pre-doctoral scholarship at a neuroscience and ethics center, focusing on neuroscience and humanities. The AOS clearly indicates neuroethics and cognitive science-related philosophy.
-
-### Department of Historical, Philosophical and Religious Studies, Umeå University,  — Doctoral student in Philosophy, specialization in Ethics in Teacher Education
 - **Sonnet main_aos:** Ethics
 - **Opus main_aos:** Ethics
 - **Sonnet position_type:** Other
 - **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a doctoral student position (PhD student), which does not fit the standard categories of faculty positions, postdocs, or administrative roles. The AOS is ethics in teacher education, which fal
-- **Opus reasoning:** This is a doctoral student position (graduate fellowship) focused on Ethics in Teacher Education, which falls under applied ethics. The job category explicitly states 'Graduate fellowship / Fixed term
+- **Sonnet reasoning:** This is a pre-doctoral (graduate) scholarship in neuroscience and humanities at a neuroscience and ethics center, strongly suggesting neuroethics focus. Position type is 'Other' because it is a gradua
+- **Opus reasoning:** Pre-doctoral scholarship at a Neuroscience and Ethics center with AOS in 'Neuroscience and humanities' indicates neuroethics focus. The position is a graduate fellowship (pre-doctoral scholarship), wh
+
+### Department of Historical, Philosophical and Religious Studies, Umeå University,  — Doctoral student in Philosophy, specialization in Ethics in Teacher Education
+- **Sonnet main_aos:** Ethics, Social & Political Philosophy
+- **Opus main_aos:** Ethics
+- **Sonnet position_type:** Other
+- **Opus position_type:** Postdoc / Fellowship
+- **Sonnet reasoning:** This is a doctoral student position (PhD program), which does not fit the standard categories of tenure-track, postdoc, visiting, or tenured positions. The AOS focuses on ethics in teacher education, 
+- **Opus reasoning:** This is a doctoral student position (PhD fellowship) specializing in Ethics in Teacher Education, focusing on ethical issues in educational contexts such as ethics education, professional ethics for t
 
 ### Department of Philosophy, Goethe University Frankfurt am Main — Doctoral Researcher
 - **Sonnet main_aos:** Ethics
 - **Opus main_aos:** Ethics
 - **Sonnet position_type:** Other
 - **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a doctoral researcher position (PhD student fellowship) at a German university, which is a graduate-level research position that doesn't fit the standard US academic categories of tenure-track
-- **Opus reasoning:** The position is a doctoral researcher (graduate fellowship) with AOS in Ethics or Metaethics and AOC in Metaethics and Normative Ethics. As a fixed-term doctoral/graduate fellowship focused on indepen
-
-### Computer Science, University College London — Lecturer/Associate Professor in Programming Principles, Logic, and Verification 
-- **Sonnet main_aos:** Science, Logic, & Mathematics
-- **Opus main_aos:** Open
-- **Sonnet position_type:** Tenured / Continuing / Permanent
-- **Opus position_type:** Tenured / Continuing / Permanent
-- **Sonnet reasoning:** This is a permanent faculty position (Lecturer/Associate Professor) at University College London in Computer Science, focused on programming principles, logic, and verification with joint teaching res
-- **Opus reasoning:** The posting explicitly states AOS and AOC as 'Open' with no specific philosophical area requirements. The position is listed as 'Senior faculty / Tenured, continuing or permanent' at Lecturer/Associat
+- **Sonnet reasoning:** The position is explicitly for Ethics or Metaethics AOS with AOC in Metaethics and Normative Ethics. Classified as 'Other' because it is a doctoral/graduate fellowship for a PhD student (not a postdoc
+- **Opus reasoning:** The posting explicitly lists AOS as 'Ethics or Metaethics' and AOC as 'Metaethics, Normative Ethics'. This is a doctoral researcher position (graduate fellowship/fixed-term) focused on independent res
 
 ### Center for Inquirynot BA-granting — Editor of Free Inquiry Magazine and Executive Director of the Council for Secula
-- **Sonnet main_aos:** Open
+- **Sonnet main_aos:** Ethics, Metaphysics & Epistemology
 - **Opus main_aos:** Metaphysics & Epistemology
 - **Sonnet position_type:** Other
 - **Opus position_type:** Other
-- **Sonnet reasoning:** This is an editorial and executive director position at a nonprofit organization, not a faculty position at an academic institution. While it involves philosophical work, it is explicitly non-academic
-- **Opus reasoning:** This is a non-academic editorial/executive director position at a nonprofit organization (Center for Inquiry), not a faculty role. The AOS specifies philosophy of religion as preferred, placing it in 
-
-### Division of the Humanities and Social Sciences, California Institute of Technolo — Postdoctoral Scholar Teaching Fellow in the Linde Center for Science, Society, a
-- **Sonnet main_aos:** Ethics
-- **Opus main_aos:** Ethics, Science, Logic, & Mathematics
-- **Sonnet position_type:** Postdoc / Fellowship
-- **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a postdoctoral teaching fellowship position at Caltech's Linde Center. The AOS explicitly lists applied ethics, environmental ethics, and biomedical ethics, making Ethics the primary category 
-- **Opus reasoning:** The AOS explicitly lists Applied Ethics, Environmental Ethics, and Biomedical Ethics, placing this in Ethics with relevant subcategories. The AOC in Philosophy of Science adds the Science, Logic, & Ma
+- **Sonnet reasoning:** This is an editorial and executive director position at a nonprofit organization, not a faculty position, making it 'Other'. The AOS states 'Open, but philosophy of religion preferred' and AOC states 
+- **Opus reasoning:** This is a non-academic position (Editor/Executive Director at a nonprofit organization), explicitly categorized as 'Other (non-academic)'. The AOS states 'Open, but philosophy of religion preferred', 
 
 ### Dpeartment of Philosophy , University of Edinburgh — PhD position in AI Ethics and Philosophy of Science
 - **Sonnet main_aos:** Ethics, Science, Logic, & Mathematics
 - **Opus main_aos:** Ethics, Science, Logic, & Mathematics
 - **Sonnet position_type:** Other
 - **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a PhD position (graduate student fellowship), which does not fit any of the five standard position types as it is neither a faculty position nor a postdoctoral fellowship. The University of Ed
-- **Opus reasoning:** The posting explicitly lists AOS as 'Ethics of AI' and 'Philosophy of Science,' mapping to AI, Technology, and Information Ethics and Philosophy of Science subcategories. Though titled 'PhD position,'
+- **Sonnet reasoning:** This PhD position explicitly requires work in both AI Ethics AND Philosophy of Science as independent research areas (examining epistemic value of ML models and concepts of idealization, representatio
+- **Opus reasoning:** The AOS explicitly lists both 'Ethics of AI' and 'Philosophy of Science' as distinct areas. This is not merely applied ethics but genuinely spans both domains—the description emphasizes researching co
 
 ### The Department of Historical, Philosophical and Religious Studies, Umeå Universi — PhD position in philosophy (4-year salaried), open to all areas of philosophy
 - **Sonnet main_aos:** Open
 - **Opus main_aos:** Open
 - **Sonnet position_type:** Other
 - **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a PhD student position (graduate fellowship), which does not fit the standard faculty categories of tenure-track, postdoc, visiting, or tenured positions. PhD positions are classified as 'Othe
-- **Opus reasoning:** This is a 4-year salaried PhD position (graduate fellowship) in Sweden, explicitly open to all areas of philosophy. The job category is 'Graduate fellowship / Fixed term' and the AOS is listed as 'Ope
+- **Sonnet reasoning:** This is a PhD student position (graduate fellowship) in Sweden, which does not fit the standard US academic position types (tenure-track, postdoc, visiting, tenured). The AOS is genuinely open with no
+- **Opus reasoning:** This is a 4-year salaried PhD position explicitly open to all areas of philosophy with no stated preference. The title and AOS both indicate 'open to all areas of philosophy' with no preference mentio
 
 ### Technion, Israel Institute of Technology — Funded PhD Positions in Philosophy
 - **Sonnet main_aos:** History of Philosophy, Metaphysics & Epistemology, Science, Logic, & Mathematics
 - **Opus main_aos:** History of Philosophy, Metaphysics & Epistemology, Science, Logic, & Mathematics
 - **Sonnet position_type:** Other
 - **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a funded PhD student position, which does not fit any of the five standard categories (not faculty, postdoc, or administrative). The Technion is a research university in Israel, and the AOS cl
-- **Opus reasoning:** This is a funded PhD position (graduate fellowship) at a research university in Israel. The AOS explicitly lists philosophy of science (life sciences, cognitive science, pharmacy/medicine), philosophy
+- **Sonnet reasoning:** This is a funded PhD student position, which does not fit any of the five standard faculty position types (it is neither a postdoc, nor a faculty appointment). The AOS spans three distinct areas: phil
+- **Opus reasoning:** This is a funded PhD fellowship position at Technion in Israel. The AOS explicitly covers philosophy of science (life sciences, cognitive science, pharmacy/medicine), philosophy of mind and perception
 
-### Department of Philosophy, University of Poitiers (France) — PhD Position (3 years) -- Improving collective decisions in expert committees
-- **Sonnet main_aos:** Science, Logic, & Mathematics
-- **Opus main_aos:** Metaphysics & Epistemology, Science, Logic, & Mathematics
-- **Sonnet position_type:** Other
-- **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a PhD student position (graduate fellowship), not a faculty position, postdoc, or other standard academic job category. The AOS clearly focuses on philosophy of science, formal epistemology, a
-- **Opus reasoning:** The AOS explicitly lists philosophy of science, formal epistemology, and decision theory. This is a 3-year PhD position (graduate fellowship), which falls under the Postdoc / Fellowship category as a 
-
-### Center for Cyclone Civics , Iowa State University — Post Doctoral Research Associate
-- **Sonnet main_aos:** Social & Political Philosophy
-- **Opus main_aos:** Non-Western & Cross-Cultural Philosophy, Social & Political Philosophy
-- **Sonnet position_type:** Postdoc / Fellowship
-- **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a postdoctoral research position focused on civic education and civic engagement, which falls under philosophy of education and public philosophy within social and political philosophy. Iowa S
-- **Opus reasoning:** The AOS specifies Civic Education, Civic Engagement, and Citizenship, which align with Philosophy of Education and Public Philosophy under Social & Political Philosophy. The AOC mentions American Phil
-
-### Seton Hall University — Lecturer in the Core Curriculum
-- **Sonnet main_aos:** History of Philosophy
-- **Opus main_aos:** History of Philosophy, Metaphysics & Epistemology
+### Philosophy, Skidmore College — Visiting Assistant Professor
+- **Sonnet main_aos:** Open
+- **Opus main_aos:** Ethics, Non-Western & Cross-Cultural Philosophy
 - **Sonnet position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
 - **Opus position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
-- **Sonnet reasoning:** This is a fixed-term Lecturer position (explicitly labeled 'Junior faculty / Fixed term') focused on teaching the Catholic Intellectual Tradition, which primarily falls under medieval and Renaissance 
-- **Opus reasoning:** The AOS specifies Catholic Intellectual Tradition, which relates to Philosophy of Religion and the historical tradition of Catholic philosophy. The position is a fixed-term Lecturer (Junior faculty / 
+- **Sonnet reasoning:** The AOS is explicitly 'Open' with no stated preference (AOC mentions non-European philosophy or ethics as areas of competence, not specialization). This is a one-year sabbatical replacement Visiting A
+- **Opus reasoning:** While AOS is listed as open, the AOC specifies 'non-European philosophy or ethics,' indicating a clear preference for candidates in these areas. The position is a one-year Visiting Assistant Professor
 
-### Health Humanities and Bioethics, University of Rochester School of Medicine and  — Assistant, Associate, or Full Professor
-- **Sonnet main_aos:** Ethics
-- **Opus main_aos:** Ethics, Science, Logic, & Mathematics
-- **Sonnet position_type:** Tenure-Track
-- **Opus position_type:** Tenure-Track
-- **Sonnet reasoning:** This is an open-rank tenure-eligible position at the University of Rochester School of Medicine focused on bioethics with specific areas including ELSI genetics, neuroethics, AI ethics, transplant eth
-- **Opus reasoning:** The AOS explicitly lists Bioethics, Neuroethics, AI ethics, ELSI Genetics, Transplant Ethics, and Clinical Ethics, which fall primarily under Ethics subcategories. AI ethics also connects to Philosoph
-
-### Department of Philosophy, University at Buffalo — Postdoctoral Associate (Teaching)
-- **Sonnet main_aos:** Science, Logic, & Mathematics, Social & Political Philosophy
-- **Opus main_aos:** Metaphysics & Epistemology, Social & Political Philosophy
+### Fakultät für Wirtschafts- und Sozialwissenschaften,  Universität Hamburg — Doctoral researchers in the DFG Graduate Program “Collective Decision-Making” (1
+- **Sonnet main_aos:** Ethics, Science, Logic, & Mathematics, Social & Political Philosophy
+- **Opus main_aos:** Science, Logic, & Mathematics, Social & Political Philosophy
 - **Sonnet position_type:** Postdoc / Fellowship
 - **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a postdoctoral teaching fellowship position at University at Buffalo, explicitly labeled as 'Postdoctoral Associate' and 'Postdoc or similar / Fixed term'. The AOS includes PPE, Social and Pol
-- **Opus reasoning:** The AOS explicitly lists PPE, Social and Political Philosophy, and Formal and Social Epistemology. The position is titled 'Postdoctoral Associate' and categorized as 'Postdoc or similar / Fixed term,'
+- **Sonnet reasoning:** This is a DFG-funded doctoral fellowship program focused on collective decision-making across Economics, Philosophy, and Political Science, involving both descriptive and normative dimensions. The int
+- **Opus reasoning:** This is a doctoral fellowship program focused on 'Collective Decision-Making' spanning Economics, Philosophy, and Political Science. The research program addresses 'descriptive and normative dimension
 
-### Department of Philosophy, McMaster University — Bertrand Russell Visiting Professorship
-- **Sonnet main_aos:** History of Philosophy, Metaphysics & Epistemology, Science, Logic, & Mathematics
-- **Opus main_aos:** History of Philosophy, Science, Logic, & Mathematics
-- **Sonnet position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
-- **Opus position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
-- **Sonnet reasoning:** This is a fixed-term Visiting Professorship focused on Bertrand Russell and early analytic philosophy, which spans history of philosophy, logic, mathematics, and core areas like metaphysics and episte
-- **Opus reasoning:** The position focuses on Bertrand Russell and early analytic philosophy, which falls under 19th/20th Century Philosophy. Given Russell's foundational work in logic, this also relates to Logic. The job 
+### Department of Philosophy, University at Buffalo — Postdoctoral Associate (Research)
+- **Sonnet main_aos:** Metaphysics & Epistemology, Science, Logic, & Mathematics, Social & Political Philosophy
+- **Opus main_aos:** Science, Logic, & Mathematics, Social & Political Philosophy
+- **Sonnet position_type:** Postdoc / Fellowship
+- **Opus position_type:** Postdoc / Fellowship
+- **Sonnet reasoning:** The posting explicitly lists PPE as primary AOS along with empirical/experimental methods, and AOC includes social epistemology, social and political philosophy, and philosophy of science—three genuin
+- **Opus reasoning:** The AOS explicitly lists PPE and Empirical/Experimental Methods, with AOC including Social Epistemology, Social and Political Philosophy, and Philosophy of Science. The position involves research with
 
 ### Philosophy, Carnegie Mellon University — Head of Philosophy Department
 - **Sonnet main_aos:** Open
 - **Opus main_aos:** Open
 - **Sonnet position_type:** Other
 - **Opus position_type:** Tenured / Continuing / Permanent
-- **Sonnet reasoning:** This is a department head position, which is an administrative role. While it may include a faculty component, the primary classification is as a department chair/head, making it 'Other' according to 
-- **Opus reasoning:** The posting is for a Department Head position with AOS listed as Open. As a senior faculty leadership role at a research university, this is a tenured/permanent position. Carnegie Mellon is located in
+- **Sonnet reasoning:** This is a department head position with substantial administrative responsibilities (budget oversight, hiring, strategic leadership) rather than a standard faculty appointment, making it 'Other'. Whil
+- **Opus reasoning:** This is a Department Head position at the full professor level with tenure. While the description mentions the department's research strengths (logic, formal epistemology, philosophy of science, ethic
+
+### Department of Philosophy, Davidson College — Visiting Assistant Professor of Philosophy
+- **Sonnet main_aos:** Open
+- **Opus main_aos:** History of Philosophy, Metaphysics & Epistemology, Social & Political Philosophy
+- **Sonnet position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
+- **Opus position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
+- **Sonnet reasoning:** The AOS is explicitly 'Open' with no stated preference (the 'teaching needs' mentioned are anticipated course coverage areas, not AOS preferences for hiring). This is a two-year Visiting Assistant Pro
+- **Opus reasoning:** Although AOS/AOC are listed as open, the description specifies anticipated teaching needs in early modern philosophy, political philosophy, epistemology, and philosophy of language, which constitute s
 
 ### History and Philosophy , The University of Texas Dallas — Assistant Professor of Philosophy
 - **Sonnet main_aos:** History of Philosophy, Non-Western & Cross-Cultural Philosophy
 - **Opus main_aos:** History of Philosophy
 - **Sonnet position_type:** Tenure-Track
 - **Opus position_type:** Tenure-Track
-- **Sonnet reasoning:** The position explicitly requires expertise in Early or Late Modern Philosophy (Descartes to Hegel) with special interest in intersections with Non-Western traditions. The posting clearly states 'tenur
-- **Opus reasoning:** The AOS explicitly specifies Early or Late Modern Philosophy from Descartes to Hegel, which spans 17th/18th century and into 19th century philosophy. The position is explicitly described as tenure-tra
-
-### University of Texas at San Antonio — Associate or Full Professor, Artificial Intelligence for Education Cluster
-- **Sonnet main_aos:** Ethics, Science, Logic, & Mathematics
-- **Opus main_aos:** Science, Logic, & Mathematics
-- **Sonnet position_type:** Tenured / Continuing / Permanent
-- **Opus position_type:** Tenured / Continuing / Permanent
-- **Sonnet reasoning:** The position is for Associate or Full Professor, which are tenured ranks. The AOS is Artificial Intelligence, which falls under both Philosophy of Computing/AI and AI Ethics subcategories.
-- **Opus reasoning:** The AOS specifies Artificial Intelligence, which maps to Philosophy of Computing / Philosophy of AI. The position is for Associate or Full Professor (senior faculty), indicating a tenured/permanent po
-
-### Research & Training Alliance, University of Toronto – Hebrew University of Jerus — Postdoctoral Fellowships in Practical Philosophy, Normativity, and Law
-- **Sonnet main_aos:** Ethics, Social & Political Philosophy
-- **Opus main_aos:** Open
-- **Sonnet position_type:** Postdoc / Fellowship
-- **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a postdoctoral fellowship position focused on practical philosophy, normativity, and law at two international universities (Toronto and Jerusalem). While the AOS is listed as 'Open', the title
-- **Opus reasoning:** The posting explicitly states AOS and AOC as 'Open' with focus on practical philosophy, normativity, and law but no specific area requirements. Position is clearly a postdoctoral fellowship at interna
+- **Sonnet reasoning:** The position explicitly requires expertise in Early or Late Modern Philosophy (Descartes to Hegel) and especially welcomes candidates working at intersections with Non-Western or underrepresented phil
+- **Opus reasoning:** The AOS explicitly specifies Early or Late Modern Philosophy (Descartes to Hegel), which spans 17th-19th century philosophy. While Non-Western traditions are mentioned as welcome intersections, the pr
 
 ### The Prindle Institute for Ethics, DePauw University — Manager, Campus Ethics Programs
-- **Sonnet main_aos:** Ethics, Social & Political Philosophy
-- **Opus main_aos:** Ethics
+- **Sonnet main_aos:** Open
+- **Opus main_aos:** Ethics, Social & Political Philosophy
 - **Sonnet position_type:** Other
 - **Opus position_type:** Other
-- **Sonnet reasoning:** This is a program management position focused on coordinating ethics programming and supervising student internships, which is administrative rather than a faculty teaching or research role. DePauw Un
-- **Opus reasoning:** The job category explicitly states 'Administration (non-academic)' and the title is 'Manager, Campus Ethics Programs,' indicating this is an administrative position focused on coordinating ethics prog
+- **Sonnet reasoning:** This is a non-academic administrative position managing student programs and co-curricular activities, not a faculty role. While the AOS lists Ethics and Public Philosophy, the position is for a progr
+- **Opus reasoning:** This is explicitly an administrative (non-academic) position for a 'Manager' of campus ethics programs, not a faculty role. The AOS lists Ethics and Public Philosophy, which maps to Ethics and Social 
 
-### The Center for Practical Ethics, University of Mississippi — Postdoc in the Ethics of AI and Emerging Technologies
-- **Sonnet main_aos:** Ethics
-- **Opus main_aos:** Ethics, Science, Logic, & Mathematics
-- **Sonnet position_type:** Postdoc / Fellowship
-- **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is explicitly a postdoctoral research associate position at the Center for Practical Ethics focusing on AI and emerging technologies ethics. The University of Mississippi is a research university
-- **Opus reasoning:** The AOS specifies Applied Ethics and Philosophy of Technology, with the title explicitly focusing on Ethics of AI and Emerging Technologies. The position is clearly a postdoctoral research associate a
-
-### Department of Philosophy and Religion, Northeastern University — Assistant Professor/ Associate Professor/ Full Professor
-- **Sonnet main_aos:** Ethics
-- **Opus main_aos:** Ethics, Science, Logic, & Mathematics
+### School of Humanities, the University of Hong Kong — Professor/Associate Professor on tenure terms or tenure-track Assistant Professo
+- **Sonnet main_aos:** Ethics, Science, Logic, & Mathematics
+- **Opus main_aos:** Ethics
 - **Sonnet position_type:** Tenure-Track
 - **Opus position_type:** Tenure-Track
-- **Sonnet reasoning:** This is an open-rank tenure-track position (explicitly stated as 'T/TT Position' and 'tenure-track Assistant Professor') focused on Ethics and Health, including research ethics, clinical ethics, and p
-- **Opus reasoning:** The AOS explicitly mentions Bioethics and Science and Technology Studies, with AOC in Health. The description emphasizes research ethics, clinical ethics, and public health ethics. Position is explici
+- **Sonnet reasoning:** Although the AOS is listed as 'Open', the posting explicitly requires 'an interest in – and commitment to – pursuing teaching and research in philosophy or ethics of AI', which constitutes a clear sta
+- **Opus reasoning:** While the AOS field says 'Open', the description explicitly states applicants 'must have an interest in – and commitment to – pursuing teaching and research in philosophy or ethics of AI.' This stated
 
 ### Parr Center for Ethics, Philosophy Department, University of North Carolina, Cha — Postdoctoral Fellow, Educating for the Virtues of Attention (EVA)
 - **Sonnet main_aos:** Ethics
 - **Opus main_aos:** Ethics, Metaphysics & Epistemology
 - **Sonnet position_type:** Postdoc / Fellowship
 - **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a postdoctoral fellowship position at UNC Chapel Hill's Parr Center for Ethics, focused on philosophy of attention, intellectual virtue, and character development. The position is explicitly d
-- **Opus reasoning:** The posting explicitly seeks expertise in philosophy of attention, intellectual virtue, and character development, which spans virtue ethics and epistemology (intellectual virtues). The position is cl
-
-### The Smith Institute for Political Economy and Philosophy, Chapman University — Postdoctoral Fellowship in the Smith Institute
-- **Sonnet main_aos:** Open
-- **Opus main_aos:** Open, Social & Political Philosophy
-- **Sonnet position_type:** Postdoc / Fellowship
-- **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is explicitly a postdoctoral fellowship position at the Smith Institute. The AOS is listed as 'Open' with a preference for PPE-complementary specializations, but no specific requirements, so it q
-- **Opus reasoning:** The posting explicitly states AOS is Open but notes a preference for specializations complementary to PPE (Politics, Philosophy, and Economics). The position is clearly a two-year postdoctoral fellows
+- **Sonnet reasoning:** The position focuses on philosophy of attention, intellectual virtue, and character development, all of which fall under virtue ethics within the Ethics category. This is a postdoctoral fellowship pos
+- **Opus reasoning:** The posting focuses on philosophy of attention (which falls under Philosophy of Mind) and intellectual virtue/character development (Virtue Ethics). The emphasis on attentional virtues and virtue cult
 
 ### Department of History and Philosophy, Kennesaw State University — Chair of the Department of History and Philosophy
 - **Sonnet main_aos:** Open
 - **Opus main_aos:** Open
 - **Sonnet position_type:** Other
 - **Opus position_type:** Tenured / Continuing / Permanent
-- **Sonnet reasoning:** This is a department chair position that is primarily administrative in nature, with a twelve-month contract focused on leadership responsibilities. While it includes a tenured Professor appointment, 
-- **Opus reasoning:** This is a tenured Professor and Chair position with AOS listed as Open. The job category explicitly states 'Senior faculty / Tenured, continuing or permanent' and the description confirms it is a tenu
+- **Sonnet reasoning:** This is a department chair position that is primarily administrative rather than a faculty appointment with a chair component. While it includes some teaching and research expectations, the posting is
+- **Opus reasoning:** This is a department chair position with tenured Professor rank. The AOS and AOC are both listed as 'Open' with no stated preferences for philosophy specialization - the position accepts candidates wi
 
-### Florida International University — Assistant Professor, Associate Professor, Professor
-- **Sonnet main_aos:** Ethics, Science, Logic, & Mathematics
-- **Opus main_aos:** Ethics
+### Philosophy Department, Rhode Island College — Assistant Professor of Philosophy
+- **Sonnet main_aos:** Open
+- **Opus main_aos:** Ethics, Social & Political Philosophy
 - **Sonnet position_type:** Tenure-Track
 - **Opus position_type:** Tenure-Track
-- **Sonnet reasoning:** The position is explicitly described as 'Tenure-track or similar' and is open rank (Assistant, Associate, or Professor). The AOS is AI Ethics with AOC in philosophy of science, technology, and data et
-- **Opus reasoning:** The AOS explicitly specifies AI Ethics, which maps directly to the AI, Technology, and Information Ethics subcategory under Ethics. The position is open rank (Assistant/Associate/Professor) but listed
+- **Sonnet reasoning:** The AOS is explicitly 'Open' with no stated preference, while the AOC (areas of competence) are Ethics and Social/Political Philosophy. Since AOC represents teaching competence rather than research sp
+- **Opus reasoning:** While AOS is listed as 'Open', the AOC explicitly requires Ethics and Social/Political Philosophy, and the description states they seek candidates with 'teaching strengths in Ethics and Social/Politic
+
+### School of Humanities, University of West Georgia — Limited-Term Instructor of Philosophy
+- **Sonnet main_aos:** Ethics, Non-Western & Cross-Cultural Philosophy, Science, Logic, & Mathematics
+- **Opus main_aos:** Open
+- **Sonnet position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
+- **Opus position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
+- **Sonnet reasoning:** The posting states AOS/AOC are open but explicitly prefers teaching competence in Professional Ethics (Business Ethics), Technology and Human Values (Science/Technology), and Introduction to World Rel
+- **Opus reasoning:** The posting explicitly states 'Area of specialization and area of competence open' with only teaching competence preferences (Professional Ethics, Technology and Human Values, World Religions) rather 
 
 ### School of Civic Leadership, University of Texas at Austin — Great Books (Assistant Professor)
-- **Sonnet main_aos:** History of Philosophy, Open, Social & Political Philosophy
+- **Sonnet main_aos:** History of Philosophy, Social & Political Philosophy
 - **Opus main_aos:** History of Philosophy, Social & Political Philosophy, Value Theory / Aesthetics
 - **Sonnet position_type:** Tenure-Track
 - **Opus position_type:** Tenure-Track
-- **Sonnet reasoning:** This is explicitly a tenure-track assistant professor position at UT Austin. The AOS encompasses political thought, philosophy, literature, religious studies, and liberal arts broadly for a Great Book
-- **Opus reasoning:** The position is explicitly tenure-track at the assistant professor level. The AOS mentions political thought, philosophy, literature, and religious studies within a Great Books curriculum, suggesting 
+- **Sonnet reasoning:** This Great Books position explicitly focuses on political thought, philosophy, literature, and religious studies with emphasis on foundational texts from Athens, Jerusalem, and Roman law, as well as A
+- **Opus reasoning:** This Great Books position spans multiple areas: political thought and civic leadership (Social & Political Philosophy), engagement with foundational texts from Athens, Jerusalem, and Roman law (Histor
 
-### Department of Philosophy, CPNSS, London School of Economics — Research Officer
-- **Sonnet main_aos:** Ethics, Science, Logic, & Mathematics, Social & Political Philosophy
-- **Opus main_aos:** Science, Logic, & Mathematics, Social & Political Philosophy
+### Department of Philosophy, University of Bristol — Senior Research Associate in Metaethics/Value Theory
+- **Sonnet main_aos:** Ethics
+- **Opus main_aos:** Ethics, Value Theory / Aesthetics
 - **Sonnet position_type:** Postdoc / Fellowship
 - **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a postdoctoral research position (Research Officer) on a specific funded project about AI and worker autonomy. The job category explicitly states 'Postdoc or similar / Fixed term' and the desc
-- **Opus reasoning:** The AOS explicitly lists Philosophy of AI and Philosophy of Social Science (under Science, Logic, & Mathematics) and Social and Political Philosophy. The position is clearly a postdoctoral research ro
+- **Sonnet reasoning:** This is a three-year postdoctoral research position focused on metaethics and value theory, investigating evaluative language as part of an ERC-funded project. While philosophy of language is mentione
+- **Opus reasoning:** The position explicitly focuses on metaethics and value theory as stated in the AOS and title. Metaethics falls under Ethics, while value theory (investigating moral and non-moral value, evaluative ad
+
+### Department of Philosophy, University of Bristol — Senior Research Associate in Philosophy of Language/Linguistics
+- **Sonnet main_aos:** Ethics, Metaphysics & Epistemology
+- **Opus main_aos:** Metaphysics & Epistemology
+- **Sonnet position_type:** Postdoc / Fellowship
+- **Opus position_type:** Postdoc / Fellowship
+- **Sonnet reasoning:** This is a three-year postdoctoral research position focused on philosophy of language/linguistics investigating evaluative adjectives, with explicit connections to metaethics and value theory. The pos
+- **Opus reasoning:** This is a three-year postdoctoral research position explicitly focused on Philosophy of Language/Linguistics as part of an ERC project on evaluative adjectives. The job category states 'Postdoc or sim
 
 ### Law School, King's College London — YTL Early Career Research Fellow
 - **Sonnet main_aos:** Social & Political Philosophy
 - **Opus main_aos:** Ethics, Social & Political Philosophy
 - **Sonnet position_type:** Postdoc / Fellowship
 - **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a 12-month early career research fellowship at King's College London focused on politics, philosophy and law, clearly fitting the postdoc/fellowship category. The AOS explicitly mentions PPE a
-- **Opus reasoning:** The AOS specifies 'Politics, Philosophy and Law,' which maps to Social & Political Philosophy (particularly Philosophy of Law and PPE). This is an Early Career Research Fellowship requiring a PhD with
-
-### Department of Philosophy and Institute for Logic, Language and Computation, Univ — Postdoctoral Researcher in Philosophical Logic (Propositions)
-- **Sonnet main_aos:** Science, Logic, & Mathematics
-- **Opus main_aos:** Metaphysics & Epistemology, Science, Logic, & Mathematics
-- **Sonnet position_type:** Postdoc / Fellowship
-- **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a three-year postdoctoral researcher position in philosophical logic at the University of Amsterdam, funded by an ERC Advanced Grant. The AOS is explicitly philosophical logic with focus on pr
-- **Opus reasoning:** The AOS is explicitly Philosophical Logic, which maps to Logic. The project focuses on propositional talk and intensionality, which involves philosophy of language and semantics. The position is clear
+- **Sonnet reasoning:** This is a 12-month early career research fellowship at the Yeoh Tiong Lay Centre for Politics, Philosophy and Law, clearly a postdoctoral position. The AOS is explicitly stated as 'Politics, Philosoph
+- **Opus reasoning:** This is a 12-month Early Career Research Fellowship at King's College London for researchers in 'Politics, Philosophy and Law' (PPL), which spans political philosophy and philosophy of law. The positi
 
 ### Department of Philosophy and Institute for Logic, Language and Computation, Univ — Two PhD positions in Philosophical Logic
 - **Sonnet main_aos:** Science, Logic, & Mathematics
 - **Opus main_aos:** Science, Logic, & Mathematics
 - **Sonnet position_type:** Other
 - **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a PhD student position (graduate fellowship) in philosophical logic, which does not fit the standard faculty categories of tenure-track, postdoc, visiting, or tenured positions. PhD positions 
-- **Opus reasoning:** The AOS is explicitly Philosophical Logic, which falls under Logic in the Science, Logic, & Mathematics category. The position is a four-year PhD fellowship funded by an ERC grant, which qualifies as 
-
-### University of California San Diego — Lecturer in Political Science
-- **Sonnet main_aos:** Open
-- **Opus main_aos:** Social & Political Philosophy
-- **Sonnet position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
-- **Opus position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
-- **Sonnet reasoning:** This is a fixed-term Lecturer position in Political Science (not Philosophy) at UC San Diego. The job category explicitly states 'Junior faculty / Fixed term' and the title is Lecturer, which is a tem
-- **Opus reasoning:** The position is a Lecturer in Political Science at UC San Diego, a fixed-term teaching position as indicated by the 'Junior faculty / Fixed term' job category. The AOS is Political Science, which maps
-
-### Advanced Institute of Humanities and Social Sciences, University of Electronic S — Tenure-Track Associate Professor/ Tenured Associate Professor/ Professor
-- **Sonnet main_aos:** Ethics, Science, Logic, & Mathematics
-- **Opus main_aos:** Ethics, History of Philosophy, Open, Science, Logic, & Mathematics
-- **Sonnet position_type:** Tenure-Track
-- **Opus position_type:** Tenure-Track
-- **Sonnet reasoning:** The posting lists multiple rank options including tenure-track associate professor, but the job category explicitly states 'Tenure-track or similar' and includes tenure-track positions. The AOS prefer
-- **Opus reasoning:** The posting explicitly lists preferences for Applied Ethics (Bioethics, AI Ethics), Philosophy of Logic, Philosophy of Science, and History of Science and Technology, while stating AOS is 'Open.' The 
+- **Sonnet reasoning:** The positions are PhD fellowships in philosophical logic, focusing on property theory and modal logic within a formal logic research project. PhD positions are graduate student positions, not postdoct
+- **Opus reasoning:** The position is explicitly for PhD candidates in Philosophical Logic within the GOOD INTENSIONS project, focusing on the logic of property talk and modal talk. This falls squarely under Logic in Scien
 
 ### School of Historical and Philosophical Studies, University of Melbourne — Two funded PhD Positions
 - **Sonnet main_aos:** Metaphysics & Epistemology, Science, Logic, & Mathematics
 - **Opus main_aos:** Metaphysics & Epistemology, Science, Logic, & Mathematics
 - **Sonnet position_type:** Other
 - **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** These are funded PhD scholarship positions for graduate students, not faculty or postdoctoral positions. The University of Melbourne is located in Australia.
-- **Opus reasoning:** This is a funded PhD scholarship (graduate fellowship) at the University of Melbourne in Australia. The AOS explicitly lists Metaphysics, Philosophy of Science, and Philosophy of AI, with the descript
+- **Sonnet reasoning:** Two PhD scholarships focusing on (1) metaphysics of causation, space, and time in physics, and (2) explainable AI using interventionist causation frameworks. This is a graduate fellowship position at 
+- **Opus reasoning:** This posting offers two PhD scholarships with explicit AOS in Metaphysics, Philosophy of Science, and Philosophy of AI. The first position focuses on metaphysics of causation, space, and time (Metaphy
 
 ### School of Civic Leadership, University of Texas at Austin — Great Books (Associate/Full Professor)
-- **Sonnet main_aos:** History of Philosophy, Open, Social & Political Philosophy
+- **Sonnet main_aos:** History of Philosophy, Social & Political Philosophy
 - **Opus main_aos:** History of Philosophy, Social & Political Philosophy, Value Theory / Aesthetics
-- **Sonnet position_type:** Tenure-Track
+- **Sonnet position_type:** Tenured / Continuing / Permanent
 - **Opus position_type:** Tenured / Continuing / Permanent
-- **Sonnet reasoning:** This is a tenure-track position at associate or full professor level at UT Austin. The AOS encompasses political thought, philosophy, literature, religious studies, and liberal arts broadly, with a fo
-- **Opus reasoning:** The position seeks expertise in political thought, philosophy, literature, and liberal arts broadly for a Great Books program, suggesting History of Philosophy, Social & Political Philosophy, and Valu
+- **Sonnet reasoning:** This is a senior faculty position (Associate/Full Professor) at a research university focused on Great Books pedagogy spanning political thought, philosophy, literature, and religious studies. The emp
+- **Opus reasoning:** This Great Books position at associate/full professor level spans multiple areas: political thought and civic leadership (Social & Political Philosophy), engagement with foundational texts from Athens
 
 ### Philosophy, CNRS, Archives Poincaré — Doctoral position, M/F, Philosophy of Science, Nancy, France. Explanatory progre
 - **Sonnet main_aos:** Science, Logic, & Mathematics
 - **Opus main_aos:** Science, Logic, & Mathematics
 - **Sonnet position_type:** Other
 - **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a doctoral/PhD student position at CNRS in France, which does not fit the standard categories of postdoc, tenure-track, or teaching positions. The AOS focuses on philosophy of science with emp
-- **Opus reasoning:** This is a doctoral fellowship position at CNRS in France focused on philosophy of science, specifically concerning explanatory progress in mathematical/mathematized sciences with examples preferably f
+- **Sonnet reasoning:** This is a doctoral/PhD student position in philosophy of science focusing on explanation, understanding, and mathematical methods in physics. Classified as 'Other' because it is a graduate student pos
+- **Opus reasoning:** This is a doctoral fellowship position at CNRS in France focused on philosophy of science, specifically examining explanatory progress and understanding in mathematical/mathematized sciences with exam
 
-### Department of Philosophy, The Ohio State University — Post Doctoral Scholar - AI in Arts & Humanities
-- **Sonnet main_aos:** Ethics
-- **Opus main_aos:** Ethics, Science, Logic, & Mathematics
-- **Sonnet position_type:** Postdoc / Fellowship
-- **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a two-year fixed-term postdoctoral position focused on AI and ethics research. The AOS explicitly states 'Philosophy and AI Ethics,' which clearly falls under AI, Technology, and Information E
-- **Opus reasoning:** The AOS explicitly specifies 'Philosophy and AI Ethics,' which maps to AI, Technology, and Information Ethics under Ethics and Philosophy of Computing / Philosophy of AI under Science, Logic, & Mathem
-
-### School of Philos Anthro & Film Studies, University of St. Andrews — AR3263
-- **Sonnet main_aos:** Open
-- **Opus main_aos:** Metaphysics & Epistemology
-- **Sonnet position_type:** Postdoc / Fellowship
-- **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a fixed-term postdoctoral research fellowship position at the University of St. Andrews in Scotland, working on an EPSRC-funded research project. The AOS is listed as Open, indicating no speci
-- **Opus reasoning:** Although the AOS is listed as Open, the project description clearly focuses on metaphysical questions about unity, wholes, and composition (working with Aaron Cotnoir, known for work in mereology). Th
-
-### Philosophy, Politics and Economics Program, University of Pennsylvania — Postdoctoral Fellowship in Philosophy, Politics and Economics
-- **Sonnet main_aos:** Science, Logic, & Mathematics, Social & Political Philosophy
+### Baruch College — Assistant Professor - Jewish Studies
+- **Sonnet main_aos:** Non-Western & Cross-Cultural Philosophy
 - **Opus main_aos:** Open
-- **Sonnet position_type:** Postdoc / Fellowship
-- **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a postdoctoral fellowship in PPE at University of Pennsylvania. While AOS is listed as Open, the AOC and description clearly indicate focus on political philosophy, philosophy of social scienc
-- **Opus reasoning:** The AOS is explicitly listed as 'Open,' though the AOC and description indicate interest in PPE-related topics including philosophy of social science and political philosophy. The position is clearly 
+- **Sonnet position_type:** Tenure-Track
+- **Opus position_type:** Tenure-Track
+- **Sonnet reasoning:** This is a tenure-track position in Jewish Studies with possible appointment in Philosophy (among other departments). While AOS is listed as 'Open,' the posting clearly requires expertise in Jewish phi
+- **Opus reasoning:** The AOS is listed as 'Open' with no stated preference for a specific philosophical area. While Jewish philosophy is mentioned as one possible area of expertise among several interdisciplinary options 
 
 ### Department of Philosophy, Virginia Tech — Visiting Assistant Professor
 - **Sonnet main_aos:** Value Theory / Aesthetics
-- **Opus main_aos:** Ethics, Social & Political Philosophy, Value Theory / Aesthetics
+- **Opus main_aos:** Ethics, Value Theory / Aesthetics
 - **Sonnet position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
 - **Opus position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
-- **Sonnet reasoning:** This is explicitly a Visiting Assistant Professor position with fixed-term job category. The AOS is value theory broadly construed, which falls under the Value Theory / Aesthetics main category.
-- **Opus reasoning:** The AOS is explicitly 'Value Theory (broadly construed)' which maps directly to the Value Theory / Aesthetics category, though value theory broadly construed can also encompass ethics and social/polit
+- **Sonnet reasoning:** The AOS is explicitly 'Value Theory (broadly construed)', which maps to the Value Theory / Aesthetics main category. This is a one-year Visiting Assistant Professor position with possibility of renewa
+- **Opus reasoning:** The AOS is explicitly 'value theory (broadly construed)' which falls under Value Theory / Aesthetics. However, the teaching examples (Morality and Justice, Global Ethics, Ethical Theory) indicate stro
 
-### Minnesota Center for Philosophy of Science, University of Minnestoa — Post-Doctoral Associate
-- **Sonnet main_aos:** Open
+### Department of Philosophy I, Ruhr University Bochum — 1 Postdoc Position, History and Philosophy of Science, Digital Humanities
+- **Sonnet main_aos:** History of Philosophy, Science, Logic, & Mathematics
 - **Opus main_aos:** Science, Logic, & Mathematics
 - **Sonnet position_type:** Postdoc / Fellowship
 - **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a three-year postdoctoral associate position at the Minnesota Center for Philosophy of Science, clearly a postdoc fellowship. The AOS is listed as Open with no specific area restrictions menti
-- **Opus reasoning:** Although the AOS is listed as Open, the position is at the Minnesota Center for Philosophy of Science and is associated with the 'Consortium for Advancing a Science of Purpose' project focused on biol
-
-### Department of Philosophy, University of Exeter — Postdoctoral Research Associate/Fellow
-- **Sonnet main_aos:** Metaphysics & Epistemology, Science, Logic, & Mathematics
-- **Opus main_aos:** Open
-- **Sonnet position_type:** Postdoc / Fellowship
-- **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a postdoctoral research position on a Leverhulme-funded project about autonomous AI scientists and agents that can err, clearly involving philosophy of AI and epistemology. The University of E
-- **Opus reasoning:** The posting explicitly lists AOS as 'Open' with no specific philosophical area requirements. The position is clearly a Postdoctoral Research Associate/Fellow on a Leverhulme-funded project about auton
+- **Sonnet reasoning:** This is a 3-year postdoctoral position within an ERC-funded project on history and philosophy of science (specifically botanical research and virtual herbaria), combining philosophy of biology with hi
+- **Opus reasoning:** The position is explicitly for History and Philosophy of Science within an ERC project on virtual herbaria. The AOS specifies History of Science and Digital Humanities, with AOC in History and Philoso
 
 ### Department of Philosophy, University of Tartu — 3 Fully-Funded Junior Research Fellowships (Doctoral positions)
 - **Sonnet main_aos:** Open
 - **Opus main_aos:** Open
 - **Sonnet position_type:** Other
 - **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** These are doctoral student positions (junior research fellowships with student status) at the University of Tartu in Estonia. Doctoral positions do not fit the standard categories of tenure-track, pos
-- **Opus reasoning:** This is a doctoral/junior research fellowship position with open AOS/AOC requirements. Though it involves student status, it is a funded research fellowship position at the University of Tartu in Esto
+- **Sonnet reasoning:** This is a doctoral/PhD fellowship position with student status, which does not fit the standard categories of faculty positions, postdocs, or pure fellowships. The AOS is genuinely open with no stated
+- **Opus reasoning:** This is a doctoral fellowship position (Junior Research Fellowship) with AOS and AOC both listed as Open, with no stated preferences for any specific philosophical area. The position is research-focus
+
+### Department of Philosophy, McMaster University — Assistant Professor (Contractually Limited Appointment)
+- **Sonnet main_aos:** Ethics
+- **Opus main_aos:** Ethics, Value Theory / Aesthetics
+- **Sonnet position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
+- **Opus position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
+- **Sonnet reasoning:** Though AOS is listed as 'Open', the posting explicitly seeks applicants qualified to teach bioethics and ethics, with AOC in Ethics and Applied Ethics, making Ethics the clear main category. This is a
+- **Opus reasoning:** While AOS is listed as Open, the AOC specifies Ethics and Applied Ethics, and the description explicitly seeks candidates to teach bioethics, ethics, and 'value theory, broadly construed.' The mention
+
+### Center for Public Engagement with Science, University of Cincinnati — Postdoctoral Fellow, Center for Public Engagement with Science
+- **Sonnet main_aos:** Science, Logic, & Mathematics
+- **Opus main_aos:** Open
+- **Sonnet position_type:** Postdoc / Fellowship
+- **Opus position_type:** Postdoc / Fellowship
+- **Sonnet reasoning:** This is a postdoctoral fellowship at the Center for Public Engagement with Science. While the AOS is listed as 'Open,' the position explicitly requires a PhD 'in a field relevant to public engagement 
+- **Opus reasoning:** This is a postdoctoral fellowship at the Center for Public Engagement with Science. Both AOS and AOC are listed as 'Open' with no stated preference for any specific philosophical area. The position ac
 
 ### Discipline of Philosophy, UWA India — Assistant Professor / Senior Assistant Professor - Philosophy
-- **Sonnet main_aos:** Open
-- **Opus main_aos:** Open
+- **Sonnet main_aos:** Ethics, Science, Logic, & Mathematics
+- **Opus main_aos:** Ethics, Science, Logic, & Mathematics
 - **Sonnet position_type:** Tenured / Continuing / Permanent
 - **Opus position_type:** Tenure-Track
-- **Sonnet reasoning:** The position is explicitly described as 'on a tenurable basis' and listed under 'Tenured, continuing or permanent' job category, indicating a permanent track position rather than entry-level tenure-tr
-- **Opus reasoning:** The posting explicitly states AOS and AOC as 'Open' with no specific requirements. The position is described as 'tenurable basis' (tenure-track) at Assistant/Senior Assistant Professor level. UWA Indi
+- **Sonnet reasoning:** While the AOS is listed as 'Open', the description explicitly requires 'expertise in the philosophy of artificial intelligence and in professional ethics,' making this a dual-area position spanning bo
+- **Opus reasoning:** While the AOS is listed as 'Open,' the description explicitly states 'the appointee must demonstrate expertise in the philosophy of artificial intelligence and in professional ethics.' This requires b
 
 ### Centre Gilles Gaston Granger, Université Aix-Marseille — PhD Position (3+1 years) in Philosophy of Physics
 - **Sonnet main_aos:** Metaphysics & Epistemology, Science, Logic, & Mathematics
 - **Opus main_aos:** Metaphysics & Epistemology, Science, Logic, & Mathematics
 - **Sonnet position_type:** Other
 - **Opus position_type:** Postdoc / Fellowship
-- **Sonnet reasoning:** This is a PhD student position (graduate fellowship), not a faculty position, postdoc, or other standard academic employment category. The AOS clearly specifies philosophy of physics, metaphysics, and
-- **Opus reasoning:** The AOS explicitly lists Philosophy of Physics, Metaphysics, and Philosophy of Science. This is a PhD position (graduate fellowship) at a French university, which falls under Postdoc / Fellowship as a
+- **Sonnet reasoning:** This is a PhD student position (graduate fellowship), which does not fit the standard categories of faculty positions, postdocs, or administrative roles, hence 'Other'. The AOS explicitly lists Philos
+- **Opus reasoning:** The position explicitly lists Philosophy of Physics, Metaphysics, and Philosophy of Science as AOS areas. The description emphasizes both philosophy of physics topics and metaphysics of levels/non-fun
 
-### Department of Philosophy, Universität des Saarlandes — Professorship "Ethics of AI“
+### Department of Philosophy, the University of Hong Kong — Professor/Associate Professor on tenure terms or tenure-track Assistant Professo
 - **Sonnet main_aos:** Ethics
 - **Opus main_aos:** Ethics, Science, Logic, & Mathematics
 - **Sonnet position_type:** Tenure-Track
 - **Opus position_type:** Tenure-Track
-- **Sonnet reasoning:** The position focuses specifically on Ethics of AI, which falls under the Ethics category. Despite starting at associate professor level, it is explicitly described as 'tenure-tracked' in the descripti
-- **Opus reasoning:** The position explicitly focuses on 'Ethics of AI' with AOS in 'Philosophy and Ethics of AI,' clearly fitting AI/Technology Ethics and Philosophy of AI subcategories. The posting states it is 'tenure-t
+- **Sonnet reasoning:** The position explicitly requires interest in and commitment to teaching and research in philosophy or ethics of AI. While the AOS is technically open, the mandatory AI ethics requirement makes this an
+- **Opus reasoning:** The AOS explicitly lists 'Ethics of AI, Philosophy' and the description states the position is 'open to all areas of specialization' but requires 'interest in pursuing teaching and research in philoso
 
-*(3 additional disagreements omitted from this report; see raw JSON for the full list.)*
+### Department of Philosophy and Ethics, Eindhoven University of Technology — Lecturer
+- **Sonnet main_aos:** Ethics
+- **Opus main_aos:** Open
+- **Sonnet position_type:** Tenured / Continuing / Permanent
+- **Opus position_type:** Tenured / Continuing / Permanent
+- **Sonnet reasoning:** The position is explicitly described as 'Junior faculty / Tenured, continuing or permanent' with a permanent contract after probation. While AOS is listed as 'Open', the AOC and description clearly em
+- **Opus reasoning:** The AOS is explicitly listed as 'Open' with no stated preference for any specific area. While the AOC mentions applied ethics and ethics of technology, and the teaching focuses on engineering ethics c
+
+### Department of Philosophy and Religious Studies, Norwegian University of Science  — Fully funded PhD fellowship (3 years) in metaphysics of physics
+- **Sonnet main_aos:** Metaphysics & Epistemology, Science, Logic, & Mathematics
+- **Opus main_aos:** Metaphysics & Epistemology, Science, Logic, & Mathematics
+- **Sonnet position_type:** Other
+- **Opus position_type:** Postdoc / Fellowship
+- **Sonnet reasoning:** This PhD fellowship focuses on interdisciplinary research combining philosophy of physics (quantum mechanics, spacetime, entanglement) with metaphysics (nature of worlds, individuation, laws of nature
+- **Opus reasoning:** The AOS explicitly lists Philosophy of physics, Philosophy of science, and Metaphysics, spanning two main categories. The position is a fully funded 3-year PhD fellowship focused on interdisciplinary 
+
+### Magdalen College, Oxford — Postdoctoral Researcher:  The Ethics of Social Punishment
+- **Sonnet main_aos:** Ethics, Social & Political Philosophy
+- **Opus main_aos:** Social & Political Philosophy
+- **Sonnet position_type:** Postdoc / Fellowship
+- **Opus position_type:** Postdoc / Fellowship
+- **Sonnet reasoning:** This is a postdoctoral research position focused on 'The Ethics of Social Punishment,' which spans both social/political philosophy (punishment as a social and political institution) and normative eth
+- **Opus reasoning:** The posting explicitly seeks a political theorist, political philosopher, or social philosopher to work on 'The Ethics of Social Punishment.' While the project involves ethics, the AOS specifies polit
+
+### Department of Philosophy, Bowling Green State University — Assistant Teaching Professor
+- **Sonnet main_aos:** Open
+- **Opus main_aos:** Open
+- **Sonnet position_type:** Tenured / Continuing / Permanent
+- **Opus position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
+- **Sonnet reasoning:** The AOS is listed as 'Open' with no stated preferences in the description, which mentions teaching across multiple areas (history, ethics, formal methods, PPEL) but does not indicate hiring preference
+- **Opus reasoning:** Both AOS and AOC are explicitly listed as 'Open' with no stated preferences in the description. The position is a fixed-term teaching role (Assistant Teaching Professor, Junior faculty / Fixed term) f
+
+### Department of Philosophy and Political Science, Fort Lewis College — Visiting Assistant Professor
+- **Sonnet main_aos:** Open
+- **Opus main_aos:** Metaphysics & Epistemology, Non-Western & Cross-Cultural Philosophy
+- **Sonnet position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
+- **Opus position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
+- **Sonnet reasoning:** The AOS is listed as 'Open' with no stated preference in the AOS field or description. The AOC mentions Indigenous Philosophy, Metaphysics, and Philosophy of Mind as preferred competencies, but these 
+- **Opus reasoning:** While AOS is listed as 'Open', the preferred qualifications explicitly state 'Area of specialization or competence in metaphysics, philosophy of mind, or indigenous philosophy,' and the AOC lists thes
+
+### Department of Philosophy and Religious Studies, Norwegian University of Science  — Fully funded PhD fellowship (3 years) in Foundations and Philosophy of Entanglem
+- **Sonnet main_aos:** Metaphysics & Epistemology, Science, Logic, & Mathematics
+- **Opus main_aos:** Metaphysics & Epistemology, Science, Logic, & Mathematics
+- **Sonnet position_type:** Other
+- **Opus position_type:** Postdoc / Fellowship
+- **Sonnet reasoning:** This PhD fellowship focuses on philosophy of physics (quantum entanglement) and metaphysics (fundamental ontology, world structure), clearly spanning both main categories as stated in the AOS field. I
+- **Opus reasoning:** The AOS explicitly lists Philosophy of physics, Philosophy of science, Metaphysics, and quantum physics. The project focuses on foundations of quantum theory and metaphysical implications of entanglem
+
+### Department of Philosophy, Purdue University — Visiting Assistant Professor
+- **Sonnet main_aos:** Open
+- **Opus main_aos:** History of Philosophy, Science, Logic, & Mathematics
+- **Sonnet position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
+- **Opus position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
+- **Sonnet reasoning:** The AOS is explicitly 'Open' with teaching competencies (AOC) in Philosophy of Science, History of Philosophy, and Philosophy of AI. Since these are AOC (areas of competence) rather than AOS (areas of
+- **Opus reasoning:** Although AOS is listed as 'Open', the posting requires demonstrated ability to teach Philosophy of Science, History of Philosophy, and Philosophy of AI, making these the effective areas of specializat
+
+### School of Historical, Philosophical, and Religious Studies, Arizona State Univer — Director, School of Historical, Philosophical, and Religious Studies
+- **Sonnet main_aos:** Open
+- **Opus main_aos:** Open
+- **Sonnet position_type:** Other
+- **Opus position_type:** Tenured / Continuing / Permanent
+- **Sonnet reasoning:** This is a School Director position with administrative leadership responsibilities over History, Philosophy, and Religious Studies. While it includes a concurrent tenured Professor appointment, the pr
+- **Opus reasoning:** This is a Director position with concurrent tenured Professor appointment. The AOS and AOC are both listed as 'Open' with no stated preferences for any specific philosophical area - the position requi
+
+### Department of Philosophy, University of Alabama — Instructor
+- **Sonnet main_aos:** Open
+- **Opus main_aos:** Ethics, Science, Logic, & Mathematics
+- **Sonnet position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
+- **Opus position_type:** Visiting / Adjunct / Lecturer (Fixed-Term)
+- **Sonnet reasoning:** The AOS is explicitly 'Open' with philosophy of medicine listed only as AOC (area of competence, not specialization). Since AOS is genuinely open with no stated preference, this qualifies for the 'Ope
+- **Opus reasoning:** The posting lists AOS as Open but specifies AOC in Philosophy of Medicine, with courses including Medical Ethics and Philosophy of Medicine. Philosophy of Medicine is a distinct field from Biomedical 
+
+### Philosophy Program, La Trobe University — Research Officer (Philosophy)
+- **Sonnet main_aos:** Metaphysics & Epistemology
+- **Opus main_aos:** Open
+- **Sonnet position_type:** Postdoc / Fellowship
+- **Opus position_type:** Postdoc / Fellowship
+- **Sonnet reasoning:** This is a fixed-term research position on an ARC Discovery Project focused on 'Virtual Reality and Knowing What It Is Like,' which clearly falls under epistemology (knowledge) and philosophy of mind (
+- **Opus reasoning:** This is a fixed-term Research Officer position on an ARC Discovery Project about virtual reality and phenomenal knowledge, which is a postdoctoral research role. Both AOS and AOC are listed as Open wi
+
+*(9 additional disagreements omitted from this report; see raw JSON for the full list.)*
 
 ---
 
