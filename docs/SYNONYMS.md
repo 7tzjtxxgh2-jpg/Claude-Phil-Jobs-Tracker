@@ -25,36 +25,43 @@ used, see [KEYWORD_EXPLORER_METHODOLOGY.md](KEYWORD_EXPLORER_METHODOLOGY.md).
 
 ## Synonym Groups (Alphabetical)
 
-- **american** → americanist, americanism, american philosophy
-- **applied** → applied philosophy, applied ethics, practical philosophy
-- **critical** → critical theory, critical thinking, critique
-- **discipline** → disciplinary, interdisciplinary, multidisciplinary, cross-disciplinary
-- **education** → educational, pedagogy, pedagogical, philosophy of education
-- **educational** → education, pedagogy, pedagogical, philosophy of education
-- **eligible** → eligibility
-- **environment** → environmental, ecology, ecological, environmental philosophy, environmental ethics
-- **ethical** → ethics, metaethics, meta-ethics, normative ethics, applied ethics, moral philosophy, moral theory
-- **ethics** → ethical, metaethics, meta-ethics, normative ethics, applied ethics, moral philosophy, moral theory
-- **health** → medical, medicine, biomedical, healthcare, public health, health care
-- **history** → historical, historiography, history of philosophy
-- **humanities** → humanistic, liberal arts
+- **access** → accessibility
+- **american** → american philosophy, americanist, pragmatism
+- **applied** → applied ethics, applied philosophy, practical ethics
+- **arts** → liberal arts, humanities
+- **assistant** → assistant professor
+- **critical** → critical theory, critical philosophy, frankfurt school
+- **curriculum** → curricular, syllabus, course design
+- **education** → educational, pedagogy, pedagogical, teaching
+- **educational** → philosophy of education, educational philosophy
+- **environment** → environmental, ecology, ecological
+- **ethical** → ethics, moral philosophy, metaethics, normative ethics
+- **ethics** → ethical, metaethics, meta-ethics, normative ethics, moral philosophy, moral theory
+- **health** → medical, biomedical, healthcare, medicine
+- **history** → historical, historiography
+- **humanities** → humanistic
 - **interdisciplinary** → multidisciplinary, cross-disciplinary, transdisciplinary
-- **introductory** → introduction, intro, foundational, elementary
-- **knowledge** → epistemology, epistemological, epistemic
+- **knowledge** → epistemology, theory of knowledge, epistemic
+- **letters** → letter, humanities
 - **liberal** → liberal arts
-- **logic** → logical, logics, formal logic, symbolic logic, mathematical logic
+- **life** → philosophy of life, bioethics
+- **logic** → logical, logics, formal logic, philosophical logic, mathematical logic, modal logic
+- **open** → open rank
+- **person** → personal identity, personhood, philosophy of persons
 - **philosophical** → philosophy, philosophic
-- **political** → politics, political philosophy, political theory
-- **postdoctoral** → postdoc, post-doctoral, post-doc
-- **scholars** → scholarship, scholarly
-- **science** → philosophy of science, scientific
+- **political** → political philosophy, political theory
+- **postdoctoral** → postdoc, post-doctoral
+- **public** → public philosophy
+- **research** → scholarship, scholarly, investigation
+- **science** → scientific, philosophy of science
 - **sciences** → philosophy of science, scientific
-- **specialization** → specialty, specializations, area of specialization
-- **syllabi** → syllabus, curriculum, curricula
-- **system** → systems, systematic, systems theory
-- **technology** → technological, technologies, technoscience, digital technology, information technology
-- **visit** → visiting
-- **visiting** → visit, visitor
+- **social** → social philosophy, social theory
+- **specialization** → specializations, specialism, area of specialization, aos
+- **system** → systems theory, systematic philosophy
+- **technology** → philosophy of technology, technoscience, digital philosophy, philosophy of computing
+- **vision** → philosophy of perception, visual perception
+- **visiting** → visitor, visiting scholar, visiting professor, visiting faculty
+- **vitae** → cv, curriculum vitae
 
 ---
 

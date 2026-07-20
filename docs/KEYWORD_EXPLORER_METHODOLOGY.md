@@ -1,8 +1,8 @@
 # Keyword Explorer — Methodology
 
 **Last updated:** 2026-07-20
-**Corpus size at this writing:** 245 jobs
-**Vocabulary size eligible for synonym lookup:** 2563 terms
+**Corpus size at this writing:** 254 jobs
+**Vocabulary size eligible for synonym lookup:** 2606 terms
 **Synonym groups in current map:** 150
 
 ---
