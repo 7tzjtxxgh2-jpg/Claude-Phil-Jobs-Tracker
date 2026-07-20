@@ -6,6 +6,13 @@ on:
     - cron: '0 14 * * 1'
   workflow_dispatch:  # Allows manual triggering
 
+# All workflows that commit to main share one concurrency group so
+# runs queue instead of racing each other's pushes (e.g. when the
+# 15th falls on a Monday and this fires alongside the weekly scrape).
+concurrency:
+  group: repo-writer
+  cancel-in-progress: false
+
 permissions:
   contents: write
   issues: write
@@ -50,7 +57,10 @@ jobs:
           git config --local user.name "GitHub Action"
           git add data/ docs/
           git diff --staged --quiet || git commit -m "Weekly scrape: $(date +'%Y-%m-%d')"
-          git push
+          # Rebase onto any commits pushed since checkout (another workflow
+          # may have won a race); retry once in case a push lands mid-rebase.
+          git pull --rebase origin main
+          git push || (git pull --rebase origin main && git push)
 
       - name: Notify on failure
         if: failure()

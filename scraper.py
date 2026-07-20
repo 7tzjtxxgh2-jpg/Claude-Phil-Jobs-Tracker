@@ -14,7 +14,7 @@ import csv
 import hashlib
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from collections import defaultdict
 
@@ -248,7 +248,7 @@ DETAIL_AOS = {
 # stored jobs. Prior classifications get preserved on each job under
 # `classification_v1` (or `classification_v<N>`) so we can audit how labels
 # shifted between revisions.
-TAXONOMY_VERSION = "2026-05-18-sonnet-v4"
+TAXONOMY_VERSION = "2026-07-20-sonnet-v5"  # v5: Rule 2a (AOC-only ≠ AOS preference)
 
 # Single source of truth for the Claude model used across all API calls
 # (classification, state resolution, synonym map). Changing this should
@@ -283,8 +283,128 @@ POSITION_TYPES = [
     "Postdoc / Fellowship",
     "Visiting / Adjunct / Lecturer (Fixed-Term)",
     "Tenured / Continuing / Permanent",
+    "Grad Fellowship / RA",
     "Other",
 ]
+
+# PhilJobs's own job_category is publisher-supplied structured data of the
+# form "<role> / <contract type>" (e.g. "Junior faculty / Tenure-track or
+# similar"). Where that pair is decisive we derive position type from it
+# directly instead of trusting the model's free-text reading; the Claude
+# classification is the fallback for the genuinely ambiguous combinations.
+_PJ_CONTRACT_TT = 'Tenure-track or similar'
+_PJ_CONTRACT_PERM = 'Tenured, continuing or permanent'
+_PJ_CONTRACT_FIXED = 'Fixed term'
+
+
+def position_type_from_category(job_category):
+    """Map PhilJobs's '<role> / <contract>' category to a position type.
+
+    Returns None when the category is missing or ambiguous (e.g. "Visiting
+    fellowship / Professorship" spans research fellowships and teaching
+    visits; "Contract type open" says nothing) — callers fall back to the
+    Claude classification for those.
+    """
+    if not job_category or ' / ' not in job_category:
+        return None
+    parts = [p.strip() for p in job_category.split(' / ')]
+    contract = parts[-1]
+    role = ' / '.join(parts[:-1])
+    # Not-on-the-market postings: aimed at current PhD students / RAs.
+    if role in ('Graduate fellowship', 'Research assistant'):
+        return 'Grad Fellowship / RA'
+    if role in ('Administration (non-academic)', 'Other (non-academic)'):
+        return 'Other'
+    if role == 'Visiting fellowship / Professorship':
+        return None  # research fellowship vs teaching visit — defer to Claude
+    if contract == _PJ_CONTRACT_TT:
+        return 'Tenure-Track'
+    if contract == _PJ_CONTRACT_PERM:
+        return 'Tenured / Continuing / Permanent'
+    if role == 'Postdoc or similar':
+        return 'Postdoc / Fellowship'
+    if contract == _PJ_CONTRACT_FIXED:
+        # Junior/Senior/open-rank faculty on a fixed-term contract
+        return 'Visiting / Adjunct / Lecturer (Fixed-Term)'
+    return None  # e.g. "Contract type open" — defer to Claude
+
+
+def effective_position_type(job):
+    """Single source of truth for a job's position type: PhilJobs's own
+    category where decisive, otherwise the Claude classification."""
+    pt = position_type_from_category(job.get('job_category'))
+    if pt:
+        return pt
+    cls = job.get('classification') or {}
+    raw = cls.get('position_type')
+    return raw if raw in POSITION_TYPES else 'Other'
+
+
+def js_json(obj):
+    """json.dumps for embedding inside an inline <script> block: escapes '</'
+    so scraped text can never terminate the script element early."""
+    return json.dumps(obj).replace('</', '<\\/')
+
+
+def write_json_atomic(path, obj):
+    """Write JSON via a temp file + os.replace so an interrupted run can
+    never leave a truncated/corrupt data file behind."""
+    tmp = str(path) + '.tmp'
+    with open(tmp, 'w') as f:
+        json.dump(obj, f, indent=2)
+    os.replace(tmp, str(path))
+
+
+# ── Weekly trend bucketing ──────────────────────────────────────────────────
+#
+# Trends are bucketed by the Monday of the week the job was POSTED on
+# PhilJobs (posted_date, "Time created"), not the date we happened to scrape
+# it. Scrape-date bucketing piles everything onto scrape Mondays, merges
+# weeks whenever a run is missed, and books the entire initial import as one
+# giant "new jobs" spike. Posting-week bucketing is robust to all three.
+#
+# Jobs posted before tracking began are BASELINE jobs: for those weeks we
+# only see the ads that were still alive at the first scrape (survivorship
+# bias), so they are excluded from trend series and reported separately.
+
+FIRST_SCRAPE_DATE = '2026-03-10'  # first-ever scrape of this dataset
+
+
+def week_monday(date_str):
+    """Map 'YYYY-MM-DD...' to the Monday of its ISO week ('YYYY-MM-DD').
+    Returns None when unparseable."""
+    if not date_str:
+        return None
+    try:
+        d = datetime.strptime(date_str[:10], '%Y-%m-%d')
+    except ValueError:
+        return None
+    monday = d - timedelta(days=d.weekday())
+    return monday.strftime('%Y-%m-%d')
+
+
+FIRST_TRACKED_MONDAY = week_monday(FIRST_SCRAPE_DATE)
+
+
+def job_week_bucket(job):
+    """Canonical trend bucket for a job: Monday of its posting week.
+
+    Falls back to scraped_date when posted_date is missing/unparseable.
+    Returns None for baseline jobs — those posted before tracking began —
+    which belong in cumulative totals but not in weekly trend series.
+    """
+    posted = job.get('posted_date')
+    bucket = None
+    if posted:
+        # PhilJobs format: 'May 21, 2026, 9:23pm UTC'
+        parsed = PhilJobsScraper._parse_pj_date(posted)
+        if parsed:
+            bucket = week_monday(parsed.strftime('%Y-%m-%d'))
+    if bucket is None:
+        bucket = week_monday(job.get('scraped_date', ''))
+    if bucket is None or bucket < FIRST_TRACKED_MONDAY:
+        return None
+    return bucket
 
 # Stopwords for the Keyword Explorer description-text search. Words that appear
 # in nearly every philosophy job description ("philosophy", "professor", etc.)
@@ -328,6 +448,7 @@ POSITION_TYPE_COLORS = {
     "Postdoc / Fellowship": "#3b82f6",
     "Visiting / Adjunct / Lecturer (Fixed-Term)": "#f59e0b",
     "Tenured / Continuing / Permanent": "#8b5cf6",
+    "Grad Fellowship / RA": "#14b8a6",
     "Other": "#6b7280",
 }
 
@@ -372,7 +493,10 @@ Rules:
    - "Environmental Ethics" → ["Ethics"] only
    Only add Science, Logic, & Mathematics as a second main category if the posting ALSO independently hires for non-ethics work in that area (e.g., the posting says "AI Ethics AND Philosophy of Mind" or "Bioethics AND Philosophy of Biology methodology"). The mere mention that a position "intersects with science" or "engages technology" is NOT enough.
 1b. Similarly, "Philosophy of X" sub-fields (Philosophy of Biology, Philosophy of Physics, Philosophy of AI, etc.) stay under Science, Logic, & Mathematics ONLY unless the posting independently hires for work in another main category.
-2. Use ["Open"] ONLY when the posting genuinely has no stated preference for any specific area. If the AOS field says anything like "Open, with preference for X", "Open but X preferred", "Open to all areas but X", "Open, although X is welcome" — do NOT use "Open". Use the preferred area(s) instead. The presence of any stated preference, even a soft one, disqualifies "Open".
+2. Use ["Open"] ONLY when the posting genuinely has no stated preference for any specific area. If the AOS field says anything like "Open, with preference for X", "Open but X preferred", "Open to all areas but X", "Open, although X is welcome" — do NOT use "Open". Use the preferred area(s) instead. The presence of any stated AOS preference, even a soft one, disqualifies "Open".
+2a. AOC IS NOT AOS: when the AOS field is "Open" (or equivalent), areas that appear ONLY in the AOC field or only as teaching needs ("ability to teach X", "courses in Y") do NOT count as an AOS preference — keep ["Open"]. AOC states teaching competence, not research specialization. Example:
+   - AOS: "Open"; AOC: "Social-Political Philosophy, History of Philosophy"; description mentions teaching needs in those areas → ["Open"] (the hire's research area is unrestricted)
+   - But if the DESCRIPTION states a research preference ("preference given to candidates working in X", "AOS in X desirable"), that IS an AOS preference → use X, not "Open".
 3. Base AOS classification on the AOS field, title, AOC field, and description together. Do not ignore the description — preferences are often stated there even when the AOS field says "Open". However, do not inflate main_aos with every passing mention in the description; only include a main category if the posting genuinely hires for work in that area.
 4. For detail_aos, only include subcategories clearly mentioned or strongly implied.
 5. For position_type, prioritize explicit wording in the title and job category over inferred meaning.
@@ -632,6 +756,10 @@ class PhilJobsScraper:
                 return data
         return {'jobs': [], 'weekly_snapshots': [], 'weekly_trends': []}
 
+    def _save_all_jobs(self, historical_data):
+        """Atomically write the master data file."""
+        write_json_atomic(self.data_dir / "all_jobs.json", historical_data)
+
     # ── Classification history (separate file to keep all_jobs.json slim) ──
 
     def _history_file(self):
@@ -650,8 +778,7 @@ class PhilJobsScraper:
             return {}
 
     def _save_classification_history(self, history: dict):
-        with open(self._history_file(), 'w') as f:
-            json.dump(history, f, indent=2)
+        write_json_atomic(self._history_file(), history)
 
     def _archive_classification(self, history: dict, job_id, classification, stored_version):
         """Append a classification entry to the per-job history list."""
@@ -686,9 +813,7 @@ class PhilJobsScraper:
                 moved += 1
         if moved:
             self._save_classification_history(history)
-            all_data_file = self.data_dir / "all_jobs.json"
-            with open(all_data_file, 'w') as f:
-                json.dump(historical_data, f, indent=2)
+            self._save_all_jobs(historical_data)
             print(f"  Moved {moved} historical classifications from all_jobs.json → classification_history.json")
         return moved
 
@@ -718,9 +843,7 @@ class PhilJobsScraper:
 
         self._save_classification_history(history)
         historical_data['taxonomy_version'] = TAXONOMY_VERSION
-        all_data_file = self.data_dir / "all_jobs.json"
-        with open(all_data_file, 'w') as f:
-            json.dump(historical_data, f, indent=2)
+        self._save_all_jobs(historical_data)
         print(f"  Cleared classification on {cleared} jobs; prior labels archived to classification_history.json")
         return cleared
 
@@ -746,23 +869,23 @@ class PhilJobsScraper:
                 fixed += 1
 
         if fixed:
-            all_data_file = self.data_dir / "all_jobs.json"
-            with open(all_data_file, 'w') as f:
-                json.dump(historical_data, f, indent=2)
+            self._save_all_jobs(historical_data)
             print(f"  Backfilled city field for {fixed} jobs")
         else:
             print("  No city fields needed backfilling")
         return fixed
 
     def save_data(self, jobs, historical_data):
-        """Save job data and update historical records."""
+        """Save job data and update historical records.
+
+        Weekly trend entries are NOT computed here — new jobs have no
+        classification yet at this point. main() rebuilds weekly_trends
+        unconditionally after classification completes.
+        """
         timestamp = datetime.now().strftime("%Y-%m-%d")
         existing_hashes = {job['hash'] for job in historical_data['jobs']}
         new_jobs = [job for job in jobs if job['hash'] not in existing_hashes]
         historical_data['jobs'].extend(new_jobs)
-
-        weekly_trend = self.calculate_weekly_trends(new_jobs, timestamp)
-        historical_data['weekly_trends'].append(weekly_trend)
 
         snapshot = {
             'date': timestamp,
@@ -770,17 +893,19 @@ class PhilJobsScraper:
             'new_jobs': len(new_jobs),
             'new_job_ids': [job['id'] for job in new_jobs]
         }
+        # Replace any same-date snapshot instead of appending — repeated
+        # manual runs on one day previously piled up duplicate entries.
+        historical_data['weekly_snapshots'] = [
+            s for s in historical_data['weekly_snapshots'] if s.get('date') != timestamp
+        ]
         historical_data['weekly_snapshots'].append(snapshot)
 
-        all_data_file = self.data_dir / "all_jobs.json"
-        with open(all_data_file, 'w') as f:
-            json.dump(historical_data, f, indent=2)
+        self._save_all_jobs(historical_data)
 
         weekly_file = self.data_dir / f"snapshot_{timestamp}.json"
-        with open(weekly_file, 'w') as f:
-            json.dump({'date': timestamp, 'jobs': jobs, 'new_jobs': new_jobs}, f, indent=2)
+        write_json_atomic(weekly_file, {'date': timestamp, 'jobs': jobs, 'new_jobs': new_jobs})
 
-        return new_jobs, snapshot, weekly_trend
+        return new_jobs, snapshot
 
     # ── Claude API classification ─────────────────────────────────────────
 
@@ -847,10 +972,14 @@ class PhilJobsScraper:
                 if not isinstance(result.get('detail_aos'), dict):
                     result['detail_aos'] = {m: [] for m in valid_main}
 
-                # Validate detail values
-                for main, details in result['detail_aos'].items():
-                    valid_details = [d for d in (details or []) if d in DETAIL_AOS.get(main, [])]
-                    result['detail_aos'][main] = valid_details
+                # Validate detail values; drop keys whose main category was
+                # itself dropped from main_aos so a subcategory can never be
+                # counted while its parent line reads 0
+                result['detail_aos'] = {
+                    main: [d for d in (details or []) if d in DETAIL_AOS.get(main, [])]
+                    for main, details in result['detail_aos'].items()
+                    if main in valid_main
+                }
 
                 # Validate position_type
                 raw_pt = result.get('position_type')
@@ -910,15 +1039,11 @@ class PhilJobsScraper:
 
             # Checkpoint save every 10 jobs
             if classified_count % 10 == 0:
-                all_data_file = self.data_dir / "all_jobs.json"
-                with open(all_data_file, 'w') as f:
-                    json.dump(historical_data, f, indent=2)
+                self._save_all_jobs(historical_data)
                 print(f"  Checkpoint saved ({classified_count}/{total})")
 
         # Final save
-        all_data_file = self.data_dir / "all_jobs.json"
-        with open(all_data_file, 'w') as f:
-            json.dump(historical_data, f, indent=2)
+        self._save_all_jobs(historical_data)
 
         print(f"✓ Classified {classified_count} jobs")
         return classified_count
@@ -934,7 +1059,14 @@ class PhilJobsScraper:
         except ImportError:
             return 0
 
-        jobs_needing_state = [j for j in historical_data.get('jobs', []) if not j.get('state')]
+        # Skip jobs already confirmed international (by a prior resolution
+        # pass or by the classifier) — re-asking every week wastes API calls.
+        jobs_needing_state = [
+            j for j in historical_data.get('jobs', [])
+            if not j.get('state')
+            and j.get('state_resolution') != 'international-confirmed'
+            and (j.get('classification') or {}).get('state_us') != 'INTERNATIONAL'
+        ]
         if not jobs_needing_state:
             return 0
 
@@ -958,7 +1090,12 @@ class PhilJobsScraper:
                     )
                     answer = response.content[0].text.strip().upper().strip('"\'')
                     if answer == 'INTERNATIONAL':
-                        job['state'] = None  # already None, mark as confirmed international
+                        job['state'] = None
+                        job['state_resolution'] = 'international-confirmed'
+                        # Log the call so a misidentified US institution
+                        # leaves a trace for QC review instead of silently
+                        # staying off the US dashboard.
+                        print(f"  International (confirmed): {job.get('institution', '?')}")
                         break
                     elif len(answer) == 2 and answer.isalpha():
                         job['state'] = answer
@@ -970,33 +1107,69 @@ class PhilJobsScraper:
             time.sleep(0.3)
 
         if resolved:
-            all_data_file = self.data_dir / "all_jobs.json"
-            with open(all_data_file, 'w') as f:
-                json.dump(historical_data, f, indent=2)
+            self._save_all_jobs(historical_data)
             print(f"✓ Resolved state for {resolved} jobs")
         return resolved
 
     def rebuild_weekly_trends(self, historical_data):
-        """Rebuild weekly_trends from classified jobs grouped by scraped_date."""
+        """Rebuild weekly_trends from classified jobs grouped by POSTING week.
+
+        Buckets are the Monday of each job's posted_date week (fallback:
+        scraped_date) — see job_week_bucket(). Two kinds of buckets are
+        excluded:
+          - baseline: posting weeks before tracking began (job_week_bucket
+            returns None) — we only see the survivors of those weeks, so
+            they'd understate true volume. Counted in totals only.
+          - the trailing incomplete week: postings from the current week
+            keep arriving until next Monday's scrape, so that bucket is
+            withheld until it is complete.
+        Empty tracked weeks in between are kept as explicit zero entries so
+        charts don't silently skip gaps.
+        """
         jobs = historical_data.get('jobs', [])
+
+        # A posting week [Mon..Sun] is fully observable only once a scrape
+        # has run on/after the FOLLOWING Monday. Judge completeness against
+        # the data horizon (last scrape date), not the wall clock, so a
+        # mid-week manual rebuild can't include a half-observed week.
+        scrape_dates = [(j.get('scraped_date') or '')[:10] for j in jobs]
+        horizon = max((d for d in scrape_dates if d), default='')
+
+        def bucket_is_complete(monday_str):
+            next_monday = (datetime.strptime(monday_str, '%Y-%m-%d')
+                           + timedelta(days=7)).strftime('%Y-%m-%d')
+            return horizon >= next_monday
+
         date_groups = defaultdict(list)
+        n_baseline = 0
         for job in jobs:
-            date = job.get('scraped_date', '')[:10]
-            if date:
-                date_groups[date].append(job)
+            bucket = job_week_bucket(job)
+            if bucket is None:
+                n_baseline += 1
+                continue
+            if not bucket_is_complete(bucket):
+                continue  # incomplete week — included after next scrape
+            date_groups[bucket].append(job)
 
         new_trends = []
-        for date in sorted(date_groups.keys()):
-            trend = self.calculate_weekly_trends(date_groups[date], date)
-            new_trends.append(trend)
+        if date_groups:
+            first = min(date_groups)
+            last = max(date_groups)
+            d = datetime.strptime(first, '%Y-%m-%d')
+            end = datetime.strptime(last, '%Y-%m-%d')
+            while d <= end:
+                monday = d.strftime('%Y-%m-%d')
+                trend = self.calculate_weekly_trends(date_groups.get(monday, []), monday)
+                new_trends.append(trend)
+                d += timedelta(days=7)
 
         historical_data['weekly_trends'] = new_trends
+        historical_data['baseline_job_count'] = n_baseline
 
-        all_data_file = self.data_dir / "all_jobs.json"
-        with open(all_data_file, 'w') as f:
-            json.dump(historical_data, f, indent=2)
+        self._save_all_jobs(historical_data)
 
-        print(f"✓ Rebuilt {len(new_trends)} weekly trend entries from classified data")
+        print(f"✓ Rebuilt {len(new_trends)} weekly trend entries from classified data "
+              f"({n_baseline} baseline jobs predate tracking; current week withheld until complete)")
 
     # ── Trends calculation ────────────────────────────────────────────────
 
@@ -1023,9 +1196,8 @@ class PhilJobsScraper:
                 for detail in details:
                     detail_aos_counts[f"{main}::{detail}"] += 1
 
-            # position_type: new 5-category field; fall back to migrated job_type if needed
-            raw_pt = classification.get('position_type') or 'Other'
-            pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
+            # PhilJobs's own job_category where decisive; Claude fallback
+            pos_type = effective_position_type(job)
             position_type_counts[pos_type] += 1
 
             # Track position_type broken down by main AOS
@@ -1284,8 +1456,9 @@ class PhilJobsScraper:
 
         index = []
         for job, terms in per_job_terms:
-            scraped = (job.get('scraped_date') or '')[:10]
-            index.append({'terms': terms, 'scraped_date': scraped})
+            # week = the job's posting-week bucket (Monday), matching the
+            # trend series; null for baseline jobs that predate tracking.
+            index.append({'terms': terms, 'week': job_week_bucket(job)})
 
         vocab = sorted(
             [t for t, n in term_doc_freq.items()
@@ -1508,10 +1681,11 @@ class PhilJobsScraper:
                     result['main_aos'] = valid_main
                     if not isinstance(result.get('detail_aos'), dict):
                         result['detail_aos'] = {m: [] for m in valid_main}
-                    for main, details in result['detail_aos'].items():
-                        result['detail_aos'][main] = [
-                            d for d in (details or []) if d in DETAIL_AOS.get(main, [])
-                        ]
+                    result['detail_aos'] = {
+                        main: [d for d in (details or []) if d in DETAIL_AOS.get(main, [])]
+                        for main, details in result['detail_aos'].items()
+                        if main in valid_main
+                    }
                     raw_pt = result.get('position_type')
                     result['position_type'] = raw_pt if raw_pt in POSITION_TYPES else 'Other'
                     result['_model'] = OPUS_MODEL
@@ -1750,7 +1924,7 @@ class PhilJobsScraper:
             'matching against job description text. Example: searching `feminism`',
             'will also find jobs mentioning `feminist`, `patriarchy`, `gender`, etc.',
             '',
-            'This map is regenerated automatically every Monday by Claude Haiku',
+            f'This map is regenerated automatically every Monday by {CLAUDE_MODEL}',
             'based on the most frequent terms in the corpus of philosophy job',
             'descriptions collected so far. As the corpus grows over time, more',
             'terms will appear here and existing groups may shift.',
@@ -1838,7 +2012,7 @@ class PhilJobsScraper:
             '5. **Identify corpus-frequent terms** (in >80% of descriptions) for',
             '   the bubble-display stopword list. These remain searchable but are',
             '   filtered from the bubble chart to avoid noise.',
-            '6. **Generate synonym map** via Claude Haiku (see Synonym Expansion).',
+            f'6. **Generate synonym map** via {CLAUDE_MODEL} (see Synonym Expansion).',
             '7. **Embed** the per-job term index, synonym map, and stopword list',
             '   into the dashboard HTML.',
             '8. **Search runs client-side** in the browser: stems the query,',
@@ -2170,8 +2344,7 @@ class PhilJobsScraper:
                         key = f"{main}::{detail}"
                         detail_counts['all'][key] += 1
                         detail_counts[mode_key][key] += 1
-                raw_pt = cls.get('position_type') or 'Other'
-                pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
+                pos_type = effective_position_type(job)
                 pt_counts['all'][pos_type] += 1
                 pt_counts[mode_key][pos_type] += 1
                 for main in main_list:
@@ -2344,7 +2517,7 @@ class PhilJobsScraper:
         }
 
         seasonal_markers = [
-            {'index': i, 'label': 'Hiring Season'}
+            {'index': i, 'label': 'Primary Cycle'}
             for i, label in enumerate(bucket_labels)
             if self.is_hiring_season(label)
         ]
@@ -2386,14 +2559,17 @@ class PhilJobsScraper:
     # ── Dashboard ─────────────────────────────────────────────────────────
 
     def is_hiring_season(self, date_str):
-        """True if a (week or month or year) bucket label falls in the
-        Sept–Jan academic hiring season. Accepts 'YYYY-MM-DD', 'YYYY-MM',
-        or 'YYYY' label formats so the same logic drives shading at all
-        three granularities.
+        """True if a (week or month) bucket label falls in the July–December
+        PRIMARY hiring cycle — the season when most tenure-track and other
+        fall-deadline ads post (after Lassiter's primary/secondary cycle
+        split of PhilJobs data; the January–June secondary cycle is the peak
+        for fixed-term hiring instead). Accepts 'YYYY-MM-DD', 'YYYY-MM', or
+        'YYYY' label formats so the same logic drives shading at all three
+        granularities.
         """
-        # year-only buckets ("2026") span the whole year — always shade
+        # year-only buckets ("2026") span both cycles — never shade
         if len(date_str) == 4 and date_str.isdigit():
-            return True
+            return False
         try:
             if len(date_str) >= 7:
                 d = datetime.strptime(date_str[:7], '%Y-%m')
@@ -2401,7 +2577,7 @@ class PhilJobsScraper:
                 d = datetime.strptime(date_str, '%Y-%m-%d')
         except ValueError:
             return False
-        return d.month >= 9 or d.month <= 1
+        return d.month >= 7
 
     def generate_trend_dashboard(self, historical_data):
         """Generate US-only HTML dashboard (docs/index.html)."""
@@ -2416,10 +2592,17 @@ class PhilJobsScraper:
         # ── Filter to US jobs only ───────────────────────────────────────
         us_jobs = [j for j in all_jobs if j.get('state')]
 
+        # Baseline jobs: already live on PhilJobs when tracking began, so
+        # their posting weeks are incomplete (we only see the survivors).
+        # They count in totals/maps but are excluded from trend lines.
+        n_baseline_us = sum(1 for j in us_jobs if job_week_bucket(j) is None)
+
         # Group US jobs by date key (YYYY-MM-DD)
         jobs_by_date = defaultdict(list)
         for job in us_jobs:
-            date_key = job.get('scraped_date', '')[:10]
+            date_key = job_week_bucket(job)
+            if date_key is None:
+                continue  # baseline job — predates weekly tracking (totals only)
             jobs_by_date[date_key].append(job)
 
         # ── Weekly series ────────────────────────────────────────────────
@@ -2511,8 +2694,14 @@ class PhilJobsScraper:
                 region_data[region]['all'][i] += 1
                 region_data[region][mode_key][i] += 1
 
-        # state_alltime drives map color shading — use the 'all' slice for total
-        state_alltime = {s: sum(v['all']) for s, v in state_data.items() if sum(v['all']) > 0}
+        # state_alltime drives map color shading. Computed from the full job
+        # list (not the weekly series) so baseline jobs that predate weekly
+        # tracking still appear on the all-time map.
+        state_alltime = defaultdict(int)
+        for j in us_jobs:
+            if j.get('state'):
+                state_alltime[j['state']] += 1
+        state_alltime = dict(state_alltime)
 
         # ── Granularity slices (week / month / year) ─────────────────────
         # Charts read time-series data from data.dates, data.categories, etc.
@@ -2600,7 +2789,7 @@ class PhilJobsScraper:
                 'application_url': job.get('application_url', ''),
                 'contact_email': job.get('contact_email', ''),
                 'description': job.get('description', ''),
-                'job_type': cls.get('position_type', ''),
+                'job_type': effective_position_type(job),
             }
         subcategory_job_ids = {k: list(v) for k, v in subcategory_job_ids.items()}
 
@@ -2610,8 +2799,7 @@ class PhilJobsScraper:
             cls = job.get('classification')
             if not cls:
                 continue
-            raw_pt = cls.get('position_type') or 'Other'
-            pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
+            pos_type = effective_position_type(job)
             main_list = cls.get('main_aos', [])
             mode_key = 'solo' if len(main_list) == 1 else 'joint'
             for main in main_list:
@@ -2635,8 +2823,7 @@ class PhilJobsScraper:
                 continue
             main_list = cls.get('main_aos', [])
             mode_key = 'solo' if len(main_list) == 1 else 'joint'
-            raw_pt = cls.get('position_type') or 'Other'
-            pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
+            pos_type = effective_position_type(job)
             for main in main_list:
                 pos_type_aos_job_ids['all'][main][pos_type].append(jid)
                 pos_type_aos_job_ids[mode_key][main][pos_type].append(jid)
@@ -2702,10 +2889,10 @@ class PhilJobsScraper:
         seasonal_markers = []
         for i, date in enumerate(dates):
             if self.is_hiring_season(date):
-                seasonal_markers.append({'index': i, 'label': 'Hiring Season'})
+                seasonal_markers.append({'index': i, 'label': 'Primary Cycle'})
 
         # ── Pre-serialise complex JS objects ─────────────────────────────
-        categories_js = json.dumps({
+        categories_js = js_json({
             k: {
                 'name': k,
                 'dataAll': v['dataAll'], 'dataSolo': v['dataSolo'], 'dataJoint': v['dataJoint'],
@@ -2807,7 +2994,8 @@ class PhilJobsScraper:
             <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800 mb-1">Market Overview</h2>
-                    <p class="text-sm text-gray-500">New US jobs per week by main AOS category — shaded areas = hiring season (Sept–Jan). Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
+                    <p class="text-sm text-gray-500">New US postings per week by main AOS category, bucketed by the week each ad was <em>posted</em> on PhilJobs — shaded areas = primary hiring cycle (Jul–Dec), when most TT/fall-deadline ads post; Jan–Jun is the secondary cycle (fixed-term peak). Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
+                    <p class="text-xs text-gray-400 mt-1">{n_baseline_us} US ads were already live when tracking began (March 2026); they count in totals and maps but not in trend lines, since their posting weeks are only partially observed.</p>
                 </div>
                 <div class="flex flex-col items-end gap-2">
                     <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 bg-white">
@@ -2890,7 +3078,7 @@ class PhilJobsScraper:
                 </div>
                 <div>
                     <h3 class="text-sm font-semibold text-gray-700 mb-2">Trend Over Time</h3>
-                    <p class="text-xs text-gray-500 mb-2">Matching jobs per week. Shaded areas = hiring season.</p>
+                    <p class="text-xs text-gray-500 mb-2">Matching jobs per week. Shaded areas = primary hiring cycle (Jul–Dec).</p>
                     <div style="height:340px;"><canvas id="kwTrendChart"></canvas></div>
                 </div>
             </div>
@@ -3068,42 +3256,42 @@ class PhilJobsScraper:
             // data.dates, data.categories, etc. — those are initialised from
             // data.granularities[defaultGranularity] at page load and swapped
             // by setGranularity() when the user clicks the toggle.
-            granularities: {json.dumps(granularities)},
+            granularities: {js_json(granularities)},
             defaultGranularity: 'month',
-            granularityYearEnabled: {json.dumps(granularity_year_enabled)},
-            dates: {json.dumps(dates)},
-            totalNewJobsWeekly: {json.dumps(total_new_jobs_weekly)},
+            granularityYearEnabled: {js_json(granularity_year_enabled)},
+            dates: {js_json(dates)},
+            totalNewJobsWeekly: {js_json(total_new_jobs_weekly)},
             categories: {categories_js},
-            subcategoryData: {json.dumps(subcategory_data)},
-            jobTypeData: {json.dumps(job_type_series)},
-            institutionTypeData: {json.dumps(inst_type_series)},
-            stateData: {json.dumps(state_data)},
-            westCoastCityAos: {json.dumps(west_coast_city_aos)},
-            westCoastMetroAos: {json.dumps(west_coast_metro_aos)},
-            westCoastMetroCities: {json.dumps(west_coast_metro_cities)},
-            seasonalMarkers: {json.dumps(seasonal_markers)},
-            regionData: {json.dumps(region_data)},
-            stateAlltime: {json.dumps(state_alltime)},
-            stateCategoryData: {json.dumps(state_category_data)},
-            positionTypeByAosWeekly: {json.dumps(position_type_by_aos_weekly)},
-            positionTypeXAos: {json.dumps(pos_type_x_aos)},
-            positionTypes: {json.dumps(POSITION_TYPES)},
-            positionTypeColors: {json.dumps(POSITION_TYPE_COLORS)},
-            mainAosColors: {json.dumps(MAIN_AOS_COLORS)},
-            mainAosCategories: {json.dumps(MAIN_AOS_CATEGORIES)},
-            coocMatrix: {json.dumps(cooc.get('main_aos_matrix', {}))},
-            soloVsJoint: {json.dumps(cooc.get('main_aos_solo_vs_joint', {}))},
-            detailAosByContext: {json.dumps(cooc.get('detail_aos_by_context', {}))},
-            jobsForKeyword: {json.dumps(keyword_index)},
-            synonymMap: {json.dumps(synonym_map)},
-            bubbleStopwords: {json.dumps(bubble_stopwords)},
-            subcategoryJobIds: {json.dumps(subcategory_job_ids)},
-            unclassifiedJobIds: {json.dumps(unclassified_job_ids)},
-            currentWeekJobIds: {json.dumps(current_week_job_ids)},
-            allJobIds: {json.dumps(all_us_job_ids)},
-            coocJobIds: {json.dumps(cooc_job_ids)},
-            posTypeAosJobIds: {json.dumps(pos_type_aos_job_ids)},
-            jobDetails: {json.dumps(job_details_map)}
+            subcategoryData: {js_json(subcategory_data)},
+            jobTypeData: {js_json(job_type_series)},
+            institutionTypeData: {js_json(inst_type_series)},
+            stateData: {js_json(state_data)},
+            westCoastCityAos: {js_json(west_coast_city_aos)},
+            westCoastMetroAos: {js_json(west_coast_metro_aos)},
+            westCoastMetroCities: {js_json(west_coast_metro_cities)},
+            seasonalMarkers: {js_json(seasonal_markers)},
+            regionData: {js_json(region_data)},
+            stateAlltime: {js_json(state_alltime)},
+            stateCategoryData: {js_json(state_category_data)},
+            positionTypeByAosWeekly: {js_json(position_type_by_aos_weekly)},
+            positionTypeXAos: {js_json(pos_type_x_aos)},
+            positionTypes: {js_json(POSITION_TYPES)},
+            positionTypeColors: {js_json(POSITION_TYPE_COLORS)},
+            mainAosColors: {js_json(MAIN_AOS_COLORS)},
+            mainAosCategories: {js_json(MAIN_AOS_CATEGORIES)},
+            coocMatrix: {js_json(cooc.get('main_aos_matrix', {}))},
+            soloVsJoint: {js_json(cooc.get('main_aos_solo_vs_joint', {}))},
+            detailAosByContext: {js_json(cooc.get('detail_aos_by_context', {}))},
+            jobsForKeyword: {js_json(keyword_index)},
+            synonymMap: {js_json(synonym_map)},
+            bubbleStopwords: {js_json(bubble_stopwords)},
+            subcategoryJobIds: {js_json(subcategory_job_ids)},
+            unclassifiedJobIds: {js_json(unclassified_job_ids)},
+            currentWeekJobIds: {js_json(current_week_job_ids)},
+            allJobIds: {js_json(all_us_job_ids)},
+            coocJobIds: {js_json(cooc_job_ids)},
+            posTypeAosJobIds: {js_json(pos_type_aos_job_ids)},
+            jobDetails: {js_json(job_details_map)}
         }};
 
         // ===== GRANULARITY (week / month / year) =====
@@ -3276,7 +3464,7 @@ class PhilJobsScraper:
                             backgroundColor: 'rgba(0,0,0,0.8)', padding: 12,
                             callbacks: {{
                                 afterLabel: function(context) {{
-                                    return data.seasonalMarkers.some(m => m.index === context.dataIndex) ? '🌟 Hiring Season' : '';
+                                    return data.seasonalMarkers.some(m => m.index === context.dataIndex) ? '🌟 Primary Cycle (Jul–Dec)' : '';
                                 }}
                             }}
                         }}
@@ -3950,7 +4138,11 @@ class PhilJobsScraper:
             const weekCounts = {{}};
             data.dates.forEach(d => {{ weekCounts[d] = 0; }});
             matchingJobs.forEach(j => {{
-                if (weekCounts[j.scraped_date] !== undefined) weekCounts[j.scraped_date]++;
+                if (!j.week) return;  // baseline job — predates weekly tracking
+                const key = currentGranularity === 'month' ? j.week.slice(0, 7)
+                          : currentGranularity === 'year'  ? j.week.slice(0, 4)
+                          : j.week;
+                if (weekCounts[key] !== undefined) weekCounts[key]++;
             }});
             renderKwTrend(data.dates.map(d => weekCounts[d]), q);
         }}
@@ -4124,7 +4316,7 @@ class PhilJobsScraper:
             let html = '<table class="w-full border-collapse"><thead><tr>';
             html += '<th class="text-left py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200 text-sm">AOS Category</th>';
             data.positionTypes.forEach(pt => {{
-                const short = displayPt(pt).replace('Visiting / Adjunct / Lecturer (Fixed-Term)', 'Visiting/Adj/Lect').replace('Tenured / Continuing / Permanent', 'Tenured/Perm').replace('Postdoc / Fellowship', 'Postdoc/Fellow');
+                const short = displayPt(pt).replace('Visiting / Adjunct / Lecturer (Fixed-Term)', 'Visiting/Adj/Lect').replace('Tenured / Continuing / Permanent', 'Tenured/Perm').replace('Postdoc / Fellowship', 'Postdoc/Fellow').replace('Grad Fellowship / RA', 'Grad Fellow/RA');
                 html += `<th class="py-2 px-2 bg-gray-50 font-semibold border border-gray-200 text-center text-xs" style="color:${{data.positionTypeColors[pt] || '#6b7280'}}" title="${{displayPt(pt)}}">${{short}}</th>`;
             }});
             html += '<th class="py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200 text-center text-sm">Total</th></tr></thead><tbody>';
@@ -4406,7 +4598,7 @@ class PhilJobsScraper:
         let stateTrendChart = null;
         let currentStateCode = null;
         let stateMode = 'all';
-        const catColors = {json.dumps(MAIN_AOS_COLORS)};
+        const catColors = {js_json(MAIN_AOS_COLORS)};
 
         function renderStateDetail() {{
             if (!currentStateCode) return;
@@ -4517,7 +4709,9 @@ class PhilJobsScraper:
         # Group international jobs by date key (YYYY-MM-DD)
         jobs_by_date = defaultdict(list)
         for job in intl_jobs:
-            date_key = job.get('scraped_date', '')[:10]
+            date_key = job_week_bucket(job)
+            if date_key is None:
+                continue  # baseline job — predates weekly tracking (totals only)
             jobs_by_date[date_key].append(job)
 
         # ── Weekly series ────────────────────────────────────────────────
@@ -4575,7 +4769,7 @@ class PhilJobsScraper:
             c = job.get('country')
             if c:
                 country_alltime[c] += 1
-                if job.get('scraped_date', '')[:10] == last_date_key:
+                if job_week_bucket(job) == last_date_key:
                     country_current[c] += 1
 
         # Build numeric → country mapping for choropleth (reverse of COUNTRY_NUMERIC)
@@ -4588,8 +4782,7 @@ class PhilJobsScraper:
             cls = job.get('classification')
             if not cls:
                 continue
-            raw_pt = cls.get('position_type') or 'Other'
-            pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
+            pos_type = effective_position_type(job)
             main_list = cls.get('main_aos', [])
             mode_key = 'solo' if len(main_list) == 1 else 'joint'
             for main in main_list:
@@ -4612,8 +4805,7 @@ class PhilJobsScraper:
                 continue
             main_list = cls.get('main_aos', [])
             mode_key = 'solo' if len(main_list) == 1 else 'joint'
-            raw_pt = cls.get('position_type') or 'Other'
-            pos_type = raw_pt if raw_pt in POSITION_TYPES else 'Other'
+            pos_type = effective_position_type(job)
             for main in main_list:
                 pos_type_aos_job_ids['all'][main][pos_type].append(jid)
                 pos_type_aos_job_ids[mode_key][main][pos_type].append(jid)
@@ -4672,7 +4864,7 @@ class PhilJobsScraper:
                 'application_url': job.get('application_url', ''),
                 'contact_email': job.get('contact_email', ''),
                 'description': job.get('description', ''),
-                'job_type': cls.get('position_type', ''),
+                'job_type': effective_position_type(job),
             }
         subcategory_job_ids = {k: list(v) for k, v in subcategory_job_ids.items()}
 
@@ -4727,10 +4919,10 @@ class PhilJobsScraper:
         seasonal_markers = []
         for i, date in enumerate(dates):
             if self.is_hiring_season(date):
-                seasonal_markers.append({'index': i, 'label': 'Hiring Season'})
+                seasonal_markers.append({'index': i, 'label': 'Primary Cycle'})
 
         # ── Pre-serialise JS objects ──────────────────────────────────────
-        categories_js = json.dumps({
+        categories_js = js_json({
             k: {
                 'name': k,
                 'dataAll': v['dataAll'], 'dataSolo': v['dataSolo'], 'dataJoint': v['dataJoint'],
@@ -4831,7 +5023,7 @@ class PhilJobsScraper:
             <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800 mb-1">Market Overview</h2>
-                    <p class="text-sm text-gray-500">New international jobs per week by main AOS category — shaded areas = hiring season (Sept–Jan). Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
+                    <p class="text-sm text-gray-500">New international jobs per week by main AOS category — shaded areas = primary hiring cycle (Jul–Dec), when most TT/fall-deadline ads post; Jan–Jun is the secondary cycle (fixed-term peak). Toggle filters by solo (single-AOS) vs. joint (multi-AOS) listings.</p>
                 </div>
                 <div class="flex flex-col items-end gap-2">
                     <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 bg-white">
@@ -4995,41 +5187,41 @@ class PhilJobsScraper:
             // data.dates, data.categories, etc. — those are initialised from
             // data.granularities[defaultGranularity] at page load and swapped
             // by setGranularity() when the user clicks the toggle.
-            granularities: {json.dumps(granularities)},
+            granularities: {js_json(granularities)},
             defaultGranularity: 'month',
-            granularityYearEnabled: {json.dumps(granularity_year_enabled)},
-            dates: {json.dumps(dates)},
-            totalNewJobsWeekly: {json.dumps(total_new_jobs_weekly)},
+            granularityYearEnabled: {js_json(granularity_year_enabled)},
+            dates: {js_json(dates)},
+            totalNewJobsWeekly: {js_json(total_new_jobs_weekly)},
             categories: {categories_js},
-            subcategoryData: {json.dumps(subcategory_data)},
-            jobTypeData: {json.dumps(job_type_series)},
-            institutionTypeData: {json.dumps(inst_type_series)},
-            intlRegionData: {json.dumps(intl_region_data)},
-            countryAlltime: {json.dumps(dict(country_alltime))},
-            countryCurrentWeek: {json.dumps(dict(country_current))},
-            countryNumeric: {json.dumps(COUNTRY_NUMERIC)},
-            numericToCountry: {json.dumps(numeric_to_country)},
-            countryCategoryData: {json.dumps(country_category_data)},
-            seasonalMarkers: {json.dumps(seasonal_markers)},
-            positionTypeByAosWeekly: {json.dumps(position_type_by_aos_weekly)},
-            positionTypeXAos: {json.dumps(pos_type_x_aos)},
-            positionTypes: {json.dumps(POSITION_TYPES)},
-            positionTypeColors: {json.dumps(POSITION_TYPE_COLORS)},
-            mainAosColors: {json.dumps(MAIN_AOS_COLORS)},
-            mainAosCategories: {json.dumps(MAIN_AOS_CATEGORIES)},
-            coocMatrix: {json.dumps(cooc.get('main_aos_matrix', {}))},
-            soloVsJoint: {json.dumps(cooc.get('main_aos_solo_vs_joint', {}))},
-            detailAosByContext: {json.dumps(cooc.get('detail_aos_by_context', {}))},
-            jobsForKeyword: {json.dumps(keyword_index)},
-            synonymMap: {json.dumps(synonym_map)},
-            bubbleStopwords: {json.dumps(bubble_stopwords)},
-            subcategoryJobIds: {json.dumps(subcategory_job_ids)},
-            unclassifiedJobIds: {json.dumps(unclassified_job_ids)},
-            currentWeekJobIds: {json.dumps(current_week_job_ids)},
-            allJobIds: {json.dumps(all_intl_job_ids)},
-            coocJobIds: {json.dumps(cooc_job_ids)},
-            posTypeAosJobIds: {json.dumps(pos_type_aos_job_ids)},
-            jobDetails: {json.dumps(job_details_map)}
+            subcategoryData: {js_json(subcategory_data)},
+            jobTypeData: {js_json(job_type_series)},
+            institutionTypeData: {js_json(inst_type_series)},
+            intlRegionData: {js_json(intl_region_data)},
+            countryAlltime: {js_json(dict(country_alltime))},
+            countryCurrentWeek: {js_json(dict(country_current))},
+            countryNumeric: {js_json(COUNTRY_NUMERIC)},
+            numericToCountry: {js_json(numeric_to_country)},
+            countryCategoryData: {js_json(country_category_data)},
+            seasonalMarkers: {js_json(seasonal_markers)},
+            positionTypeByAosWeekly: {js_json(position_type_by_aos_weekly)},
+            positionTypeXAos: {js_json(pos_type_x_aos)},
+            positionTypes: {js_json(POSITION_TYPES)},
+            positionTypeColors: {js_json(POSITION_TYPE_COLORS)},
+            mainAosColors: {js_json(MAIN_AOS_COLORS)},
+            mainAosCategories: {js_json(MAIN_AOS_CATEGORIES)},
+            coocMatrix: {js_json(cooc.get('main_aos_matrix', {}))},
+            soloVsJoint: {js_json(cooc.get('main_aos_solo_vs_joint', {}))},
+            detailAosByContext: {js_json(cooc.get('detail_aos_by_context', {}))},
+            jobsForKeyword: {js_json(keyword_index)},
+            synonymMap: {js_json(synonym_map)},
+            bubbleStopwords: {js_json(bubble_stopwords)},
+            subcategoryJobIds: {js_json(subcategory_job_ids)},
+            unclassifiedJobIds: {js_json(unclassified_job_ids)},
+            currentWeekJobIds: {js_json(current_week_job_ids)},
+            allJobIds: {js_json(all_intl_job_ids)},
+            coocJobIds: {js_json(cooc_job_ids)},
+            posTypeAosJobIds: {js_json(pos_type_aos_job_ids)},
+            jobDetails: {js_json(job_details_map)}
         }};
 
         // ===== GRANULARITY (week / month / year) =====
@@ -5849,7 +6041,11 @@ class PhilJobsScraper:
             const weekCounts = {{}};
             data.dates.forEach(d => {{ weekCounts[d] = 0; }});
             matchingJobs.forEach(j => {{
-                if (weekCounts[j.scraped_date] !== undefined) weekCounts[j.scraped_date]++;
+                if (!j.week) return;  // baseline job — predates weekly tracking
+                const key = currentGranularity === 'month' ? j.week.slice(0, 7)
+                          : currentGranularity === 'year'  ? j.week.slice(0, 4)
+                          : j.week;
+                if (weekCounts[key] !== undefined) weekCounts[key]++;
             }});
             renderKwTrend(data.dates.map(d => weekCounts[d]), q);
         }}
@@ -6023,7 +6219,7 @@ class PhilJobsScraper:
             let html = '<table class="w-full border-collapse"><thead><tr>';
             html += '<th class="text-left py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200 text-sm">AOS Category</th>';
             data.positionTypes.forEach(pt => {{
-                const short = displayPt(pt).replace('Visiting / Adjunct / Lecturer (Fixed-Term)', 'Visiting/Adj/Lect').replace('Tenured / Continuing / Permanent', 'Tenured/Perm').replace('Postdoc / Fellowship', 'Postdoc/Fellow');
+                const short = displayPt(pt).replace('Visiting / Adjunct / Lecturer (Fixed-Term)', 'Visiting/Adj/Lect').replace('Tenured / Continuing / Permanent', 'Tenured/Perm').replace('Postdoc / Fellowship', 'Postdoc/Fellow').replace('Grad Fellowship / RA', 'Grad Fellow/RA');
                 html += `<th class="py-2 px-2 bg-gray-50 font-semibold border border-gray-200 text-center text-xs" style="color:${{data.positionTypeColors[pt] || '#6b7280'}}" title="${{displayPt(pt)}}">${{short}}</th>`;
             }});
             html += '<th class="py-2 px-3 bg-gray-50 font-semibold text-gray-700 border border-gray-200 text-center text-sm">Total</th></tr></thead><tbody>';
@@ -6173,7 +6369,7 @@ class PhilJobsScraper:
 ## 📊 View Interactive Dashboard
 [**Click here to view the comprehensive analytics dashboard**](../docs/index.html)
 
-## Top Main AOS This Week (New Jobs)
+## Top Main AOS — last complete posting week ({weekly_trend.get('date', '—')})
 """
         main_aos_counts = weekly_trend.get('main_aos_counts', {})
         if main_aos_counts:
@@ -6225,7 +6421,7 @@ class PhilJobsScraper:
                 cls = job.get('classification') or {}
                 row = {k: job.get(k, '') for k in jobs_fields}
                 # position_type lives inside classification, not top-level
-                row['position_type'] = cls.get('position_type') or ''
+                row['position_type'] = effective_position_type(job)
                 row['institution_type'] = cls.get('institution_type') or job.get('institution_type', '')
                 writer.writerow(row)
 
@@ -6291,7 +6487,7 @@ def main():
 
     # 3. Identify new jobs + save initial record
     print("Analyzing new jobs and saving...")
-    new_jobs, snapshot, weekly_trend = scraper.save_data(jobs, historical_data)
+    new_jobs, snapshot = scraper.save_data(jobs, historical_data)
     print(f"Identified {len(new_jobs)} NEW jobs this week")
 
     # 4. Classify new jobs with Claude API
@@ -6317,21 +6513,19 @@ def main():
     if unclassified or needs_migration:
         print(f"\nMigrating/reclassifying jobs (unclassified: {len(unclassified)}, needs label migration: {len(needs_migration)})...")
         scraper.reclassify_all_jobs(historical_data)
-        # Rebuild weekly trends now that all jobs are classified with new labels
-        print("Rebuilding weekly trends from classified data...")
-        scraper.rebuild_weekly_trends(historical_data)
-    else:
-        # Save the newly classified jobs
-        if new_jobs:
-            all_data_file = scraper.data_dir / "all_jobs.json"
-            with open(all_data_file, 'w') as f:
-                json.dump(historical_data, f, indent=2)
+    elif new_jobs:
+        # Persist the newly classified jobs
+        scraper._save_all_jobs(historical_data)
 
     # 6. Resolve missing states via Claude
-    state_resolved = scraper.resolve_missing_states(historical_data)
-    if state_resolved:
-        print("Rebuilding weekly trends after state resolution...")
-        scraper.rebuild_weekly_trends(historical_data)
+    scraper.resolve_missing_states(historical_data)
+
+    # 7. Rebuild weekly trends UNCONDITIONALLY, now that every job carries
+    # its final classification and state for this run. (Previously this
+    # only ran when a reclassification or state fix happened, so ordinary
+    # weeks stored trend entries computed from still-unclassified jobs.)
+    print("Rebuilding weekly trends from classified data...")
+    scraper.rebuild_weekly_trends(historical_data)
 
     # 8. Generate dashboards
     print("\nGenerating US dashboard...")
@@ -6345,7 +6539,8 @@ def main():
 
     # 9. Generate report + CSV
     print("\nGenerating report...")
-    scraper.generate_report(new_jobs, snapshot, weekly_trend, historical_data)
+    latest_trend = historical_data['weekly_trends'][-1] if historical_data.get('weekly_trends') else {}
+    scraper.generate_report(new_jobs, snapshot, latest_trend, historical_data)
 
     print("\nExporting CSV archives...")
     scraper.export_csv(historical_data)

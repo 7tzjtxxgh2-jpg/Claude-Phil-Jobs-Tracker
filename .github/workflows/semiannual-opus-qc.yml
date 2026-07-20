@@ -16,6 +16,13 @@ on:
     - cron: '0 14 15 1,7 *'  # Jan 15 + Jul 15 at 14:00 UTC
   workflow_dispatch:
 
+# All workflows that commit to main share one concurrency group so
+# runs queue instead of racing each other's pushes (e.g. when the
+# 15th falls on a Monday and this fires alongside the weekly scrape).
+concurrency:
+  group: repo-writer
+  cancel-in-progress: false
+
 permissions:
   contents: write
   issues: write
@@ -65,8 +72,11 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add data/qc_opus_*.json docs/QC_REPORT.md
-          git diff --staged --quiet || git commit -m "Bimonthly Opus QC: $(date +'%Y-%m-%d')"
-          git push
+          git diff --staged --quiet || git commit -m "Semiannual Opus QC: $(date +'%Y-%m-%d')"
+          # Rebase onto any commits pushed since checkout (another workflow
+          # may have won a race); retry once in case a push lands mid-rebase.
+          git pull --rebase origin main
+          git push || (git pull --rebase origin main && git push)
 
       - name: Post summary as GitHub Issue
         if: success()

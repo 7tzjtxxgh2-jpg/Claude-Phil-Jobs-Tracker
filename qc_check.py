@@ -13,6 +13,8 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from collections import Counter
 
+from scraper import position_type_from_category
+
 DATA_FILE = Path("data/all_jobs.json")
 REPORT_FILE = Path("data") / f"qc_report_{datetime.now().strftime('%Y-%m-%d')}.md"
 
@@ -84,6 +86,26 @@ def check_stored_data(data):
         issues.append(('WARN', f"{missing_aos}/{len(jobs)} jobs missing AOS ({missing_aos/max(len(jobs),1)*100:.0f}%) — unusually high"))
     if missing_job_category > 0:
         issues.append(('INFO', f"{missing_job_category} jobs missing job_category field (may be older records)"))
+
+    # 2b. Position-type cross-check: PhilJobs's own job_category vs Claude.
+    # The dashboard uses the deterministic category mapping where decisive;
+    # a disagreement with Claude's free-text reading is worth a look — it
+    # usually means the ad text contradicts the poster's category choice.
+    pt_mismatches = []
+    for j in jobs:
+        mapped = position_type_from_category(j.get('job_category'))
+        claude = (j.get('classification') or {}).get('position_type')
+        if mapped and claude and mapped != claude:
+            pt_mismatches.append(
+                f"{j.get('institution', '?')} — {j.get('title', '?')[:60]} "
+                f"(category → {mapped!r}, Claude → {claude!r})"
+            )
+    if pt_mismatches:
+        shown = '\n  '.join(pt_mismatches[:10])
+        more = f"\n  ... and {len(pt_mismatches) - 10} more" if len(pt_mismatches) > 10 else ''
+        issues.append(('INFO',
+            f"{len(pt_mismatches)} jobs where PhilJobs's category and Claude's "
+            f"position-type reading disagree (dashboard uses the category):\n  {shown}{more}"))
 
     # 3. Duplicate hash check
     hashes = [j.get('hash') for j in jobs if j.get('hash')]

@@ -82,6 +82,8 @@ On each run, GitHub Actions:
 
 **Manual trigger:** Go to repository → Actions tab → "Weekly PhilJobs Scraper" → "Run workflow"
 
+**Concurrency:** All workflows that commit to `main` (weekly scrape, monthly QC, semiannual Opus QC, reclassify) share a single `repo-writer` concurrency group, so overlapping runs queue instead of racing each other's pushes; each also rebases onto `origin/main` before pushing.
+
 **Required secret:** The repository must have `CLAUDE` set as a GitHub Actions secret containing a valid Anthropic API key. Without it, new jobs will receive fallback classifications and will be reclassified on the next successful run.
 
 ---
@@ -118,11 +120,10 @@ A 0.5-second delay is inserted between each individual job page request to avoid
 | `application_type` | Table row | How to apply |
 | `application_url` | Table row | Link to application portal |
 | `contact_email` | Table row | Contact email if provided |
-| `hash` | Computed | MD5 of `institution_title` — used for deduplication |
+| `hash` | Computed | MD5 of the PhilJobs job ID — used for deduplication |
 | `scraped_date` | System clock | ISO datetime when this job was first scraped |
 | `status` | Title text | `active` or `expired` (if title contains "(EXPIRED)") |
 | `classification` | Claude API | Full classification object — see [AI Classification](#ai-classification-methodology) |
-| `job_type` | Synced from classification | Top-level copy of `position_type` for backward compatibility |
 | `institution_type` | Synced from classification | Top-level copy |
 
 ---
@@ -140,9 +141,21 @@ On each run, only jobs whose hash is **not** in the existing `all_jobs.json` are
 - Two genuinely separate openings at the same institution with identical titles are correctly counted as two distinct jobs (they have different PhilJobs IDs)
 - "New jobs this week" in the dashboard = genuinely new market entries, not total active listings
 
-Weekly trend data reflects new entries per week, not the total active job pool size.
+Weekly trend data reflects new postings per week, not the total active job pool size.
 
-**Migration note:** Prior to March 2026, hashes were computed from `MD5(institution_title)`. The scraper automatically migrates all existing records to the new ID-based format on first run — this is a one-time, safe operation that does not alter any other job data.
+### Trend bucketing (since 2026-07-20)
+
+`weekly_trends` buckets jobs by the **Monday of the week each ad was posted** on PhilJobs (`posted_date`, falling back to `scraped_date` when unparseable), not by the date we scraped it. This makes the series robust to missed scrape runs (a skipped Monday no longer merges two weeks into one point) and puts each ad in its true market-entry week.
+
+Two kinds of buckets are excluded from the trend series:
+
+- **Baseline jobs** — ads already live on PhilJobs when tracking began (March 2026). For their posting weeks we only observe the survivors, so counting them would understate true volume. They appear in cumulative totals and maps; `baseline_job_count` in `all_jobs.json` records how many there are.
+- **The current (incomplete) week** — postings keep arriving until the next Monday scrape, so the trailing bucket is withheld until complete.
+
+One known limitation: an ad posted and removed entirely *between* two Monday scrapes is never seen. With a ~40-day median posting window this is rare.
+
+
+**Migration note:** Prior to March 2026, hashes were computed from `MD5(institution_title)`. Existing records were migrated to the ID-based format in a one-time manual step in March 2026 (the migration code has since been removed). If you fork this repo against pre-migration data, recompute `hash = MD5(id)` for stored jobs first, or every historical job will be re-detected as new.
 
 ---
 
@@ -155,7 +168,7 @@ Raw PhilJobs data includes free-text AOS descriptions (e.g., "Ethics, broadly co
 ### Model and settings
 
 - **Model:** `claude-sonnet-4-5` *(switched from `claude-haiku-4-5-20251001` on 2026-05-16 for better edge-case accuracy on multi-AOS and interdisciplinary postings; each classification stores `_model` and `_classified_at` for per-job audit)*
-- **Temperature:** `0` (deterministic — same input always produces same output)
+- **Temperature:** `0` (near-deterministic — the API does not strictly guarantee identical outputs, but temperature 0 minimizes variation; the regression suite and semiannual Opus QC catch any drift)
 - **Max tokens:** `1000`
 - **Retries:** 3 attempts per job on API failure, with 1-second backoff
 
@@ -234,14 +247,15 @@ The taxonomy has two levels: 8 **main categories** and fine-grained **subcategor
 
 ### Subcategories
 
-**Taxonomy version:** `2026-05-16` — revised from the original to add Virtue Ethics, Philosophy of Disability, Public Philosophy, and Phenomenology, and to remove a redundant "Social & Political Philosophy (General)" duplicate. When this version changes, the scraper backs up the prior classification on each job under `classification_v1` / `_v2` / etc. and re-classifies under the new taxonomy.
+**Taxonomy version:** `2026-07-20-sonnet-v5` — v4 (2026-05-16/18) added Virtue Ethics, Feminist Ethics, Philosophy of Disability, Public Philosophy, and Phenomenology, and removed a redundant "Social & Political Philosophy (General)" duplicate; v5 (2026-07-20) added prompt Rule 2a (AOC-only teaching needs do not override an explicit "Open" AOS). When this version changes, the scraper archives the prior classification of every job to `data/classification_history.json` and re-classifies under the new taxonomy/prompt.
 
 <details>
-<summary>Ethics (12 subcategories)</summary>
+<summary>Ethics (13 subcategories)</summary>
 
 - Meta-Ethics
 - Normative Ethics
 - **Virtue Ethics** *(added 2026-05-16)*
+- **Feminist Ethics** *(added 2026-05-16)*
 - Biomedical Ethics / Bioethics
 - Neuroethics
 - AI, Technology, and Information Ethics
@@ -340,7 +354,7 @@ Four subcategories are designated as "cross-cutting" because they appear across 
 
 ## Position Type Taxonomy
 
-Every job is assigned exactly one of these five position types:
+Every job is assigned exactly one of six position types:
 
 | Type | Description |
 |------|-------------|
@@ -348,7 +362,24 @@ Every job is assigned exactly one of these five position types:
 | **Postdoc / Fellowship** | Postdoctoral positions, postdoc fellowships, named fellowships (Mellon, ACLS, etc.), research fellowships — fixed-term but research-focused |
 | **Visiting / Adjunct / Lecturer (Fixed-Term)** | Visiting Assistant Professor, Visiting Lecturer, Adjunct, Instructor, fixed-term Lecturer — teaching-focused with no path to permanence |
 | **Tenured / Continuing / Permanent** | Associate Professor (tenured), Full Professor, Senior Lecturer (permanent/continuing), any explicitly permanent or continuing non-tenure-track position |
+| **Grad Fellowship / RA** | Graduate fellowships and research-assistant postings — aimed at current PhD students, not job-market candidates. Kept separable so they don't contaminate the market-facing lines |
 | **Other** | Department chairs with no faculty component, deans, purely administrative or non-academic positions |
+
+### How position type is determined (since 2026-07-20)
+
+Position type is derived **deterministically from PhilJobs's own publisher-supplied category** (`job_category`, of the form `<role> / <contract type>`) wherever that pair is decisive:
+
+| PhilJobs category | → Position type |
+|---|---|
+| role `Graduate fellowship` or `Research assistant` | Grad Fellowship / RA |
+| role `Administration (non-academic)` or `Other (non-academic)` | Other |
+| contract `Tenure-track or similar` | Tenure-Track |
+| contract `Tenured, continuing or permanent` | Tenured / Continuing / Permanent |
+| role `Postdoc or similar` | Postdoc / Fellowship |
+| any faculty role on `Fixed term` | Visiting / Adjunct / Lecturer (Fixed-Term) |
+| `Visiting fellowship / Professorship`, `Contract type open` | *ambiguous — falls back to the Claude classification* |
+
+The Claude classification (`classification.position_type`) is still produced for every job and used as the fallback for the ambiguous categories. The monthly QC report flags jobs where the two disagree — those are usually ads whose text contradicts the poster's category choice.
 
 The Position Type Trends chart in the dashboard shows how the volume of each type has changed over time. Within each type, the chart also shows the AOS breakdown — for example, what proportion of tenure-track jobs in a given week were in Ethics vs. Metaphysics.
 
@@ -389,9 +420,9 @@ For jobs in CA, OR, or WA, the scraper attempts to match the city field against 
 
 Each city has associated latitude/longitude coordinates for potential map plotting.
 
-### Hiring season
+### Hiring cycles
 
-Philosophy has a well-defined hiring cycle. The scraper marks weeks falling between **September and January** (months 9, 10, 11, 12, 1) as "hiring season." These weeks are highlighted with background shading on trend charts.
+Philosophy has a well-defined two-cycle year (following Charles Lassiter's analyses of PhilJobs data): the **primary cycle (July–December)**, when most tenure-track and other fall-deadline ads post, and the **secondary cycle (January–June)**, which is the *peak* season for fixed-term hiring (VAPs, adjuncts). Primary-cycle weeks (months 7–12) are highlighted with background shading on trend charts; year-granularity buckets span both cycles and are not shaded.
 
 ---
 
@@ -577,7 +608,7 @@ Open either HTML file directly in a browser to preview the dashboard.
 
 **Why weekly scrapes and not daily?** The philosophy job market is slow-moving; new postings appear in clusters, and weekly granularity is sufficient to track hiring season patterns. Weekly also keeps API costs and GitHub Actions minutes low.
 
-**Why count new jobs, not active jobs?** The total active listing count fluctuates with expirations and removals. New job entries per week is a cleaner signal of actual market activity.
+**Why count new jobs, not active jobs?** The total active listing count fluctuates with expirations and removals. New postings per week (bucketed by posting date) is a cleaner signal of actual market activity.
 
 **Why Claude Sonnet and not the cheaper Haiku?** The project initially used `claude-haiku-4-5-20251001`. After ~200 jobs of data accumulated, the dashboard switched to `claude-sonnet-4-5` (3× more expensive per token, but still under $1/week total — see methodology change log) because Sonnet is markedly better at edge-case classification: subtle multi-AOS jobs, interdisciplinary postings, and novel position framings. Temperature=0 across both models ensures deterministic classification. Every job's classification records which model produced it under `_model` for audit.
 

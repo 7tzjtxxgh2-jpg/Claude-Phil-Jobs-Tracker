@@ -169,8 +169,8 @@
     },
     {
       "test_id": "genuinely_open_faculty",
-      "rule_tested": "2",
-      "note": "CUNY Associate Professor with AOS=Open, AOC=Open and no preferences in description. Should remain Open.",
+      "rule_tested": "2a",
+      "note": "CUNY Associate Professor with AOS=Open/AOC=Open, but the description states 'The area of specialization is Logic' \u2014 a stated specialization per Rule 3 / Rule 2a. Expectation corrected 2026-07-20 (was ['Open'], contradicting the case's own description text). FLAGGED FOR OWNER REVIEW.",
       "source_id": "31033",
       "inputs": {
         "institution": "The Graduate Center, CUNY",
@@ -183,7 +183,7 @@
       },
       "expected": {
         "main_aos": [
-          "Open"
+          "Science, Logic, & Mathematics"
         ],
         "position_type": "Tenured / Continuing / Permanent",
         "subcategories_must_include": {},
@@ -218,6 +218,27 @@
         "subcategories_must_not_include": {
           "Science, Logic, & Mathematics": []
         }
+      }
+    },
+    {
+      "test_id": "open_aoc_teaching_needs",
+      "rule_tested": "2a",
+      "note": "AOS explicitly Open; areas appear only as AOC teaching needs. Per Rule 2a (added 2026-07-20) AOC-only signals do NOT override an explicit Open AOS \u2014 this was the single largest Sonnet/Opus disagreement class in the 2026-07-15 QC.",
+      "source_id": "31037",
+      "inputs": {
+        "institution": "University of Texas at El Paso",
+        "title": "Visiting Assistant Professor of Philosophy",
+        "job_category": "Junior faculty / Fixed term",
+        "aos": "Open",
+        "aoc": "Open",
+        "location": "El Paso, Texas, United States",
+        "description": "About The University of Texas at El Paso:The University of Texas at El Paso (UTEP) is a Carnegie R1 and community engaged university at the heart of the U.S.-Mexico border region that is increasing access to excellent higher education. We advance discovery of public value and positively impact the health, culture, education, and economy of the community we serve. UTEP enrolls 24,000 students\u201484% of whom are Hispanic and half of whom are the first in their families to attend college. UTEP offers 170 bachelor's, master's and doctoral degree programs at the only open-access, top-tier research university in America. The city's border location makes it an ideal venue for academic programs and research studies on topics of national interest such as bilingual education/language acquisition, Hispanic health disparities, border environment and immigration, environmental sustainability and infrastructure, and international trade and commerce.About the Department:The UTEP Philosophy Department has a long tradition of supporting work in Ethics, Political Philosophy, Philosophy of Science, and Latin American Philosophy. The department seeks to deepen and expand the work of its graduate students in these areas. The department sustains an active research faculty and an MA program in philosophy, which has successfully placed several graduates in high-level PhD programs.Job Description:The UTEP Philosophy Department invites applications for a one-year, full-time Visiting Assistant Professor beginning Fall 2026.Area of specialization: Open. Area of competence: Open, but the department has teaching needs in Social-Political Philosophy and the History of Philosophy (Ancient, Modern, Twentieth Century). The appointed faculty will be expected to teach a large section of Introduction to Philosophy or Introduction to Ethics each semester. The teaching load is 3/3 per semester.Requirements:ABD applicants are welcome, but a Ph.D. by August 31, 2026 is required. Experience working with diverse student populations and first-generation students are both highly desirable.Application Instructions:Review of applications will begin immediately and continue until the position is filled. Applicants must submit a cover letter, CV, and writing sample. Applicants will be prompted to provide the names of three professional references with email addresses to procure letters of reference (Interfolio generated emails acceptable). Graduate transcripts will be requested later in the search process. Applicants are encouraged to apply by March 31, 2026. Interviews will be conducted by Zoom.Please address questions to Noell Birondo ([email\u00a0protected]), department chair.To apply, please visit https://http://www.utep.edu/employmentIn keeping with its access, excellence, and impact mission, The University of Texas at El Paso is committed to an open, diverse, and inclusive learning and working environment that honors the talents, respects the differences, and nurtures the growth and development of all. We seek to attract faculty and staff who share our commitment.The University of Texas at El Paso is an Equal Opportunity/Affirmative Action employer. The University does not discriminate on the basis of race, color, national origin, sex, religion, age, disability, genetic information, veteran status, sexual orientation, or gender identity in employment or the provision of services in accordance with state and federal law. Discrimination on the basis of sex includes an employee's or prospective employee's right to be free from sexual harassment under Title IX of the Higher Education Amendments of 1972."
+      },
+      "expected": {
+        "main_aos": [
+          "Open"
+        ],
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)"
       }
     }
   ]
