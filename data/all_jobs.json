@@ -12072,6 +12072,278 @@
       "status": "active",
       "hash": "c3517db938a70f36f4e73cb9b0eb8f76",
       "scraped_date": "2026-07-20T15:45:02.121468"
+    },
+    {
+      "id": "31741",
+      "url": "https://philjobs.org/job/show/31741",
+      "institution": "Department of Philosophy, University of Vienna",
+      "title": "Tenure-Track Professorship in Medieval philosophy and/or Early Modern Philosophy",
+      "job_category": "Faculty (open rank) / Tenure-track or similar",
+      "aos": "Medieval philosophy and/or Early Modern Philosophy",
+      "aos_categories": "Early Modern PhilosophyMedieval and Renaissance Philosophy",
+      "aoc": "Medieval philosophy and/or Early Modern Philosophy",
+      "aoc_categories": "Early Modern PhilosophyMedieval and Renaissance Philosophy",
+      "workload": "Full time",
+      "vacancies": "1",
+      "location": "Vienna, Vienna, Austria",
+      "state": null,
+      "country": "Austria",
+      "city": null,
+      "description": "The position:The successful candidate will have a proven research focus in medieval philosophy and/or early modern philosophy. An innovative research profile is expected that contributes to the international advancement of the history of philosophy and is relevant to current systematic, historical, and interdisciplinary debates. The successful candidate will develop an independent line of research, strengthen and connect existing research priorities, and increase their international visibility and impact.The Department of Philosophy at the University of Vienna is part of the Faculty of Philosophy and Education and has a broad research and teaching profile. It has particular strengths in theoretical philosophy, especially metaphysics, philosophy of language, and philosophy of science, as well as in practical philosophy, with focuses on moral and political philosophy, applied ethics, and social philosophy. Current areas of specialization in the history of philosophy include ancient philosophy, modern philosophy, Neo-Kantianism, and research on the Vienna Circle. The University of Vienna provides an interdisciplinary research environment with numerous opportunities for collaboration within the humanities, social sciences, and cultural studies, as well as with related disciplines. The professorship is embedded in an internationally connected research environment and benefits from collaborations in research networks and university research initiatives.Your academic profile:Doctoral degree/PhDTwo years of international research experience during or after doctoral studiesOutstanding research achievements, excellent publication and funding record, international reputationGender and diversity competenceExperience in designing of and participating in research projects, ability to lead research groups and acquire third-party fundingEnthusiasm for excellent teaching and supervision at the bachelor's, master's, and doctoral levelWe expect the successful candidate to acquire, within three years, proficiency in German sufficient for teaching in bachelor\u2019s programmes and for participation in university committees.We offer:the opportunity to obtain a permanent position and eventual promotion to full professor; the initial contract as Assistant Professor is limited to six years, after positive evaluation of a qualification agreement the contract becomes permanent as Associate Professor; Associate Professors can be promoted to Full Professor through an internal competitive procedure.a dynamic research environmenta wide range of research and teaching support servicesattractive working conditions in a city with a high quality of lifean attractive salary according to theCollective Bargaining Agreement for University Staff(level A2) and an organisational retirement planThe University of Vienna has an anti-discriminatory employment policy and attaches great importance to equal opportunities, theadvancement of womenanddiversity. We place particular emphasis on enhancing women\u2019s representation among the academic and general university staff, particularly in leadership roles, and therefore expressly encourage qualified women to apply. Given equal qualifications, preference will be given to female candidates.",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "instructions": "Application documents (in English):\r\n\r\n1.\tLetter of motivation\r\n2.\tAcademic curriculum vitae\r\no\teducation and training (PhD Certificate, PDF)\r\no\tpositions held to date\r\no\tcareer breaks (e.g. parental, family or other care periods)\r\no\tawards and honors\r\no\tcommissions of trust\r\no\tprevious and current cooperation partners\r\no\tcomplete list of acquired third-party funding and, if applicable, of inventions/patents\r\no\tlist of most important scientific talks (max. 10)\r\no\tteaching and mentoring\r\no\tsupervision experience (Master and PhD), if applicable\r\n3.\tList of publications\r\no\tlink to your own publicly accessible ORCID record, with a complete and current publication list\r\no\tthree key publications as electronic full text version (PDF, max. 30 MB)\r\n4.\tResearch statement\r\no\tmost important research achievements (max. 2 pages) and planned future research activities (max. 4 pages)\r\no\tsynopsis of three key publications with relevance to the position advertised\r\no\tpublication strategy\r\n5.\tTeaching and supervision statement\r\no\tteaching and supervision concept, including a description of the previous and planned priorities in academic teaching and supervision (max. 2 pages)\r\no\tteaching evaluations (if available, PDF)",
+      "application_url": "https://jobs.univie.ac.at/job/Tenure-Track-Profess...",
+      "application_email": "",
+      "deadline": "September 15, 2026, 11:59pm CET",
+      "contact": "",
+      "more_info_url": "https://jobs.univie.ac.at/job/Tenure-Track-Profess...",
+      "contact_name": "Ulf Thalhammer",
+      "contact_email": "",
+      "posted_date": "July 22, 2026, 7:45pm UTC",
+      "scheduled_expiry_date": "September 15, 2026, 11:59pm CET",
+      "last_updated": "July 22, 2026, 7:45pm UTC",
+      "job_market_calendar": "This institution has indicated that the position advertised will not follow theAPA's recommended job market calendar. An explanation, if provided, appears below.We use an alternative system",
+      "raw_fields": {
+        "Contact phone": "43-1-4277-46001"
+      },
+      "institution_type": "Research University",
+      "classification": {
+        "main_aos": [
+          "History of Philosophy"
+        ],
+        "detail_aos": {
+          "History of Philosophy": [
+            "Medieval and Renaissance Philosophy",
+            "Early Modern Philosophy (17th/18th Century)"
+          ]
+        },
+        "position_type": "Tenure-Track",
+        "institution_type": "Research University",
+        "state_us": "INTERNATIONAL",
+        "reasoning": "The position explicitly seeks a candidate with research focus in medieval philosophy and/or early modern philosophy, clearly falling under History of Philosophy. The title and description confirm this is a tenure-track professorship at the University of Vienna, Austria.",
+        "_model": "claude-sonnet-4-5",
+        "_classified_at": "2026-07-27T16:12:51.513872"
+      },
+      "status": "active",
+      "hash": "2ab5569b4274a31c7f2b7c67cd9ba9e2",
+      "scraped_date": "2026-07-27T16:08:33.793183"
+    },
+    {
+      "id": "31737",
+      "url": "https://philjobs.org/job/show/31737",
+      "institution": "University of New Orleans",
+      "title": "Instructor of Philosophy",
+      "job_category": "Junior faculty / Fixed term",
+      "aos": "history of philosophy",
+      "aos_categories": "History of Philosophy",
+      "aoc": "Continental philosophy",
+      "aoc_categories": "Continental Philosophy",
+      "workload": "Full time",
+      "vacancies": "1",
+      "location": "New Orleans, Louisiana, United States",
+      "state": "LA",
+      "country": "United States",
+      "city": "New Orleans",
+      "start_date": "January 2027",
+      "description": "Instructor of PhilosophyThe Department of History and Philosophy at Louisiana State University New Orleans, a nationally-ranked research university, invites applications for Instructor of Philosophy.About Us- Located on the southern shore of Lake Pontchartrain, only 15 minutes from the French Quarter, LSU New Orleans occupies a 195-acre campus in one of the finest residential areas of the city.- Ranked Top 50 in the Nation for Social Mobility by U.S. News & World Report.- The Brookings Institution ranked LSU New Orleans third in the nation for providing equal access to higher education for students from all income levels.- For years, LSU New Orleans has appeared on U.S. News & World Report's least debt list (schools whose graduates have the least amount of debt) among national universities.- LSU New Orleans was formerly known as the University of New Orleans. \u00a0We became part of the larger LSU system on July 1, 2026.Job SummaryThe Philosophy Division/College of Liberal Arts, Social Inquiry, and Human Development at Louisiana State University New Orleans invites applications for a non-tenure-track Instructor position in Philosophy (4/4). \u00a0Applicants should have an area of specialization in history of philosophy. \u00a0The program is seeking someone who can cover the rationalists, Kant, Hegel, and German idealism. \u00a0Applicants should have an area of competence in Continental philosophy. \u00a0Applicants must be able to develop and deliver asynchronous online courses in support of our online degree program. \u00a0The successful candidate will be both a dynamic and inspiring educator, as well as an active and collegial full partner in the life of our small but active BA program. \u00a0This position is responsible for 12 academic units per semester (4/4).The anticipated start date for the individual hired will be January 2027.Review of completed application materials will begin\u202fSeptember 1, 2026.\u202f Applications will be considered until the position is filled.ResponsibilitiesResponsibilities include teaching undergraduate courses in Philosophy as needed, delivered both face-to-face and online. \u00a0As a member of a small BA program, each faculty member must be able to teach general education courses, courses in the history of philosophy, or other courses that fall outside their AOS. \u00a0Other responsibilities include serving as director for majors taking their capstone course, participating in the juried oral defenses of our majors each semester, and supporting the administrative functions of the unit. \u00a0Additional service responsibilities may include participation on division, department, school, college and/or university committees.Required Qualifications- Ph.D. in Philosophy- Evidence of teaching excellence at the University level.- Applicants should have an AOS in history of philosophy and an AOC in Continental philosophy.Desired Qualifications- Demonstrable expertise in curriculum development and delivery of asynchronous online courses.- Competence to teach courses in each of the four performance areas of History of Philosophy, Logic, Ethics, and\u202fMetaphysics/Epistemology.Excellent Employee Benefits PackageWe offer affordable health, dental, and vision insurances; retirement plans; and more.LSU New Orleans is an equal opportunity employer.LSU New Orleans participates in Louisiana's State As a Model Employer plan and invites qualified individuals with disabilities to apply.To apply, please visit https://ulsuno.wd1.myworkdayjobs.com/en-US/UniversityOfNewOrleans/details/Instructor-of-Philosophy_R-002024?locations=2c405185165b01919372af8fb40251d2je-3fd5e16da6ac45e48dd87eb0fd392a67",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "application_url": "https://apptrkr.com/9712653",
+      "soft_deadline": "September 1, 2026, 12:00am CST",
+      "deadline": "No deadline specified (applications considered on an ongoing basis)",
+      "contact": "",
+      "posted_date": "July 22, 2026, 7:41pm UTC",
+      "scheduled_expiry_date": "January 17, 2027, 8:26pm CST",
+      "last_updated": "Today, 3:24pm UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "institution_type": "Research University",
+      "classification": {
+        "main_aos": [
+          "History of Philosophy"
+        ],
+        "detail_aos": {
+          "History of Philosophy": [
+            "Early Modern Philosophy (17th/18th Century)",
+            "19th/20th Century Philosophy",
+            "Continental Philosophy"
+          ]
+        },
+        "position_type": "Visiting / Adjunct / Lecturer (Fixed-Term)",
+        "institution_type": "Research University",
+        "state_us": "LA",
+        "reasoning": "The AOS is explicitly history of philosophy, with specific focus on rationalists, Kant, Hegel, and German idealism (Early Modern and 19th century), and AOC in Continental philosophy. This is a non-tenure-track Instructor position with a 4/4 teaching load, clearly fixed-term.",
+        "_model": "claude-sonnet-4-5",
+        "_classified_at": "2026-07-27T16:12:55.987438"
+      },
+      "status": "active",
+      "hash": "29430ba87f428a5f10b3a531b0761f15",
+      "scraped_date": "2026-07-27T16:08:34.617753"
+    },
+    {
+      "id": "31733",
+      "url": "https://philjobs.org/job/show/31733",
+      "institution": "Department of Philosophy, Creighton University",
+      "title": "Assistant Professor",
+      "job_category": "Junior faculty / Tenure-track or similar",
+      "aos": "Feminist Philosophy",
+      "aos_categories": "Feminist Philosophy",
+      "aoc": "Open",
+      "workload": "Full time",
+      "vacancies": "1",
+      "org_reference_number": "J00453",
+      "location": "Omaha, Nebraska, United States",
+      "state": "NE",
+      "country": "United States",
+      "city": "Omaha",
+      "start_date": "August 1, 2027",
+      "description": "Position DescriptionThe Department of Philosophy at Creighton University invites applications for a\u00a0full-time, tenure-track Assistant Professor specializing in feminist\u00a0philosophy. We seek individuals committed to being outstanding teacher-scholars within a primarily undergraduate-serving college. The successful applicant will teach a 3-3 course load that includes first-year core courses in introductory philosophy and second-year core courses in introductory ethics, as well as upper division elective courses in their area of expertise, depending on departmental needs. The areas of competence for the position are open, but the department has teaching needs in biomedical ethics and the philosophy of economics.QualificationsA Ph.D. in philosophy (or a closely related field) is required to be in hand by the beginning of the contractAbility to foster student learning, development, and decision making in support of their goals, success, wellness, and needsStrong interpersonal skills with the ability to develop rapport quickly and effectively with a diversity of populationsEmpathy and compassion for the experiences of othersAn emerging record of scholarshipAn ability and willingness to promote the Catholic and Jesuit educational mission of the universityAbout CreightonAt Creighton, we offer meaningful work driven by a 475-year-old Jesuit tradition committed to social justice and serving others. Through this tradition, we push the boundaries on innovation. We pursue new knowledge for the betterment of society. We seek to improve our world through Catholic and Jesuit values.Omaha is a diverse community of 850,000 with four Fortune-500 companies, an active sports scene, and a vibrant arts community. Recent Wall Street Journal/Times Higher Education College rankings recognized Creighton University among the top 20% of institutions in its survey and among the Top 10 big-city colleges in the Midwest. Creighton University also ranks in the top third of National Universities in U.S. News & World Report\u2019s and was previously recognized for 16 years in a row as No. 1 among Best Regional Universities \u2013 Midwest.Equal Employment Opportunity StatementAAP/EEO StatementCreighton University is committed to providing a safe and non-discriminatory educational and employment environment. The University admits qualified students, hires qualified employees and accepts patients for treatment without regard to race, color, religion, sex, marital status, national origin, age, disability, citizenship, sexual orientation, gender identity, gender expression, veteran status, or other status protected by law. Its education and employment policies, scholarship and loan programs, and other programs and activities, are administered without unlawful discrimination.",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "instructions": "Candidates should submit their application through Interfolio. When prompted please upload the following: (1) cover letter; (2) current curriculum vitae; (3) three letters of reference, at least two of which address the effectiveness of your teaching; and (4) copies of academic transcripts from each higher educational institution attended.\r\n \r\nIf a candidate is called for an interview, they will be required to provide: (5) original academic transcripts from all institutions of higher education attended; (6) A writing sample; (7) student evaluations of teaching; (8) statement of teaching philosophy; and (9) one-page statement describing candidate's potential contributions to Creighton's mission (https://www.creighton.edu/about/mission-history).\r\n\r\nReview of completed applications will begin November 2, 2026, and continue until the position is filled. For further information, please visit https://www.creighton.edu/arts-sciences/philosophy. If you have any questions about the position, please contact Dr. Kevin Graham, Chair of the Department of Philosophy ([email\u00a0protected]). For questions or issues submitting your application or materials, please contact the Office of Human Resources ([email\u00a0protected]).",
+      "application_url": "http://apply.interfolio.com/189644",
+      "soft_deadline": "November 2, 2026, 12:00am CST",
+      "deadline": "No deadline specified (applications considered on an ongoing basis)",
+      "contact": "",
+      "more_info_url": "https://www.creighton.edu/arts-sciences/philosophy",
+      "contact_name": "Dr. Kevin Graham",
+      "contact_email": "",
+      "posted_date": "July 22, 2026, 7:41pm UTC",
+      "scheduled_expiry_date": "January 17, 2027, 7:10pm CST",
+      "last_updated": "July 22, 2026, 7:41pm UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "raw_fields": {
+        "Contact phone": "4022801219"
+      },
+      "institution_type": "Teaching College",
+      "classification": {
+        "main_aos": [
+          "Social & Political Philosophy"
+        ],
+        "detail_aos": {
+          "Social & Political Philosophy": [
+            "Feminist Philosophy"
+          ]
+        },
+        "position_type": "Tenure-Track",
+        "institution_type": "Teaching College",
+        "state_us": "NE",
+        "reasoning": "The AOS is explicitly 'Feminist Philosophy,' which falls under Social & Political Philosophy as a detail subcategory. The position is explicitly tenure-track at an undergraduate-serving institution in Omaha, Nebraska.",
+        "_model": "claude-sonnet-4-5",
+        "_classified_at": "2026-07-27T16:13:04.264283"
+      },
+      "status": "active",
+      "hash": "93aaa29263d4040a9099001cc887d333",
+      "scraped_date": "2026-07-27T16:08:35.324946"
+    },
+    {
+      "id": "31729",
+      "url": "https://philjobs.org/job/show/31729",
+      "institution": "Department of Philosophy, Creighton University",
+      "title": "Assistant Professor",
+      "job_category": "Junior faculty / Tenure-track or similar",
+      "aos": "Early Modern Philosophy",
+      "aos_categories": "Early Modern Philosophy",
+      "aoc": "Open",
+      "workload": "Full time",
+      "vacancies": "1",
+      "org_reference_number": "J00452",
+      "location": "Omaha, Nebraska, United States",
+      "state": "NE",
+      "country": "United States",
+      "city": "Omaha",
+      "start_date": "August 1, 2027",
+      "description": "Position DescriptionThe Department of Philosophy at Creighton University invites applications for a\u00a0full-time, tenure-track Assistant Professor specializing in early modern philosophy. We seek individuals committed to being outstanding teacher-scholars within a primarily undergraduate-serving college. The successful applicant will teach a 3-3 course load that includes first-year core courses in introductory philosophy and second-year core courses in introductory ethics, as well as upper division elective courses in their area of expertise, depending on departmental needs. The areas of competence for the position are open, but the department has teaching needs in biomedical ethics and the philosophy of economics.QualificationsA Ph.D. in philosophy (or a closely related field) is required to be in hand by the beginning of the contractAbility to foster student learning, development, and decision making in support of their goals, success, wellness, and needsStrong interpersonal skills with the ability to develop rapport quickly and effectively with a diversity of populationsEmpathy and compassion for the experiences of othersAn emerging record of scholarshipAn ability and willingness to promote the Catholic and Jesuit educational mission of the universityAbout CreightonAt Creighton, we offer meaningful work driven by a 475-year-old Jesuit tradition committed to social justice and serving others. Through this tradition, we push the boundaries on innovation. We pursue new knowledge for the betterment of society. We seek to improve our world through Catholic and Jesuit values.Omaha is a diverse community of 850,000 with four Fortune-500 companies, an active sports scene, and a vibrant arts community. Recent Wall Street Journal/Times Higher Education College rankings recognized Creighton University among the top 20% of institutions in its survey and among the Top 10 big-city colleges in the Midwest. Creighton University also ranks in the top third of National Universities in U.S. News & World Report\u2019s and was previously recognized for 16 years in a row as No. 1 among Best Regional Universities \u2013 Midwest.Equal Employment Opportunity StatementAAP/EEO StatementCreighton University is committed to providing a safe and non-discriminatory educational and employment environment. The University admits qualified students, hires qualified employees and accepts patients for treatment without regard to race, color, religion, sex, marital status, national origin, age, disability, citizenship, sexual orientation, gender identity, gender expression, veteran status, or other status protected by law. Its education and employment policies, scholarship and loan programs, and other programs and activities, are administered without unlawful discrimination.",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "instructions": "Candidates should submit their application through Interfolio. When prompted please upload the following: (1) cover letter; (2) current curriculum vitae; (3) three letters of reference, at least two of which address the effectiveness of your teaching; (4) copies of academic transcripts from each higher educational institution attended.\r\n\r\nIf a candidate is called for an interview, they will be required to provide: (5) original academic transcripts from all institutions of higher education attended; (6)\ta writing sample; (7) student evaluations of teaching; (8) statement of teaching philosophy; and (9) one-page statement describing candidate's potential contributions to Creighton's mission (https://www.creighton.edu/about/mission-history).\r\n\r\nReview of completed applications will begin November 2, 2026, and continue until the position is filled. For further information, please visit https://www.creighton.edu/arts-sciences/philosophy. If you have any questions about the position, please contact Dr. Kevin Graham, Chair of the Department of Philosophy ([email\u00a0protected]). For questions or issues submitting your application or materials, please contact the Office of Human Resources ([email\u00a0protected]).",
+      "application_url": "http://apply.interfolio.com/189639",
+      "soft_deadline": "November 2, 2026, 12:00am CST",
+      "deadline": "No deadline specified (applications considered on an ongoing basis)",
+      "contact": "",
+      "more_info_url": "https://www.creighton.edu/arts-sciences/philosophy",
+      "contact_name": "Dr. Kevin Graham",
+      "contact_email": "",
+      "posted_date": "July 22, 2026, 7:39pm UTC",
+      "scheduled_expiry_date": "January 17, 2027, 6:40pm CST",
+      "last_updated": "July 22, 2026, 7:39pm UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "raw_fields": {
+        "Contact phone": "(402) 280-1219"
+      },
+      "institution_type": "Teaching College",
+      "classification": {
+        "main_aos": [
+          "History of Philosophy"
+        ],
+        "detail_aos": {
+          "History of Philosophy": [
+            "Early Modern Philosophy (17th/18th Century)"
+          ]
+        },
+        "position_type": "Tenure-Track",
+        "institution_type": "Teaching College",
+        "state_us": "NE",
+        "reasoning": "The position explicitly requires AOS in early modern philosophy, making History of Philosophy the sole main category. The position is clearly described as 'full-time, tenure-track Assistant Professor' at an undergraduate-serving institution.",
+        "_model": "claude-sonnet-4-5",
+        "_classified_at": "2026-07-27T16:13:08.304063"
+      },
+      "status": "active",
+      "hash": "2325577fcece567803aff8703a899116",
+      "scraped_date": "2026-07-27T16:08:55.758176"
+    },
+    {
+      "id": "31725",
+      "url": "https://philjobs.org/job/show/31725",
+      "institution": "Department of Philosophy, Western University",
+      "title": "Postdoctoral Associate in Socially Responsible Computing",
+      "job_category": "Postdoc or similar / Fixed term",
+      "aos": "Artificial Intelligence Ethics, Social Formal Epistemology",
+      "aos_categories": "Ethics",
+      "aoc": "Open",
+      "workload": "Full time",
+      "vacancies": "1",
+      "location": "London, Ontario, Canada",
+      "state": null,
+      "country": "Canada",
+      "city": null,
+      "start_date": "Flexible (negotiable)",
+      "description": "About WesternWestern ranks as one of Canada\u2019s top research-intensive universities. From fundamental to applied discovery and other scholarly activities, its scholars advance knowledge that provides tangible benefits for the economic, social, health and cultural development of citizens in London, in Canada and around the world. Western Research supports scholars through collaboration, communication, and service. Western University and its affiliate colleges received more than $267 million in research funding over the past year.About the RoleThe position focuses on research in socially responsible algorithm design and human-centered AI, with particular emphasis on one or more of the following areas:Algorithms for mitigating polarization in online social networks, including approaches that leverage shared interests, common ground, or constructive engagement across divisionsHuman\u2013AI ensembles, including hybrid systems where human judgment and machine intelligence are integrated to improve decision-makingOther proposals in related area welcomeThe postdoctoral fellow is expected to conduct independent research, collaborate across disciplines, contribute to publications, and participate in the intellectual life of both the philosophy and computer science departments. The successful candidate may also, where appropriate, supervise undergraduate and master\u2019s student research projects.Grant applications are strongly encouraged, and the fellow will be supported in developing independent funding opportunities.Salary commensurate with experience and qualifications.Details regarding benefits for postdoctoral associates are available at:https://www.uwo.ca/hr/benefits/your_benefits/pda/index.htmlThe position will be jointly hosted in the philosophy and computer science departments. A co- supervisor may be arranged depending on the successful candidate\u2019s research focus.Start Date:Flexible (negotiable)Duration of Appointment:2 years, full-timeApplication Deadline:August 15, \u00a02026How to Apply:Applicants should submit their materials electronically in a single PDF file to[email\u00a0protected]Required Qualifications:PhD in Computer Science, Philosophy, or a closely related field obtained expected by the start date and expected within 5 yearsTechnical background (e.g., machine learning, recommendation algorithms, network science, or related areas)Demonstrated interest or background in philosophical, ethical, or societal aspects of computingAbility to work in an interdisciplinary environmentRequired Documentation:Curriculum Vitae (CV)Cover letter describing research interests and fit for the position (max 1 page)Research statement (max 2 pages) outlining past work and proposed research directionsOne writing sampleContact information for 2 academic referencesWestern Values DiversityThe University invites applications from all qualified individuals. Western is committed to employment equity and diversity in the workplace and welcomes applications from women, members of racialized groups/visible minorities, Indigenous persons, persons with disabilities, persons of any sexual orientation, and persons of any gender identity or gender expression. Accommodations are available for applicants with disabilities throughout the recruitment process.",
+      "how_to_apply": "",
+      "application_type": "Email",
+      "application_email": "",
+      "deadline": "August 15, 2026, 11:59pm EST",
+      "contact": "",
+      "contact_name": "Alice Huang",
+      "contact_email": "",
+      "posted_date": "July 21, 2026, 5:46pm UTC",
+      "scheduled_expiry_date": "August 15, 2026, 11:59pm EST",
+      "last_updated": "July 21, 2026, 5:46pm UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "institution_type": "Research University",
+      "classification": {
+        "main_aos": [
+          "Ethics",
+          "Science, Logic, & Mathematics"
+        ],
+        "detail_aos": {
+          "Ethics": [
+            "AI, Technology, and Information Ethics"
+          ],
+          "Science, Logic, & Mathematics": [
+            "Philosophy of Computing / Philosophy of AI"
+          ]
+        },
+        "position_type": "Postdoc / Fellowship",
+        "institution_type": "Research University",
+        "state_us": "INTERNATIONAL",
+        "reasoning": "The AOS explicitly lists both 'Artificial Intelligence Ethics' (Ethics) and 'Social Formal Epistemology' (Science, Logic, & Mathematics), making this genuinely span two distinct philosophical areas. The position is clearly a postdoctoral fellowship with a 2-year fixed term focused on research in socially responsible computing.",
+        "_model": "claude-sonnet-4-5",
+        "_classified_at": "2026-07-27T16:13:18.739241"
+      },
+      "status": "active",
+      "hash": "cb5f437833b580d047e697e150c45c57",
+      "scraped_date": "2026-07-27T16:08:56.427064"
     }
   ],
   "weekly_snapshots": [
@@ -12457,6 +12729,18 @@
         "31693",
         "31669",
         "31653"
+      ]
+    },
+    {
+      "date": "2026-07-27",
+      "total_jobs": 92,
+      "new_jobs": 5,
+      "new_job_ids": [
+        "31741",
+        "31737",
+        "31733",
+        "31729",
+        "31725"
       ]
     }
   ],
@@ -13830,6 +14114,65 @@
       "west_coast_city_counts": {
         "Santa Clara": 1
       }
+    },
+    {
+      "date": "2026-07-20",
+      "new_jobs_count": 5,
+      "main_aos_counts": {
+        "History of Philosophy": 3,
+        "Social & Political Philosophy": 1,
+        "Ethics": 1,
+        "Science, Logic, & Mathematics": 1
+      },
+      "detail_aos_counts": {
+        "History of Philosophy::Medieval and Renaissance Philosophy": 1,
+        "History of Philosophy::Early Modern Philosophy (17th/18th Century)": 3,
+        "History of Philosophy::19th/20th Century Philosophy": 1,
+        "History of Philosophy::Continental Philosophy": 1,
+        "Social & Political Philosophy::Feminist Philosophy": 1,
+        "Ethics::AI, Technology, and Information Ethics": 1,
+        "Science, Logic, & Mathematics::Philosophy of Computing / Philosophy of AI": 1
+      },
+      "position_type_counts": {
+        "Tenure-Track": 3,
+        "Visiting / Adjunct / Lecturer (Fixed-Term)": 1,
+        "Postdoc / Fellowship": 1
+      },
+      "position_type_by_aos": {
+        "History of Philosophy": {
+          "Tenure-Track": 2,
+          "Visiting / Adjunct / Lecturer (Fixed-Term)": 1
+        },
+        "Social & Political Philosophy": {
+          "Tenure-Track": 1
+        },
+        "Ethics": {
+          "Postdoc / Fellowship": 1
+        },
+        "Science, Logic, & Mathematics": {
+          "Postdoc / Fellowship": 1
+        }
+      },
+      "job_category_counts": {
+        "Faculty (open rank) / Tenure-track or similar": 1,
+        "Junior faculty / Fixed term": 1,
+        "Junior faculty / Tenure-track or similar": 2,
+        "Postdoc or similar / Fixed term": 1
+      },
+      "institution_type_counts": {
+        "Research University": 3,
+        "Teaching College": 2
+      },
+      "state_counts": {
+        "LA": 1,
+        "NE": 2
+      },
+      "country_counts": {
+        "Austria": 1,
+        "United States": 3,
+        "Canada": 1
+      },
+      "west_coast_city_counts": {}
     }
   ],
   "taxonomy_version": "2026-07-20-sonnet-v5",

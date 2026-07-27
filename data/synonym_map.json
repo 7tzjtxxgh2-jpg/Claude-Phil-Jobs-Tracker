@@ -1,39 +1,40 @@
 {
   "ability": [],
   "able": [],
-  "access": [
-    "accessibility"
-  ],
+  "access": [],
   "across": [],
   "active": [],
   "activities": [],
   "addition": [],
   "additional": [],
   "american": [
-    "american philosophy",
-    "americanist",
-    "pragmatism"
+    "americanist"
   ],
   "applied": [
-    "applied ethics",
-    "applied philosophy",
-    "practical ethics"
+    "practical"
   ],
-  "arts": [
-    "liberal arts",
-    "humanities"
-  ],
-  "assistant": [
-    "assistant professor"
-  ],
+  "arts": [],
+  "assistant": [],
   "associate": [],
   "background": [],
   "campus": [],
-  "center": [],
-  "chair": [],
-  "city": [],
+  "center": [
+    "centre",
+    "institute",
+    "lab",
+    "laboratory"
+  ],
+  "chair": [
+    "chairperson",
+    "chair position",
+    "department chair"
+  ],
+  "city": [
+    "urban"
+  ],
   "closely": [],
   "collaboration": [],
+  "colleges": [],
   "commitment": [],
   "committed": [],
   "compensation": [],
@@ -45,9 +46,7 @@
   "contribute": [],
   "core": [],
   "critical": [
-    "critical theory",
-    "critical philosophy",
-    "frankfurt school"
+    "critical theory"
   ],
   "curriculum": [
     "curricular",
@@ -58,11 +57,15 @@
   "dedicated": [],
   "demonstrate": [],
   "demonstrated": [],
-  "description": [],
+  "departmental": [
+    "department"
+  ],
   "develop": [],
   "development": [],
   "discipline": [],
-  "diverse": [],
+  "diverse": [
+    "diversity"
+  ],
   "education": [
     "educational",
     "pedagogy",
@@ -70,10 +73,13 @@
     "teaching"
   ],
   "educational": [
-    "philosophy of education",
-    "educational philosophy"
+    "education",
+    "pedagogy",
+    "pedagogical"
   ],
-  "eligible": [],
+  "eligible": [
+    "eligibility"
+  ],
   "employees": [],
   "engage": [],
   "engagement": [],
@@ -85,40 +91,44 @@
   "especially": [],
   "ethical": [
     "ethics",
-    "moral philosophy",
     "metaethics",
+    "metaethical",
     "normative ethics"
   ],
   "ethics": [
     "ethical",
     "metaethics",
-    "meta-ethics",
     "normative ethics",
     "moral philosophy",
-    "moral theory"
+    "applied ethics"
   ],
   "evidence": [],
   "excellence": [],
   "expected": [],
   "expertise": [],
-  "fellows": [],
+  "fellows": [
+    "fellowship",
+    "fellowships"
+  ],
   "filled": [],
   "first": [],
   "focus": [],
+  "four": [],
   "funding": [],
   "general": [],
   "health": [
     "medical",
+    "medicine",
     "biomedical",
-    "healthcare",
-    "medicine"
+    "healthcare"
   ],
   "high": [],
   "higher": [],
   "highly": [],
   "history": [
     "historical",
-    "historiography"
+    "historiography",
+    "historian"
   ],
   "hours": [],
   "https": [],
@@ -126,6 +136,7 @@
     "humanistic"
   ],
   "includes": [],
+  "institutions": [],
   "intellectual": [],
   "interdisciplinary": [
     "multidisciplinary",
@@ -139,45 +150,42 @@
   "july": [],
   "knowledge": [
     "epistemology",
-    "theory of knowledge",
+    "epistemological",
     "epistemic"
   ],
   "leadership": [],
   "learning": [],
   "least": [],
   "letters": [
-    "letter",
-    "humanities"
+    "humanities",
+    "liberal arts",
+    "belles-lettres"
   ],
   "liberal": [
     "liberal arts"
   ],
-  "life": [
-    "philosophy of life",
-    "bioethics"
-  ],
+  "life": [],
   "limited": [],
   "located": [],
   "logic": [
     "logical",
-    "logics",
     "formal logic",
     "philosophical logic",
-    "mathematical logic",
-    "modal logic"
+    "symbolic logic"
   ],
   "major": [],
   "member": [],
   "members": [],
-  "mentoring": [],
   "mission": [],
   "month": [],
   "names": [],
   "needs": [],
-  "online": [],
-  "open": [
-    "open rank"
+  "online": [
+    "distance",
+    "remote",
+    "digital"
   ],
+  "open": [],
   "opportunities": [],
   "participate": [],
   "person": [
@@ -189,9 +197,11 @@
     "philosophy",
     "philosophic"
   ],
-  "plan": [],
-  "policy": [],
+  "policy": [
+    "public policy"
+  ],
   "political": [
+    "politics",
     "political philosophy",
     "political theory"
   ],
@@ -201,45 +211,44 @@
   ],
   "potential": [],
   "prior": [],
-  "process": [],
   "professional": [],
   "projects": [],
   "protected": [],
-  "public": [
-    "public philosophy"
-  ],
-  "receive": [],
+  "public": [],
   "received": [],
   "recommendation": [],
   "record": [],
   "relevant": [],
   "renewal": [],
+  "report": [],
   "research": [
     "scholarship",
     "scholarly",
     "investigation"
   ],
   "retirement": [],
-  "scholars": [],
+  "scholars": [
+    "scholarship",
+    "scholarly"
+  ],
   "science": [
     "scientific",
-    "philosophy of science"
+    "sciences"
   ],
   "sciences": [
-    "philosophy of science",
+    "science",
     "scientific"
   ],
   "seeks": [],
   "semester": [],
   "serve": [],
   "skills": [],
-  "social": [
-    "social philosophy",
-    "social theory"
-  ],
+  "social": [],
   "specialization": [
+    "specialize",
     "specializations",
-    "specialism",
+    "specialty",
+    "specialties",
     "area of specialization",
     "aos"
   ],
@@ -247,37 +256,36 @@
   "state": [],
   "strong": [],
   "studies": [],
-  "study": [],
+  "study": [
+    "studies"
+  ],
   "subject": [],
   "submitted": [],
   "success": [],
-  "syllabi": [],
+  "syllabi": [
+    "syllabus",
+    "curriculum",
+    "curricula"
+  ],
   "system": [
-    "systems theory",
-    "systematic philosophy"
+    "systems",
+    "systematic"
   ],
   "technology": [
     "philosophy of technology",
     "technoscience",
-    "digital philosophy",
-    "philosophy of computing"
+    "digital philosophy"
   ],
   "term": [],
   "thinking": [],
   "three": [],
   "topics": [],
   "training": [],
-  "vision": [
-    "philosophy of perception",
-    "visual perception"
+  "vision": [],
+  "visit": [
+    "visiting"
   ],
-  "visit": [],
-  "visiting": [
-    "visitor",
-    "visiting scholar",
-    "visiting professor",
-    "visiting faculty"
-  ],
+  "visiting": [],
   "vitae": [
     "cv",
     "curriculum vitae"

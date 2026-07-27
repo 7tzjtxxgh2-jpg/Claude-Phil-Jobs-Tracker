@@ -1,6 +1,6 @@
 # Keyword Explorer — Synonym Map
 
-**Last updated:** 2026-07-20
+**Last updated:** 2026-07-27
 **Source data:** [`data/synonym_map.json`](../data/synonym_map.json)
 **Terms in map:** 150
 
@@ -25,42 +25,46 @@ used, see [KEYWORD_EXPLORER_METHODOLOGY.md](KEYWORD_EXPLORER_METHODOLOGY.md).
 
 ## Synonym Groups (Alphabetical)
 
-- **access** → accessibility
-- **american** → american philosophy, americanist, pragmatism
-- **applied** → applied ethics, applied philosophy, practical ethics
-- **arts** → liberal arts, humanities
-- **assistant** → assistant professor
-- **critical** → critical theory, critical philosophy, frankfurt school
+- **american** → americanist
+- **applied** → practical
+- **center** → centre, institute, lab, laboratory
+- **chair** → chairperson, chair position, department chair
+- **city** → urban
+- **critical** → critical theory
 - **curriculum** → curricular, syllabus, course design
+- **departmental** → department
+- **diverse** → diversity
 - **education** → educational, pedagogy, pedagogical, teaching
-- **educational** → philosophy of education, educational philosophy
+- **educational** → education, pedagogy, pedagogical
+- **eligible** → eligibility
 - **environment** → environmental, ecology, ecological
-- **ethical** → ethics, moral philosophy, metaethics, normative ethics
-- **ethics** → ethical, metaethics, meta-ethics, normative ethics, moral philosophy, moral theory
-- **health** → medical, biomedical, healthcare, medicine
-- **history** → historical, historiography
+- **ethical** → ethics, metaethics, metaethical, normative ethics
+- **ethics** → ethical, metaethics, normative ethics, moral philosophy, applied ethics
+- **fellows** → fellowship, fellowships
+- **health** → medical, medicine, biomedical, healthcare
+- **history** → historical, historiography, historian
 - **humanities** → humanistic
 - **interdisciplinary** → multidisciplinary, cross-disciplinary, transdisciplinary
-- **knowledge** → epistemology, theory of knowledge, epistemic
-- **letters** → letter, humanities
+- **knowledge** → epistemology, epistemological, epistemic
+- **letters** → humanities, liberal arts, belles-lettres
 - **liberal** → liberal arts
-- **life** → philosophy of life, bioethics
-- **logic** → logical, logics, formal logic, philosophical logic, mathematical logic, modal logic
-- **open** → open rank
+- **logic** → logical, formal logic, philosophical logic, symbolic logic
+- **online** → distance, remote, digital
 - **person** → personal identity, personhood, philosophy of persons
 - **philosophical** → philosophy, philosophic
-- **political** → political philosophy, political theory
+- **policy** → public policy
+- **political** → politics, political philosophy, political theory
 - **postdoctoral** → postdoc, post-doctoral
-- **public** → public philosophy
 - **research** → scholarship, scholarly, investigation
-- **science** → scientific, philosophy of science
-- **sciences** → philosophy of science, scientific
-- **social** → social philosophy, social theory
-- **specialization** → specializations, specialism, area of specialization, aos
-- **system** → systems theory, systematic philosophy
-- **technology** → philosophy of technology, technoscience, digital philosophy, philosophy of computing
-- **vision** → philosophy of perception, visual perception
-- **visiting** → visitor, visiting scholar, visiting professor, visiting faculty
+- **scholars** → scholarship, scholarly
+- **science** → scientific, sciences
+- **sciences** → science, scientific
+- **specialization** → specialize, specializations, specialty, specialties, area of specialization, aos
+- **study** → studies
+- **syllabi** → syllabus, curriculum, curricula
+- **system** → systems, systematic
+- **technology** → philosophy of technology, technoscience, digital philosophy
+- **visit** → visiting
 - **vitae** → cv, curriculum vitae
 
 ---
