@@ -1,6 +1,6 @@
 # Keyword Explorer — Synonym Map
 
-**Last updated:** 2026-07-27
+**Last updated:** 2026-08-03
 **Source data:** [`data/synonym_map.json`](../data/synonym_map.json)
 **Terms in map:** 150
 
@@ -25,47 +25,63 @@ used, see [KEYWORD_EXPLORER_METHODOLOGY.md](KEYWORD_EXPLORER_METHODOLOGY.md).
 
 ## Synonym Groups (Alphabetical)
 
-- **american** → americanist
-- **applied** → practical
-- **center** → centre, institute, lab, laboratory
-- **chair** → chairperson, chair position, department chair
-- **city** → urban
-- **critical** → critical theory
-- **curriculum** → curricular, syllabus, course design
-- **departmental** → department
-- **diverse** → diversity
+- **additional** → addition, additionally
+- **american** → americanist, american studies, americas
+- **arts** → humanities, liberal arts
+- **center** → centre, centers, centres
+- **city** → urban, urbanism
+- **collaboration** → collaborative
+- **committed** → commitment, commit
+- **contribute** → contribution, contributions, contributing, contributor
+- **critical** → critical theory, critical philosophy
+- **curriculum** → curricular, syllabus
+- **demonstrated** → demonstrate, demonstrable, demonstration
+- **develop** → development
+- **discipline** → disciplinary, interdisciplinary, multidisciplinary, cross-disciplinary
+- **diverse** → diversity, diversification
 - **education** → educational, pedagogy, pedagogical, teaching
-- **educational** → education, pedagogy, pedagogical
-- **eligible** → eligibility
-- **environment** → environmental, ecology, ecological
-- **ethical** → ethics, metaethics, metaethical, normative ethics
+- **educational** → pedagogy, pedagogical, teaching, instruction, instructional
+- **engagement** → engage, engaged, engaging, engages
+- **environment** → environmental, environments
+- **ethical** → ethics, metaethics, metaethical, normative ethics, moral philosophy, moral theory
 - **ethics** → ethical, metaethics, normative ethics, moral philosophy, applied ethics
-- **fellows** → fellowship, fellowships
-- **health** → medical, medicine, biomedical, healthcare
-- **history** → historical, historiography, historian
+- **evidence** → evidenced, evidential
+- **filled** → fill, filling
+- **health** → healthcare, wellbeing, well-being, wellness
+- **history** → history of philosophy, historical
 - **humanities** → humanistic
-- **interdisciplinary** → multidisciplinary, cross-disciplinary, transdisciplinary
-- **knowledge** → epistemology, epistemological, epistemic
-- **letters** → humanities, liberal arts, belles-lettres
+- **includes** → include, included, including, inclusion, inclusive
+- **interdisciplinary** → interdisciplinarity, multidisciplinary, multidisciplinarity, transdisciplinary, transdisciplinarity, cross-disciplinary
+- **knowledge** → epistemology, epistemic, epistemological, theory of knowledge
+- **learning** → learn, learned
+- **letters** → letter
 - **liberal** → liberal arts
-- **logic** → logical, formal logic, philosophical logic, symbolic logic
-- **online** → distance, remote, digital
-- **person** → personal identity, personhood, philosophy of persons
+- **life** → philosophy of life, bioethics, medical ethics
+- **logic** → logical, formal logic, symbolic logic, mathematical logic, philosophical logic
+- **member** → membership
+- **mission** → missions
+- **online** → digital, remote, distance
+- **participate** → participation
+- **person** → personal, persons, personhood
 - **philosophical** → philosophy, philosophic
-- **policy** → public policy
-- **political** → politics, political philosophy, political theory
+- **political** → political philosophy, political theory
 - **postdoctoral** → postdoc, post-doctoral
+- **public** → public philosophy
 - **research** → scholarship, scholarly, investigation
 - **scholars** → scholarship, scholarly
-- **science** → scientific, sciences
+- **science** → scientific, sciences, philosophy of science
 - **sciences** → science, scientific
-- **specialization** → specialize, specializations, specialty, specialties, area of specialization, aos
-- **study** → studies
-- **syllabi** → syllabus, curriculum, curricula
+- **seeks** → seek, seeking
+- **semester** → semesterly, semesters
+- **social** → social philosophy, social theory
+- **specialization** → specializations, area of specialization, aos
+- **staff** → staffing, staffed
+- **strong** → strength, strongly
 - **system** → systems, systematic
-- **technology** → philosophy of technology, technoscience, digital philosophy
+- **technology** → technologies, technological, philosophy of technology, technoscience
 - **visit** → visiting
 - **vitae** → cv, curriculum vitae
+- **world** → worlds, worldly
 
 ---
 
