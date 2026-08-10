@@ -1,6 +1,6 @@
 # Keyword Explorer — Synonym Map
 
-**Last updated:** 2026-08-03
+**Last updated:** 2026-08-10
 **Source data:** [`data/synonym_map.json`](../data/synonym_map.json)
 **Terms in map:** 150
 
@@ -25,63 +25,40 @@ used, see [KEYWORD_EXPLORER_METHODOLOGY.md](KEYWORD_EXPLORER_METHODOLOGY.md).
 
 ## Synonym Groups (Alphabetical)
 
-- **additional** → addition, additionally
-- **american** → americanist, american studies, americas
+- **american** → americanist, americanism
 - **arts** → humanities, liberal arts
-- **center** → centre, centers, centres
-- **city** → urban, urbanism
-- **collaboration** → collaborative
-- **committed** → commitment, commit
-- **contribute** → contribution, contributions, contributing, contributor
+- **center** → centre
+- **city** → urban
 - **critical** → critical theory, critical philosophy
 - **curriculum** → curricular, syllabus
-- **demonstrated** → demonstrate, demonstrable, demonstration
-- **develop** → development
 - **discipline** → disciplinary, interdisciplinary, multidisciplinary, cross-disciplinary
-- **diverse** → diversity, diversification
+- **diverse** → diversity
 - **education** → educational, pedagogy, pedagogical, teaching
-- **educational** → pedagogy, pedagogical, teaching, instruction, instructional
-- **engagement** → engage, engaged, engaging, engages
-- **environment** → environmental, environments
-- **ethical** → ethics, metaethics, metaethical, normative ethics, moral philosophy, moral theory
+- **eligible** → eligibility
+- **environment** → environmental, ecology, ecological
+- **ethical** → ethics, metaethics, meta-ethics, normative ethics, moral philosophy, moral theory
 - **ethics** → ethical, metaethics, normative ethics, moral philosophy, applied ethics
-- **evidence** → evidenced, evidential
-- **filled** → fill, filling
-- **health** → healthcare, wellbeing, well-being, wellness
-- **history** → history of philosophy, historical
+- **health** → healthcare, medical, medicine, bioethics
+- **history** → historical, history of philosophy
 - **humanities** → humanistic
-- **includes** → include, included, including, inclusion, inclusive
-- **interdisciplinary** → interdisciplinarity, multidisciplinary, multidisciplinarity, transdisciplinary, transdisciplinarity, cross-disciplinary
-- **knowledge** → epistemology, epistemic, epistemological, theory of knowledge
-- **learning** → learn, learned
-- **letters** → letter
+- **interdisciplinary** → multidisciplinary, cross-disciplinary, transdisciplinary
+- **knowledge** → epistemology, epistemological, epistemic
 - **liberal** → liberal arts
-- **life** → philosophy of life, bioethics, medical ethics
-- **logic** → logical, formal logic, symbolic logic, mathematical logic, philosophical logic
-- **member** → membership
-- **mission** → missions
-- **online** → digital, remote, distance
-- **participate** → participation
-- **person** → personal, persons, personhood
+- **logic** → logical, formal logic, philosophical logic, symbolic logic, mathematical logic
+- **online** → digital, distance
+- **person** → personal, personhood, persons
 - **philosophical** → philosophy, philosophic
-- **political** → political philosophy, political theory
+- **political** → politics, political philosophy, political theory
 - **postdoctoral** → postdoc, post-doctoral
-- **public** → public philosophy
 - **research** → scholarship, scholarly, investigation
-- **scholars** → scholarship, scholarly
+- **scholars** → scholar, scholarship, scholarly
 - **science** → scientific, sciences, philosophy of science
 - **sciences** → science, scientific
-- **seeks** → seek, seeking
-- **semester** → semesterly, semesters
-- **social** → social philosophy, social theory
-- **specialization** → specializations, area of specialization, aos
-- **staff** → staffing, staffed
-- **strong** → strength, strongly
+- **specialization** → specialize, specialized, specializations, specialty, specialties, area of specialization, aos
 - **system** → systems, systematic
-- **technology** → technologies, technological, philosophy of technology, technoscience
+- **technology** → technological, technologies, philosophy of technology
 - **visit** → visiting
 - **vitae** → cv, curriculum vitae
-- **world** → worlds, worldly
 
 ---
 
