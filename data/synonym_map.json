@@ -9,15 +9,23 @@
   "additional": [],
   "american": [
     "americanist",
-    "americanism"
+    "americas"
   ],
-  "applied": [],
+  "applied": [
+    "applied philosophy",
+    "applied ethics",
+    "practical philosophy",
+    "practical ethics"
+  ],
   "arts": [
     "humanities",
     "liberal arts"
   ],
   "assistant": [],
-  "associate": [],
+  "associate": [
+    "associate professor",
+    "associate rank"
+  ],
   "background": [],
   "backgrounds": [],
   "campus": [],
@@ -25,25 +33,33 @@
     "centre"
   ],
   "chair": [],
-  "city": [
-    "urban"
-  ],
+  "city": [],
   "closely": [],
-  "collaboration": [],
+  "collaboration": [
+    "collaborative"
+  ],
   "colleges": [],
   "commitment": [],
   "committed": [],
   "compensation": [],
-  "competence": [],
+  "competence": [
+    "area of competence",
+    "aoc",
+    "secondary area",
+    "secondary specialization"
+  ],
   "comprehensive": [],
   "consideration": [],
   "considered": [],
-  "continue": [],
+  "continue": [
+    "continuing"
+  ],
   "contribute": [],
   "core": [],
   "critical": [
     "critical theory",
-    "critical philosophy"
+    "critical philosophy",
+    "frankfurt school"
   ],
   "curriculum": [
     "curricular",
@@ -54,14 +70,10 @@
   "demonstrate": [],
   "demonstrated": [],
   "departmental": [],
+  "description": [],
   "develop": [],
   "development": [],
-  "discipline": [
-    "disciplinary",
-    "interdisciplinary",
-    "multidisciplinary",
-    "cross-disciplinary"
-  ],
+  "discipline": [],
   "diverse": [
     "diversity"
   ],
@@ -89,6 +101,7 @@
     "metaethics",
     "meta-ethics",
     "normative ethics",
+    "applied ethics",
     "moral philosophy",
     "moral theory"
   ],
@@ -102,7 +115,13 @@
   "evidence": [],
   "excellence": [],
   "expected": [],
-  "expertise": [],
+  "expertise": [
+    "specialization",
+    "specializations",
+    "aos",
+    "area of specialization"
+  ],
+  "fellows": [],
   "filled": [],
   "first": [],
   "focus": [],
@@ -113,7 +132,7 @@
     "healthcare",
     "medical",
     "medicine",
-    "bioethics"
+    "biomedical"
   ],
   "high": [],
   "higher": [],
@@ -122,7 +141,6 @@
     "historical",
     "history of philosophy"
   ],
-  "hold": [],
   "hours": [],
   "https": [],
   "humanities": [
@@ -131,14 +149,19 @@
   "includes": [],
   "intellectual": [],
   "interdisciplinary": [
-    "multidisciplinary",
+    "interdisciplinarity",
     "cross-disciplinary",
+    "multidisciplinary",
     "transdisciplinary"
   ],
   "interest": [],
   "interested": [],
   "interests": [],
-  "introductory": [],
+  "introductory": [
+    "intro",
+    "lower division",
+    "undergraduate survey"
+  ],
   "july": [],
   "knowledge": [
     "epistemology",
@@ -160,7 +183,8 @@
     "formal logic",
     "philosophical logic",
     "symbolic logic",
-    "mathematical logic"
+    "mathematical logic",
+    "modal logic"
   ],
   "major": [],
   "member": [],
@@ -177,16 +201,16 @@
   "open": [],
   "opportunities": [],
   "participate": [],
-  "person": [
-    "personal",
-    "personhood",
-    "persons"
-  ],
+  "person": [],
   "philosophical": [
-    "philosophy",
-    "philosophic"
+    "philosophy"
   ],
-  "policy": [],
+  "policy": [
+    "public policy",
+    "policy studies",
+    "science policy",
+    "social policy"
+  ],
   "political": [
     "politics",
     "political philosophy",
@@ -194,11 +218,17 @@
   ],
   "postdoctoral": [
     "postdoc",
-    "post-doctoral"
+    "post-doctoral",
+    "postdoctoral fellowship",
+    "postdoctoral researcher"
   ],
   "potential": [],
   "prior": [],
-  "process": [],
+  "process": [
+    "process philosophy",
+    "process metaphysics",
+    "process thought"
+  ],
   "professional": [],
   "projects": [],
   "protected": [],
@@ -208,7 +238,6 @@
   "record": [],
   "relevant": [],
   "renewal": [],
-  "report": [],
   "research": [
     "scholarship",
     "scholarly",
@@ -216,7 +245,6 @@
   ],
   "retirement": [],
   "scholars": [
-    "scholar",
     "scholarship",
     "scholarly"
   ],
@@ -235,13 +263,10 @@
   "skills": [],
   "social": [],
   "specialization": [
-    "specialize",
-    "specialized",
     "specializations",
-    "specialty",
-    "specialties",
+    "aos",
     "area of specialization",
-    "aos"
+    "expertise"
   ],
   "staff": [],
   "state": [],
@@ -252,23 +277,34 @@
   "success": [],
   "syllabi": [],
   "system": [
-    "systems",
-    "systematic"
+    "systematic",
+    "systems"
   ],
   "technology": [
-    "technological",
-    "technologies",
-    "philosophy of technology"
+    "philosophy of technology",
+    "technoscience",
+    "digital humanities",
+    "computational"
   ],
   "term": [],
-  "thinking": [],
   "three": [],
-  "training": [],
+  "topics": [],
+  "training": [
+    "pedagogy",
+    "pedagogical",
+    "teaching preparation",
+    "instructional development"
+  ],
   "vision": [],
   "visit": [
     "visiting"
   ],
-  "visiting": [],
+  "visiting": [
+    "visiting scholar",
+    "visiting professor",
+    "visiting faculty",
+    "visiting appointment"
+  ],
   "vitae": [
     "cv",
     "curriculum vitae"

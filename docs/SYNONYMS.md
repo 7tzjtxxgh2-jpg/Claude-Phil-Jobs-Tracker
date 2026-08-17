@@ -1,6 +1,6 @@
 # Keyword Explorer — Synonym Map
 
-**Last updated:** 2026-08-10
+**Last updated:** 2026-08-17
 **Source data:** [`data/synonym_map.json`](../data/synonym_map.json)
 **Terms in map:** 150
 
@@ -25,39 +25,47 @@ used, see [KEYWORD_EXPLORER_METHODOLOGY.md](KEYWORD_EXPLORER_METHODOLOGY.md).
 
 ## Synonym Groups (Alphabetical)
 
-- **american** → americanist, americanism
+- **american** → americanist, americas
+- **applied** → applied philosophy, applied ethics, practical philosophy, practical ethics
 - **arts** → humanities, liberal arts
+- **associate** → associate professor, associate rank
 - **center** → centre
-- **city** → urban
-- **critical** → critical theory, critical philosophy
+- **collaboration** → collaborative
+- **competence** → area of competence, aoc, secondary area, secondary specialization
+- **continue** → continuing
+- **critical** → critical theory, critical philosophy, frankfurt school
 - **curriculum** → curricular, syllabus
-- **discipline** → disciplinary, interdisciplinary, multidisciplinary, cross-disciplinary
 - **diverse** → diversity
 - **education** → educational, pedagogy, pedagogical, teaching
 - **eligible** → eligibility
 - **environment** → environmental, ecology, ecological
-- **ethical** → ethics, metaethics, meta-ethics, normative ethics, moral philosophy, moral theory
+- **ethical** → ethics, metaethics, meta-ethics, normative ethics, applied ethics, moral philosophy, moral theory
 - **ethics** → ethical, metaethics, normative ethics, moral philosophy, applied ethics
-- **health** → healthcare, medical, medicine, bioethics
+- **expertise** → specialization, specializations, aos, area of specialization
+- **health** → healthcare, medical, medicine, biomedical
 - **history** → historical, history of philosophy
 - **humanities** → humanistic
-- **interdisciplinary** → multidisciplinary, cross-disciplinary, transdisciplinary
+- **interdisciplinary** → interdisciplinarity, cross-disciplinary, multidisciplinary, transdisciplinary
+- **introductory** → intro, lower division, undergraduate survey
 - **knowledge** → epistemology, epistemological, epistemic
 - **liberal** → liberal arts
-- **logic** → logical, formal logic, philosophical logic, symbolic logic, mathematical logic
+- **logic** → logical, formal logic, philosophical logic, symbolic logic, mathematical logic, modal logic
 - **online** → digital, distance
-- **person** → personal, personhood, persons
-- **philosophical** → philosophy, philosophic
+- **philosophical** → philosophy
+- **policy** → public policy, policy studies, science policy, social policy
 - **political** → politics, political philosophy, political theory
-- **postdoctoral** → postdoc, post-doctoral
+- **postdoctoral** → postdoc, post-doctoral, postdoctoral fellowship, postdoctoral researcher
+- **process** → process philosophy, process metaphysics, process thought
 - **research** → scholarship, scholarly, investigation
-- **scholars** → scholar, scholarship, scholarly
+- **scholars** → scholarship, scholarly
 - **science** → scientific, sciences, philosophy of science
 - **sciences** → science, scientific
-- **specialization** → specialize, specialized, specializations, specialty, specialties, area of specialization, aos
-- **system** → systems, systematic
-- **technology** → technological, technologies, philosophy of technology
+- **specialization** → specializations, aos, area of specialization, expertise
+- **system** → systematic, systems
+- **technology** → philosophy of technology, technoscience, digital humanities, computational
+- **training** → pedagogy, pedagogical, teaching preparation, instructional development
 - **visit** → visiting
+- **visiting** → visiting scholar, visiting professor, visiting faculty, visiting appointment
 - **vitae** → cv, curriculum vitae
 
 ---
