@@ -1,0 +1,10 @@
+# Your location and thresholds. Never committed.
+config.yaml
+
+# Raw HTML samples from discovery runs: useful locally, not worth versioning,
+# and PhilPapers' terms restrict redistributing their content.
+discovery/*.html
+
+__pycache__/
+*.pyc
+.venv/

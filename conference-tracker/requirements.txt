@@ -1,0 +1,10 @@
+# Pinned deliberately: the PhilJobs audit's finding F-10 was that nothing was
+# pinned anywhere, so the SDK could change underneath the scraper.
+#
+# NOTE: these pins were chosen without a reachable package index (PyPI is
+# blocked from the session that wrote them), so they are known-good rather
+# than known-latest. Confirm and bump deliberately on the first CI run.
+requests==2.32.3
+beautifulsoup4==4.12.3
+lxml==5.2.2
+PyYAML==6.0.2

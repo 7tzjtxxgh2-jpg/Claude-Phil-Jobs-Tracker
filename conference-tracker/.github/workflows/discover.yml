@@ -1,0 +1,46 @@
+name: Phase 0 — structure discovery
+
+# Manual only. Run this once against the live site to answer the open
+# questions in the plan: does PhilEvents emit JSON-LD, are deadlines
+# structured dates or free text, and are past events reachable?
+on:
+  workflow_dispatch:
+    inputs:
+      events:
+        description: "How many event pages to inspect"
+        default: "6"
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Probe PhilEvents
+        run: python discover.py --events "${{ inputs.events }}"
+
+      - name: Commit the report
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add discovery/report.md
+          git diff --staged --quiet || git commit -m "Discovery report: $(date +'%Y-%m-%d')"
+          git push
+
+      - name: Upload raw HTML samples
+        uses: actions/upload-artifact@v4
+        with:
+          name: discovery-html
+          path: discovery/*.html
+          retention-days: 14

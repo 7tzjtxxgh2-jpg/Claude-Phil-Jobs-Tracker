@@ -1,0 +1,38 @@
+# Copy to config.yaml and fill in. config.yaml is gitignored.
+#
+# Your home coordinate never leaves this file. It was not asked for and is not
+# needed by anyone but you -- it exists so the attend-only filter can measure
+# distance. Put in a city name for the gazetteer to resolve, or coordinates
+# directly if you would rather not name the place.
+
+home:
+  label: ""        # optional, cosmetic, e.g. "campus"
+  lat:             # e.g. 47.6062
+  lon:             # e.g. -122.3321
+
+# Attend-only events qualify if online, or inside this radius. These are
+# great-circle miles, which run ~1.3-1.5x shorter than road miles -- so 120
+# here is MORE permissive than "120 miles by road". Use ~90 to approximate it.
+attend_only_radius_mi: 120
+
+# Countries whose CFP events are in scope. Presenting is fundable, so this
+# stays broad; the radius above applies only to attend-only events.
+cfp_countries: ["US", "CA", "MX"]
+
+# Digest shape (plan section 8).
+digest_top_n: 10
+digest_deadline_horizon_days: 90
+# The 90-day section is gated on this, or it runs to 100+ entries a week and
+# recreates the overwhelm. Set to 0 for the literal ungated list; the digest
+# always reports how many events the floor removed, so nothing hides silently.
+digest_min_fit: 6.0
+
+# Events with a deadline this close get re-fetched every run; everything else
+# is swept monthly. Deadlines get extended routinely, so records must stay live.
+recheck_deadline_within_days: 45
+
+# Abort the run if a sweep finds less than this fraction of the trailing
+# average. Guards against a broken fetch silently writing a partial corpus.
+plausibility_floor_ratio: 0.70
+
+request_delay_seconds: 0.5

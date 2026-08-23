@@ -1,0 +1,66 @@
+name: Weekly ingest
+
+# Manual only until Phase 0 confirms the listing URL and page structure.
+# Enable the schedule below once discover.py has reported and LISTING_TEMPLATE
+# in ingest.py is known to be correct -- a scheduled run against a wrong URL
+# would just open a failure issue every Monday.
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 15 * * 1'   # Mondays 15:00 UTC (10:00 CDT / 09:00 CST)
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: repo-writer
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: python -m unittest discover -s tests -t .
+
+      - name: Ingest
+        run: python ingest.py
+
+      - name: Commit data
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/
+          git diff --staged --quiet || git commit -m "Weekly ingest: $(date +'%Y-%m-%d')"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push
+
+      # An ingest that aborts is the system working as designed -- but it must
+      # be impossible to miss, or a silently missing corpus is exactly the
+      # failure this project is built to prevent.
+      - name: Open an issue on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `⚠️ Weekly ingest FAILED — ${new Date().toISOString().slice(0,10)}`,
+              body: `The weekly PhilEvents ingest failed and wrote nothing.\n\n`
+                  + `[Run log](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}`
+                  + `/actions/runs/${context.runId})\n\n`
+                  + `Likely causes: the listing markup or pagination changed, or the `
+                  + `plausibility gate refused a partial corpus. Run \`discover.py\` to `
+                  + `see the site's current structure.`
+            });
