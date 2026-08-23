@@ -43,6 +43,9 @@ into it.
 | Geography | North America (US, Canada, Mexico), in person; West Coast as a distinct view |
 | History | Yes — primarily for recurrence prediction |
 | Ranking | Topical fit only |
+| Attend-only events | Included **only** if online, or within 120 mi of home (no travel funding for non-presenting) |
+| Digest volume | Top 10 by fit, plus deadlines within 90 days (long writing lead time) |
+| Paper inventory | Markdown files, one per paper |
 
 ### The geography/ranking tension, resolved
 
@@ -223,6 +226,55 @@ declining, but is ethics conference volume rising?"* You'd be well placed to ans
 
 ---
 
+## 5a. Travel funding creates two different geography rules
+
+A late but consequential requirement: **attend-only events are only worth knowing about if they
+are online, or within 120 miles of home**, because the university funds travel only for
+presenting. Events with CFPs keep the broad North America rule, since presenting is fundable.
+
+So geography is not one filter but two, applied by event class:
+
+| Event class | Rule |
+|---|---|
+| CFP conferences, workshops, special issues, summer schools | United States, Canada, Mexico |
+| Attend-only (talks, colloquia, keynote-only) | Online **or** within 120 mi of home |
+
+This is a good asymmetry to have caught early: a single geography filter would either have
+buried you in unfundable talks or thrown away the local ones you can actually attend.
+
+### It introduces a geocoding subsystem
+
+Distance filtering needs coordinates for every event city, which the site does not provide.
+Design:
+
+1. **Bundled gazetteer, offline.** Ship a [GeoNames](https://www.geonames.org/export/) `cities5000`
+   extract filtered to US/CA/MX — a few thousand tab-delimited rows, small enough to commit.
+   CC BY 4.0, so it needs an attribution line. No API, no rate limit, fully deterministic.
+2. **Claude fallback for misses.** Small university towns below the population cutoff will miss.
+   This is exactly the shape of the jobs project's existing `resolve_missing_states()`, which
+   already uses Claude to fill geographic gaps — same pattern, same guardrails.
+3. **Cache permanently.** A resolved city→(lat, lon) pair never changes. Resolve once, store in
+   the DB, never pay for it again.
+4. **Great-circle distance** via haversine.
+
+The jobs repo already stores `{'lat': ..., 'lon': ...}` per city in `WEST_COAST_CITIES`, so the
+data shape carries straight over.
+
+**One honest caveat:** 120 miles great-circle is *more permissive* than 120 miles driving —
+straight-line distance understates road distance by roughly 1.3–1.5×, so a 120 mi radius will
+admit some places that are a 3-hour drive away. Given that this filter governs a small number of
+local events, over-inclusion costs you almost nothing and you can eyeball the handful. The radius
+is a config value; drop it to ~90 if you want it to approximate 120 driving miles.
+
+### Your location stays yours
+
+The radius is computed from a `home` coordinate in `config.yaml` that **you fill in** — I have not
+asked for it and do not need it. Put in a city name and the gazetteer resolves it, or coordinates
+directly if you want precision without naming the place. Consistent with the private-by-default
+posture of the rest of the project.
+
+---
+
 ## 6. Architecture
 
 ```
@@ -332,14 +384,18 @@ always the most time-critical thing.
 ```markdown
 # Conference Digest — 2026-08-24
 
-## 🔴 Closing in 21 days
-- **Deadline Sep 3** — Workshop on Moral Status and AI (Portland, OR)
-  Best match: "Paper title" (fit 8.7/10) · [event](…)
-
-## ⭐ New this week — top matches
-1. **Fit 9.1** — Title (Seattle, WA) · deadline Nov 1
+## ⭐ Top 10 matches
+1. **Fit 9.1** — Title (Seattle, WA) · deadline Nov 1 · 70 days out
    Matches: "Paper title". Why: …one or two sentences…
 2. …
+
+## 📆 Writing calendar — relevant deadlines within 90 days
+### September  (3)
+- **Sep 3** — Workshop on Moral Status and AI (Portland, OR) · fit 8.7 · "Paper title"
+### October  (5)
+- …
+### November  (4)
+- …
 
 ## ⏰ Changed
 - Deadline extended: … (Sep 1 → Oct 15)
@@ -347,15 +403,39 @@ always the most time-critical thing.
 ## 📅 Expected to open soon  (recurrence forecast)
 - Pacific APA — CFP usually opens late Aug
 
+## 📍 Nearby & online  (attend-only)
+- Sep 12 — Colloquium title · 40 mi · in person
+- Oct 2 — Workshop title · online
+
 ## 📋 Your pipeline
 - "Paper A" → submitted to X on Jul 2 · awaiting decision (50 days)
 
 ## 🔇 Filtered out
-14 events hidden: 11 international, 3 online-only. [see all]
+38 events hidden: 22 outside North America, 9 attend-only and too far, 7 below fit threshold.
 ```
 
-**Cadence:** weekly, Monday, matching the jobs scraper. The 21-day deadline horizon guarantees
-nothing can slip through between runs, so a second daily workflow isn't needed.
+**Cadence:** weekly, Monday, matching the jobs scraper.
+
+### Why the 90-day list is relevance-gated
+
+You asked for the top 10 plus everything with a deadline inside 90 days. I have implemented the
+90 days, but **gated on a minimum fit score**, and I want to be explicit about why rather than
+quietly changing your spec.
+
+Rough arithmetic: ~765 standing events, of which perhaps 300 survive the North America filter,
+of which a large share have deadlines somewhere in the next 90 days. An ungated list plausibly
+runs **100+ events every week** — which is the exact experience you described wanting to escape.
+The digest would become the thing you skim and stop reading.
+
+So the section is scoped to events clearing a relevance floor, and **grouped by deadline month
+rather than listed flat**. Your reason for wanting 90 days is writing lead time, which is a
+planning need, not a browsing need — grouped by month it reads as a calendar you can schedule
+against, which is what the requirement was actually for.
+
+The floor is a config value. Set it to zero and you get the literal, ungated 90-day list; the
+footer always reports how many events the floor removed, so it can never hide something
+silently. My suggestion is to start gated, look at the "below fit threshold" count for a few
+weeks, and tune from evidence.
 
 ### Pipeline updates
 
@@ -390,15 +470,19 @@ Phase 2.
    free text ("end of September", "rolling")? Phase 0 answers this. Free text means an LLM
    normalization step and a confidence flag on every date.
 2. ~~Repo name~~ — **settled: `Claude-Phil-Conferences-Tracker`.**
-3. **Paper inventory format** — proposal: one Markdown file per paper in `papers/`, with
-   YAML front matter (title, status, keywords) and the abstract as body. Keeps drafts readable
-   and diffable.
+3. ~~Paper inventory format~~ — **settled: Markdown.** One file per paper in `papers/`, YAML
+   front matter for title/status/keywords, abstract as the body. Reasoning, since you asked
+   about a spreadsheet: an abstract is 200+ words of prose and a spreadsheet cell is a poor
+   container for it; the matcher feeds these files to Claude directly, where Markdown is native;
+   and git gives you readable diffs of how an abstract evolved. A spreadsheet would win if you
+   had hundreds of rows to sort and pivot — for an inventory of five to twenty papers it is the
+   worse tool.
 4. ~~"North America" precision~~ — **settled: United States, Canada, Mexico.**
-5. **Digest volume** — how many new events per week do you actually want to see? Proposal: top 5
-   by fit, plus everything with a deadline inside 21 days, plus anything scoring above a
-   threshold you can tune.
-6. **Attend-only events** — you included these in scope. They can't be submitted to, so they need
-   a separate, quieter digest section rather than competing with CFPs for ranking. Confirm?
+5. ~~Digest volume~~ — **settled: top 10, plus deadlines within 90 days**, the latter
+   relevance-gated and grouped by month (§8). Threshold tunable from real output.
+6. ~~Attend-only events~~ — **settled: separate digest section**, restricted to online or
+   within 120 mi (§5a).
+6a. **Home location + radius** — you fill `home` and `radius_mi` into `config.yaml` yourself.
 7. **Emailing PhilPapers** about the personal-use tool. More worthwhile now that we are scraping
    rather than using a published export.
 8. **Past-event availability** — recurrence forecasting (§7) needs history. Whether PhilEvents
@@ -418,4 +502,6 @@ Phase 2.
 | GitHub Pages can't be private outside Enterprise Cloud | Digest + local dashboard instead |
 | Full scoring costs ~$5–10/yr | No pre-filter needed; attention is the constraint, not money |
 | Deadline extensions are common | Records must be mutable — the jobs project's F-3 bug would be fatal here |
+| Travel funded only for presenting | Two geography rules by event class; adds an offline geocoding subsystem |
+| ~300 NA events, most with deadlines inside 90 days | The 90-day digest section must be relevance-gated or it recreates the overwhelm |
 | `philevents.org` blocked in this session | Page structure unverified; Phase 0 exists to close this |
