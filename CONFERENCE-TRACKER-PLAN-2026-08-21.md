@@ -1,6 +1,11 @@
 # PhilEvents Conference Tracker — Design & Implementation Plan
 
-**Status:** Draft for review. Brainstorming session 2026-08-21, revised after owner feedback.
+**Status: superseded.** This is the brainstorming record from 2026-08-21. The living plan now
+lives in the project's own repository at `Claude-Phil-Conferences-Tracker/PLAN.md`, which has
+since been revised for two constraints settled after this copy was written: **no Anthropic API
+billing** (all model work runs on the Pro subscription; the scraper never calls a model) and a
+**web-only workflow** (no local checkout, so the dashboard ships as a published private Artifact
+rather than a local HTML file). Read the repo copy, not this one.
 **Target:** a new, separate, **private** repository (proposed name `Claude-Phil-Conferences-Tracker`).
 **Relationship to this repo:** shares taxonomy and geography code; shares no data and no hosting.
 
