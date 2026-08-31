@@ -1,6 +1,6 @@
 # Keyword Explorer — Synonym Map
 
-**Last updated:** 2026-08-24
+**Last updated:** 2026-08-31
 **Source data:** [`data/synonym_map.json`](../data/synonym_map.json)
 **Terms in map:** 0
 
