@@ -13241,7 +13241,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:19.376463"
+        "_classified_at": "2026-11-09T23:15:29.200068"
       },
       "status": "active",
       "hash": "6b1e4ccdd469e7c0f4411a468b7910f7",
@@ -13287,7 +13287,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:21.379563"
+        "_classified_at": "2026-11-09T23:15:31.203878"
       },
       "status": "active",
       "hash": "a6309e0c750850f2a5810fa35502875d",
@@ -13334,7 +13334,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:23.382864"
+        "_classified_at": "2026-11-09T23:15:33.207911"
       },
       "status": "active",
       "hash": "136097e96ea970878c91803a5394ab87",
@@ -13378,7 +13378,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:25.386374"
+        "_classified_at": "2026-11-09T23:15:35.211773"
       },
       "status": "active",
       "hash": "c53efb25385f33b9aaddf6bbc3b8bc33",
@@ -13424,7 +13424,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:27.390083"
+        "_classified_at": "2026-11-09T23:15:37.215488"
       },
       "status": "active",
       "hash": "c4211b6fddf7ddf821087989ae514550",
@@ -13469,7 +13469,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:29.393435"
+        "_classified_at": "2026-11-09T23:15:39.219118"
       },
       "status": "active",
       "hash": "b96c50b7b132bacf5adba4adca9a4f10",
@@ -13514,7 +13514,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:31.396878"
+        "_classified_at": "2026-11-09T23:15:41.222874"
       },
       "status": "active",
       "hash": "1add70b0485ea554c1494f3bba0bc7b1",
@@ -13557,7 +13557,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:33.400251"
+        "_classified_at": "2026-11-09T23:15:43.226370"
       },
       "status": "active",
       "hash": "412c7b6ababadf8670a78daa965204ba",
@@ -13602,7 +13602,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:35.403403"
+        "_classified_at": "2026-11-09T23:15:45.230383"
       },
       "status": "active",
       "hash": "4021e2f19e21f8263b768cc19dd8ba70",
@@ -13646,7 +13646,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:37.406952"
+        "_classified_at": "2026-11-09T23:15:47.234475"
       },
       "status": "active",
       "hash": "613a4e449485aeb4b09b3cc0702b6da8",
@@ -13693,7 +13693,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:39.433964"
+        "_classified_at": "2026-11-09T23:15:49.287953"
       },
       "status": "active",
       "hash": "239254e5edf816a9f88d5d514005a0d2",
@@ -13737,7 +13737,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:41.436160"
+        "_classified_at": "2026-11-09T23:15:51.291940"
       },
       "status": "active",
       "hash": "d9f81c55a64eb1324cbe20c56cf59374",
@@ -13781,7 +13781,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:43.439479"
+        "_classified_at": "2026-11-09T23:15:53.295471"
       },
       "status": "active",
       "hash": "f1a83118e2c5697f6679b2ce354e7f8d",
@@ -13824,7 +13824,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:45.442418"
+        "_classified_at": "2026-11-09T23:15:55.299184"
       },
       "status": "active",
       "hash": "0bff2aa05a6d99cad062133e6c589de1",
@@ -13869,7 +13869,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:47.445796"
+        "_classified_at": "2026-11-09T23:15:57.301918"
       },
       "status": "active",
       "hash": "aebb462e657b9e288cbfe408fc1a9dd5",
@@ -13914,7 +13914,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:49.449170"
+        "_classified_at": "2026-11-09T23:15:59.305408"
       },
       "status": "active",
       "hash": "f1ada790ce8f26ed12d4f2070b44bc81",
@@ -13959,7 +13959,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:51.452206"
+        "_classified_at": "2026-11-09T23:16:01.308004"
       },
       "status": "active",
       "hash": "73618455b2f727ad8fe055241b6b06bd",
@@ -14002,7 +14002,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:53.455517"
+        "_classified_at": "2026-11-09T23:16:03.312092"
       },
       "status": "active",
       "hash": "f656f38a9dbf4d6727896f8e0dc5e73c",
@@ -14049,7 +14049,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:55.458879"
+        "_classified_at": "2026-11-09T23:16:05.315074"
       },
       "status": "active",
       "hash": "dbb8d7ad3541ac927fe3caacd3588800",
@@ -14098,7 +14098,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:57.462200"
+        "_classified_at": "2026-11-09T23:16:07.318663"
       },
       "status": "active",
       "hash": "83cbc5e9ad9b537435036c2cdc4b0074",
@@ -14139,7 +14139,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:33:59.487928"
+        "_classified_at": "2026-11-09T23:16:09.359014"
       },
       "status": "active",
       "hash": "d82c11ec1571cc49a9e5d67285a26668",
@@ -14180,7 +14180,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:01.491234"
+        "_classified_at": "2026-11-09T23:16:11.362802"
       },
       "status": "active",
       "hash": "4f0adf8dde494dff7c0c6ed4df420520",
@@ -14224,7 +14224,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:03.494567"
+        "_classified_at": "2026-11-09T23:16:13.365930"
       },
       "status": "active",
       "hash": "b91c0e214d2c012f44bfab098fb99a1c",
@@ -14270,7 +14270,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:05.498220"
+        "_classified_at": "2026-11-09T23:16:15.369354"
       },
       "status": "active",
       "hash": "0a16224c296f72af9037875a027f94a6",
@@ -14314,7 +14314,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:07.501169"
+        "_classified_at": "2026-11-09T23:16:17.372939"
       },
       "status": "active",
       "hash": "18a24c035870fcbdbcda39e4ecf71401",
@@ -14363,7 +14363,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:09.504643"
+        "_classified_at": "2026-11-09T23:16:19.376667"
       },
       "status": "active",
       "hash": "097bf611b4bd8f82ad46290f9478a666",
@@ -14407,7 +14407,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:11.508097"
+        "_classified_at": "2026-11-09T23:16:21.380355"
       },
       "status": "active",
       "hash": "a3ad705733dff104469abefd400c670c",
@@ -14451,7 +14451,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:13.511591"
+        "_classified_at": "2026-11-09T23:16:23.383488"
       },
       "status": "active",
       "hash": "6cea18e92877f11b15280b17416ac030",
@@ -14495,7 +14495,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:15.515081"
+        "_classified_at": "2026-11-09T23:16:25.387259"
       },
       "status": "active",
       "hash": "67a5bfdf2c0a67f87eb46b3e9a4a7a38",
@@ -14544,7 +14544,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:17.518398"
+        "_classified_at": "2026-11-09T23:16:27.391259"
       },
       "status": "active",
       "hash": "14b14c86550a0d4c618b4764e11d49db",
@@ -14589,7 +14589,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:19.545009"
+        "_classified_at": "2026-11-09T23:16:29.432213"
       },
       "status": "active",
       "hash": "ea2486be22140cf8214932e344a07215",
@@ -14638,7 +14638,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:21.548265"
+        "_classified_at": "2026-11-09T23:16:31.436174"
       },
       "status": "active",
       "hash": "bd41a065d4640c9dd3c1e06ce9c820dc",
@@ -14676,7 +14676,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:23.551333"
+        "_classified_at": "2026-11-09T23:16:33.440012"
       },
       "status": "active",
       "hash": "fc0a485cf6784acc2104ec94f7dcb07d",
@@ -14722,7 +14722,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:25.554940"
+        "_classified_at": "2026-11-09T23:16:35.443499"
       },
       "status": "active",
       "hash": "93c06a67af6b87aa9f7a83de8586c016",
@@ -14762,7 +14762,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:27.558644"
+        "_classified_at": "2026-11-09T23:16:37.447759"
       },
       "status": "active",
       "hash": "44c7d2e7b23eee739f61b49c659a25f5",
@@ -14807,7 +14807,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:29.562072"
+        "_classified_at": "2026-11-09T23:16:39.451349"
       },
       "status": "active",
       "hash": "523b96f500fcb4459aa8718e387c9b23",
@@ -14852,7 +14852,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:31.564528"
+        "_classified_at": "2026-11-09T23:16:41.454939"
       },
       "status": "active",
       "hash": "9e39b45ba2d70f96218db979dc62b552",
@@ -14897,7 +14897,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:33.567381"
+        "_classified_at": "2026-11-09T23:16:43.458761"
       },
       "status": "active",
       "hash": "a5f8cafb26aa3fd483c73e20ddf07858",
@@ -14942,7 +14942,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:35.570717"
+        "_classified_at": "2026-11-09T23:16:45.461816"
       },
       "status": "active",
       "hash": "7de704a5bec448e339f90dae5df9b020",
@@ -14991,7 +14991,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:37.574070"
+        "_classified_at": "2026-11-09T23:16:47.465381"
       },
       "status": "active",
       "hash": "f6bb36049c3b42a62dfa88c46e0f79d2",
@@ -15035,7 +15035,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:39.600150"
+        "_classified_at": "2026-11-09T23:16:49.505947"
       },
       "status": "active",
       "hash": "8e9240a9f16db317677aa70bfeb6f560",
@@ -15082,7 +15082,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:41.603545"
+        "_classified_at": "2026-11-09T23:16:51.509534"
       },
       "status": "active",
       "hash": "8069a0ddc3a9e6fbcce919955738fc73",
@@ -15127,7 +15127,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:43.607236"
+        "_classified_at": "2026-11-09T23:16:53.513810"
       },
       "status": "active",
       "hash": "dbc4d971889417b0f4cb0434de170a51",
@@ -15172,7 +15172,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:45.610941"
+        "_classified_at": "2026-11-09T23:16:55.517392"
       },
       "status": "active",
       "hash": "41fa78d83871255df97eca42c516d7a6",
@@ -15218,7 +15218,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:47.614255"
+        "_classified_at": "2026-11-09T23:16:57.520895"
       },
       "status": "active",
       "hash": "c3a93eac6e6d4ec470b1f7f5dc024e20",
@@ -15262,7 +15262,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:49.617667"
+        "_classified_at": "2026-11-09T23:16:59.524038"
       },
       "status": "active",
       "hash": "64a45edd9346a078f0d17405a9028424",
@@ -15305,7 +15305,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:51.621042"
+        "_classified_at": "2026-11-09T23:17:01.527442"
       },
       "status": "active",
       "hash": "f559078e976df9bade3f5025d1fe8937",
@@ -15348,7 +15348,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:53.624374"
+        "_classified_at": "2026-11-09T23:17:03.530986"
       },
       "status": "active",
       "hash": "9ee01a4fa4d78d75be794baa1ca45906",
@@ -15397,7 +15397,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:55.627535"
+        "_classified_at": "2026-11-09T23:17:05.534631"
       },
       "status": "active",
       "hash": "934a966c733eda15d17c38e6456b4571",
@@ -15437,7 +15437,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:57.630962"
+        "_classified_at": "2026-11-09T23:17:07.538333"
       },
       "status": "active",
       "hash": "4a7a6fd7f3d34d4310e1b705b86364db",
@@ -15483,7 +15483,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:34:59.658271"
+        "_classified_at": "2026-11-09T23:17:09.579892"
       },
       "status": "active",
       "hash": "a6ff5a63d43e7fb68e9e4b6613abdef2",
@@ -15525,7 +15525,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:01.661594"
+        "_classified_at": "2026-11-09T23:17:11.583472"
       },
       "status": "active",
       "hash": "e05ce76c744d3b3b877a935bb99b8a80",
@@ -15568,7 +15568,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:03.665274"
+        "_classified_at": "2026-11-09T23:17:13.586985"
       },
       "status": "active",
       "hash": "f313349e6ef8ece66bfc2859d7b1df96",
@@ -15613,7 +15613,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:05.668741"
+        "_classified_at": "2026-11-09T23:17:15.590685"
       },
       "status": "active",
       "hash": "44766fb4dd4e4977e75a9321cbc6413e",
@@ -15660,7 +15660,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:07.672284"
+        "_classified_at": "2026-11-09T23:17:17.594542"
       },
       "status": "active",
       "hash": "f3a3d61b07332233ac57e4f232725e18",
@@ -15707,7 +15707,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:09.675675"
+        "_classified_at": "2026-11-09T23:17:19.598108"
       },
       "status": "active",
       "hash": "4c43f887265915a671a25d08b07f1e51",
@@ -15752,7 +15752,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:11.679026"
+        "_classified_at": "2026-11-09T23:17:21.602154"
       },
       "status": "active",
       "hash": "55eefa41a343310dfffc60459c4d1c78",
@@ -15798,7 +15798,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:13.681556"
+        "_classified_at": "2026-11-09T23:17:23.604915"
       },
       "status": "active",
       "hash": "13cd49fe3b1b37f47e6c20a256045cc1",
@@ -15838,7 +15838,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:15.685075"
+        "_classified_at": "2026-11-09T23:17:25.608705"
       },
       "status": "active",
       "hash": "1b159dc50cad7253d6c91bc03c2bf33c",
@@ -15885,7 +15885,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:17.688503"
+        "_classified_at": "2026-11-09T23:17:27.612311"
       },
       "status": "active",
       "hash": "45d95af3e246cc5a1514a05b6c5a172a",
@@ -15924,7 +15924,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:19.715518"
+        "_classified_at": "2026-11-09T23:17:29.654169"
       },
       "status": "active",
       "hash": "ee6929cfd8dd567e41e4efe843b42dcd",
@@ -15971,7 +15971,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:21.718950"
+        "_classified_at": "2026-11-09T23:17:31.657933"
       },
       "status": "active",
       "hash": "75184ae2b04ef83f12bc2173bb8962af",
@@ -16010,7 +16010,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:23.722865"
+        "_classified_at": "2026-11-09T23:17:33.661811"
       },
       "status": "active",
       "hash": "a0e278e882f1eb24248fe91b3411e42a",
@@ -16059,7 +16059,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:25.726375"
+        "_classified_at": "2026-11-09T23:17:35.665609"
       },
       "status": "active",
       "hash": "fc815a0b7bc84dce6b9c6f8ca4c28ad5",
@@ -16104,7 +16104,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:27.729736"
+        "_classified_at": "2026-11-09T23:17:37.669120"
       },
       "status": "active",
       "hash": "136e63893ca71445c0185e464cf12266",
@@ -16145,7 +16145,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:29.733072"
+        "_classified_at": "2026-11-09T23:17:39.672808"
       },
       "status": "active",
       "hash": "5a7a6185f07dab689218c182fcf3b4ae",
@@ -16188,7 +16188,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:31.736523"
+        "_classified_at": "2026-11-09T23:17:41.676451"
       },
       "status": "active",
       "hash": "af8e3c349612f1af5aa0509b16bae3cc",
@@ -16236,7 +16236,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:33.739614"
+        "_classified_at": "2026-11-09T23:17:43.680011"
       },
       "status": "active",
       "hash": "f76864d0b42c3e0713278dd6cd49c502",
@@ -16284,7 +16284,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:35.743149"
+        "_classified_at": "2026-11-09T23:17:45.683687"
       },
       "status": "active",
       "hash": "df2a3e9e504593d5b2dc0c84d1c0cf02",
@@ -16328,7 +16328,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:37.746581"
+        "_classified_at": "2026-11-09T23:17:47.687153"
       },
       "status": "active",
       "hash": "92a7881427b4548fca6a406e4a67b3c0",
@@ -16370,7 +16370,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:39.774698"
+        "_classified_at": "2026-11-09T23:17:49.728617"
       },
       "status": "active",
       "hash": "ad846fd1138e66a1cacd0fb4b8644671",
@@ -16415,7 +16415,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:41.778062"
+        "_classified_at": "2026-11-09T23:17:51.732192"
       },
       "status": "active",
       "hash": "0079576419ccacff015989ce74616d69",
@@ -16460,7 +16460,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:43.781771"
+        "_classified_at": "2026-11-09T23:17:53.735770"
       },
       "status": "active",
       "hash": "b3b0b34ebdc9b8ba6bd98224365ed43d",
@@ -16504,7 +16504,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:45.785258"
+        "_classified_at": "2026-11-09T23:17:55.739344"
       },
       "status": "active",
       "hash": "bcf2f66f664752357168c5899a82bccd",
@@ -16553,7 +16553,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:47.788589"
+        "_classified_at": "2026-11-09T23:17:57.742948"
       },
       "status": "active",
       "hash": "8fd67f6517ba75e90f1491c11b758a77",
@@ -16601,7 +16601,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:49.792085"
+        "_classified_at": "2026-11-09T23:17:59.746621"
       },
       "status": "active",
       "hash": "7b594fddae646cc544e30eead3d1852c",
@@ -16643,7 +16643,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:51.795524"
+        "_classified_at": "2026-11-09T23:18:01.750168"
       },
       "status": "active",
       "hash": "e2494a7edccd9fc5418f59234d55eecf",
@@ -16686,7 +16686,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:53.798908"
+        "_classified_at": "2026-11-09T23:18:03.753764"
       },
       "status": "active",
       "hash": "7b5a1e3a8196193526e75cadef97399f",
@@ -16730,7 +16730,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:55.802339"
+        "_classified_at": "2026-11-09T23:18:05.757434"
       },
       "status": "active",
       "hash": "db2a4a429df66585144b89a9d2890c7c",
@@ -16775,7 +16775,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:57.805866"
+        "_classified_at": "2026-11-09T23:18:07.761683"
       },
       "status": "active",
       "hash": "640a443672e27069a68471d5b3b5bd63",
@@ -16818,7 +16818,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:35:59.832881"
+        "_classified_at": "2026-11-09T23:18:09.802312"
       },
       "status": "active",
       "hash": "c3a83e015935188821aa9ee65e6b322f",
@@ -16865,7 +16865,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:01.836911"
+        "_classified_at": "2026-11-09T23:18:11.806402"
       },
       "status": "active",
       "hash": "91be2a74dce26a87ba9f8ce13564234a",
@@ -16904,7 +16904,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:03.841829"
+        "_classified_at": "2026-11-09T23:18:13.810250"
       },
       "status": "active",
       "hash": "ad0cb903053ea88697227d16d33d7012",
@@ -16954,7 +16954,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:05.845391"
+        "_classified_at": "2026-11-09T23:18:15.813935"
       },
       "status": "active",
       "hash": "5aae6cf6035cf23bdcb50896a46889b1",
@@ -17000,7 +17000,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:07.848833"
+        "_classified_at": "2026-11-09T23:18:17.817555"
       },
       "status": "active",
       "hash": "d4debfe3d5694f7b8a997233f02f3273",
@@ -17047,7 +17047,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:09.852362"
+        "_classified_at": "2026-11-09T23:18:19.821061"
       },
       "status": "active",
       "hash": "8158fa3e4de806e614f7ff02e7b22fde",
@@ -17094,7 +17094,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:11.855843"
+        "_classified_at": "2026-11-09T23:18:21.824614"
       },
       "status": "active",
       "hash": "01065cc12a9d7a950be0386ba0e43157",
@@ -17137,7 +17137,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:13.858454"
+        "_classified_at": "2026-11-09T23:18:23.828151"
       },
       "status": "active",
       "hash": "199a323c2b7b2b65dae06d56d48b8073",
@@ -17177,7 +17177,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:15.861931"
+        "_classified_at": "2026-11-09T23:18:25.831890"
       },
       "status": "active",
       "hash": "3eb5238106ffa4378988e8191304a914",
@@ -17224,7 +17224,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:17.865358"
+        "_classified_at": "2026-11-09T23:18:27.835982"
       },
       "status": "active",
       "hash": "1e4e35498ab5ae64e2c32576328487ba",
@@ -17266,7 +17266,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:19.892480"
+        "_classified_at": "2026-11-09T23:18:29.877779"
       },
       "status": "active",
       "hash": "b114906b1c37b67e17100bd6401d859c",
@@ -17314,7 +17314,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:21.896214"
+        "_classified_at": "2026-11-09T23:18:31.881500"
       },
       "status": "active",
       "hash": "ae482b6bae6b28e5f1631932d6e5c382",
@@ -17359,7 +17359,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:23.899530"
+        "_classified_at": "2026-11-09T23:18:33.885139"
       },
       "status": "active",
       "hash": "c52376a1820e868235b1851b87492a39",
@@ -17399,7 +17399,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:25.902970"
+        "_classified_at": "2026-11-09T23:18:35.888632"
       },
       "status": "active",
       "hash": "4411d3abc8350e49b1cbc3b66c65a22e",
@@ -17443,7 +17443,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:27.906507"
+        "_classified_at": "2026-11-09T23:18:37.892400"
       },
       "status": "active",
       "hash": "2bc05f0615f2d46ba93e12d33f2229c2",
@@ -17481,7 +17481,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:29.909974"
+        "_classified_at": "2026-11-09T23:18:39.896923"
       },
       "status": "active",
       "hash": "f047575e706451ca0ed912cf3d11daba",
@@ -17521,7 +17521,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:31.913378"
+        "_classified_at": "2026-11-09T23:18:41.900587"
       },
       "status": "active",
       "hash": "34dc21dee723e965b9a5e5ee9c8965b1",
@@ -17560,7 +17560,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:33.916751"
+        "_classified_at": "2026-11-09T23:18:43.903955"
       },
       "status": "active",
       "hash": "02af07ab8a2782c8790a015fb912f677",
@@ -17607,7 +17607,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:35.920148"
+        "_classified_at": "2026-11-09T23:18:45.907388"
       },
       "status": "active",
       "hash": "524e7d08e755cc664226b3d4b8660cd7",
@@ -17653,7 +17653,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:37.923583"
+        "_classified_at": "2026-11-09T23:18:47.911394"
       },
       "status": "active",
       "hash": "5b18caad9f604f12b0705acba0ed409e",
@@ -17694,7 +17694,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:39.951336"
+        "_classified_at": "2026-11-09T23:18:49.952070"
       },
       "status": "active",
       "hash": "c7c58d016a4ab302e0f0d17f59d08a10",
@@ -17734,7 +17734,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:41.955157"
+        "_classified_at": "2026-11-09T23:18:51.955682"
       },
       "status": "active",
       "hash": "dcdd0d62a00c7ccf110885b9275419cf",
@@ -17777,7 +17777,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:43.957856"
+        "_classified_at": "2026-11-09T23:18:53.959359"
       },
       "status": "active",
       "hash": "d802a3e63c700493242d9d104389c7df",
@@ -17817,7 +17817,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:45.961329"
+        "_classified_at": "2026-11-09T23:18:55.963074"
       },
       "status": "active",
       "hash": "78359822d0b017483ac74c19ca10381d",
@@ -17860,7 +17860,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:47.964860"
+        "_classified_at": "2026-11-09T23:18:57.966717"
       },
       "status": "active",
       "hash": "0c31dda78664045d19fd1c04dc76abab",
@@ -17909,7 +17909,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:49.968244"
+        "_classified_at": "2026-11-09T23:18:59.970240"
       },
       "status": "active",
       "hash": "535464f977a45ab62af2578604d3f9f2",
@@ -17952,7 +17952,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:51.971834"
+        "_classified_at": "2026-11-09T23:19:01.972936"
       },
       "status": "active",
       "hash": "df2782c019d0d66a88af774011e8ab29",
@@ -17996,7 +17996,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:53.975106"
+        "_classified_at": "2026-11-09T23:19:03.976516"
       },
       "status": "active",
       "hash": "dd7d941d5cc3bee67ef879eb8dd796cb",
@@ -18035,7 +18035,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:55.978727"
+        "_classified_at": "2026-11-09T23:19:05.980373"
       },
       "status": "active",
       "hash": "e8792705b5cea2f03388f86885f645a3",
@@ -18078,7 +18078,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:36:57.982258"
+        "_classified_at": "2026-11-09T23:19:07.984232"
       },
       "status": "active",
       "hash": "980023eafc2c419180916d7eb6d29599",
@@ -18123,7 +18123,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:00.010043"
+        "_classified_at": "2026-11-09T23:19:10.025497"
       },
       "status": "active",
       "hash": "751973642cd1d3b56fa7a37e71ffde50",
@@ -18168,7 +18168,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:02.013534"
+        "_classified_at": "2026-11-09T23:19:12.029063"
       },
       "status": "active",
       "hash": "1c232b7104ba423457cad015f7bb42c8",
@@ -18215,7 +18215,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:04.017061"
+        "_classified_at": "2026-11-09T23:19:14.032817"
       },
       "status": "active",
       "hash": "68b9819e787b9b053e683be7c62e2cff",
@@ -18263,7 +18263,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:06.020581"
+        "_classified_at": "2026-11-09T23:19:16.036520"
       },
       "status": "active",
       "hash": "11e20d38f6b5c8462c96f6b88b12620d",
@@ -18307,7 +18307,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:08.024059"
+        "_classified_at": "2026-11-09T23:19:18.040113"
       },
       "status": "active",
       "hash": "6e908d2f26ba44f68ca184d2696ec807",
@@ -18353,7 +18353,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:10.027545"
+        "_classified_at": "2026-11-09T23:19:20.043807"
       },
       "status": "active",
       "hash": "e77d89a5cfa17ff55d0b928bf21b2d0f",
@@ -18397,7 +18397,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:12.030994"
+        "_classified_at": "2026-11-09T23:19:22.047306"
       },
       "status": "active",
       "hash": "b084aaefa0a2f7ab72363110bcda458e",
@@ -18446,7 +18446,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:14.033413"
+        "_classified_at": "2026-11-09T23:19:24.050037"
       },
       "status": "active",
       "hash": "94a7358e05938307a0e91a10c608d675",
@@ -18493,7 +18493,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:16.036871"
+        "_classified_at": "2026-11-09T23:19:26.053656"
       },
       "status": "active",
       "hash": "61ee0f699345f07a005c3c9de446436d",
@@ -18536,7 +18536,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:18.040347"
+        "_classified_at": "2026-11-09T23:19:28.057601"
       },
       "status": "active",
       "hash": "fc6515df8b8222ae9cdf71b55a021935",
@@ -18582,7 +18582,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:20.067984"
+        "_classified_at": "2026-11-09T23:19:30.098779"
       },
       "status": "active",
       "hash": "0fd4fa8a47ec557c40cbbd0273d5083b",
@@ -18627,7 +18627,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:22.071630"
+        "_classified_at": "2026-11-09T23:19:32.102983"
       },
       "status": "active",
       "hash": "288da4070b563521170fcaa92e24bbfb",
@@ -18672,7 +18672,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:24.075038"
+        "_classified_at": "2026-11-09T23:19:34.106584"
       },
       "status": "active",
       "hash": "2ed6f8773d6adc2285a4d98d10bc228c",
@@ -18721,7 +18721,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:26.078512"
+        "_classified_at": "2026-11-09T23:19:36.109823"
       },
       "status": "active",
       "hash": "594111d37c181b0b4751bce524a94c4b",
@@ -18761,7 +18761,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:28.081996"
+        "_classified_at": "2026-11-09T23:19:38.113073"
       },
       "status": "active",
       "hash": "929ba3c615223cf7248590ae175fcce7",
@@ -18808,7 +18808,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:30.085500"
+        "_classified_at": "2026-11-09T23:19:40.116114"
       },
       "status": "active",
       "hash": "8e9a0e5f19caa707db6dfae2a3551504",
@@ -18855,7 +18855,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:32.088139"
+        "_classified_at": "2026-11-09T23:19:42.119762"
       },
       "status": "active",
       "hash": "fdf645aecfe402b2d8297ab009bbef0b",
@@ -18901,7 +18901,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:34.091611"
+        "_classified_at": "2026-11-09T23:19:44.123412"
       },
       "status": "active",
       "hash": "39aca26227b4762cf59f50e09159ca84",
@@ -18950,7 +18950,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:36.095060"
+        "_classified_at": "2026-11-09T23:19:46.127341"
       },
       "status": "active",
       "hash": "840b3c96fad34c1bc64bb26038c3841e",
@@ -18990,7 +18990,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:38.098363"
+        "_classified_at": "2026-11-09T23:19:48.130365"
       },
       "status": "active",
       "hash": "3faebb27540633c9d2065e5131ddf2a5",
@@ -19033,7 +19033,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:40.125721"
+        "_classified_at": "2026-11-09T23:19:50.171758"
       },
       "status": "active",
       "hash": "dd3c407bbd2567d5d793e720ca3f2da2",
@@ -19079,7 +19079,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:42.129127"
+        "_classified_at": "2026-11-09T23:19:52.175224"
       },
       "status": "active",
       "hash": "3381294afe5973d75687e1db220d74de",
@@ -19125,7 +19125,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:44.132567"
+        "_classified_at": "2026-11-09T23:19:54.178919"
       },
       "status": "active",
       "hash": "f2324a6f586df773128ee09267104e8f",
@@ -19170,7 +19170,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:46.135909"
+        "_classified_at": "2026-11-09T23:19:56.182294"
       },
       "status": "active",
       "hash": "ea991922e5d2d407b59be72152863092",
@@ -19209,7 +19209,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:48.139334"
+        "_classified_at": "2026-11-09T23:19:58.185912"
       },
       "status": "active",
       "hash": "f454a7da12c2fbfc12dae505f59f304b",
@@ -19255,7 +19255,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:50.142649"
+        "_classified_at": "2026-11-09T23:20:00.189453"
       },
       "status": "active",
       "hash": "65d6b3b69c9122e98cfb9c6487f8438c",
@@ -19294,7 +19294,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:52.146055"
+        "_classified_at": "2026-11-09T23:20:02.193104"
       },
       "status": "active",
       "hash": "dfaf0f333b6b70de28eaf291774d94db",
@@ -19340,7 +19340,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:54.149448"
+        "_classified_at": "2026-11-09T23:20:04.196617"
       },
       "status": "active",
       "hash": "81361e46e82b342fd6c3fce3d49106a4",
@@ -19386,7 +19386,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:56.152956"
+        "_classified_at": "2026-11-09T23:20:06.200530"
       },
       "status": "active",
       "hash": "cc95aa39a060194468cf78fa7dc1cb99",
@@ -19430,7 +19430,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:37:58.156373"
+        "_classified_at": "2026-11-09T23:20:08.204166"
       },
       "status": "active",
       "hash": "c8e48afc4b04bd84c86db33b225828a4",
@@ -19473,7 +19473,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:00.183845"
+        "_classified_at": "2026-11-09T23:20:10.243965"
       },
       "status": "active",
       "hash": "bf9b2fc7786695d23d420b323f28c613",
@@ -19516,7 +19516,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:02.187400"
+        "_classified_at": "2026-11-09T23:20:12.247564"
       },
       "status": "active",
       "hash": "c940d2fd9b40144a1f97ac8883514a8c",
@@ -19561,7 +19561,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:04.190793"
+        "_classified_at": "2026-11-09T23:20:14.251198"
       },
       "status": "active",
       "hash": "ea7fe912d5c09bd9597f4b03217e8fff",
@@ -19603,7 +19603,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:06.194166"
+        "_classified_at": "2026-11-09T23:20:16.254695"
       },
       "status": "active",
       "hash": "12ac425957335528f185ebbd3f344307",
@@ -19647,7 +19647,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:08.197636"
+        "_classified_at": "2026-11-09T23:20:18.258348"
       },
       "status": "active",
       "hash": "f7464066678a4b2b73cd89da6c7c161c",
@@ -19692,7 +19692,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:10.201040"
+        "_classified_at": "2026-11-09T23:20:20.261922"
       },
       "status": "active",
       "hash": "93c89a4b9cb44ca5abe30785d226d695",
@@ -19739,7 +19739,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:12.204427"
+        "_classified_at": "2026-11-09T23:20:22.265488"
       },
       "status": "active",
       "hash": "18a5c4f427aa2a3153149069672e626a",
@@ -19787,7 +19787,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:14.207861"
+        "_classified_at": "2026-11-09T23:20:24.269030"
       },
       "status": "active",
       "hash": "2877b49ebb731389a1a583bda03540bd",
@@ -19832,7 +19832,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:16.211125"
+        "_classified_at": "2026-11-09T23:20:26.273105"
       },
       "status": "active",
       "hash": "0028a24e18e166c292689023e6c22e09",
@@ -19875,7 +19875,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:18.214534"
+        "_classified_at": "2026-11-09T23:20:28.276806"
       },
       "status": "active",
       "hash": "3e43837dc774ebfbd1ccc4801237041d",
@@ -19924,7 +19924,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:20.242694"
+        "_classified_at": "2026-11-09T23:20:30.318589"
       },
       "status": "active",
       "hash": "16f541b005e91cd15bf516c1961ea0b0",
@@ -19970,7 +19970,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:22.246220"
+        "_classified_at": "2026-11-09T23:20:32.322266"
       },
       "status": "active",
       "hash": "56c7f7435d8e6860ca392b2b06d5643f",
@@ -20015,7 +20015,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:24.249583"
+        "_classified_at": "2026-11-09T23:20:34.325053"
       },
       "status": "active",
       "hash": "ed1c1607401e06c70d9e92918ddd9934",
@@ -20060,7 +20060,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:26.252668"
+        "_classified_at": "2026-11-09T23:20:36.328749"
       },
       "status": "active",
       "hash": "70a46919ffec2a1fe70c2d18aa6289d3",
@@ -20104,7 +20104,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:28.255553"
+        "_classified_at": "2026-11-09T23:20:38.332340"
       },
       "status": "active",
       "hash": "5887aebfeedcde5c7a690992128111da",
@@ -20147,7 +20147,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:30.259013"
+        "_classified_at": "2026-11-09T23:20:40.335944"
       },
       "status": "active",
       "hash": "6b7f18f1f939115a1bd761ec64bd2c55",
@@ -20197,7 +20197,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:32.262329"
+        "_classified_at": "2026-11-09T23:20:42.339416"
       },
       "status": "active",
       "hash": "57caecc41d16f82e2309eb7abae3886a",
@@ -20246,7 +20246,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:34.265718"
+        "_classified_at": "2026-11-09T23:20:44.342983"
       },
       "status": "active",
       "hash": "ec43638b66e16a5bbede9b710b12b0c7",
@@ -20290,7 +20290,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:36.269142"
+        "_classified_at": "2026-11-09T23:20:46.347037"
       },
       "status": "active",
       "hash": "f480c5d247eea82c8adbad3912cb6b5d",
@@ -20337,7 +20337,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:38.272548"
+        "_classified_at": "2026-11-09T23:20:48.350629"
       },
       "status": "active",
       "hash": "349fcffc5b2e4d01b27b529f4e9bae7e",
@@ -20376,7 +20376,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:40.299411"
+        "_classified_at": "2026-11-09T23:20:50.390885"
       },
       "status": "active",
       "hash": "69e76024ac7ba70a088659ac5d80a3af",
@@ -20418,7 +20418,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:42.302793"
+        "_classified_at": "2026-11-09T23:20:52.394440"
       },
       "status": "active",
       "hash": "e0de515d51a339dd45431a0dd2af95ee",
@@ -20468,7 +20468,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:44.306435"
+        "_classified_at": "2026-11-09T23:20:54.398217"
       },
       "status": "active",
       "hash": "e723e2ae3e04e8028e119ee592e81974",
@@ -20511,7 +20511,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:46.309720"
+        "_classified_at": "2026-11-09T23:20:56.401721"
       },
       "status": "active",
       "hash": "5b592a9e37c3474d12c4a05a1ef50598",
@@ -20555,7 +20555,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:48.313012"
+        "_classified_at": "2026-11-09T23:20:58.405343"
       },
       "status": "active",
       "hash": "5f937e78a9f11802066ba28a4f8d959f",
@@ -20602,7 +20602,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:50.315529"
+        "_classified_at": "2026-11-09T23:21:00.409072"
       },
       "status": "active",
       "hash": "0a78d9f8a1d2c2289e4410bcb0657b73",
@@ -20651,7 +20651,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:52.318804"
+        "_classified_at": "2026-11-09T23:21:02.411951"
       },
       "status": "active",
       "hash": "ea83bad32870765c79d8745c5ae7e0c2",
@@ -20698,7 +20698,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:54.322199"
+        "_classified_at": "2026-11-09T23:21:04.416267"
       },
       "status": "active",
       "hash": "9e3a7911950eab6a8924acece3960e02",
@@ -20748,7 +20748,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:56.325503"
+        "_classified_at": "2026-11-09T23:21:06.419815"
       },
       "status": "active",
       "hash": "2bb4997e9e7e9f45820e6df11e801f88",
@@ -20791,7 +20791,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:38:58.329178"
+        "_classified_at": "2026-11-09T23:21:08.423423"
       },
       "status": "active",
       "hash": "9191b0a3b4c41e6732dbb644bd52d6fc",
@@ -20833,7 +20833,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:00.356398"
+        "_classified_at": "2026-11-09T23:21:10.464246"
       },
       "status": "active",
       "hash": "e8660ee8b41231074f2d9f16adb2ea71",
@@ -20874,7 +20874,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:02.359792"
+        "_classified_at": "2026-11-09T23:21:12.467902"
       },
       "status": "active",
       "hash": "64157a370a2257ee6c20f26f14ba3583",
@@ -20916,7 +20916,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:04.363257"
+        "_classified_at": "2026-11-09T23:21:14.471472"
       },
       "status": "active",
       "hash": "7c8150213491f29a32e41242e2fdf55a",
@@ -20965,7 +20965,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:06.366979"
+        "_classified_at": "2026-11-09T23:21:16.475562"
       },
       "status": "active",
       "hash": "3caea4d9bcdd5cde2b1a1f338a06a086",
@@ -21008,7 +21008,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:08.370351"
+        "_classified_at": "2026-11-09T23:21:18.479204"
       },
       "status": "active",
       "hash": "c1f0986fd7eefc02708427c7b8fada90",
@@ -21057,7 +21057,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:10.373686"
+        "_classified_at": "2026-11-09T23:21:20.482980"
       },
       "status": "active",
       "hash": "3a1d84f752947c47e87f7cfdc42a63b0",
@@ -21101,7 +21101,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:12.377008"
+        "_classified_at": "2026-11-09T23:21:22.486577"
       },
       "status": "active",
       "hash": "f8e6960b1cf865c3002b712383c4cfc2",
@@ -21144,7 +21144,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:14.380411"
+        "_classified_at": "2026-11-09T23:21:24.490080"
       },
       "status": "active",
       "hash": "f10d04b8b4b9b5e662f49e8c031ed0d5",
@@ -21192,7 +21192,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:16.383769"
+        "_classified_at": "2026-11-09T23:21:26.493137"
       },
       "status": "active",
       "hash": "655bb66fc12f7a1da41f5af48f1818f0",
@@ -21235,7 +21235,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:18.387721"
+        "_classified_at": "2026-11-09T23:21:28.496813"
       },
       "status": "active",
       "hash": "ca936d70b26ac2f9c68a65575d7fa7eb",
@@ -21284,7 +21284,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:20.416004"
+        "_classified_at": "2026-11-09T23:21:30.538925"
       },
       "status": "active",
       "hash": "b597976c3ce6012f3a07e9f5c71a3c8c",
@@ -21329,7 +21329,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:22.419485"
+        "_classified_at": "2026-11-09T23:21:32.542681"
       },
       "status": "active",
       "hash": "811e05e694d7c8fa0d584db91ca5fba9",
@@ -21378,7 +21378,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:24.422824"
+        "_classified_at": "2026-11-09T23:21:34.546301"
       },
       "status": "active",
       "hash": "e76346bd12c68c698d4800fd00be9533",
@@ -21419,7 +21419,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:26.426369"
+        "_classified_at": "2026-11-09T23:21:36.550132"
       },
       "status": "active",
       "hash": "48f2797289429fbd4600299e4e7706ed",
@@ -21463,7 +21463,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:28.429770"
+        "_classified_at": "2026-11-09T23:21:38.553710"
       },
       "status": "active",
       "hash": "6e9feef0d48ead6730ce88ecc22b34cc",
@@ -21505,7 +21505,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:30.433313"
+        "_classified_at": "2026-11-09T23:21:40.557771"
       },
       "status": "active",
       "hash": "57d24b024678f5c614db5d48447871d1",
@@ -21554,7 +21554,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:32.436736"
+        "_classified_at": "2026-11-09T23:21:42.561442"
       },
       "status": "active",
       "hash": "19db090dc300e7c94c75231aa830dfee",
@@ -21600,7 +21600,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:34.440087"
+        "_classified_at": "2026-11-09T23:21:44.565565"
       },
       "status": "active",
       "hash": "b305a9a1f5bb7d20480d2d586e4ee65d",
@@ -21645,7 +21645,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:36.443401"
+        "_classified_at": "2026-11-09T23:21:46.569050"
       },
       "status": "active",
       "hash": "ac246594da24758e8d58c4c36b913616",
@@ -21689,7 +21689,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:38.447095"
+        "_classified_at": "2026-11-09T23:21:48.572084"
       },
       "status": "active",
       "hash": "f3cfc5cb5f8aadbfd8b7e9328fc0f0d1",
@@ -21731,7 +21731,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:40.473831"
+        "_classified_at": "2026-11-09T23:21:50.612917"
       },
       "status": "active",
       "hash": "15f68be0f9f23b4653ab81fa42161a4a",
@@ -21775,7 +21775,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:42.476529"
+        "_classified_at": "2026-11-09T23:21:52.616560"
       },
       "status": "active",
       "hash": "d715978fcc0396b4d67d7ef9a0edf1f9",
@@ -21814,7 +21814,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:44.478412"
+        "_classified_at": "2026-11-09T23:21:54.620151"
       },
       "status": "active",
       "hash": "5b1bf4359bd2ebb370a47bf756b07e92",
@@ -21861,7 +21861,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:46.481503"
+        "_classified_at": "2026-11-09T23:21:56.623955"
       },
       "status": "active",
       "hash": "7840486d157118e50c7ec204618abb3f",
@@ -21906,7 +21906,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:48.484894"
+        "_classified_at": "2026-11-09T23:21:58.627678"
       },
       "status": "active",
       "hash": "fba2373edb0695aa6e4d1962101d336d",
@@ -21948,7 +21948,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:50.488325"
+        "_classified_at": "2026-11-09T23:22:00.631346"
       },
       "status": "active",
       "hash": "2fb795a41461f9664f41efb0c07e9461",
@@ -21997,7 +21997,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:52.491414"
+        "_classified_at": "2026-11-09T23:22:02.635177"
       },
       "status": "active",
       "hash": "4699df1b3d138637154b348ac946c963",
@@ -22044,7 +22044,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:54.494938"
+        "_classified_at": "2026-11-09T23:22:04.639219"
       },
       "status": "active",
       "hash": "8de1db0c3bd1ffe5fa7383a7bfee2beb",
@@ -22093,7 +22093,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:56.498349"
+        "_classified_at": "2026-11-09T23:22:06.642815"
       },
       "status": "active",
       "hash": "8b2c2c9ec76699e630613862e62a06de",
@@ -22137,7 +22137,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:39:58.502129"
+        "_classified_at": "2026-11-09T23:22:08.646055"
       },
       "status": "active",
       "hash": "08ecfbbc924a19234f7eb081c20d87ac",
@@ -22184,7 +22184,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:00.529413"
+        "_classified_at": "2026-11-09T23:22:10.687287"
       },
       "status": "active",
       "hash": "80ebbb3510090df5521e42994353a471",
@@ -22226,7 +22226,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:02.532685"
+        "_classified_at": "2026-11-09T23:22:12.690858"
       },
       "status": "active",
       "hash": "654f44bbdf1894d0d1ab934282e9444e",
@@ -22275,7 +22275,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:04.536185"
+        "_classified_at": "2026-11-09T23:22:14.694389"
       },
       "status": "active",
       "hash": "960e22c062e54ee98c07ce83a5e39cff",
@@ -22320,7 +22320,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:06.539623"
+        "_classified_at": "2026-11-09T23:22:16.697946"
       },
       "status": "active",
       "hash": "41c5d1b3d528eb912e486ad35dfaec92",
@@ -22365,7 +22365,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:08.543075"
+        "_classified_at": "2026-11-09T23:22:18.701439"
       },
       "status": "active",
       "hash": "1b51720eac97141c9a443e8400d39722",
@@ -22408,7 +22408,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:10.546493"
+        "_classified_at": "2026-11-09T23:22:20.704925"
       },
       "status": "active",
       "hash": "41de90c717ed710bbfc3e3a37b5f430a",
@@ -22451,7 +22451,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:12.550083"
+        "_classified_at": "2026-11-09T23:22:22.708783"
       },
       "status": "active",
       "hash": "36bb86abc354a875892de1a197002f5f",
@@ -22497,7 +22497,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:14.553547"
+        "_classified_at": "2026-11-09T23:22:24.712728"
       },
       "status": "active",
       "hash": "0c90b01d41de84d8eb1c49bb69e18d09",
@@ -22538,7 +22538,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:16.557056"
+        "_classified_at": "2026-11-09T23:22:26.715964"
       },
       "status": "active",
       "hash": "7b5ad0c52e58076e34f393efe9019ed2",
@@ -22584,7 +22584,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:18.561081"
+        "_classified_at": "2026-11-09T23:22:28.719546"
       },
       "status": "active",
       "hash": "53e05338ce6abee9ef68c74d76a50ec4",
@@ -22628,7 +22628,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:20.588104"
+        "_classified_at": "2026-11-09T23:22:30.760902"
       },
       "status": "active",
       "hash": "63aa6680ffdbedff257a2c5bcb2cc27f",
@@ -22669,7 +22669,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:22.591789"
+        "_classified_at": "2026-11-09T23:22:32.764803"
       },
       "status": "active",
       "hash": "ebd9eb6819ab10ef417c8e52fe96cc94",
@@ -22711,7 +22711,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:24.595215"
+        "_classified_at": "2026-11-09T23:22:34.768386"
       },
       "status": "active",
       "hash": "d5a1930d166cd2bc2ca54b3405e641d0",
@@ -22756,7 +22756,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:26.598679"
+        "_classified_at": "2026-11-09T23:22:36.770943"
       },
       "status": "active",
       "hash": "55b631a083678b1748313493a183a42b",
@@ -22800,7 +22800,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:28.602216"
+        "_classified_at": "2026-11-09T23:22:38.774460"
       },
       "status": "active",
       "hash": "7b93e5f6737b062ac280b16064851446",
@@ -22843,7 +22843,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:30.605772"
+        "_classified_at": "2026-11-09T23:22:40.778127"
       },
       "status": "active",
       "hash": "c4b96e147d004941235298b2e5fb678f",
@@ -22886,7 +22886,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:32.608670"
+        "_classified_at": "2026-11-09T23:22:42.782151"
       },
       "status": "active",
       "hash": "e1a8612f5ff196faef1cb51b5517732f",
@@ -22928,7 +22928,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:34.612008"
+        "_classified_at": "2026-11-09T23:22:44.785537"
       },
       "status": "active",
       "hash": "455c8959885c1b38871319571e9ab72c",
@@ -22970,7 +22970,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:36.615836"
+        "_classified_at": "2026-11-09T23:22:46.789253"
       },
       "status": "active",
       "hash": "6a46fc9cf2e83b10c15f61db3e777148",
@@ -23010,7 +23010,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:38.619378"
+        "_classified_at": "2026-11-09T23:22:48.792923"
       },
       "status": "active",
       "hash": "4aa8dd9a08fdc32d53eac21cf46e79c0",
@@ -23049,7 +23049,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:40.647387"
+        "_classified_at": "2026-11-09T23:22:50.833290"
       },
       "status": "active",
       "hash": "c8f5889dc0e48bc380bef39264f7fbb8",
@@ -23097,7 +23097,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:42.650766"
+        "_classified_at": "2026-11-09T23:22:52.836923"
       },
       "status": "active",
       "hash": "20c99c680bff19bd1d0925e3aeb26f86",
@@ -23140,7 +23140,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:44.653547"
+        "_classified_at": "2026-11-09T23:22:54.840737"
       },
       "status": "active",
       "hash": "62dee803f4071bd95a11e66e9b8324a7",
@@ -23183,7 +23183,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:46.657044"
+        "_classified_at": "2026-11-09T23:22:56.844402"
       },
       "status": "active",
       "hash": "099546f43eb9438109dd51bfbdfd2eda",
@@ -23230,7 +23230,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:48.660096"
+        "_classified_at": "2026-11-09T23:22:58.848062"
       },
       "status": "active",
       "hash": "f551334a0e3f64650913cc80a50d4d78",
@@ -23274,7 +23274,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:50.663692"
+        "_classified_at": "2026-11-09T23:23:00.851943"
       },
       "status": "active",
       "hash": "5b79a09c2372d338f24228a80e9c62b9",
@@ -23317,7 +23317,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:52.667272"
+        "_classified_at": "2026-11-09T23:23:02.856009"
       },
       "status": "active",
       "hash": "85e9b5dce4f9484f6731b0d778f8cc2e",
@@ -23359,7 +23359,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:54.670426"
+        "_classified_at": "2026-11-09T23:23:04.859734"
       },
       "status": "active",
       "hash": "07fd2295ead5c4d45892fe3ab22a846a",
@@ -23404,7 +23404,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:56.674638"
+        "_classified_at": "2026-11-09T23:23:06.863270"
       },
       "status": "active",
       "hash": "efe2d4536fbb724f90ef5135b2899251",
@@ -23451,7 +23451,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:40:58.678042"
+        "_classified_at": "2026-11-09T23:23:08.866796"
       },
       "status": "active",
       "hash": "a4bbee2cb160b062774d395dac7280a2",
@@ -23501,7 +23501,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:41:00.705041"
+        "_classified_at": "2026-11-09T23:23:10.907505"
       },
       "status": "active",
       "hash": "a12c37423bfe84b93800b97f217cfd38",
@@ -23549,7 +23549,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:41:02.707986"
+        "_classified_at": "2026-11-09T23:23:12.911122"
       },
       "status": "active",
       "hash": "fd86085221addaf63ba670a35e027acf",
@@ -23591,7 +23591,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:41:04.711498"
+        "_classified_at": "2026-11-09T23:23:14.914989"
       },
       "status": "active",
       "hash": "146c17f5cc1fc1826576caa0d4fcb5c0",
@@ -23637,7 +23637,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:41:06.715030"
+        "_classified_at": "2026-11-09T23:23:16.918781"
       },
       "status": "active",
       "hash": "757ef3cdc6e89291664b0033ac007cfa",
@@ -23684,7 +23684,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:41:08.718413"
+        "_classified_at": "2026-11-09T23:23:18.922486"
       },
       "status": "active",
       "hash": "bb35965b8315f10237b87d2d2d829c0e",
@@ -23724,7 +23724,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:41:10.721864"
+        "_classified_at": "2026-11-09T23:23:20.926033"
       },
       "status": "active",
       "hash": "52e554cdb04f5149a995245284f2c62e",
@@ -23770,7 +23770,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:41:12.725207"
+        "_classified_at": "2026-11-09T23:23:22.929932"
       },
       "status": "active",
       "hash": "fd9f2aa91ceacfb305f86f2f76bfd494",
@@ -23815,7 +23815,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:41:14.728707"
+        "_classified_at": "2026-11-09T23:23:24.933394"
       },
       "status": "active",
       "hash": "9a7c22ed48340ab6cd2a273912d51767",
@@ -23854,7 +23854,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:41:16.732910"
+        "_classified_at": "2026-11-09T23:23:26.937481"
       },
       "status": "active",
       "hash": "019876c43e8893dbb2d1cbbac77eb59b",
@@ -23899,7 +23899,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:41:18.736596"
+        "_classified_at": "2026-11-09T23:23:28.941461"
       },
       "status": "active",
       "hash": "3ef7738c1b5241fe5211cbed656f7385",
@@ -23942,7 +23942,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:41:20.763938"
+        "_classified_at": "2026-11-09T23:23:30.982255"
       },
       "status": "active",
       "hash": "3bc8f7011e08bfe6830c967b497bdf6d",
@@ -23989,7 +23989,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:41:22.767369"
+        "_classified_at": "2026-11-09T23:23:32.985788"
       },
       "status": "active",
       "hash": "7c6ae3b675e31c8cde2b3bbbd9c3b744",
@@ -24036,7 +24036,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:41:24.770447"
+        "_classified_at": "2026-11-09T23:23:34.989320"
       },
       "status": "active",
       "hash": "1f545e75bb38bd91a2d1ecdf4fd579a5",
@@ -24078,7 +24078,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:41:26.773091"
+        "_classified_at": "2026-11-09T23:23:36.993141"
       },
       "status": "active",
       "hash": "62e125fde0037ef78106973d7d91c94e",
@@ -24124,7 +24124,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:41:28.776607"
+        "_classified_at": "2026-11-09T23:23:38.996949"
       },
       "status": "active",
       "hash": "96c4e55b0a015b4d860c4af4c9f1eea7",
@@ -24169,7 +24169,7 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:41:30.780113"
+        "_classified_at": "2026-11-09T23:23:41.000724"
       },
       "status": "active",
       "hash": "4531d349d3269ac4f3e1d34864ba4bd6",
@@ -24211,11 +24211,823 @@
         "institution_type": "Other",
         "reasoning": "classification_failed",
         "_model": "fallback",
-        "_classified_at": "2026-11-02T22:41:32.783657"
+        "_classified_at": "2026-11-09T23:23:43.004609"
       },
       "status": "active",
       "hash": "6499e19d47d7cbd3302a26fdb40d0b41",
       "scraped_date": "2026-11-02T22:31:31.039680"
+    },
+    {
+      "id": "32941",
+      "url": "https://philjobs.org/job/show/32941",
+      "institution": "Department of Philosophy and Religious Studies, Middle Tennessee State University",
+      "title": "Philosophy and Religious Studies (Philosophy), Tenure-Track Faculty",
+      "job_category": "Faculty (open rank) / Tenure-track or similar",
+      "aos": "Philosophy of Science and/or Ethics",
+      "aos_categories": "Ethics",
+      "aoc": "Philosophy of Science and/or Ethics",
+      "aoc_categories": "Philosophy of Science",
+      "workload": "Full time",
+      "vacancies": "2",
+      "location": "Murfreesboro, TN 37132, Tennessee, United States",
+      "state": "TN",
+      "country": "United States",
+      "city": "Murfreesboro",
+      "description": "The Department of Philosophy and Religious Studies at Middle Tennessee State University invites applicants for two full-time, tenure-track faculty positions (#127080 and 127010) at the rank of assistant/associate professor in Philosophy. The start date for these positions is August 1, 2027.The successful candidates will be committed to excellence in both teaching and research. In addition, the successful candidates must be willing to teach a variety of undergraduate courses and engage students in research.A terminal degree in Philosophy is required by the appointment date. Area of study in ethics and/or philosophy of science will receive special consideration.To apply or for more detailed information, visithttps://careers.mtsu.edu.\u00a0 MTSU is an equal opportunity employer. All qualified individuals are encouraged to apply.",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "application_url": "https://careers.mtsu.edu",
+      "application_email": "",
+      "deadline": "March 1, 2027, 11:59pm CST",
+      "contact": "",
+      "more_info_url": "https://careers.mtsu.edu",
+      "contact_name": "Karla Barnes",
+      "contact_email": "",
+      "posted_date": "Today, 9:28pm UTC",
+      "scheduled_expiry_date": "March 1, 2027, 11:59pm CST",
+      "last_updated": "Today, 9:28pm UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "raw_fields": {
+        "Contact phone": "6158985986"
+      },
+      "institution_type": "Other",
+      "classification": {
+        "main_aos": [],
+        "detail_aos": {},
+        "position_type": null,
+        "institution_type": "Other",
+        "reasoning": "classification_failed",
+        "_model": "fallback",
+        "_classified_at": "2026-11-09T23:23:45.008096"
+      },
+      "status": "active",
+      "hash": "040fec70955253769acc94f134177c63",
+      "scraped_date": "2026-11-09T23:13:38.691808"
+    },
+    {
+      "id": "32937",
+      "url": "https://philjobs.org/job/show/32937",
+      "institution": "Louisiana Scholars' College, Northwestern State University",
+      "title": "Assistant Professor",
+      "job_category": "Junior faculty / Tenure-track or similar",
+      "aos": "Open",
+      "aoc": "Open",
+      "workload": "Full time",
+      "vacancies": "1",
+      "location": "Natchitoches, Louisiana, United States",
+      "state": "LA",
+      "country": "United States",
+      "city": "Natchitoches",
+      "start_date": "August 9, 2027",
+      "description": "The Louisiana Scholars' College, the state's selective-admission honors college of the liberal arts and sciences, located at Northwestern State University of Louisiana, seeks applications to fill a tenure-track position as an Assistant Professor Philosophy with an anticipated start date of August 9, 2027. The AOS and AOC are open but there is a strong interest in someone with at least 18 credit hours of graduate coursework in economics and willing to teach some courses in economics.Salary: $60-65,000 annually.Review of applications will begin on January 10, 2027, and will continue until the position is filled.The successful candidate must have an earned Ph.D. in Philosophy. The successful candidate will be able to teach introductory and advanced undergraduate honors courses in their fields, as well as be able and willing to contribute to a team-taught core Great Texts curriculum.Preference will be given to applicants with prior college-level teaching experience, experience directing student research, and experience in honors education. Duties include teaching 12-15 contact hours per semester; holding 10 office hours per week; advising students as assigned; directing undergraduate theses as needed; maintaining a research agenda; developing curricula; and working on committees as assigned.To Apply:Interested, qualified candidates should send, by email (with \"Assistant Professor of PPE\" in the subject line), to[email\u00a0protected]: Cover letter, Curriculum Vitae, statement of teaching philosophy, representative publication (no more than 30 pages), contact information for three professional references, and all college transcripts (unofficial are acceptable for the preliminary application, official may be requested at a laterdate). Women, minorities, and individuals with disabilities are encouraged to apply.Assistant Professor of PPE, Search CommitteeLouisiana Scholars' CollegeNorthwestern State UniversityNatchitoches, LA 71497[email\u00a0protected]Notice of Non-Discrimination(Full Disclosure)Northwestern State University provides equal employment opportunities to all employees and applicants for employment and prohibits discrimination and harassment of any type without regard to race, color, religion, age, sex, national origin, disability status, genetics, protected veteran status, sexual orientation, gender identity or expression, or any other characteristic protected by federal, state or local laws.This policy applies to all terms and conditions of employment, including recruiting, hiring, placement, promotion, termination, layoff, recall, transfer, leaves of absence, compensation, and training.All complaints or inquiries related to Title IX should be directed to the Director of Title IX Compliance and Title IX Coordinator, Julie Powell (318-357-5570), Room 306 of the Friedman Student Union or email[email\u00a0protected]. In accordance with Section 35.106 of the Americans with Disabilities Act (ADA), all participants, applicants,organizations, and interested individuals are advised and noticed that the ADA Coordinator for Northwestern State University for facilities is the Director of University Affairs, Jennifer Kelly (318-357-4300), located in Room 128 Caspari Hall or email[email\u00a0protected]. For student academic services, contact the Director of Accessibility and Disability Support, Crissey Smith (318-357-5460) located in Room 111 Watson Memorial Library or email[email\u00a0protected]. For faculty/staff accommodations and services, contact Executive Director of Institutional Effectiveness and Human Resources, Veronica M. Biscoe (318-357-6359), Room 111 Caspari Hall or email[email\u00a0protected].Minimum Qualifications\u2022Shall be qualified to teach in field of study\u2022Shall be effective in teaching the assigned subject material\u2022Shall meet the required standards defined by the University\u2022Shall be proficient in curriculum development, instruction, assessment, and academic advising\u2022Shall hold a doctoral degree in Philosophy, or a related fieldJob Duties and Other Information\u2022Be committed to excellence in teaching, service, and professional growth and scholarship\u2022Teach all courses in a manner that promotes academic excellence\u2022Submit course outlines and objectives\u2022Utilize a variety of proven teaching methods appropriate to pedagogy\u2022Evaluate students and report progress\u2022Participate in periodic review of course materials\u2022Maintain assigned class schedules and the required 10 hours of office hours per week as determined by the Director\u2022Demonstrate knowledge of the goals and objectives of the program, College, and University\u2022Serve as an advisor and mentor for students in the Louisiana Scholars' College\u2022Direct undergraduate research and serve as a reader on honors theses\u2022Participate in faculty meetings and serve on all appropriate program, College, and University committees\u2022Maintain appropriate expertise and competencies through continued professional development and pursuit of scholarlyactivities, including grant writing, research, scholarly publication, and presentations\u2022Represent the University in a professional manner in all activities and functions as determined by the President, Vice President for Academic Affairs, Dean, or Director (e.g., commencement, faculty institute, registration, and all called meetings)\u2022Maintain confidentiality in accordance with federal laws and program, College, and University policies\u2022Acknowledge and agree to comply with those mandates of the Constitution and laws of the State of Louisiana which\u00a0 regulate the activity and employment of state employees including but not limited to the \"Code of Government Ethics,\" \"LA R.S. 42: 1101 et seq.,\" and \"Dual Office Holding and Dual Employment LA R.S. 42:61 et seq.\"",
+      "how_to_apply": "",
+      "application_type": "Email",
+      "application_email": "",
+      "soft_deadline": "January 10, 2027, 12:00am CST",
+      "deadline": "No deadline specified (applications considered on an ongoing basis)",
+      "contact": "",
+      "more_info_url": "https://www.nsula.edu/academics/the-louisiana-scho...",
+      "contact_name": "Keith Dromm",
+      "contact_email": "",
+      "posted_date": "Today, 9:28pm UTC",
+      "scheduled_expiry_date": "May 8, 2027, 3:41pm CST",
+      "last_updated": "Today, 9:28pm UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "raw_fields": {
+        "Contact phone": "318-357-4577"
+      },
+      "institution_type": "Other",
+      "classification": {
+        "main_aos": [],
+        "detail_aos": {},
+        "position_type": null,
+        "institution_type": "Other",
+        "reasoning": "classification_failed",
+        "_model": "fallback",
+        "_classified_at": "2026-11-09T23:23:47.011994"
+      },
+      "status": "active",
+      "hash": "c205a106a04f42e1714daaa17b031a12",
+      "scraped_date": "2026-11-09T23:13:39.513254"
+    },
+    {
+      "id": "32929",
+      "url": "https://philjobs.org/job/show/32929",
+      "institution": "Creighton University",
+      "title": "Associate Professor or Professor - Barbara Reardon Heaney Chair in Catholic Intellectual Life and Culture",
+      "job_category": "Faculty (open rank) / Tenured, continuing or permanent",
+      "aos": "Open",
+      "aoc": "Open",
+      "workload": "Full time",
+      "vacancies": "1",
+      "org_reference_number": "Interfolio ID #: 193397",
+      "location": "Omaha, Nebraska, United States",
+      "state": "NE",
+      "country": "United States",
+      "city": "Omaha",
+      "start_date": "July, 2027",
+      "description": "Associate Professor or Professor - Barbara Reardon Heaney Chair in Catholic Intellectual Life and CultureCreighton University invites applications and for the distinguished position of the Barbara Reardon Heaney Chair in Catholic Intellectual Life and Culture. The position is open to scholars from any discipline represented among those of Creighton\u2019s College of Arts and Sciences. The Chair will play a vital role in advancing scholarship, teaching, and programming related to Catholic Intellectual Tradition and Catholic Culture at Creighton University. Honoring the legacy of Barbara Reardon Heaney, the next chairholder will demonstrate an abiding commitment to social justice aligned with the Jesuit charisms. Preference will be given to candidates with a demonstrated record of engaging students with issues of social justice. The successful candidate will be appointed in the appropriate department in Creighton\u2019s College of Arts and Sciences at the rank of Associate Professor or Professor with a 2/1 teaching load.Position ResponsibilitiesThe Successful candidate will be expected to contribute in the following ways:Promote Catholic intellectual life and studiesFoster Catholic culture, including the roles of liturgy, prayer, spiritualty, vocations, service, and leadershipCultivate the practice of discernment, the Spiritual Exercises, and other values and ideals of the Society of JesusExplore the implications and influences of a life of faith upon our social, political, environmental, and economic realitiesEspouse the Jesuit higher education ideal of the service of faith and the promotion of justiceQualificationsRequired Qualifications (required at time of application)Ph.D. or equivalent terminal degree in a relevant discipline represented within Creighton's College of Arts and Sciences, with a record of scholarship that meaningfully engages Catholic intellectual life and culture, the Catholic intellectual tradition, or related questions of faith, ethics, history, philosophy, literature, art, culture, or social justice.Strong record of scholarly achievement in the field of Catholic Intellectual Life and Culture appropriate for appointment at the rank of Associate Professor or ProfessorRobust research trajectory and evidence of active participation in scholarly activities in support of Catholic Intellectual Life and CultureDemonstrated excellence in undergraduate and graduate teaching and ability to develop and teach a range of courses exploring Catholic Intellectual Life and CultureDemonstrated record of curricular and co-curricular initiatives dedicated to engaging students with social justiceCommitment to Creighton's Jesuit and Catholic missionPreferred QualificationsAbility to engage diverse audiences in meaningful dialogue about Catholic Intellectual Life and CultureExperience with community engagement fostering the development of Catholic CultureCapacity to contribute to interdisciplinary initiatives at Creighton supporting the study of Catholic Intellectual Life and CultureApplication InstructionsReview of applications will begin on December 1, 2026 and will continue until the position is filled.For complete position and application detail please APPLY at:https://apply.interfolio.com/194877",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "instructions": "Review of applications will begin on December 1, 2026 and will continue until the position is filled.",
+      "application_url": "https://apply.interfolio.com/194877",
+      "application_email": "",
+      "deadline": "January 8, 2027, 11:59pm CST",
+      "contact": "",
+      "more_info_url": "http://www.creighton.edu",
+      "contact_name": "Gina Miller",
+      "contact_email": "",
+      "posted_date": "Today, 9:23pm UTC",
+      "scheduled_expiry_date": "January 8, 2027, 11:59pm CST",
+      "last_updated": "Today, 9:23pm UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "institution_type": "Other",
+      "classification": {
+        "main_aos": [],
+        "detail_aos": {},
+        "position_type": null,
+        "institution_type": "Other",
+        "reasoning": "classification_failed",
+        "_model": "fallback",
+        "_classified_at": "2026-11-09T23:23:49.015668"
+      },
+      "status": "active",
+      "hash": "6421c5810ff5713b4b9b5c25d4e44404",
+      "scraped_date": "2026-11-09T23:13:40.222385"
+    },
+    {
+      "id": "32925",
+      "url": "https://philjobs.org/job/show/32925",
+      "institution": "Faculty of Philosophy in association with Harris Manchester College, University of Oxford",
+      "title": "Associate Professorship of Philosophy",
+      "job_category": "Senior faculty / Tenured, continuing or permanent",
+      "aos": "Philosophy of Kant, Moral Philosophy",
+      "aos_categories": "Ethics",
+      "aoc": "Philosophy of Kant, Moral Philosophy",
+      "aoc_categories": "Ethics",
+      "workload": "Full time",
+      "vacancies": "1",
+      "location": "Oxford, England, United Kingdom",
+      "state": null,
+      "country": "United Kingdom",
+      "city": null,
+      "start_date": "1 September 2027",
+      "description": "Harris Manchester College and the Faculty of Philosophy are seeking to appoint an Associate Professor or Professor of Philosophy, in association with an Official Fellowship and Tutorial Fellowship at Harris Manchester College, with effect from 1 September 2027 or as soon as possible thereafter.The successful candidate will have a research specialisation in the Philosophy of Kant. They will have the potential to enhance the high reputation of the Faculty of Philosophy in research, will have a proven record of internationally recognised scholarship and research in philosophy, appropriate to their career stage, and will be able to provide a high standard of research-led teaching at both undergraduate and postgraduate levels.The person appointed will play a leading role in Philosophy at Harris Manchester College. They will have overall responsibility for overseeing the academic progress and provision of teaching for undergraduate students studying Philosophy as part of Philosophy, Politics and Economics (PPE), Psychology, Philosophy and Linguistics (PPL), and Philosophy and Theology. (See here for descriptions of these courses.) The post therefore calls for a philosopher with the breadth and flexibility to contribute to undergraduate teaching\u00a0 across a range of introductory and core subjects.The College has a particular recurring need for teaching in Moral Philosophy and Ethics, alongside General Philosophy and other core areas of the undergraduate curriculum.If you would like to discuss this post and find out more about joining the academic community at Oxford or other questions regarding the Faculty and the College, please contact the Chair of the Philosophy Department Mark Wrathall ([email\u00a0protected]), the College\u2019s Senior Tutor, Dr. Isabel Ruiz\u00a0 ([email\u00a0protected])\u00a0 or\u00a0 the\u00a0 HR\u00a0 Manager\u00a0 Mrs\u00a0 Beatrice\u00a0 del\u00a0 Bianco ([email\u00a0protected]) for questions related to the recruitment process. All enquiries will be treated in strict confidence and will not form part of the selection decision.",
+      "how_to_apply": "",
+      "application_type": "Email",
+      "application_url": "https://hmc.ox.ac.uk/vacancies",
+      "application_email": "",
+      "deadline": "December 10, 2026, 12:00pm BST",
+      "contact": "",
+      "more_info_url": "https://hmc.ox.ac.uk/vacancies",
+      "contact_name": "Mrs  Beatrice  del  Bianco",
+      "contact_email": "",
+      "posted_date": "Today, 9:22pm UTC",
+      "scheduled_expiry_date": "December 10, 2026, 12:00pm BST",
+      "last_updated": "Today, 9:22pm UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "institution_type": "Other",
+      "classification": {
+        "main_aos": [],
+        "detail_aos": {},
+        "position_type": null,
+        "institution_type": "Other",
+        "reasoning": "classification_failed",
+        "_model": "fallback",
+        "_classified_at": "2026-11-09T23:23:51.057058"
+      },
+      "status": "active",
+      "hash": "e276f77f5eb4b51b5852dc9a08092d47",
+      "scraped_date": "2026-11-09T23:13:40.912390"
+    },
+    {
+      "id": "32921",
+      "url": "https://philjobs.org/job/show/32921",
+      "institution": "History and Liberal Studies Department, East Texas A&M University",
+      "title": "Assistant Professor of Civic Thought and Leadership",
+      "job_category": "Junior faculty / Tenure-track or similar",
+      "aos": "Open",
+      "aoc": "Civic Thought, broadly conceived",
+      "aoc_categories": "19th/20th Century PhilosophyAmerican PhilosophyAncient Greek and Roman PhilosophyContinental PhilosophyEarly Modern PhilosophyMedieval and Renaissance PhilosophyEthicsSocial and Political Philosophy",
+      "workload": "Full time",
+      "vacancies": "1",
+      "org_reference_number": "R-098292",
+      "location": "Commerce, Texas, United States",
+      "state": "TX",
+      "country": "United States",
+      "city": "Commerce",
+      "start_date": "September 1, 2027",
+      "description": "East Texas A&M University invites applications for a tenure-track Assistant Professor who will serve as Director of Civic Thought and Leadership in the Liberal Studies program within the Department of History and Liberal Studies.The successful candidate will lead the development and implementation of the university\u2019s new Civic Thought and Leadership degree program. The director will work with faculty to build a coherent curriculum connecting civic thought, the humanities, constitutional government, and leadership. The position also includes developing and teaching foundational courses, leading co-curricular programming, building campus and community partnerships, and seeking external funding to support the program\u2019s growth.We seek a scholar and teacher who can help students connect the study of influential texts, historical experiences, and political institutions to questions of citizenship, public responsibility, and leadership. The successful candidate will maintain an active research agenda and contribute to teaching, scholarship, and service appropriate to a tenure-track assistant professor.Application review will begin on December 4, 2026. \u00a0Applications must be received by that date for full consideration.DUTIES & RESPONSIBILITIES:\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 Lead the development, launch, and ongoing coordination of the Civic Thought and Leadership degree program, including curriculum planning, assessment, student recruitment, and collaboration across participating disciplines.\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 Contribute to the development and teaching of foundational courses in civic thought and the humanities, emphasizing close reading, discussion, reasoned argument, and the relationship between enduring questions and contemporary civic life.\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 Teach undergraduate courses in areas such as civic thought, American political thought, constitutionalism, leadership, and interdisciplinary humanities.\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 Develop and lead co-curricular programming, including public lectures, reading groups, student forums, and other opportunities for civic learning and substantive dialogue.\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 Build partnerships with university programs, schools, community organizations, and scholarly or civic institutions to support programming and student opportunities.\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 Identify external funding opportunities, develop grant proposals, and coordinate funded activities in collaboration with faculty and university offices.\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 Maintain an active scholarly agenda related to civic thought, leadership, political philosophy, constitutionalism, or a closely related field.\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 Advise and mentor students and contribute to departmental, college, and university service.MINIMUM REQUIREMENTS:\u25cf \u00a0 \u00a0 \u00a0 \u00a0An earned doctorate in political science, history, philosophy, or a closely related field by the appointment start date.\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 A research agenda in civic thought, political theory or philosophy, American political thought, constitutionalism, leadership, or a related area.\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 Evidence of effective undergraduate teaching relevant to civic thought or interdisciplinary humanities.\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 Ability to teach foundational texts and facilitate substantive discussion of competing ideas and interpretations.\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 Evidence of the ability to collaborate with colleagues and contribute to curriculum development, academic programming, or student engagement.\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 Strong written communication, organizational, and interpersonal skills.PREFERRED EDUCATION / SKILLS/ EXPERIENCE:\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 Experience contributing to the development or administration of a civic thought, constitutional studies, liberal arts, or related academic program.\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 Experience teaching courses organized around foundational texts that connect political, philosophical, historical, and literary questions.\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 Teaching or scholarly expertise in the history of political ideas, democratic leadership, public communication and persuasion, citizenship, or American constitutional traditions.\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 Experience organizing student programming, public lectures, reading groups, conferences, or other co-curricular activities.\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 Evidence of success securing external grants or contributing substantially to funded educational or public humanities initiatives.\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 Experience developing educational programming for teachers or building partnerships beyond the university.\u25cf\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 A record of peer-reviewed scholarship or evidence of strong potential for continued research and publicationPlease provide the following documents:Cover Letter addressing your qualifications and approach to developing a civic thought and leadership programResume/CVStatement of Teaching PhilosophyResearch StatementThree professional references with complete contact information(Unsolicited letters of recommendation will not be considered).Transcripts (Unofficial will be accepted with application. Official transcripts are required upon acceptance of verbal offer).If transcripts are from an international institution, it is the responsibility of the prospective faculty member to have the transcripts translated and evaluated by an approved credential evaluator.All positions are security-sensitive. Applicants are subject to a criminal history investigation, and employment is contingent upon the institution\u2019s verification of credentials and/or other information required by the institution\u2019s procedures, including the completion of the criminal history check.Equal Opportunity/Veterans/Disability Employer.A Presidential proclamation issued on September 19, 2025, imposes a $100,000 fee on new H-1B petitions filed after September 21, 2025. Please be advised that Texas A&M University will NOT pay this fee. Therefore, if you need immigration sponsorship for your employment, we recommend that you consult with your private immigration counsel at your own expense to ascertain whether your current immigration status would make a potential offer of employment from Texas A&M University subject to this fee.In addition, on January 27, 2026, Texas Governor Abbot issued a moratorium on the filing of any new H-1B unless approved by the Texas Workforce Commission. Accordingly, if you will now or in the future require sponsorship for employment visa status this moratorium may affect our ability to employ you should you be selected as the final candidate.Hiring URLhttps://tamus.wd1.myworkdayjobs.com/en-US/ETAMU_External/job/Assistant-Professo\u2026",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "instructions": "INSTRUCTIONS TO APPLICANT:\r\n\r\nDuring the application process the \u201cMy Experience\u201d page has a section provided \u201cAttachments (Resume/CV, References, Cover letter, etc.)\u201d to upload required documents. \r\n\r\nUse the Upload button to add each document.\r\nYou will be able to upload up to 5 documents. Be aware that the maximum size allowed for any one document is 5MB.\r\nAll documents must be electronically submitted through the Texas A&M Online Employment Services website to be considered.\r\nIncomplete or improperly submitted applications may be excluded from consideration.\r\nPlease do not withdraw your application in an attempt to upload a missing document, instead please email HR for help.\r\n\r\nIf you need assistance, please contact us at[email\u00a0protected]",
+      "application_url": "https://tamus.wd1.myworkdayjobs.com/en-US/ETAMU_Ex...",
+      "application_email": "",
+      "soft_deadline": "April 12, 2026, 11:59pm CST(applications under review)",
+      "deadline": "No deadline specified (applications considered on an ongoing basis)",
+      "contact": "",
+      "contact_name": "Mark Menaldo",
+      "contact_email": "",
+      "posted_date": "Today, 9:22pm UTC",
+      "scheduled_expiry_date": "May 5, 2027, 3:15am CST",
+      "last_updated": "Today, 9:22pm UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "institution_type": "Other",
+      "classification": {
+        "main_aos": [],
+        "detail_aos": {},
+        "position_type": null,
+        "institution_type": "Other",
+        "reasoning": "classification_failed",
+        "_model": "fallback",
+        "_classified_at": "2026-11-09T23:23:53.060916"
+      },
+      "status": "active",
+      "hash": "08faa15558a741e7cc59f718a5cc6213",
+      "scraped_date": "2026-11-09T23:13:41.732120"
+    },
+    {
+      "id": "32909",
+      "url": "https://philjobs.org/job/show/32909",
+      "institution": "Department of Philosophy and Religious Studies, Middle Tennessee State University",
+      "title": "Chair, Philosophy and Religious Studies",
+      "job_category": "Senior faculty / Tenure-track or similar",
+      "aos": "Open",
+      "aoc": "Open",
+      "workload": "Full time",
+      "vacancies": "1",
+      "location": "Murfreesboro, TN 37132, Tennessee, United States",
+      "state": "TN",
+      "country": "United States",
+      "city": "Murfreesboro",
+      "start_date": "08012027",
+      "description": "The Department of Philosophy and Religious Studies at Middle Tennessee State University invites applicants for the position of department chair (#127005) with a specialty in Philosophy.\u00a0 Applicants must be eligible to meet the criteria for the rank of either associate professor or professor. Expedited tenure upon appointment is possible. The start date for the position is August 1, 2027.The successful candidate will lead a department that offers a B.A., a B.S., and a minor in both Philosophy and Religious Studies. The department seeks candidates who emphasize collaborative leadership and the ability to manage quotidian operations while focusing on long-range plans to foster growth and sustain quality programs.The successful candidate will prioritize excellence in teaching, have a distinguished record of scholarship, and have a commitment to equitable student success. In addition, the successful candidate will have demonstrated leadership abilities, strong interpersonal and problem-solving skills, an affinity for mentorship, and provide advocacy for diverse student and faculty concerns.A terminal degree in Philosophy or closely related field is required. Candidates with prior administrative experience--including management of budgets, experience with assessment, and an interest in recruitment and fundraising may receive special consideration.To apply or for more detailed information, visithttps://careers.mtsu.edu.\u00a0 MTSU is an equal opportunity employer. All qualified individuals are encouraged to apply.",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "application_url": "https://careers.mtsu.edu",
+      "deadline": "No deadline specified (applications considered on an ongoing basis)",
+      "contact": "",
+      "more_info_url": "https://careers.mtsu.edu",
+      "posted_date": "November 5, 2026, 9:31pm UTC",
+      "scheduled_expiry_date": "May 4, 2027, 7:25pm CST",
+      "last_updated": "November 5, 2026, 9:31pm UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "institution_type": "Other",
+      "classification": {
+        "main_aos": [],
+        "detail_aos": {},
+        "position_type": null,
+        "institution_type": "Other",
+        "reasoning": "classification_failed",
+        "_model": "fallback",
+        "_classified_at": "2026-11-09T23:23:55.064513"
+      },
+      "status": "active",
+      "hash": "41b69f211dd5617d041802a8813d6d66",
+      "scraped_date": "2026-11-09T23:13:42.426816"
+    },
+    {
+      "id": "32905",
+      "url": "https://philjobs.org/job/show/32905",
+      "institution": "Departament of Philosophy, Logic, and Philosophy of Science, Universidad de Sevilla",
+      "title": "4-year PhD Position in Experimental and Computational Philosophy",
+      "job_category": "Graduate fellowship / Fixed term",
+      "aos": "Open within the project\u2019s scope: experimental and computational philosophy, conceptual change and conceptual engineering, moral psychology, philosophy of science",
+      "aos_categories": "History of PhilosophyPhilosophy of LanguagePhilosophy of MindPhilosophy of ScienceEthics",
+      "aoc": "Desirable: statistical programming, computational corpus analysis, or survey research",
+      "workload": "Full time",
+      "vacancies": "1",
+      "location": "Sevilla, Andalusia, Spain",
+      "state": null,
+      "country": "Spain",
+      "city": null,
+      "start_date": "Between March and September 2027",
+      "description": "Fully funded 4-year PhD position in experimental and computational philosophy \u2013 CONCEPHEX project, University of Seville (Spain)The Department of Philosophy, Logic and Philosophy of Science at the University of Seville invites expressions of interest for a fully funded four-year predoctoral contract within the research project CONCEPHEX, funded by the Spanish State Research Agency (AEI).Please forward this information to anyone you think may be interested.The projectCONCEPHEX (How Concepts Change: Experimental and Computational Approaches in Philosophy of Science and Morality), led by Hugo Viciana and Javier Anta, studies conceptual change by combining conceptual engineering, experimental philosophy, and computational corpus analysis. The project works with leading philosophers and cognitive scientists at institutions such as the Institut Jean Nicod (Paris), the University of Pittsburgh, Macquarie University (Sydney), and the University of Hong Kong. Research stays at some of these partner institutions will be encouraged during the thesis.Possible thesis directionsThe topic of the thesis is open within the broad scope of the project. Possible directions include:Science and morality in historical perspective: studies of historical conceptual change, drawing on historical and contemporary corpora, with applications to the philosophical study of morality and science.The moral psychology of science, including how experts and the general public understand scientific concepts.Experimental studies of how moral concepts vary across populations, with particular emphasis on their interconnections with scientific ideas.The moral psychology of large language models: how they represent and apply moral concepts compared with human populations, and how moral considerations shape their reasoning about scientific evidence.Computational corpus analysis (topic models, transformer-based methods, large language models) to trace the drift of scientific concepts.Methodological questions raised by computational methods in philosophy, such as how to operationalize philosophical orientations and how to assess what models reveal about them.Philosophy learning and computational tools, including generative AI and digital humanities in the teaching of philosophy.Candidates may also propose their own project within this scope. In the statement of interest, please indicate which of these directions you would be willing to work on. Interest in more than one is welcome.What we offerA full employment contract (not a stipend) of up to four years, with full social security coverage, including unemployment benefits. If the thesis is defended within that period, the contract may include a postdoctoral research period of up to 12 months.A gross annual salary of at least 75% of the Spanish public-sector M3 reference category (currently around \u20ac25,450).At least \u20ac7,000 for research expenses and doctoral tuition fees which may be complemented with additional project funds for research stays.An increasingly international research environment, with Seville's sunshine as an added bonus.Research stays at partner institutions of the project, such as the Institut Jean Nicod (Paris), the University of Pittsburgh, or Macquarie University (Sydney), will be encouraged during their doctoral studies.International Autumn Schools on research methods and several regular research seminars connected to the research topic.Co-supervision by Hugo Viciana and Javier Anta, within the Doctoral Programme in Philosophy of the University of Seville.Teaching. The contract includes collaboration in the department's teaching, typically between 20 and 60 hours per year and up to a maximum of 180 hours over the whole contract, subject to university authorization. Teaching is usually in Spanish, but it can be in English under certain circumstances. Teaching may be waived in the first year when there are good reasons to do so, such as the need to develop sufficient proficiency in Spanish.ProfileA degree and a master's in philosophy, psychology, computer science, or related fields, or equivalent foreign degrees.Candidates must not hold a doctorate and must not have held a predoctoral contract for more than 12 months.Desirable:Interest in contributing to, and helping coordinate, methodological projects on the computational study of concepts in philosophy.English at C1 or C2 level, or equivalent.Expertise in statistical programming, computational corpus analysis, or survey research will be particularly valued.Timeline and how to applyThe formal application will be submitted through the University of Seville's official call, which typically has a very short window of about ten working days.Interested candidates should send a CV and a short statement (max. 600 words) explaining their interest in the position and how their background fits the project, including which of the thesis directions above they would be willing to work on, to[email\u00a0protected]and[email\u00a0protected]by 30 November 2026, and preferably sooner. We will be glad to hear from candidates after this date until the official call closes. We will contact candidates and we may help them prepare their official application, including transcripts, the grading scale for foreign degrees, and translations where needed. Non-EU candidates will only need a work permit if selected; the university may provide full assistance with this process.Sending an expression of interest is not required to apply officially, butit isvery stronglyrecommended, ideallyas soon as possible, as the official application window will be very short. The official call will be open to all eligible candidates.Expected start: between March and September 2027.",
+      "how_to_apply": "",
+      "application_type": "Email",
+      "instructions": "Please send a CV and a short statement (max. 600 words) explaining your interest in the position and how your background fits the project, including which of the thesis directions you would be willing to work on, to[email\u00a0protected]and[email\u00a0protected].\r\n\r\nThis expression of interest is strongly recommended - ideally as soon as possible - but not strictly required. The formal application must be submitted through the University of Seville\u2019s official call, which is open to all eligible candidates. We recommend writing to us beforehand because the official procedure is conducted in Spanish and the application window is short (about ten working days, expected in late November or early December 2026). Contacting us early gives us time to help you prepare the required documents, such as academic transcripts, the grading scale for foreign degrees, and translations where needed.",
+      "application_email": "",
+      "soft_deadline": "November 23, 2026, 11:59pm CET",
+      "deadline": "No deadline specified (applications considered on an ongoing basis)",
+      "contact": "",
+      "contact_name": "Hugo Viciana",
+      "contact_email": "",
+      "posted_date": "November 5, 2026, 9:31pm UTC",
+      "scheduled_expiry_date": "May 4, 2027, 7:19pm CET",
+      "last_updated": "November 5, 2026, 9:31pm UTC",
+      "job_market_calendar": "This institution has indicated that the position advertised will not follow theAPA's recommended job market calendar. An explanation, if provided, appears below.No explanation available",
+      "raw_fields": {
+        "Contact phone": "+34-954-55-77-95"
+      },
+      "institution_type": "Other",
+      "classification": {
+        "main_aos": [],
+        "detail_aos": {},
+        "position_type": null,
+        "institution_type": "Other",
+        "reasoning": "classification_failed",
+        "_model": "fallback",
+        "_classified_at": "2026-11-09T23:23:57.068251"
+      },
+      "status": "active",
+      "hash": "7bd5137ed5ca385bcf5453dee7f0591f",
+      "scraped_date": "2026-11-09T23:13:43.213642"
+    },
+    {
+      "id": "32901",
+      "url": "https://philjobs.org/job/show/32901",
+      "institution": "Department of Philosophy, University of Massachusetts Lowell",
+      "title": "Assistant Teaching Professor - Philosophy (AI and Technology Ethics)",
+      "job_category": "Junior faculty / Tenure-track or similar",
+      "aos": "Technology Ethics",
+      "aos_categories": "Philosophy of AI and Computing",
+      "aoc": "Technology Ethics",
+      "aoc_categories": "Philosophy of AI and Computing",
+      "workload": "Full time",
+      "vacancies": "1",
+      "location": "Lowell, Massachusetts, United States",
+      "state": "MA",
+      "country": "United States",
+      "city": "Lowell",
+      "start_date": "2027\u201328 academic year",
+      "description": "The Department of Philosophy at the University of Massachusetts Lowell invites applications for a full-time, promotion-eligible position at the rank of Assistant Teaching Professor, beginning in the 2027\u201328 academic year. The position is part of a university-hiring initiative focused on artificial intelligence and emerging technologies.We seek a collaborative educator with expertise in the ethical, social, and philosophical dimensions of artificial intelligence and emerging technologies. This is a teaching and service-focused position with no research expectations. The successful candidate will teach three undergraduate courses per semester, with areas of teaching competence in Engineering Ethics, AI Ethics, Philosophy of AI, and Introduction to Ethics, and will undertake significant service responsibilities within the Department and across the University.The successful candidate will contribute to interdisciplinary teaching and curriculum development at the intersection of ethics, technology, and society. This work will build on the Department's existing strengths in social and political philosophy, philosophy of science, and American pragmatism, as well as the University's strengths in engineering, computing, and technological innovation. The successful candidate will also contribute to university-wide efforts to integrate AI into the curriculum, working with faculty and academic leaders, including the University's Director of AI Learning & Career Innovation.The University of Massachusetts Lowell is an R1 research university offering a competitive salary and comprehensive benefits package.The Department of Philosophy is a collegial department committed to undergraduate teaching and to making philosophical inquiry accessible to students from a wide range of backgrounds and disciplines. In addition to offering a major and minor in philosophy, the Department provides courses that fulfill general education and degree requirements for students across the University's colleges. Faculty members work in a range of philosophical traditions and areas of specialization, with particular strengths in social and political philosophy, philosophy of science, and American pragmatism. Philosophy is one of 12 academic departments and schools in the University's College of Fine Arts, Humanities, and Social Sciences.Located approximately 25 miles northwest of Boston, Lowell is connected to the city by commuter rail and offers access to New England's mountains, beaches, and cultural resources.Additional information about the Department is available athttps://www.uml.edu/fahss/philosophy/.Essential Job Duties:Service is a central component of this position, with an emphasis on curriculum development, interdisciplinary collaboration, and student support. Responsibilities will include:Developing ethics curricula and programming addressing AI, engineering, technology, public policy, and sustainability, including courses in AI and technology ethics.Collaborating with faculty and programs across the College of Fine Arts, Humanities, & Social Sciences, the Francis College of Engineering, and the Kennedy College of Computer Science to advance interdisciplinary ethics education.Contributing to institutional initiatives concerning AI governance and the responsible use of emerging technologies.Supporting ethics curriculum development and assessment and the Department's ongoing efforts to strengthen its undergraduate educational mission.Developing and organizing applied learning opportunities connecting philosophical inquiry to practical issues in AI, engineering, and technology.Advising philosophy majors and minors and coordinating the Department's student advising and graduation tracking.There may also be opportunities to work with graduate students in related disciplines.Minimum Qualifications (Required):Ph.D. in Philosophy from an accredited institution.Demonstrated excellence in undergraduate teaching, including experience teaching students from diverse backgrounds.Demonstrated commitment to service at the departmental, university, and/or community level.Additional Considerations:The College is strongly committed to diversity. Women, members of underrepresented groups, and scholars with disabilities are encouraged to apply.Special Instructions to Applicants:This position is full-time, benefited, and represented by the Massachusetts Society of Professors/MTA/NEA. The anticipated salary range, pursuant to the applicable Collective Bargaining Agreement, lists minimum salary of $75,000 for Assistant Teaching Professor. However, our anticipated expected minimum salary is expected to be $85,000. The anticipated maximum salary, depending on qualifications and departmental considerations, is not expected to exceed $95,000.Initial review of applications will begin December 1, 2026, and continue until the position is filled. The position may close once an adequate number of qualified candidates have been received.Please include the following required documents with your application:Curriculum vitaeCover letter describing their qualifications and interest in the positionStatement of teaching philosophyStudent evaluations of teachingStatement of inclusivityThree letters of reference addressing the candidate's teaching effectiveness, instructional skills, and commitment to student learning will be required during the application processThe University of Massachusetts Lowell welcomes all qualified applicants and complies with all state and federal anti-discrimination laws.",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "application_url": "https://explorejobs.uml.edu/lowell/en-us/job/53045...",
+      "deadline": "January 5, 2027, 11:59pm EST",
+      "contact": "",
+      "more_info_url": "https://explorejobs.uml.edu/lowell/en-us/job/53045...",
+      "posted_date": "November 5, 2026, 9:22pm UTC",
+      "scheduled_expiry_date": "January 5, 2027, 11:59pm EST",
+      "last_updated": "November 5, 2026, 9:22pm UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "institution_type": "Other",
+      "classification": {
+        "main_aos": [],
+        "detail_aos": {},
+        "position_type": null,
+        "institution_type": "Other",
+        "reasoning": "classification_failed",
+        "_model": "fallback",
+        "_classified_at": "2026-11-09T23:23:59.071921"
+      },
+      "status": "active",
+      "hash": "a18d897b505e98af6fb846125dd80314",
+      "scraped_date": "2026-11-09T23:13:43.904126"
+    },
+    {
+      "id": "32897",
+      "url": "https://philjobs.org/job/show/32897",
+      "institution": "Department of History, Philosophy, and Geography, Texas A&M University - San Antonio",
+      "title": "Lecturer of Philosophy",
+      "job_category": "Junior faculty / Tenured, continuing or permanent",
+      "aos": "Open",
+      "aoc": "Ethics and Logic",
+      "aoc_categories": "LogicEthics",
+      "workload": "Full time",
+      "vacancies": "1",
+      "location": "San Antonio, Texas, United States",
+      "state": "TX",
+      "country": "United States",
+      "city": "San Antonio",
+      "start_date": "August 2027",
+      "description": "TEXAS A&M UNIVERSITY--SAN ANTONIODEPARTMENT OF HISTORY, PHILOSOPHY, AND GEOGRAPHYPosition: Lecturer of PhilosophyDescription:The Department of History, Philosophy, and Geography seeks applications from qualified candidates for a full-time, non-tenure-track appointment in Philosophy beginning in Fall 2027. \u00a0An ability to teach introductory courses in Ethics and Logic is required.\u00a0 Area of specialization is open, but we especially invite applicants with expertise in the Philosophy of Technology or who will contribute to interdisciplinary programs on campus. The successful candidate will teach introductory and upper-level undergraduate philosophy courses. The base teaching load for this position is 5/5. Summer teaching assignments may be available but are not guaranteed.",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "instructions": "See job posting.",
+      "application_url": "https://tamus.wd1.myworkdayjobs.com/en-US/TAMUSA_E...",
+      "deadline": "January 15, 2027, 11:59pm CST",
+      "contact": "",
+      "more_info_url": "https://tamus.wd1.myworkdayjobs.com/en-US/TAMUSA_E...",
+      "contact_name": "William Kiser",
+      "contact_email": "",
+      "posted_date": "November 5, 2026, 9:21pm UTC",
+      "scheduled_expiry_date": "January 15, 2027, 11:59pm CST",
+      "last_updated": "November 5, 2026, 9:21pm UTC",
+      "job_market_calendar": "This institution has indicated that the position advertised will not follow theAPA's recommended job market calendar. An explanation, if provided, appears below.Finalist interviews will occur in Spring 2027 with an expected start date for this position in August for the beginning of the Fall semester.  The successful candidate will be notified of an offer by the department chair as part of the standard hiring process.",
+      "raw_fields": {
+        "Contact phone": "210-784-2264"
+      },
+      "institution_type": "Other",
+      "classification": {
+        "main_aos": [],
+        "detail_aos": {},
+        "position_type": null,
+        "institution_type": "Other",
+        "reasoning": "classification_failed",
+        "_model": "fallback",
+        "_classified_at": "2026-11-09T23:24:01.075701"
+      },
+      "status": "active",
+      "hash": "be6e7b1db161c6bf9709b00a99e030d4",
+      "scraped_date": "2026-11-09T23:13:44.590041"
+    },
+    {
+      "id": "32885",
+      "url": "https://philjobs.org/job/show/32885",
+      "institution": "Department of Philosophy, Southern Illinois University Edwardsville",
+      "title": "Instructor - Ethics",
+      "job_category": "Junior faculty / Tenure-track or similar",
+      "aos": "Open",
+      "aoc": "Ethics",
+      "aoc_categories": "Applied Ethics",
+      "workload": "Full time",
+      "vacancies": "1",
+      "org_reference_number": "FA27-042",
+      "location": "Edwardsville, Illinois, United States",
+      "state": "IL",
+      "country": "United States",
+      "city": "Edwardsville",
+      "start_date": "Fall 2027",
+      "description": "Hiring UnitPhilosophyJob Description/ResponsibilitiesThe Department of Philosophy at Southern Illinois University Edwardsville (SIUE) seeks to hire a full-time Instructor beginning August 2027. Full-time Instructors teach 4 courses per semester and are expected to participate in Student Engagement, Professional Development, and/or Faculty Development activities. Teaching responsibilities will be primarily 100-level Reasoning and Argumentation. We also have teaching needs for 200- and 300-level applied ethics courses, primarily but not restricted to medical ethics and engineering ethics.The SIUE Department of Philosophy values diversity among its faculty and is committed to building a culturally diverse intellectual community. SIUE Philosophy welcomes candidates who can contribute to the department's cultural and intellectual diversity beyond fulfilling the core teaching responsibilities and encourages candidates to articulate in their application materials the ways in which they can do so. Successful candidates will be expected to support the SIUE College of Arts and Sciences' commitment to anti-racism, diversity, equity, and inclusion. SIUE nurtures an open, respectful, and welcoming climate that facilitates learning and work. Integral to this commitment, Southern Illinois University Edwardsville strives for a student body and a workforce that is both diverse and inclusive. We strongly encourage candidates from historically underrepresented groups, including women, members of racially minoritized groups, and individuals with disabilities, to apply. For more on our Statement on Diversity, visit:SIUE Mission, Goals and Plans.",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "instructions": "Candidates must include in their application:\r\n\r\nA cover letter addressing the candidate's interest and fit for the position.\r\nA CV.\r\nA teaching portfolio (course syllabi, sample course materials, student evaluations, etc.).\r\nTranscripts from the candidate's graduate degree granting institution.\r\nThree letters of recommendation.\r\nThis institution is using lnterfolio's Faculty Search to conduct this search. Applicants to this position receive a free dossier account and can send all application materials, including confidential letters of recommendation, free of charge. Any questions about the position or application process should be addressed to Dr. Matthew Cashen at[email\u00a0protected].\r\n\r\n\r\nIn compliance with the ADA Amendments Acts (ADAAA), if you have a disability and would like to request an accommodation in order to apply for the position, please call 618-650-2190 or email[email\u00a0protected].\r\n\r\nApplicants will be subject to a background check prior to an offer of employment.\r\n\r\nEmployment is contingent upon satisfying all legal requirements as set forth by the U.S. Citizenship and Immigration Services in regard to employability in the United States. SIUE makes no representation, warranty, or agreement that third parties, including government agencies, will approve submitted documents, applications, or petitions for an H-1B visa or Optional Practical Training.\r\n\r\nSIUE is a state university - benefits under state sponsored plans may not be available to holders of F1 or J1 visas. The State of Illinois requires that immigrant employees achieve H-1 status before they become eligible for certain benefits.\r\n\r\nApplication Deadline\r\n\r\nDeadline for full consideration- December 15th, 2026.\r\n\r\nFaculty Development and Other Support\r\nVarious career services and resources are available to help individuals on their career journey, including but not limited to the Faculty Development Center, Ombuds Services , Office of Research and Projects, Dual Career Support, and Inclusive Excellence, Education, and Development Hub.  \r\n\r\nEmployee Benefits\r\nTo support faculty in balancing work and family obligations, SIUE offers an exceptional array of comprehensive benefits. For more information, visit SIUE Office of Human Resources- Benefits",
+      "application_url": "https://apply.interfolio.com/196656",
+      "deadline": "December 15, 2026, 11:59pm CST",
+      "contact": "",
+      "more_info_url": "https://www.siue.edu/artsandsciences/philosophy/",
+      "contact_name": "Andre Steiner",
+      "contact_email": "",
+      "posted_date": "November 4, 2026, 9:39pm UTC",
+      "scheduled_expiry_date": "December 15, 2026, 11:59pm CST",
+      "last_updated": "November 4, 2026, 9:39pm UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "raw_fields": {
+        "Contact phone": "618-650-2325"
+      },
+      "institution_type": "Other",
+      "classification": {
+        "main_aos": [],
+        "detail_aos": {},
+        "position_type": null,
+        "institution_type": "Other",
+        "reasoning": "classification_failed",
+        "_model": "fallback",
+        "_classified_at": "2026-11-09T23:24:03.079228"
+      },
+      "status": "active",
+      "hash": "9ffe7d903de2691357188406c25cadf8",
+      "scraped_date": "2026-11-09T23:13:45.307929"
+    },
+    {
+      "id": "32889",
+      "url": "https://philjobs.org/job/show/32889",
+      "institution": "African and African Diaspora Studies Program, Boston College",
+      "title": "2027/2028 AADS Dissertation Fellowship",
+      "job_category": "Graduate fellowship / Fixed term",
+      "aos": "African/Africana Philosophy",
+      "aos_categories": "African/Africana Philosophy",
+      "aoc": "Open",
+      "workload": "Full time",
+      "vacancies": "2",
+      "location": "Chestnut Hill, Massachusetts, United States",
+      "state": "MA",
+      "country": "United States",
+      "city": "Chestnut Hill",
+      "start_date": "September 2027",
+      "description": "AADS Dissertation FellowshipDEADLINE: 11 January 2027 at 11:59 pm Eastern Standard Time (EST)Boston College\u2019s African & African Diaspora Studies Program (AADS) announces its 2027/2028 dissertation fellowship competition. Scholars working in any discipline in the Social Sciences or Humanities, with projects focusing on any topic within African and/or African Diaspora Studies, are eligible to apply. We seek applicants pursuing innovative, preferably interdisciplinary, projects in dialogue with critical issues and trends within the field.The 2027/2028 fellowship includes a $38,800 stipend; access to highly subsidized health insurance through Boston College; a $1,500 research budget; a $3,000 moving expense allotment; and a fully equipped, shared office. The fellow must remain in residence for the 9-month academic year, deliver one research presentation, and teach one seminar course. The fellow will also receive compensation for teaching this course. The fellow is expected to attend AADS lectures and works-in-progress sessions and generally be a part of the intellectual life of the program. For the 2027/2028 application cycle, AADS will award two fellowships.Successful fellows will have full access to BC\u2019s seven libraries as well as several rare book and manuscript collections. Of particular interest is the Nicholas M. Williams Caribbeana Collection, consisting of materials from and about Africa and the British West Indies. Fellows can also benefit from the Apprenticeship in College Teaching and informal conversations about teaching with other graduate students\u2014both of which are completely voluntary\u2014as well as events and installations sponsored by programs in International Studies, American Studies, Asian American Studies, Islamic Civilization and Societies, and the internationally renowned McMullen Museum.Applications must include:1) a 3000-word project proposal that includes a plan for completion and description of how this fellowship will assist the applicant in achieving future professional goals2) a writing sample of no more than 25 pages3) a CV4) three letters of recommendation, one of which must be from the dissertation advisor.Eligible applicants must be ABD by the start of the fellowship year.Equal Employment Opportunity StatementBoston College conducts pre-employment background checks as part of the hiring process. Boston College is a Jesuit, Catholic university that strives to integrate research excellence with a foundational commitment to formative liberal arts education. The university is an equal opportunity employer. In concert with our Jesuit, Catholic mission, Boston College is dedicated to the goal of building a culturally diverse and pluralistic faculty and staff committed to teaching and working in a multicultural environment and strongly encourages applications from women, minorities, individuals with disabilities, and covered veterans.",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "instructions": "Submit all application materials \u2013 including letters of recommendation \u2013 by Monday, 11 January 2027, at 11:59 pm Eastern Standard Time (EST) via https://apply.interfolio.com/196246.",
+      "application_url": "https://apply.interfolio.com/196246",
+      "deadline": "January 11, 2027, 11:59pm EST",
+      "contact": "",
+      "more_info_url": "https://www.bc.edu/content/bc-web/schools/morrisse...",
+      "contact_name": "Richard Paul",
+      "contact_email": "",
+      "posted_date": "November 4, 2026, 9:36pm UTC",
+      "scheduled_expiry_date": "January 11, 2027, 11:59pm EST",
+      "last_updated": "November 4, 2026, 9:36pm UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "raw_fields": {
+        "Contact phone": "6175523238"
+      },
+      "institution_type": "Other",
+      "classification": {
+        "main_aos": [],
+        "detail_aos": {},
+        "position_type": null,
+        "institution_type": "Other",
+        "reasoning": "classification_failed",
+        "_model": "fallback",
+        "_classified_at": "2026-11-09T23:24:05.082803"
+      },
+      "status": "active",
+      "hash": "e2ac4719d4a78e94ed5b0f4b477097fc",
+      "scraped_date": "2026-11-09T23:13:46.122120"
+    },
+    {
+      "id": "32893",
+      "url": "https://philjobs.org/job/show/32893",
+      "institution": "Social Responsibility and Sustainability Division, University of Colorado Boulder - Boulder, CO",
+      "title": "Assistant Teaching Professor",
+      "job_category": "Junior faculty / Fixed term",
+      "aos": "Open",
+      "aoc": "markets, social responsibility, business ethics/philosophy, and critical thinking",
+      "aoc_categories": "Philosophy of Social ScienceApplied Ethics",
+      "workload": "Full time",
+      "vacancies": "1",
+      "org_reference_number": "75674",
+      "location": "Boulder, Colorado, United States",
+      "state": "CO",
+      "country": "United States",
+      "city": "Boulder",
+      "start_date": "1/7/2027",
+      "description": "TheLeeds School of Businessat the University of Colorado Boulder is hiring anAssistant Teaching Professorposition in the Social Responsibility and Sustainability Division starting in Spring 2027.CU is an Equal Opportunity Employer and complies with all applicable federal, state, and local laws governing nondiscrimination in employment. We are committed to creating a workplace where all individuals are treated with respect and dignity, and we encourage individuals from all backgrounds to apply, including protected veterans and individuals with disabilities. What Your Key Responsibilities Will BeThe selected candidate will be responsible for teaching courses in markets, social responsibility, business ethics/philosophy, and critical thinking at the undergraduate and possibly the graduate levels. The candidate should possess a strong understanding of economic and business paradigms, including free markets, capitalism, socialism, and various market structures. Additionally, the ideal candidate will have an interest in exploring the intersection of economic freedom with societal objectives and institutional structures. They should also demonstrate the ability to guide students in examining ethical considerations and fostering critical thinking in business decision-making.Duties include developing and refining curricula, collaborating with Leeds Centers and divisions on related courses, and teaching seven sections per year. Under the general supervision of the division chair, the position involves preparing for and teaching undergraduate and/or graduate courses, staying current in the content area, evaluating student work, assessing outcomes, maintaining records, and holding office hours. Additional responsibilities may include advising students, providing departmental service, and other duties as assigned by the division chair or the dean\u2019s office.The position is anticipated to be at the assistant teaching professor rank. Candidates with strong records in relevant areas are encouraged to apply. This is a two-year contract, with the possibility of another multi-year contract based on demonstrated excellent performance in the role.What We Can OfferThis is a two-year contract. The annual salary for this appointment is $90,000. We offer $2,000 (or more, if needed) for relocation moving expenses if moving from beyond a 50-mile radius from CU Boulder.BenefitsAt theUniversity of Colorado Boulder, we are committed to supporting the holistic health and well-being of our employees. Our comprehensivebenefits packageincludes medical, dental, and retirement plans; generous paid time off; tuition assistance for you and your dependents; and an ECO Pass for local transit. As one of Boulder County\u2019s largest employers, CU Boulder offers an inspiring academic community and access to world-class outdoor recreation. In fact, CU Boulder has been named one ofForbes' America's Best Large Employers, ranking #4 among large employers in Colorado and #28 among universities nationwide. Explore additional perks and programs through theCU Advantageprogram.What We RequireWe seek candidates who have a demonstrated record of teaching excellence with innovative pedagogy that is informed by business and research experience.\u00a0 Must have a strong academic background.A Master\u2019s degree from an accredited institution or equivalent in business, economics, psychology, sociology, history, education, law, philosophy, sustainability, anthropology, or a related discipline.At least one year of university teaching experience at the undergraduate level in the fields of business, economics, ethics, sustainability, social responsibility, and broader multidisciplinary issues of related history and current context.Demonstrated experience with innovative teaching approaches, such as class simulations, experiential learning, and online software platforms, among others.A collegial approach to team-teaching: most or all courses to be taught by the person hired into this role are first and second-year undergraduate required courses with multiple sections taught every term by different faculty members. Faculty leads coordinate quality and consistency of delivery across sections. Essential for success in this role is an eager willingness to work closely and collaboratively with the faculty leads and peer colleagues who are concurrently teaching these classes to ensure consistency of content delivery and student assessment across all sections of each course.What We Would Like You to HaveAn earned Doctorate Degree (Ph.D.) or equivalent terminal degree in business, economics, psychology, sociology, history, education, law, philosophy, sustainability, anthropology, or a related discipline.Two or more years of university teaching experience at the undergraduate and/or graduate levels in the fields of business, economics, ethics, sustainability, social responsibility, and broader multidisciplinary issues of related history and current context.",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "instructions": "Application materials will not be accepted via email. For consideration, applications must be submitted through our CU job site: https://jobs.colorado.edu/jobs/JobDetail/?jobId=75674\r\nPlease submit:\r\nResume/CV\r\nCover Letter\r\nGeneric File 1: Teaching Statement\r\nGeneric File 2: Evidence of Teaching excellence (e.g. videos, syllabi, evaluations, assignments)\r\nDuring the application process you will need to enter contact information for three references who may be contacted to write letters of recommendation later in the process.\r\n\r\nFull consideration will be given to applications submitted by November 28, 2026. This position will remain open until filled.",
+      "application_url": "https://jobs.colorado.edu/jobs/JobDetail/?jobId=75...",
+      "soft_deadline": "November 28, 2026, 12:00am MST",
+      "deadline": "December 4, 2026, 11:59pm MST",
+      "contact": "",
+      "more_info_url": "https://jobs.colorado.edu/jobs/JobDetail/?jobId=75...",
+      "posted_date": "November 4, 2026, 9:35pm UTC",
+      "scheduled_expiry_date": "December 4, 2026, 11:59pm MST",
+      "last_updated": "November 4, 2026, 9:35pm UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "institution_type": "Other",
+      "classification": {
+        "main_aos": [],
+        "detail_aos": {},
+        "position_type": null,
+        "institution_type": "Other",
+        "reasoning": "classification_failed",
+        "_model": "fallback",
+        "_classified_at": "2026-11-09T23:24:07.086617"
+      },
+      "status": "active",
+      "hash": "3e89ac165a1a75a582fa8305bae74fcd",
+      "scraped_date": "2026-11-09T23:13:46.893503"
+    },
+    {
+      "id": "32881",
+      "url": "https://philjobs.org/job/show/32881",
+      "institution": "Department of Philosophy, Southern Illinois University Edwardsville",
+      "title": "Instructor - Logic",
+      "job_category": "Junior faculty / Tenure-track or similar",
+      "aos": "100-level Reasoning and Argumentation",
+      "aoc": "Logic",
+      "aoc_categories": "Logic",
+      "workload": "Full time",
+      "vacancies": "1",
+      "org_reference_number": "FA27-041",
+      "location": "Edwardsville, Illinois, United States",
+      "state": "IL",
+      "country": "United States",
+      "city": "Edwardsville",
+      "start_date": "Fall 2027",
+      "description": "Hiring UnitPhilosophyJob Description/ResponsibilitiesThe Department of Philosophy at Southern Illinois University Edwardsville (SIUE) seeks to hire a full-time Instructor beginning August 2027. Full-time Instructors teach 4 courses per semester and are expected to participate in Student Engagement, Professional Development, and/or Faculty Development activities. Teaching responsibilities will be primarily 100-level Reasoning and Argumentation. We also have teaching needs for our 200-level Deductive Logic and Inductive Logic courses.The SIUE Department of Philosophy values diversity among its faculty and is committed to building a culturally diverse intellectual community. SIUE Philosophy welcomes candidates who can contribute to the department's cultural and intellectual diversity beyond fulfilling the core teaching responsibilities and encourages candidates to articulate in their application materials the ways in which they can do so. Successful candidates will be expected to support the SIUE College of Arts and Sciences' commitment to anti-racism, diversity, equity, and inclusion. SIUE nurtures an open, respectful, and welcoming climate that facilitates learning and work. Integral to this commitment, Southern Illinois University Edwardsville strives for a student body and a workforce that is both diverse and inclusive. We strongly encourage candidates from historically underrepresented groups, including women, members of racially minoritized groups, and individuals with disabilities, to apply. For more on our Statement on Diversity, visit:SIUE Mission, Goals and Plans.",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "instructions": "Candidates must include in their application:\r\n\r\n\r\nA cover letter addressing the candidate's interest and fit for the position.\r\nA CV.\r\nA teaching portfolio (course syllabi, sample course materials, student evaluations, etc.).\r\nTranscripts from the candidate's graduate degree granting institution.\r\nThree letters of recommendation.\r\n\r\nThis institution is using lnterfolio's Faculty Search to conduct this search. Applicants to this position receive a free dossier account and can send all application materials, including confidential letters of recommendation, free of charge. Any questions about the position or application process should be addressed to Dr. Matthew Cashen at[email\u00a0protected].\r\n\r\n\r\nApplicants will be subject to a background check prior to an offer of employment.\r\n\r\n\r\nEmployment is contingent upon satisfying all legal requirements as set forth by the U.S. Citizenship and Immigration Services in regard to employability in the United States. SIUE makes no representation, warranty, or agreement that third parties, including government agencies, will approve submitted documents, applications, or petitions for an H-1B visa or Optional Practical Training.\r\n\r\n\r\nSIUE is a state university - benefits under state sponsored plans may not be available to holders of F1 or J1 visas. The State of Illinois requires that immigrant employees achieve H-1 status before they become eligible for certain benefits.",
+      "application_url": "https://apply.interfolio.com/196653",
+      "deadline": "December 15, 2026, 11:59pm CST",
+      "contact": "",
+      "more_info_url": "https://www.siue.edu/artsandsciences/philosophy/",
+      "contact_name": "Andre Steiner",
+      "contact_email": "",
+      "posted_date": "November 4, 2026, 9:33pm UTC",
+      "scheduled_expiry_date": "December 15, 2026, 11:59pm CST",
+      "last_updated": "November 4, 2026, 9:33pm UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "raw_fields": {
+        "Contact phone": "618-650-2325"
+      },
+      "institution_type": "Other",
+      "classification": {
+        "main_aos": [],
+        "detail_aos": {},
+        "position_type": null,
+        "institution_type": "Other",
+        "reasoning": "classification_failed",
+        "_model": "fallback",
+        "_classified_at": "2026-11-09T23:24:09.090170"
+      },
+      "status": "active",
+      "hash": "326a8605975106f1672c912bd16b4e7b",
+      "scraped_date": "2026-11-09T23:13:47.686292"
+    },
+    {
+      "id": "32877",
+      "url": "https://philjobs.org/job/show/32877",
+      "institution": "Faculty of Philosophy in association with Somerville College, University of Oxford",
+      "title": "Associate Professorship (or Professorship) of Philosophy",
+      "job_category": "Senior faculty / Tenured, continuing or permanent",
+      "aos": "Metaethics and/or Normative Ethics",
+      "aos_categories": "Meta-EthicsNormative Ethics",
+      "aoc": "Metaethics, Normative Ethics, History of Modern Ethics, Moral Psychology, Political Philosophy, Philosophy of Language",
+      "aoc_categories": "Philosophy of LanguageEthicsMeta-EthicsNormative Ethics",
+      "workload": "Full time",
+      "vacancies": "1",
+      "location": "Oxford, England, United Kingdom",
+      "state": null,
+      "country": "United Kingdom",
+      "city": null,
+      "start_date": "1 September 2027, or as soon as possible thereafter",
+      "description": "Somerville College and the Faculty of Philosophy are recruiting an Associate Professor or Professor of Philosophy, to start from 1 September 2027 or as soon as possible thereafter.The successful candidate will have a research record that includes work in Metaethics and/or Normative Ethics, an area of competence in at least one further area of Ethics (including Metaethics, Normative Ethics, History of Modern Ethics, or Moral Psychology), and an area of competence in either Political Philosophy or Philosophy of Language.The successful candidate (henceforth \u2018postholder\u2019) will have the potential to enhance the high reputation of the Faculty of Philosophy in research, will have a proven record of internationally recognised scholarship and research in metaethics appropriate to their career stage, and will provide a high standard of research-led teaching at both undergraduate and postgraduate levels.For the Faculty, the postholder will deliver 16 lectures or classes per year, will be able to offer lectures and classes in metaethics and in normative ethics, and will supervise graduate students (both at the Masters and at the Doctoral level). The postholder will participate in examining, and will play a full and active role in Faculty administration. The postholder will pursue their research and enhance their international reputation.For the College, the postholder will be required to give eight hours of tutorial teaching each week during term time (averaged over the year), to share in organizing the tuition and pastoral care of students studying for joint schools (i.e., joint degree courses) involving Philosophy, and to participate in the 2 August 2026 administrative work of the College.The successful candidate will be a Tutorial Fellow at Somerville College. Oxford Colleges are self-governing multi-disciplinary academic communities which offer members the opportunity to engage with scholars across a wide range of academic fields. This role will include teaching undergraduates in tutorials of groups of 1, 2, or 3 and contributing to the running of the College through membership of the Governing Body. Oxford\u2019s students are carefully selected to be very capable and are very rewarding to teach in this highly interactive format. The successful candidate will play a key role in selecting the students in joint degrees involving Philosophy that the post-holder may subsequently teach.If you would like to discuss this post and find out more about joining the academic community at Oxford, please contact either the Chair of the Philosophy Faculty Board, Professor Mark Wrathall ([email\u00a0protected]) or the Senior Tutor at Somerville College, Dr Stephen Rayner ([email\u00a0protected]). All enquiries will be treated in strict confidence and will not form part of the selection decision.Closing date for all elements of application: 12 noon (UK time) on Thursday 10 December 2026.",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "application_url": "https://isw.changeworknow.co.uk/somerville_college...",
+      "deadline": "December 10, 2026, 12:00pm BST",
+      "contact": "",
+      "more_info_url": "https://isw.changeworknow.co.uk/somerville_college...",
+      "posted_date": "November 4, 2026, 9:33pm UTC",
+      "scheduled_expiry_date": "December 10, 2026, 12:00pm BST",
+      "last_updated": "November 5, 2026, 11:29am UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "institution_type": "Other",
+      "classification": {
+        "main_aos": [],
+        "detail_aos": {},
+        "position_type": null,
+        "institution_type": "Other",
+        "reasoning": "classification_failed",
+        "_model": "fallback",
+        "_classified_at": "2026-11-09T23:24:11.131239"
+      },
+      "status": "active",
+      "hash": "ee50567c32d7c2e693df4a6206c71b00",
+      "scraped_date": "2026-11-09T23:13:48.371250"
+    },
+    {
+      "id": "32873",
+      "url": "https://philjobs.org/job/show/32873",
+      "institution": "Faculty of Philosophy, University of Oxford",
+      "title": "Departmental Lecturer in Ancient Philosophy",
+      "job_category": "Junior faculty / Fixed term",
+      "aos": "Ancient Philosophy",
+      "aos_categories": "Ancient Greek and Roman Philosophy",
+      "aoc": "Open",
+      "workload": "Full time",
+      "vacancies": "1",
+      "org_reference_number": "189491",
+      "location": "Oxford, England, United Kingdom",
+      "state": null,
+      "country": "United Kingdom",
+      "city": null,
+      "start_date": "1 January 2027, or as soon as possible thereafter",
+      "description": "The Faculty of Philosophy, University of Oxford wishes to appoint a Departmental Lecturer in Ancient Philosophy to cover the teaching and other duties of a permanent postholder during the period that they will act as Proctor for their college. This post is fixed term for 12 months, commencing on 1 January 2027 or as soon as possible thereafter.The person appointed will be expected to be able to deliver lectures in Ancient Philosophy to undergraduates, and to be able to provide graduate teaching (classes or supervision) on the MSt in Ancient Philosophy and/or on the BPhil masters course.\u00a0 The successful candidate will be asked to undertake further duties, as directed by the Chair of the Philosophy Faculty Board, including delivering up to 32 lectures or classes to graduates or undergraduates, graduate supervision and admissions, and graduate and undergraduate examining.The successful candidate should normally have received the degree of PhD or DPhil in Philosophy, or a closely related discipline, or at least have submitted a completed doctoral dissertation for examination by the closing date for applications to this post.Candidates must have an outstanding research record appropriate to the stage of their career with evidence of, or evidence of potential for producing, significant research in the area of Ancient Philosophy. They must provide evidence of the ability to provide excellent teaching and must have the ability and willingness to assume pastoral responsibilities associated with undergraduate and graduate teaching, and to act as an assessor at graduate and undergraduate level.Applications must be made online via the Oxford University jobs website (vacancy ID: 189491) where further particulars for the post are available. Applicants will be required to upload a CV, a supporting statement and a sample of written work (i.e. a research paper) of up to 10,000 words as part of their online application. To apply for this post and for further details, including the job description and selection criteria, please follow the link.The deadline for all applications is12.00 noon(UK time) on16 November 2026. Candidates should ask their referees to submit reference letters directly to[email\u00a0protected]no later than this date.The University of Oxford is an equal opportunities employer.",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "application_url": "https://my.corehr.com/pls/uoxrecruit/erq_jobspec_v...",
+      "deadline": "November 16, 2026, 12:00pm BST",
+      "contact": "",
+      "more_info_url": "https://my.corehr.com/pls/uoxrecruit/erq_jobspec_v...",
+      "contact_name": "Recruitment Adminstrator",
+      "contact_email": "",
+      "posted_date": "November 4, 2026, 9:30pm UTC",
+      "scheduled_expiry_date": "November 16, 2026, 12:00pm BST",
+      "last_updated": "November 4, 2026, 9:30pm UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "institution_type": "Other",
+      "classification": {
+        "main_aos": [],
+        "detail_aos": {},
+        "position_type": null,
+        "institution_type": "Other",
+        "reasoning": "classification_failed",
+        "_model": "fallback",
+        "_classified_at": "2026-11-09T23:24:13.134800"
+      },
+      "status": "active",
+      "hash": "b20eef1fea97cb4e1913531f8b3d0176",
+      "scraped_date": "2026-11-09T23:13:49.047504"
+    },
+    {
+      "id": "32869",
+      "url": "https://philjobs.org/job/show/32869",
+      "institution": "History and Philosophy of Science, University of Sydney",
+      "title": "Postdoctoral Research Associate - Digital Humanities / Philosophy of Science.",
+      "job_category": "Postdoc or similar / Fixed term",
+      "aos": "Digital Humanities / Philosophy of Science",
+      "aos_categories": "Philosophy of AI and ComputingPhilosophy of BiologyPhilosophy of SciencePhilosophy of Social Science",
+      "aoc": "Open",
+      "workload": "Full time",
+      "vacancies": "1",
+      "org_reference_number": "0157761",
+      "location": "Camperdown, NSW, New South Wales, Australia",
+      "state": null,
+      "country": "Australia",
+      "city": null,
+      "start_date": "early 2027",
+      "description": "Full time, 2 years fixed term, with the potential for extension to a 3rd yearLead innovative research using AI-powered text analysis to reveal how concepts are used academically, in the media and across socialBase Salary, Academic level A $117,936 - $125,896 + 17% superannuationAbout the opportunityTheSchool of History and Philosophy of Scienceat the University of Sydney is seeking aPostdoctoral Research Associate - Digital Humanities / Philosophy of Scienceto develop and deploy bibliometric methods and text classification models to identify concepts and conceptual patterns in large bodies of text.This research forms a part of two ARC Discovery Project(s) \u2018Genes germs and gender: the rise and impact of bioessentialism\u2019 and \u2018Symbiotic Synergies: How the Body Became a Chimera (1950-2000)\u2019. The successful candidate will join a large, interdisciplinary research group of philosophers, historians, psychologists, and scientists, contributing empirical evidence to support the group's philosophical investigations.Building on existing methodologies within the research group, the candidate will design, train, and validate new classification models capable of detecting conceptual and rhetorical features across large text corpora, and will lead the construction of these corpora from media, social media, and academic sources.Your key responsibilities will be to:curate, clean and structure large text corpora from news media, social media and academic literaturedevelop and refine automated classification pipelines using machine learning and LLM approachesdesign prompting strategies to optimise classifier precision and recallcontribute to the interpretation of classification outputs in light of philosophical and psychological theories and conceptsco-author peer-reviewed publications and conference presentationscontribute to open science practices, including preparing code, data and documentation for public repositories (e.g. OSF).About Youa PhD in a relevant field in the digital humanitiesexperience curating, cleaning and structuring large corporaexperience using NLP and/or ML to build and evaluate text classification modelsexperience in prompt engineering techniquesan interest in interdisciplinary collaborationthe ability to translate conceptual research questions into computational tasksstrong written communication skills and a track record of peer-reviewed publicationthe ability to work independently and as part of a collaborative, interdisciplinary team.For more information and how to apply see:https://wd105.myworkday.com/usyd/d/inst/15$392530/9925$102630.htmld",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "application_url": "https://wd105.myworkday.com/usyd/d/inst/15$392530/...",
+      "application_email": "",
+      "deadline": "December 6, 2026, 11:59pm +08:00",
+      "contact": "",
+      "more_info_url": "https://wd105.myworkday.com/usyd/d/inst/15$392530/...",
+      "contact_name": "Kate Lynch",
+      "contact_email": "",
+      "posted_date": "November 4, 2026, 9:29pm UTC",
+      "scheduled_expiry_date": "December 6, 2026, 11:59pm +08:00",
+      "last_updated": "November 4, 2026, 9:29pm UTC",
+      "job_market_calendar": "This institution has indicated that the position advertised will not follow theAPA's recommended job market calendar. An explanation, if provided, appears below.We are in Australia",
+      "raw_fields": {
+        "Contact phone": "+61403318997"
+      },
+      "institution_type": "Other",
+      "classification": {
+        "main_aos": [],
+        "detail_aos": {},
+        "position_type": null,
+        "institution_type": "Other",
+        "reasoning": "classification_failed",
+        "_model": "fallback",
+        "_classified_at": "2026-11-09T23:24:15.138312"
+      },
+      "status": "active",
+      "hash": "ea56b27fc27978cc94666af12740f6f3",
+      "scraped_date": "2026-11-09T23:13:49.766738"
+    },
+    {
+      "id": "32865",
+      "url": "https://philjobs.org/job/show/32865",
+      "institution": "Center for the Humanities, Washington University in St. Louis",
+      "title": "Postdoctoral Fellowship, Modeling Interdisciplinary Inquiry",
+      "job_category": "Postdoc or similar / Fixed term",
+      "aos": "Open",
+      "aoc": "Open",
+      "workload": "Full time",
+      "vacancies": "1",
+      "location": "St Louis, Missouri, United States",
+      "state": "MO",
+      "country": "United States",
+      "city": "St Louis",
+      "start_date": "August 2027",
+      "description": "Washington University in St. Louis announces the twenty-fifth year of Modeling Interdisciplinary Inquiry, a postdoctoral fellowship program endowed by the Andrew W. Mellon Foundation and designed to encourage interdisciplinary scholarship and teaching across the humanities and interpretive social sciences. We invite applications from recent PhDs, DPhils, or D.F.A.s (with degree in hand by June 30, 2027, and no earlier than June 30, 2024) who have not previously held a research-oriented postdoctoral fellowship. This fellowship program is housed in WashU\u2019s Center for the Humanities. This year we are recruiting two fellows. We are interested in interdisciplinary scholars whose research has a focus on global issues including but not limited to global public humanities methods.In mid-August 2027 the newly selected Fellows will join the interdisciplinary community at the Center for the Humanities. Each fellowship is anticipated to run for two academic years. Postdoctoral Fellows pursue their own continuing research in association with a senior faculty mentor at WU. During the two years of their fellowship, they will teach two courses. Fellows are expected to remain in residence during all semesters of their appointment.Applicants should submit, through Interfolio, a cover letter, a curriculum vitae, and a description of their research program (no more than 1000 words and accessible to reviewers in other disciplines). Applicants who have not completed their doctoral work should indicate, in their cover letter, how many chapters of their dissertation are complete and how complete the remaining chapters are. Please include the names and email addresses of three references.Application:\u00a0https://apply.interfolio.com/195936",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "application_url": "https://apply.interfolio.com/195936",
+      "deadline": "December 21, 2026, 11:59pm CST",
+      "contact": "",
+      "posted_date": "November 4, 2026, 9:26pm UTC",
+      "scheduled_expiry_date": "December 21, 2026, 11:59pm CST",
+      "last_updated": "November 4, 2026, 9:26pm UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "institution_type": "Other",
+      "classification": {
+        "main_aos": [],
+        "detail_aos": {},
+        "position_type": null,
+        "institution_type": "Other",
+        "reasoning": "classification_failed",
+        "_model": "fallback",
+        "_classified_at": "2026-11-09T23:24:17.141925"
+      },
+      "status": "active",
+      "hash": "27f850ce7e93ab7a6d5a60ce96090094",
+      "scraped_date": "2026-11-09T23:13:50.547851"
+    },
+    {
+      "id": "32793",
+      "url": "https://philjobs.org/job/show/32793",
+      "institution": "Department of Philosophy, Religion, and Interdisciplinary Studies, Georgia College and State University",
+      "title": "Lecturer of Philosophy",
+      "job_category": "Junior faculty / Tenured, continuing or permanent",
+      "aos": "Philosophy of Law",
+      "aos_categories": "Philosophy of Law",
+      "aoc": "Open",
+      "workload": "Full time",
+      "vacancies": "1",
+      "location": "Milledgeville, Georgia, United States",
+      "state": "GA",
+      "country": "United States",
+      "city": "Milledgeville",
+      "start_date": "Fall 2027",
+      "description": "About UsGeorgia College & State University (GCSU) is the state's designated public liberal arts university, where students learn the essential skills to compete in a fast-paced and technology-driven global society. The university prepares students for successful careers, leadership in communities, problem solving and life-long learning through personalized attention in a residential setting with opportunities for a variety of transformational experiences through its award-winning, high-impact practices. One of only three selective universities within the University System of Georgia and a top 10 ranked public university in the Southeast, GCSU offers undergraduate degrees in more than 40 majors, more than 30 graduate programs, doctorates in education and nursing, professional certificates, and continuing education programs.As a member of the prestigious Council of Public Liberal Arts Colleges (COPLAC), GCSU is committed to fostering a liberal arts environment that values academic preeminence, interdisciplinary inquiry and an inclusive learning community. GCSU enjoys a strong reputation for academic excellence and nationally ranked programs according to US News & World Report, The Princeton Review and Colleges of Distinction - among other ranking sources.Georgia College & State University takes great pride in combining the educational experience of a private liberal arts college with the affordability of a public university. Faculty and staff are dedicated to student engagement and experiential learning through high-impact practices such as internships, service- and community-based learning, leadership development, study abroad opportunities, mentored undergraduate research and a capstone project that fosters intellectual curiosity, reasoned inquiry and critical thinking.The university's beautiful and historic campus is located downtown in Milledgeville, Georgia, a charming college town of approximately 19,000 residents in Central Georgia, and only 90 miles southeast of Atlanta. Milledgeville is also the home of noted American author and alumna, Flannery O'Connor, '45, and the college community enjoys many exciting literary arts programs at O'Connor's former home, Andalusia, a National Historic Landmark owned by the university. Milledgeville is located on the banks of beautiful Lake Sinclair and Lake Oconee, allowing faculty, staff and students to take full advantage of the environmental and recreational benefits of being part of a lake community. For cultural, educational and leisure opportunities beyond Milledgeville - Macon and Atlanta are located within easy driving distances.Georgia College & State University is dedicated to protecting academic freedom in addition to supporting freedom of expression as outlined in the University System of Georgia'sFreedom of Expression and Academic Freedom policyand itsEthics Code of Conduct.For more information, visit us online atgcsu.edu.Job SummaryThe College of Arts & Sciences seeks a Lecturer to teach undergraduate courses in Survey of Philosophy and occasionally an upper-level course in their area of expertise. This non-tenure track faculty position, based in the Department of Philosophy, Religion and Liberal Studies, is a 10-month academic year position, with the possibility of promotion to Senior Lecturer after 5 years.Instruct academic courses and support the department, college and university goals by supporting the academic environment to benefit the educational mission of the University.The faculty employee is expected to contribute to the departments educational mission.\u00a0 Faculty will be expected to instruct our students in the respective disciplines at the undergraduate levels.This position carries a non tenure track status.ResponsibilitiesFaculty - Teaching/Instructing -Teaching Responsibilities- Full-time instructional load teaching in areas of expertise within the academic discipline- Regular course meetings and instruction- Mentoring students- Other teaching responsibilitiesKnowledge and ability to convey current philosophies, practices, and theories related to the academic discipline.Faculty employees also contribute to the Georgia College & State University core curriculum by teaching topical freshman (GC1Y) or sophomore seminar (GC2Y) courses. All Georgia College & State University faculty share the responsibility of teaching our core curriculum and providing foundation courses for majors and non-majors alike.Faculty - Professional Development -Faculty are expected to stay current in their field.Faculty - Service to Institution -All faculty are expected to help the department in recruiting majors.Faculty members are expected to attend Department meetings and events.Other -Other duties as assignedRequired QualificationsEducational RequirementsTerminal degree in Philosophy or in a closely related field.Must meet SACSCOC accreditation requirements stated in C.S. 3.7.1 (www.sacscoc.org (faculty credentials))Required ExperienceA minimum of 18 graduate semester hours related to the discipline.Teaching Experience as the primary instructor of record in Survey of Philosophy.Strong communication skills.Preferred QualificationsPreferred QualificationArea of specialization in Philosophy of Law.Proposed SalaryThe proposed salary is $57,000.Relocation is negotiable.Required Documents to AttachResume/CVAt least 3 referencesCover LetterUnofficial TranscriptsTeaching PhilosophySample Syllabus for Survey of Philosophy and an upper level courseKnowledge, Skills, & AbilitiesABILITIESAbility to build positive student relationships and provide mentorship.Ability to engage in continuous professional development.Ability to manage multiple courses.Ability to collaborate with colleagues and participate in service.Ability to adapt to changing institutional needs.Ability to maintain accurate records and meet deadlines.Ability to teach Survey of Philosophy.Ability to design creative, interdisciplinary courses that incorporate primary texts and engage students in the classroom.Ability to teach writing and discussion intensive classes.Ability to incorporate different perspectives in a domestic and global context.USG Core ValuesThe University System of Georgia is comprised of our 25 institutions of higher education and learning as well as the System Office. Our USG Statement of Core Values are Integrity, Excellence, Accountability, and Respect. These values serve as the foundation for all that we do as an organization, and each USG community member is responsible for demonstrating and upholding these standards. More details on the USG Statement of Core Values and Code of Conduct are available in USG Board Policy 8.2.18.1.2 and can be found on-line athttps://www.usg.edu/policymanual/section8/C224/#p8.2.18_personnel_conduct.Additionally, USG supports Freedom of Expression as stated in Board Policy 6.5 Freedom of Expression and Academic Freedom found on-line athttps://www.usg.edu/policymanual/section6/C2653.Equal Employment OpportunityEqual opportunity and decisions based on merit are fundamental values of the University System of Georgia (USG). The Board of Regents prohibits discrimination on the basis of an individual's age, color, disability, genetic information, national origin, race, religion, sex, or veteran status (\"protected status\"). No individual shall be excluded from the participation in, denied the benefits of, or otherwise subjected to unlawful discrimination, harassment, or retaliation under, any USG program or activity because of the individual's protected status; nor shall any individual be given preferential treatment because of the individual's protected status, except that preferential treatment may be given on the basis of veteran status when appropriate under federal or state law.Other InformationThis is not a supervisory position.This position does not have any financial responsibilities.This position will not be required to drive.This role is considered not a position of trust.This position does not require a purchasing card (P-Card).This position will not travel.This position does not require security clearance.Background CheckCriminal Background CheckEducation Verification",
+      "how_to_apply": "",
+      "application_type": "Online",
+      "application_url": "https://careers.hprod.onehcm.usg.edu/psp/careers/C...",
+      "soft_deadline": "November 27, 2026, 12:00am EST",
+      "deadline": "No deadline specified (applications considered on an ongoing basis)",
+      "contact": "",
+      "more_info_url": "https://www.gcsu.edu/artsandsciences/philosophy",
+      "contact_name": "Sunita Manian",
+      "contact_email": "",
+      "posted_date": "November 4, 2026, 9:25pm UTC",
+      "scheduled_expiry_date": "April 26, 2027, 3:25am EST",
+      "last_updated": "November 6, 2026, 5:48pm UTC",
+      "job_market_calendar": "This institution has confirmed that the position advertised will follow theAPA's recommended job market calendar.",
+      "raw_fields": {
+        "Contact phone": "(478) 445-5221"
+      },
+      "institution_type": "Other",
+      "classification": {
+        "main_aos": [],
+        "detail_aos": {},
+        "position_type": null,
+        "institution_type": "Other",
+        "reasoning": "classification_failed",
+        "_model": "fallback",
+        "_classified_at": "2026-11-09T23:24:19.145686"
+      },
+      "status": "active",
+      "hash": "5fc624523b2074a3440e9312f271d68c",
+      "scraped_date": "2026-11-09T23:13:51.324870"
     }
   ],
   "weekly_snapshots": [
@@ -24974,6 +25786,31 @@
         "32713",
         "32761",
         "32769"
+      ]
+    },
+    {
+      "date": "2026-11-09",
+      "total_jobs": 100,
+      "new_jobs": 18,
+      "new_job_ids": [
+        "32941",
+        "32937",
+        "32929",
+        "32925",
+        "32921",
+        "32909",
+        "32905",
+        "32901",
+        "32897",
+        "32885",
+        "32889",
+        "32893",
+        "32881",
+        "32877",
+        "32873",
+        "32869",
+        "32865",
+        "32793"
       ]
     }
   ],
@@ -27124,6 +27961,57 @@
       },
       "west_coast_city_counts": {
         "Saint Benedict": 1
+      }
+    },
+    {
+      "date": "2026-11-02",
+      "new_jobs_count": 20,
+      "main_aos_counts": {},
+      "detail_aos_counts": {},
+      "position_type_counts": {
+        "Postdoc / Fellowship": 5,
+        "Tenured / Continuing / Permanent": 4,
+        "Grad Fellowship / RA": 4,
+        "Other": 1,
+        "Tenure-Track": 4,
+        "Visiting / Adjunct / Lecturer (Fixed-Term)": 2
+      },
+      "position_type_by_aos": {},
+      "job_category_counts": {
+        "Postdoc or similar / Fixed term": 5,
+        "Junior faculty / Tenured, continuing or permanent": 3,
+        "Graduate fellowship / Fixed term": 4,
+        "Visiting fellowship / Professorship / Fixed term": 1,
+        "Senior faculty / Tenure-track or similar": 1,
+        "Junior faculty / Tenure-track or similar": 3,
+        "Junior faculty / Fixed term": 2,
+        "Senior faculty / Tenured, continuing or permanent": 1
+      },
+      "institution_type_counts": {
+        "Other": 20
+      },
+      "state_counts": {
+        "RI": 1,
+        "CA": 2,
+        "OH": 1,
+        "TN": 1,
+        "MA": 2,
+        "TX": 1,
+        "IL": 2,
+        "CO": 1,
+        "MO": 1,
+        "GA": 1
+      },
+      "country_counts": {
+        "United States": 13,
+        "Denmark": 2,
+        "Hong Kong": 1,
+        "Spain": 1,
+        "United Kingdom": 2,
+        "Australia": 1
+      },
+      "west_coast_city_counts": {
+        "Stanford": 2
       }
     }
   ],
